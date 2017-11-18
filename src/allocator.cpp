@@ -36,22 +36,22 @@ namespace Memory {
 static PageAllocator pageAllocator;
 static ZoneAllocator zoneAllocator;
 
-bool init(Region* regions)
+bool init(Region* regions, std::size_t pageSize)
 {
-    if (!pageAllocator.init(regions))
+    if (!pageAllocator.init(regions, pageSize))
         return false;
 
     return zoneAllocator.init(&pageAllocator);
 }
 
-bool init(void* start, void* end)
+bool init(void* start, void* end, std::size_t pageSize)
 {
     Region region = {
         .address = start,
         .size = static_cast<std::uint32_t>(static_cast<char*>(end) - static_cast<char*>(start))
     };
 
-    return init(&region);
+    return init(&region, pageSize);
 }
 
 void* allocate(std::size_t size)

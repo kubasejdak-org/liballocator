@@ -31,22 +31,94 @@
 namespace Memory {
 
 PageAllocator::PageAllocator() noexcept
-    : m_freePages(nullptr)
+    : m_pageSize(0)
+    , m_allPagesCount(0)
+    , m_freePagesCount(0)
+    , m_freePages(nullptr)
 {
 }
 
-bool PageAllocator::init(Region* regions)
+bool PageAllocator::init(Region* regions, std::size_t pageSize)
 {
-    return false;
+    m_pageSize = pageSize;
+    Page* prevPage = m_freePages;
+
+    for (int i = 0; regions[i].size != 0; ++i) {
+        auto* start = alignedStart(regions[i]);
+        auto* end = alignedEnd(regions[i]);
+
+        // No use from regions with size smaller niz one page.
+        if (end - start < m_pageSize)
+            continue;
+
+        for (auto* addr = start; addr < end; addr += m_pageSize) {
+            auto* page = reinterpret_cast<Page*>(addr);
+
+            linkPages(page, prevPage);
+
+            prevPage = page;
+            ++m_allPagesCount;
+            ++m_freePagesCount;
+
+            if (!m_freePages)
+                m_freePages = page;
+        }
+    }
+
+    return (m_allPagesCount != 0);
 }
 
-Page& PageAllocator::allocate()
+Page* PageAllocator::allocate()
 {
-    Page page;
+    Page* page = m_freePages;
+    m_freePages = page->next;
+
+    unlinkPages(page, page->next);
     return page;
 }
+
 void PageAllocator::release(Page& page)
 {
+}
+
+char* PageAllocator::alignedStart(Region& region)
+{
+    auto addr = reinterpret_cast<std::size_t>(region.address);
+    auto start = addr & ~(m_pageSize - 1);
+
+    if (start < addr)
+        start += m_pageSize;
+
+    return reinterpret_cast<char*>(start);
+}
+
+char* PageAllocator::alignedEnd(Region& region)
+{
+    auto addr = reinterpret_cast<std::size_t>(region.address);
+    auto end = (addr + region.size) & ~(m_pageSize - 1);
+
+    return reinterpret_cast<char*>(end);
+}
+
+void PageAllocator::linkPages(Page* a, Page* b)
+{
+    a->prev = b;
+    a->next = nullptr;
+
+    if (b)
+        b->next = a;
+}
+
+
+void PageAllocator::unlinkPages(Page* a, Page* b)
+{
+    b->prev = a->prev;
+
+    if (a->prev)
+        a->prev->next = b;
+
+    a->prev = nullptr;
+    a->next = nullptr;
 }
 
 } // namespace Memory

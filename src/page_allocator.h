@@ -31,6 +31,8 @@
 
 #include <zone_allocator/region.h>
 
+#include <cstdint>
+
 namespace Memory {
 
 struct Page {
@@ -41,12 +43,21 @@ struct Page {
 class PageAllocator {
 public:
     PageAllocator() noexcept;
-    bool init(Region* regions);
+    bool init(Region* regions, std::size_t pageSize);
 
-    Page& allocate();
+    Page* allocate();
     void release(Page& page);
 
 private:
+    char* alignedStart(Region& region);
+    char* alignedEnd(Region& region);
+    void linkPages(Page* a, Page* b);
+    void unlinkPages(Page* a, Page* b);
+
+private:
+    std::size_t m_pageSize;
+    std::size_t m_allPagesCount;
+    std::size_t m_freePagesCount;
     Page* m_freePages;
 };
 

@@ -31,14 +31,15 @@
 #include <array>
 #include <iostream>
 
-std::array<char, 4 * 4096> memory;
-
 int main(int argc, char* argv[])
 {
+    const std::size_t PAGE_SIZE = 4096;
+    std::array<char, 4 * PAGE_SIZE> memory;
+
     std::cout << "zone-allocator v" << Memory::version() << " test" << std::endl;
 
     std::cout << "Initialize allocator" << std::endl;
-    Memory::init(&memory[0], &memory[memory.size() - 1]);
+    Memory::init(&memory[0], &memory[memory.size() - 1], PAGE_SIZE);
 
     std::size_t size = 56;
     std::cout << "Allocate " << size << " bytes" << std::endl;
