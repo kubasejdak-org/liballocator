@@ -35,13 +35,15 @@ message(STATUS "  Build type   : " ${CMAKE_BUILD_TYPE})
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 #################################################################################################################
-# MAIN TEST APP
+# UNIT TEST APP
 #################################################################################################################
 
 include_directories(.)
 
 set(SOURCES
+    catch.hpp
     main.cpp
+    test_page_allocator.cpp
 )
 
 register_executable(${PROJECT_NAME})
