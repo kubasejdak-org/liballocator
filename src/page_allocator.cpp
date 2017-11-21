@@ -51,7 +51,7 @@ bool PageAllocator::init(Region* regions, std::size_t pageSize)
         if (end - start < m_pageSize)
             continue;
 
-        for (auto* addr = start; addr < end; addr += m_pageSize) {
+        for (auto* addr = start; (addr + m_pageSize) <= end; addr += m_pageSize) {
             auto* page = reinterpret_cast<Page*>(addr);
 
             linkPages(page, prevPage);

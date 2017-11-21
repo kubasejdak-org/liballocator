@@ -38,7 +38,7 @@ namespace Memory {
 inline const char* version() { return "0.1"; }
 
 bool init(Region* regions, std::size_t pageSize);
-bool init(void* start, void* end, std::size_t pageSize);
+bool init(char* start, char* end, std::size_t pageSize);
 
 void* allocate(std::size_t size);
 void release(void* ptr);

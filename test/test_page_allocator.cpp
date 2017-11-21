@@ -30,9 +30,10 @@
 
 #include <zone_allocator/allocator.h>
 
-TEST_CASE("Initialization test", "[page_allocator]") {
+TEST_CASE("Initialization test", "[page_allocator]")
+{
     const std::size_t PAGE_SIZE = 4096;
     std::array<char, 4 * PAGE_SIZE> memory;
 
-    REQUIRE(Memory::init(&memory[0], &memory[memory.size() - 1], PAGE_SIZE));
+    REQUIRE(Memory::init(&memory[0], &memory[memory.size()], PAGE_SIZE));
 }

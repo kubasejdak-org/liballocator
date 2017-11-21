@@ -44,14 +44,14 @@ bool init(Region* regions, std::size_t pageSize)
     return zoneAllocator.init(&pageAllocator);
 }
 
-bool init(void* start, void* end, std::size_t pageSize)
+bool init(char* start, char* end, std::size_t pageSize)
 {
-    Region region = {
-        .address = start,
-        .size = static_cast<std::uint32_t>(static_cast<char*>(end) - static_cast<char*>(start))
+    Region regions[2] = {
+        { .address = start,   .size = static_cast<std::uint32_t>(end - start) },
+        { .address = nullptr, .size = 0                                       }
     };
 
-    return init(&region, pageSize);
+    return init(regions, pageSize);
 }
 
 void* allocate(std::size_t size)
