@@ -35,7 +35,7 @@ namespace Memory {
 
 struct Region {
         char* address;
-        std::uint32_t size;
+        std::size_t size;
 } __attribute__((packed));
 
 } // namespace Memory

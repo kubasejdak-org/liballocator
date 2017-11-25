@@ -44,6 +44,7 @@ class PageAllocator {
 public:
     PageAllocator() noexcept;
     bool init(Region* regions, std::size_t pageSize);
+    void clear() noexcept;
 
     Page* allocate();
     void release(Page& page);
@@ -51,7 +52,7 @@ public:
 private:
     char* alignedStart(Region& region);
     char* alignedEnd(Region& region);
-    void linkPages(Page* a, Page* b);
+    void linkPages(Page* page, Page* prev);
     void unlinkPages(Page* a, Page* b);
 
 private:

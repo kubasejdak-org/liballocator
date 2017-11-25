@@ -39,6 +39,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 #################################################################################################################
 
 include_directories(.)
+include_directories(../src)
 
 set(SOURCES
     catch.hpp

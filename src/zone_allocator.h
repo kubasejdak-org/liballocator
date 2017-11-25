@@ -38,7 +38,9 @@ namespace Memory {
 class ZoneAllocator {
 public:
     ZoneAllocator() noexcept;
+
     bool init(PageAllocator* pageAllocator);
+    void clear() noexcept;
 
     void* allocate(std::size_t size);
     void release(void* ptr);

@@ -31,11 +31,8 @@
 namespace Memory {
 
 PageAllocator::PageAllocator() noexcept
-    : m_pageSize(0)
-    , m_allPagesCount(0)
-    , m_freePagesCount(0)
-    , m_freePages(nullptr)
 {
+    clear();
 }
 
 bool PageAllocator::init(Region* regions, std::size_t pageSize)
@@ -47,7 +44,7 @@ bool PageAllocator::init(Region* regions, std::size_t pageSize)
         auto* start = alignedStart(regions[i]);
         auto* end = alignedEnd(regions[i]);
 
-        // No use from regions with size smaller niz one page.
+        // No use from regions with size smaller than one page.
         if (end - start < m_pageSize)
             continue;
 
@@ -66,6 +63,14 @@ bool PageAllocator::init(Region* regions, std::size_t pageSize)
     }
 
     return (m_allPagesCount != 0);
+}
+
+void PageAllocator::clear() noexcept
+{
+    m_pageSize = 0;
+    m_allPagesCount = 0;
+    m_freePagesCount = 0;
+    m_freePages = nullptr;
 }
 
 Page* PageAllocator::allocate()
@@ -100,25 +105,24 @@ char* PageAllocator::alignedEnd(Region& region)
     return reinterpret_cast<char*>(end);
 }
 
-void PageAllocator::linkPages(Page* a, Page* b)
+void PageAllocator::linkPages(Page* page, Page* prev)
 {
-    a->prev = b;
-    a->next = nullptr;
+    page->prev = prev;
+    page->next = nullptr;
 
-    if (b)
-        b->next = a;
+    if (prev)
+        prev->next = page;
 }
 
-
-void PageAllocator::unlinkPages(Page* a, Page* b)
+void PageAllocator::unlinkPages(Page* page, Page* next)
 {
-    b->prev = a->prev;
+    next->prev = page->prev;
 
-    if (a->prev)
-        a->prev->next = b;
+    if (page->prev)
+        page->prev->next = next;
 
-    a->prev = nullptr;
-    a->next = nullptr;
+    page->prev = nullptr;
+    page->next = nullptr;
 }
 
 } // namespace Memory

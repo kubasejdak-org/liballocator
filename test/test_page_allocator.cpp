@@ -28,12 +28,56 @@
 
 #include "catch.hpp"
 
+#define private     public
 #include <zone_allocator/allocator.h>
+#include <page_allocator.h>
+#include <iostream>
+
+using namespace Memory;
 
 TEST_CASE("Initialization test", "[page_allocator]")
 {
-    const std::size_t PAGE_SIZE = 4096;
-    std::array<char, 4 * PAGE_SIZE> memory;
+    Allocator::clear();
 
-    REQUIRE(Memory::init(&memory[0], &memory[memory.size()], PAGE_SIZE));
+    const std::size_t PAGE_COUNT = 4;
+    const std::size_t PAGE_SIZE = 4096;
+    std::array<char, PAGE_COUNT * PAGE_SIZE> memory;
+
+    bool result = Allocator::init(&memory[0], &memory[memory.size()], PAGE_SIZE);
+
+    SECTION("Page count is correct") {
+        // If memory start is not aligned, then page count is smaller.
+        auto pages = (reinterpret_cast<std::size_t>(&memory[0]) % PAGE_SIZE) ? PAGE_COUNT - 1 : PAGE_COUNT;
+
+        REQUIRE(result);
+        REQUIRE(Allocator::pageAllocator().m_allPagesCount == pages);
+        REQUIRE(Allocator::pageAllocator().m_freePagesCount == pages);
+    }
+
+    SECTION("Pages are correctly forward-linked") {
+        std::size_t i = 0;
+        for (auto* page = Allocator::pageAllocator().m_freePages; page != nullptr; page = page->next, ++i);
+
+        REQUIRE(i == Allocator::pageAllocator().m_allPagesCount);
+    }
+
+    SECTION("Pages are correctly backward-linked") {
+        Page* lastPage = nullptr;
+        for (lastPage = Allocator::pageAllocator().m_freePages; lastPage != nullptr; lastPage = lastPage->next);
+
+        std::size_t i = 0;
+        for (auto* page = lastPage; page; page = page->prev, ++i)
+
+        REQUIRE(i == Allocator::pageAllocator().m_allPagesCount);
+    }
+
+    SECTION("All pages are within memory range") {
+        auto* page = Allocator::pageAllocator().m_freePages;
+        for (std::size_t i = 0; i < Allocator::pageAllocator().m_allPagesCount ; ++i) {
+            REQUIRE(reinterpret_cast<char*>(page) >= &memory[0]);
+            REQUIRE(reinterpret_cast<char*>(page) <= &memory[memory.size()]);
+
+            page = page->next;
+        }
+    }
 }

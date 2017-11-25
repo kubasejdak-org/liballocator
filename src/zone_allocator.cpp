@@ -31,13 +31,19 @@
 namespace Memory {
 
 ZoneAllocator::ZoneAllocator() noexcept
-    : m_pageAllocator(nullptr)
 {
+    clear();
 }
 
 bool ZoneAllocator::init(PageAllocator* pageAllocator)
 {
     m_pageAllocator = pageAllocator;
+    return true;
+}
+
+void ZoneAllocator::clear() noexcept
+{
+    m_pageAllocator = nullptr;
 }
 
 void* ZoneAllocator::allocate(std::size_t size)

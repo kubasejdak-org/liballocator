@@ -33,35 +33,50 @@
 
 namespace Memory {
 
-static PageAllocator pageAllocator;
-static ZoneAllocator zoneAllocator;
-
-bool init(Region* regions, std::size_t pageSize)
+bool Allocator::init(Region *regions, std::size_t pageSize)
 {
-    if (!pageAllocator.init(regions, pageSize))
+    if (!pageAllocator().init(regions, pageSize))
         return false;
 
-    return zoneAllocator.init(&pageAllocator);
+    return zoneAllocator().init(&pageAllocator());
 }
 
-bool init(char* start, char* end, std::size_t pageSize)
+bool Allocator::init(char *start, char *end, std::size_t pageSize)
 {
     Region regions[2] = {
-        { .address = start,   .size = static_cast<std::uint32_t>(end - start) },
-        { .address = nullptr, .size = 0                                       }
+        { .address = start  , .size = static_cast<std::size_t>(end - start) },
+        { .address = nullptr, .size = 0                                     }
     };
 
     return init(regions, pageSize);
 }
 
-void* allocate(std::size_t size)
+void Allocator::clear()
 {
-    return zoneAllocator.allocate(size);
+    pageAllocator().clear();
+    zoneAllocator().clear();
 }
 
-void release(void* ptr)
+void *Allocator::allocate(std::size_t size)
 {
-    zoneAllocator.release(ptr);
+    return zoneAllocator().allocate(size);
+}
+
+void Allocator::release(void *ptr)
+{
+    zoneAllocator().release(ptr);
+}
+
+PageAllocator &Allocator::pageAllocator()
+{
+    static PageAllocator pageAllocator;
+    return pageAllocator;
+}
+
+ZoneAllocator &Allocator::zoneAllocator()
+{
+    static ZoneAllocator zoneAllocator;
+    return zoneAllocator;
 }
 
 } // namespace Memory

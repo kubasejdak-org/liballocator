@@ -35,13 +35,24 @@
 
 namespace Memory {
 
-inline const char* version() { return "0.1"; }
+class PageAllocator;
+class ZoneAllocator;
 
-bool init(Region* regions, std::size_t pageSize);
-bool init(char* start, char* end, std::size_t pageSize);
+class Allocator {
+public:
+    static inline const char *version() { return "0.1"; }
 
-void* allocate(std::size_t size);
-void release(void* ptr);
+    static bool init(Region *regions, std::size_t pageSize);
+    static bool init(char *start, char *end, std::size_t pageSize);
+    static void clear();
+
+    static void *allocate(std::size_t size);
+    static void release(void *ptr);
+
+private:
+    static PageAllocator &pageAllocator();
+    static ZoneAllocator &zoneAllocator();
+};
 
 } // namespace Memory
 
