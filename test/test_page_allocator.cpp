@@ -42,6 +42,7 @@ TEST_CASE("Initialization test", "[page_allocator]")
     const std::size_t PAGE_COUNT = 4;
     const std::size_t PAGE_SIZE = 4096;
     std::array<char, PAGE_COUNT * PAGE_SIZE> memory;
+    memory.fill(0);
 
     bool result = Allocator::init(&memory[0], &memory[memory.size()], PAGE_SIZE);
 
