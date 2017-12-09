@@ -26,57 +26,33 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
-#include "page_allocator.h"
-#include "zone_allocator.h"
+#ifndef NEW_PAGE_H
+#define NEW_PAGE_H
 
-#include <zone_allocator/allocator.h>
+#include <tuple>
 
 namespace Memory {
 
-bool Allocator::init(Region *regions)
-{
-    if (!pageAllocator().init(regions))
-        return false;
+class Page {
+public:
+    void init();
 
-    return zoneAllocator().init(&pageAllocator());
-}
+    // Chain interface.
+    void attachPages(Page* page);
+    std::tuple<Page*, Page*> detachPages(std::size_t count);
+    std::size_t pagesCount();
+    Page* nextPage();
 
-bool Allocator::init(char *start, char *end)
-{
-    Region regions[2] = {
-        { .address = start  , .size = static_cast<std::size_t>(end - start) },
-        { .address = nullptr, .size = 0                                     }
-    };
+    // Chain list interface.
+    void addChain(Page* chain);
+    void removeChain(Page* chain);
+    Page* nextChain();
 
-    return init(regions);
-}
-
-void Allocator::clear()
-{
-    pageAllocator().clear();
-    zoneAllocator().clear();
-}
-
-void *Allocator::allocate(std::size_t size)
-{
-    return zoneAllocator().allocate(size);
-}
-
-void Allocator::release(void *ptr)
-{
-    zoneAllocator().release(ptr);
-}
-
-PageAllocator &Allocator::pageAllocator()
-{
-    static PageAllocator pageAllocator;
-    return pageAllocator;
-}
-
-ZoneAllocator &Allocator::zoneAllocator()
-{
-    static ZoneAllocator zoneAllocator;
-    return zoneAllocator;
-}
+private:
+    Page* m_nextPage;
+    Page* m_nextChain;
+};
 
 } // namespace Memory
+
+#endif

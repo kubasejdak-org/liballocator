@@ -26,57 +26,86 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
-#include "page_allocator.h"
-#include "zone_allocator.h"
+#include "page.h"
 
-#include <zone_allocator/allocator.h>
+#include <cassert>
 
 namespace Memory {
 
-bool Allocator::init(Region *regions)
+void Page::init()
 {
-    if (!pageAllocator().init(regions))
-        return false;
-
-    return zoneAllocator().init(&pageAllocator());
+    m_nextPage = nullptr;
+    m_nextChain = nullptr;
 }
 
-bool Allocator::init(char *start, char *end)
+void Page::attachPages(Page* page)
 {
-    Region regions[2] = {
-        { .address = start  , .size = static_cast<std::size_t>(end - start) },
-        { .address = nullptr, .size = 0                                     }
-    };
+    if (page == this)
+        return;
 
-    return init(regions);
+    Page* last = nullptr;
+    for (last = this; last->m_nextPage != nullptr; last = last->m_nextPage);
+
+    last->m_nextPage = page;
 }
 
-void Allocator::clear()
+std::tuple<Page*, Page*> Page::detachPages(std::size_t count)
 {
-    pageAllocator().clear();
-    zoneAllocator().clear();
+    assert(count <= pagesCount());
+
+    auto remainingSize = pagesCount() - count;
+    if (remainingSize == 0)
+        return std::make_tuple(reinterpret_cast<Page*>(NULL), this);
+
+    Page* it = this;
+    for (int i = 1; i < remainingSize; ++i, it = it->m_nextPage);
+
+    auto* remaining = it;
+    auto* detached = it->m_nextPage;
+
+    remaining->m_nextPage = nullptr;
+    return std::make_tuple(remaining, detached);
 }
 
-void *Allocator::allocate(std::size_t size)
+std::size_t Page::pagesCount()
 {
-    return zoneAllocator().allocate(size);
+    size_t size = 1;
+    for (auto* it = this; it->m_nextPage != nullptr; it = it->m_nextPage, ++size);
+
+    return size;
 }
 
-void Allocator::release(void *ptr)
+Page* Page::nextPage()
 {
-    zoneAllocator().release(ptr);
+    return m_nextPage;
 }
 
-PageAllocator &Allocator::pageAllocator()
+void Page::addChain(Page* chain)
 {
-    static PageAllocator pageAllocator;
-    return pageAllocator;
+    if (chain == this)
+        return;
+
+    Page* last = nullptr;
+    for (last = this; last->m_nextChain != nullptr; last = last->m_nextChain);
+
+    last->m_nextChain = chain;
 }
 
-ZoneAllocator &Allocator::zoneAllocator()
+void Page::removeChain(Page* chain)
 {
-    static ZoneAllocator zoneAllocator;
-    return zoneAllocator;
+    if (chain == this)
+        return;
+
+    Page* it = nullptr;
+    for (it = this; it != nullptr && it->m_nextChain != chain; it = it->m_nextChain);
+
+    assert(it);
+    it->m_nextChain = chain->m_nextChain;
+}
+
+Page* Page::nextChain()
+{
+    return m_nextChain;
 }
 
 } // namespace Memory

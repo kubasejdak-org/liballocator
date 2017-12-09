@@ -28,23 +28,35 @@
 
 #include "catch.hpp"
 
+#include <iostream>
+
 #define private     public
 #include <zone_allocator/allocator.h>
 #include <page_allocator.h>
-#include <iostream>
 
 using namespace Memory;
 
-TEST_CASE("Initialization test", "[page_allocator]")
+TEST_CASE("Page structure is small enough", "[page_allocator]")
+{
+    auto maxSize = 2 * sizeof(Page*);
+    REQUIRE(sizeof(Page) == maxSize);
+}
+
+TEST_CASE("Page structure has proper layout", "[page_allocator]")
+{
+    REQUIRE(offsetof(Page, m_nextPage) == 0);
+    REQUIRE(offsetof(Page, m_nextChain) == sizeof(Page*));
+}
+
+TEST_CASE("Initialization test (single region)", "[page_allocator]")
 {
     Allocator::clear();
 
     const std::size_t PAGE_COUNT = 4;
     const std::size_t PAGE_SIZE = 4096;
-    std::array<char, PAGE_COUNT * PAGE_SIZE> memory;
-    memory.fill(0);
+    std::array<char, PAGE_COUNT * PAGE_SIZE> memory = { 0 };
 
-    bool result = Allocator::init(&memory[0], &memory[memory.size()], PAGE_SIZE);
+    bool result = Allocator::init(&memory[0], &memory[memory.size()]);
 
     SECTION("Page count is correct") {
         // If memory start is not aligned, then page count is smaller.
@@ -55,30 +67,30 @@ TEST_CASE("Initialization test", "[page_allocator]")
         REQUIRE(Allocator::pageAllocator().m_freePagesCount == pages);
     }
 
-    SECTION("Pages are correctly forward-linked") {
+    SECTION("Pages are correctly linked") {
         std::size_t i = 0;
-        for (auto* page = Allocator::pageAllocator().m_freePages; page != nullptr; page = page->next, ++i);
+        for (auto* chains : Allocator::pageAllocator().m_freePages) {
+            if (!chains)
+                continue;
 
-        REQUIRE(i == Allocator::pageAllocator().m_allPagesCount);
-    }
-
-    SECTION("Pages are correctly backward-linked") {
-        Page* lastPage = nullptr;
-        for (lastPage = Allocator::pageAllocator().m_freePages; lastPage != nullptr; lastPage = lastPage->next);
-
-        std::size_t i = 0;
-        for (auto* page = lastPage; page; page = page->prev, ++i)
+            for (auto* chain = chains; chain != nullptr; chain = chain->nextChain())
+                i += chain->pagesCount();
+        }
 
         REQUIRE(i == Allocator::pageAllocator().m_allPagesCount);
     }
 
     SECTION("All pages are within memory range") {
-        auto* page = Allocator::pageAllocator().m_freePages;
-        for (std::size_t i = 0; i < Allocator::pageAllocator().m_allPagesCount ; ++i) {
-            REQUIRE(reinterpret_cast<char*>(page) >= &memory[0]);
-            REQUIRE(reinterpret_cast<char*>(page) <= &memory[memory.size()]);
+        for (auto* chains : Allocator::pageAllocator().m_freePages) {
+            if (!chains)
+                continue;
 
-            page = page->next;
+            for (auto* chain = chains; chain != nullptr; chain = chain->nextChain()) {
+                for (auto* page = chain; page; page = page->nextPage()) {
+                    REQUIRE(reinterpret_cast<char*>(page) >= &memory[0]);
+                    REQUIRE(reinterpret_cast<char*>(page) <= &memory[memory.size()]);
+                }
+            }
         }
     }
 }

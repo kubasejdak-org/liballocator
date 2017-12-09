@@ -42,8 +42,8 @@ class Allocator {
 public:
     static inline const char *version() { return "0.1"; }
 
-    static bool init(Region *regions, std::size_t pageSize);
-    static bool init(char *start, char *end, std::size_t pageSize);
+    static bool init(Region *regions);
+    static bool init(char *start, char *end);
     static void clear();
 
     static void *allocate(std::size_t size);

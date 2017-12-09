@@ -28,71 +28,102 @@
 
 #include "page_allocator.h"
 
+#include <cmath>
+
 namespace Memory {
 
-PageAllocator::PageAllocator() noexcept
+PageAllocator::PageAllocator()
 {
     clear();
 }
 
-bool PageAllocator::init(Region* regions, std::size_t pageSize)
+bool PageAllocator::init(Region *regions)
 {
-    m_pageSize = pageSize;
-    Page* prevPage = m_freePages;
-
     for (int i = 0; regions[i].size != 0; ++i) {
         auto* start = alignedStart(regions[i]);
         auto* end = alignedEnd(regions[i]);
 
         // No use from regions with size smaller than one page.
-        if (end - start < m_pageSize)
+        if (end - start < PAGE_SIZE)
             continue;
 
-        for (auto* addr = start; (addr + m_pageSize) <= end; addr += m_pageSize) {
+        Page* chain = nullptr;
+        std::size_t chainSize = 0;
+
+        for (auto* addr = start; (addr + PAGE_SIZE) <= end; addr += PAGE_SIZE) {
             auto* page = reinterpret_cast<Page*>(addr);
+            page->init();
 
-            linkPages(page, prevPage);
+            if (!chain)
+                chain = page;
 
-            prevPage = page;
+            chain->attachPages(page);
+
+            ++chainSize;
             ++m_allPagesCount;
             ++m_freePagesCount;
-
-            if (!m_freePages)
-                m_freePages = page;
         }
+
+        auto idx = chainIdx(chainSize);
+        if (!m_freePages[idx])
+            m_freePages[idx] = chain;
+
+        m_freePages[idx]->addChain(chain);
     }
 
     return (m_allPagesCount != 0);
 }
 
-void PageAllocator::clear() noexcept
+void PageAllocator::clear()
 {
-    m_pageSize = 0;
     m_allPagesCount = 0;
     m_freePagesCount = 0;
-    m_freePages = nullptr;
+    m_freePages.fill(nullptr);
 }
 
-Page* PageAllocator::allocate()
+Page* PageAllocator::allocate(size_t count)
 {
-    Page* page = m_freePages;
-    m_freePages = page->next;
+    if (m_freePagesCount < count)
+        return nullptr;
 
-    unlinkPages(page, page->next);
-    return page;
+    for (auto i = chainIdx(count); i < m_freePages.size(); ++i) {
+        if (!m_freePages[i])
+            continue;
+
+        for (auto* chain = m_freePages[i]; chain != nullptr; chain = chain->nextChain()) {
+            if (chain->pagesCount() < count)
+                continue;
+
+            m_freePages[i]->removeChain(chain);
+
+            Page* remaining = nullptr;
+            Page* allocated = nullptr;
+            std::tie(remaining, allocated) = chain->detachPages(count);;
+
+            m_freePages[i]->addChain(remaining);
+            m_freePagesCount -= count;
+            return allocated;
+        }
+    }
+
+    return nullptr;
+}
+void PageAllocator::release(Page* pages)
+{
 }
 
-void PageAllocator::release(Page& page)
+std::size_t PageAllocator::chainIdx(size_t size)
 {
+    return static_cast<std::size_t>(ceil(log2(size)));
 }
 
 char* PageAllocator::alignedStart(Region& region)
 {
     auto addr = reinterpret_cast<std::size_t>(region.address);
-    auto start = addr & ~(m_pageSize - 1);
+    auto start = addr & ~(PAGE_SIZE - 1);
 
     if (start < addr)
-        start += m_pageSize;
+        start += PAGE_SIZE;
 
     return reinterpret_cast<char*>(start);
 }
@@ -100,29 +131,9 @@ char* PageAllocator::alignedStart(Region& region)
 char* PageAllocator::alignedEnd(Region& region)
 {
     auto addr = reinterpret_cast<std::size_t>(region.address);
-    auto end = (addr + region.size) & ~(m_pageSize - 1);
+    auto end = (addr + region.size) & ~(PAGE_SIZE - 1);
 
     return reinterpret_cast<char*>(end);
-}
-
-void PageAllocator::linkPages(Page* page, Page* prev)
-{
-    page->prev = prev;
-    page->next = nullptr;
-
-    if (prev)
-        prev->next = page;
-}
-
-void PageAllocator::unlinkPages(Page* page, Page* next)
-{
-    next->prev = page->prev;
-
-    if (page->prev)
-        page->prev->next = next;
-
-    page->prev = nullptr;
-    page->next = nullptr;
 }
 
 } // namespace Memory
