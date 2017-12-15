@@ -45,6 +45,15 @@ public:
     void clear();
 
 private:
+    std::optional<int> chooseDescRegion(Region* regions);
+    int countPages(Region* regions);
+    std::uintptr_t alignedStart(Region* region);
+    std::uintptr_t alignedEnd(Region* region);
+
+private:
+    static constexpr std::size_t PAGE_SIZE = 4096;
+
+private:
     Page* m_pagesHead;
     Page* m_pagesTail;
     std::size_t m_pagesCount;

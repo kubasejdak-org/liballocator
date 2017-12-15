@@ -47,4 +47,47 @@ void PageAllocator::clear()
     m_pagesCount = 0;
 }
 
+std::optional<int> PageAllocator::chooseDescRegion(Region* regions)
+{
+    int pagesCount = countPages(regions);
+    if (!pagesCount)
+        return std::nullopt;
+
+    int descAreaSize = pagesCount * sizeof(Page);
+
+    int selectedIdx = 0;
+    for (int i = 0; regions[i].size != 0; ++i) {
+        if (regions[i].size < descAreaSize)
+            continue;
+
+        if (regions[i].size < regions[selectedIdx].size)
+            selectedIdx = i;
+    }
+
+    return std::make_optional(selectedIdx);
+}
+
+int PageAllocator::countPages(Region* regions)
+{
+    int pagesCount = 0;
+    for (auto* region = regions; region->size != 0; ++region)
+        pagesCount += (alignedEnd(region) - alignedStart(region)) / PAGE_SIZE;
+
+    return pagesCount;
+}
+
+std::uintptr_t PageAllocator::alignedStart(Region* region)
+{
+    auto start = region->address & ~(PAGE_SIZE - 1);
+    if (start < region->address)
+        start += PAGE_SIZE;
+
+    return start;
+}
+
+std::uintptr_t PageAllocator::alignedEnd(Region* region)
+{
+    return (region->address + region->size) & ~(PAGE_SIZE - 1);
+}
+
 } // namespace Memory
