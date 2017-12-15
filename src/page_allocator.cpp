@@ -37,7 +37,31 @@ PageAllocator::PageAllocator()
 
 bool PageAllocator::init(Region* regions)
 {
-    return false;
+    auto descRegionIdx = chooseDescRegion(regions);
+    if (!descRegionIdx)
+        return false;
+
+    auto* page = reinterpret_cast<Page*>(regions[*descRegionIdx].address);
+    m_pagesHead = page;
+
+    for (auto* region = regions; region->size != 0; ++region) {
+        for (auto addr = alignedStart(region); addr != alignedEnd(region); addr += PAGE_SIZE) {
+            page->init();
+            page->setAddress(addr);
+
+            if (page != m_pagesHead) {
+                page->prevSibling()->setNext(page);
+                page->setPrev(page->prevSibling());
+            }
+
+            m_pagesTail = page;
+            ++m_pagesCount;
+            ++page;
+        }
+    }
+
+    reserveDescPages();
+    return true;
 }
 
 void PageAllocator::clear()
@@ -74,6 +98,12 @@ int PageAllocator::countPages(Region* regions)
         pagesCount += (alignedEnd(region) - alignedStart(region)) / PAGE_SIZE;
 
     return pagesCount;
+}
+
+void PageAllocator::reserveDescPages()
+{
+    for (auto* page = m_pagesHead; page->address() <= m_pagesTail->address(); page = page->nextSibling())
+        page->setUsed(true);
 }
 
 std::uintptr_t PageAllocator::alignedStart(Region* region)

@@ -47,6 +47,7 @@ public:
 private:
     std::optional<int> chooseDescRegion(Region* regions);
     int countPages(Region* regions);
+    void reserveDescPages();
     std::uintptr_t alignedStart(Region* region);
     std::uintptr_t alignedEnd(Region* region);
 
