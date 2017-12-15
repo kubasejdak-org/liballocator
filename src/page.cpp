@@ -28,84 +28,64 @@
 
 #include "page.h"
 
-#include <cassert>
-
 namespace Memory {
 
 void Page::init()
 {
-    m_nextPage = nullptr;
-    m_nextChain = nullptr;
+    m_next = nullptr;
+    m_prev = nullptr;
+    m_addr = 0;
+    m_flags.value = 0;
 }
 
-void Page::attachPages(Page* page)
+void Page::setNext(Page* next)
 {
-    if (page == this)
-        return;
-
-    Page* last = nullptr;
-    for (last = this; last->m_nextPage != nullptr; last = last->m_nextPage);
-
-    last->m_nextPage = page;
+    m_next = next;
 }
 
-std::tuple<Page*, Page*> Page::detachPages(std::size_t count)
+void Page::setPrev(Page* prev)
 {
-    assert(count <= pagesCount());
-
-    auto remainingSize = pagesCount() - count;
-    if (remainingSize == 0)
-        return std::make_tuple(reinterpret_cast<Page*>(NULL), this);
-
-    Page* it = this;
-    for (int i = 1; i < remainingSize; ++i, it = it->m_nextPage);
-
-    auto* remaining = it;
-    auto* detached = it->m_nextPage;
-
-    remaining->m_nextPage = nullptr;
-    return std::make_tuple(remaining, detached);
+    m_prev = prev;
 }
 
-std::size_t Page::pagesCount()
+void Page::setAddress(std::uintptr_t addr)
 {
-    size_t size = 1;
-    for (auto* it = this; it->m_nextPage != nullptr; it = it->m_nextPage, ++size);
-
-    return size;
+    m_addr = addr;
 }
 
-Page* Page::nextPage()
+void Page::setUsed(bool value)
 {
-    return m_nextPage;
+    m_flags.used = value;
 }
 
-void Page::addChain(Page* chain)
+Page* Page::prevSibling()
 {
-    if (chain == this)
-        return;
-
-    Page* last = nullptr;
-    for (last = this; last->m_nextChain != nullptr; last = last->m_nextChain);
-
-    last->m_nextChain = chain;
+    return (this - 1);
 }
 
-void Page::removeChain(Page* chain)
+Page* Page::nextSibling()
 {
-    if (chain == this)
-        return;
-
-    Page* it = nullptr;
-    for (it = this; it != nullptr && it->m_nextChain != chain; it = it->m_nextChain);
-
-    assert(it);
-    it->m_nextChain = chain->m_nextChain;
+    return (this + 1);
 }
 
-Page* Page::nextChain()
+Page* Page::next()
 {
-    return m_nextChain;
+    return m_next;
+}
+
+Page* Page::prev()
+{
+    return m_prev;
+}
+
+std::uintptr_t Page::address()
+{
+    return m_addr;
+}
+
+bool Page::isUsed()
+{
+    return m_flags.used;
 }
 
 } // namespace Memory

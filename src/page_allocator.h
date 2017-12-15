@@ -26,41 +26,28 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef NEW_PAGE_ALLOCATOR_H
-#define NEW_PAGE_ALLOCATOR_H
+#ifndef PAGE_ALLOCATOR_H
+#define PAGE_ALLOCATOR_H
 
 #include "page.h"
 
 #include <zone_allocator/region.h>
 
-#include <array>
-#include <cstdint>
-#include <tuple>
+#include <optional>
 
 namespace Memory {
 
 class PageAllocator {
 public:
     PageAllocator();
-    bool init(Region *regions);
+
+    [[nodiscard]] bool init(Region* regions);
     void clear();
 
-    Page* allocate(size_t count);
-    void release(Page* pages);
-
 private:
-    std::size_t chainIdx(size_t size);
-    char* alignedStart(Region& region);
-    char* alignedEnd(Region& region);
-
-private:
-    static constexpr std::size_t PAGE_SIZE = 4096;
-    static constexpr std::size_t MAX_CHAIN_IDX = 20;
-
-private:
-    std::size_t m_allPagesCount;
-    std::size_t m_freePagesCount;
-    std::array<Page*, MAX_CHAIN_IDX> m_freePages;
+    Page* m_pagesHead;
+    Page* m_pagesTail;
+    std::size_t m_pagesCount;
 };
 
 } // namespace Memory

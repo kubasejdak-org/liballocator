@@ -26,32 +26,48 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef NEW_PAGE_H
-#define NEW_PAGE_H
+#ifndef PAGE_H
+#define PAGE_H
 
-#include <tuple>
+#include <cstdint>
 
 namespace Memory {
 
 class Page {
 public:
+    Page() = delete;
+    Page(const Page& other) = delete;
+    Page(Page&& other) = delete;
+
     void init();
 
-    // Chain interface.
-    void attachPages(Page* page);
-    std::tuple<Page*, Page*> detachPages(std::size_t count);
-    std::size_t pagesCount();
-    Page* nextPage();
+    void setNext(Page* next);
+    void setPrev(Page* prev);
+    void setAddress(std::uintptr_t addr);
+    void setUsed(bool value);
 
-    // Chain list interface.
-    void addChain(Page* chain);
-    void removeChain(Page* chain);
-    Page* nextChain();
+    Page* prevSibling();
+    Page* nextSibling();
+    Page* next();
+    Page* prev();
+    std::uintptr_t address();
+    bool isUsed();
 
 private:
-    Page* m_nextPage;
-    Page* m_nextChain;
-};
+    union Flags {
+        struct {
+            bool used : 1;
+        };
+
+        std::uint32_t value;
+    };
+
+private:
+    Page* m_next;
+    Page* m_prev;
+    std::uintptr_t m_addr;
+    Flags m_flags;
+} __attribute__((packed));
 
 } // namespace Memory
 

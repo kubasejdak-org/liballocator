@@ -43,7 +43,7 @@ public:
     static inline const char *version() { return "0.1"; }
 
     static bool init(Region *regions);
-    static bool init(char *start, char *end);
+    static bool init(std::uintptr_t start, std::uintptr_t end);
     static void clear();
 
     static void *allocate(std::size_t size);

@@ -41,11 +41,11 @@ bool Allocator::init(Region *regions)
     return zoneAllocator().init(&pageAllocator());
 }
 
-bool Allocator::init(char *start, char *end)
+bool Allocator::init(std::uintptr_t start, std::uintptr_t end)
 {
     Region regions[2] = {
-        { .address = start  , .size = static_cast<std::size_t>(end - start) },
-        { .address = nullptr, .size = 0                                     }
+        { .address = start, .size = end - start },
+        { .address = 0    , .size = 0           }
     };
 
     return init(regions);
