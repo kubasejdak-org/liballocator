@@ -28,6 +28,8 @@
 
 #include "page_allocator.h"
 
+#include <cmath>
+
 namespace Memory {
 
 PageAllocator::PageAllocator()
@@ -41,10 +43,11 @@ bool PageAllocator::init(Region* regions)
     if (!descRegionIdx)
         return false;
 
-    auto* page = reinterpret_cast<Page*>(regions[*descRegionIdx].address);
-    m_pagesHead = page;
+    m_pagesHead = reinterpret_cast<Page*>(regions[*descRegionIdx].address);
 
     for (auto* region = regions; region->size != 0; ++region) {
+        auto* page = reinterpret_cast<Page*>(regions->address);
+
         for (auto addr = alignedStart(region); addr != alignedEnd(region); addr += PAGE_SIZE) {
             page->init();
             page->setAddress(addr);
@@ -68,6 +71,7 @@ void PageAllocator::clear()
 {
     m_pagesHead = nullptr;
     m_pagesTail = nullptr;
+    m_freeGroups.fill(nullptr);
     m_pagesCount = 0;
 }
 
@@ -118,6 +122,11 @@ std::uintptr_t PageAllocator::alignedStart(Region* region)
 std::uintptr_t PageAllocator::alignedEnd(Region* region)
 {
     return (region->address + region->size) & ~(PAGE_SIZE - 1);
+}
+
+int PageAllocator::groupIdx(int pageCount)
+{
+    return static_cast<int>(ceil(log2(pageCount)) - 1);
 }
 
 } // namespace Memory

@@ -43,6 +43,8 @@ public:
 
     void setNext(Page* next);
     void setPrev(Page* prev);
+    void addToGroup(Page** group);
+    void removeFromGroup(Page** group);
     void setAddress(std::uintptr_t addr);
     void setUsed(bool value);
 
@@ -50,6 +52,9 @@ public:
     Page* nextSibling();
     Page* next();
     Page* prev();
+    Page* nextGroup();
+    Page* prevGroup();
+    std::size_t groupSize();
     std::uintptr_t address();
     bool isUsed();
 
@@ -65,6 +70,9 @@ private:
 private:
     Page* m_next;
     Page* m_prev;
+    Page* m_nextGroup;
+    Page* m_prevGroup;
+    std::size_t m_groupSize;
     std::uintptr_t m_addr;
     Flags m_flags;
 } __attribute__((packed));

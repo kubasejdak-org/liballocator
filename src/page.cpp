@@ -34,6 +34,9 @@ void Page::init()
 {
     m_next = nullptr;
     m_prev = nullptr;
+    m_nextGroup = nullptr;
+    m_prevGroup = nullptr;
+    m_groupSize = 0;
     m_addr = 0;
     m_flags.value = 0;
 }
@@ -46,6 +49,16 @@ void Page::setNext(Page* next)
 void Page::setPrev(Page* prev)
 {
     m_prev = prev;
+}
+
+void Page::addToGroup(Page** group)
+{
+    // TODO: implement.
+}
+
+void Page::removeFromGroup(Page** group)
+{
+    // TODO: implement.
 }
 
 void Page::setAddress(std::uintptr_t addr)
@@ -76,6 +89,21 @@ Page* Page::next()
 Page* Page::prev()
 {
     return m_prev;
+}
+
+Page* Page::nextGroup()
+{
+    return m_nextGroup;
+}
+
+Page* Page::prevGroup()
+{
+    return m_prevGroup;
+}
+
+std::size_t Page::groupSize()
+{
+    return m_groupSize;
 }
 
 std::uintptr_t Page::address()

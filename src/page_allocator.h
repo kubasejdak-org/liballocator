@@ -33,6 +33,7 @@
 
 #include <zone_allocator/region.h>
 
+#include <array>
 #include <optional>
 
 namespace Memory {
@@ -50,13 +51,16 @@ private:
     void reserveDescPages();
     std::uintptr_t alignedStart(Region* region);
     std::uintptr_t alignedEnd(Region* region);
+    int groupIdx(int pageCount);
 
 private:
     static constexpr std::size_t PAGE_SIZE = 4096;
+    static constexpr int MAX_GROUP_IDX = 20;
 
 private:
     Page* m_pagesHead;
     Page* m_pagesTail;
+    std::array<Page*, MAX_GROUP_IDX> m_freeGroups;
     std::size_t m_pagesCount;
 };
 
