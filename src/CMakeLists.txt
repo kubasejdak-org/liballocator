@@ -4,6 +4,7 @@ set(SOURCES
     allocator.cpp
     page.cpp
     page_allocator.cpp
+    region_info.cpp
     zone_allocator.cpp
 )
 

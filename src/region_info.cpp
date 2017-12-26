@@ -26,57 +26,46 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
-#include "page_allocator.h"
-#include "zone_allocator.h"
-
-#include <zone_allocator/allocator.h>
+#include "region_info.h"
 
 namespace Memory {
 
-bool Allocator::init(Region *regions, std::size_t pageSize)
+std::uintptr_t alignedStart(Region& region, std::size_t pageSize)
 {
-    if (!pageAllocator().init(regions, pageSize))
-        return false;
+    auto start = region.address & ~(pageSize - 1);
+    if (start < region.address)
+        start += pageSize;
 
-    return zoneAllocator().init(&pageAllocator());
+    return start;
 }
 
-bool Allocator::init(std::uintptr_t start, std::uintptr_t end, std::size_t pageSize)
+std::uintptr_t alignedEnd(Region& region, std::size_t pageSize)
 {
-    Region regions[2] = {
-        { .address = start, .size = end - start },
-        { .address = 0    , .size = 0           }
-    };
-
-    return init(regions, pageSize);
+    return (region.address + region.size) & ~(pageSize - 1);
 }
 
-void Allocator::clear()
+void clearRegionInfo(RegionInfo& regionInfo)
 {
-    pageAllocator().clear();
-    zoneAllocator().clear();
+    regionInfo.start = 0;
+    regionInfo.end = 0;
+    regionInfo.alignedStart = 0;
+    regionInfo.alignedEnd = 0;
+    regionInfo.size = 0;
+    regionInfo.pageCount = 0;
+    regionInfo.firstPage = nullptr;
+    regionInfo.lastPage = nullptr;
 }
 
-void *Allocator::allocate(std::size_t size)
+void initRegionInfo(RegionInfo& regionInfo, Region& region, std::size_t pageSize)
 {
-    return zoneAllocator().allocate(size);
-}
-
-void Allocator::release(void *ptr)
-{
-    zoneAllocator().release(ptr);
-}
-
-PageAllocator &Allocator::pageAllocator()
-{
-    static PageAllocator pageAllocator;
-    return pageAllocator;
-}
-
-ZoneAllocator &Allocator::zoneAllocator()
-{
-    static ZoneAllocator zoneAllocator;
-    return zoneAllocator;
+    regionInfo.start = region.address;
+    regionInfo.end = region.address + region.size;
+    regionInfo.alignedStart = alignedStart(region, pageSize);
+    regionInfo.alignedEnd = alignedEnd(region, pageSize);
+    regionInfo.size = region.size;
+    regionInfo.pageCount = (regionInfo.alignedEnd - regionInfo.alignedStart) / pageSize;
+    regionInfo.firstPage = nullptr;
+    regionInfo.lastPage = nullptr;
 }
 
 } // namespace Memory

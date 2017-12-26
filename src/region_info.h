@@ -26,57 +26,29 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
-#include "page_allocator.h"
-#include "zone_allocator.h"
+#ifndef REGION_INFO_H
+#define REGION_INFO_H
 
-#include <zone_allocator/allocator.h>
+#include "page.h"
+
+#include <zone_allocator/region.h>
 
 namespace Memory {
 
-bool Allocator::init(Region *regions, std::size_t pageSize)
-{
-    if (!pageAllocator().init(regions, pageSize))
-        return false;
+struct RegionInfo {
+    std::uintptr_t start;
+    std::uintptr_t end;
+    std::uintptr_t alignedStart;
+    std::uintptr_t alignedEnd;
+    std::size_t size;
+    std::size_t pageCount;
+    Page* firstPage;
+    Page* lastPage;
+};
 
-    return zoneAllocator().init(&pageAllocator());
-}
-
-bool Allocator::init(std::uintptr_t start, std::uintptr_t end, std::size_t pageSize)
-{
-    Region regions[2] = {
-        { .address = start, .size = end - start },
-        { .address = 0    , .size = 0           }
-    };
-
-    return init(regions, pageSize);
-}
-
-void Allocator::clear()
-{
-    pageAllocator().clear();
-    zoneAllocator().clear();
-}
-
-void *Allocator::allocate(std::size_t size)
-{
-    return zoneAllocator().allocate(size);
-}
-
-void Allocator::release(void *ptr)
-{
-    zoneAllocator().release(ptr);
-}
-
-PageAllocator &Allocator::pageAllocator()
-{
-    static PageAllocator pageAllocator;
-    return pageAllocator;
-}
-
-ZoneAllocator &Allocator::zoneAllocator()
-{
-    static ZoneAllocator zoneAllocator;
-    return zoneAllocator;
-}
+void clearRegionInfo(RegionInfo& regionInfo);
+void initRegionInfo(RegionInfo& regionInfo, Region& region, std::size_t pageSize);
 
 } // namespace Memory
+
+#endif

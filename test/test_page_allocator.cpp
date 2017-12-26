@@ -38,29 +38,15 @@
 
 using namespace Memory;
 
-TEST_CASE("Page structure is small and natually aligned", "[page_allocator]")
+TEST_CASE("Page structure is small and naturally aligned", "[page_allocator]")
 {
     size_t requiredSize = 0;
-    requiredSize += sizeof(Page*);          // next
-    requiredSize += sizeof(Page*);          // prev
     requiredSize += sizeof(Page*);          // nextGroup
     requiredSize += sizeof(Page*);          // prevGroup
-    requiredSize += sizeof(std::size_t);    // groupSize
     requiredSize += sizeof(std::uintptr_t); // addr
-    requiredSize += sizeof(std::uint32_t);  // flags
+    requiredSize += sizeof(Page::Flags);    // flags
 
     REQUIRE(sizeof(Page) == requiredSize);
-}
-
-TEST_CASE("Page structure has proper layout", "[page_allocator]")
-{
-    REQUIRE(offsetof(Page, m_next) == 0);
-    REQUIRE(offsetof(Page, m_prev) == sizeof(Page::m_next));
-    REQUIRE(offsetof(Page, m_nextGroup) == (offsetof(Page, m_prev) + sizeof(Page::m_prev)));
-    REQUIRE(offsetof(Page, m_prevGroup) == (offsetof(Page, m_nextGroup) + sizeof(Page::m_nextGroup)));
-    REQUIRE(offsetof(Page, m_groupSize) == (offsetof(Page, m_prevGroup) + sizeof(Page::m_prevGroup)));
-    REQUIRE(offsetof(Page, m_addr) == (offsetof(Page, m_groupSize) + sizeof(Page::m_groupSize)));
-    REQUIRE(offsetof(Page, m_flags) == (offsetof(Page, m_addr) + sizeof(Page::m_addr)));
 }
 
 #if 0

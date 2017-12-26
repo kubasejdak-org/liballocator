@@ -30,11 +30,11 @@
 #define PAGE_ALLOCATOR_H
 
 #include "page.h"
+#include "region_info.h"
 
 #include <zone_allocator/region.h>
 
 #include <array>
-#include <optional>
 
 namespace Memory {
 
@@ -42,22 +42,21 @@ class PageAllocator {
 public:
     PageAllocator();
 
-    [[nodiscard]] bool init(Region* regions);
+    [[nodiscard]] bool init(Region* regions, std::size_t pageSize);
     void clear();
 
 private:
-    std::optional<int> chooseDescRegion(Region* regions);
-    int countPages(Region* regions);
+    std::size_t countPages();
+    int chooseDescRegion();
     void reserveDescPages();
-    std::uintptr_t alignedStart(Region* region);
-    std::uintptr_t alignedEnd(Region* region);
     int groupIdx(int pageCount);
 
 private:
-    static constexpr std::size_t PAGE_SIZE = 4096;
+    static constexpr int MAX_REGIONS_COUNT = 8;
     static constexpr int MAX_GROUP_IDX = 20;
 
 private:
+    std::array<RegionInfo, MAX_REGIONS_COUNT> m_regionsInfo;
     Page* m_pagesHead;
     Page* m_pagesTail;
     std::array<Page*, MAX_GROUP_IDX> m_freeGroups;

@@ -41,8 +41,6 @@ public:
 
     void init();
 
-    void setNext(Page* next);
-    void setPrev(Page* prev);
     void addToGroup(Page** group);
     void removeFromGroup(Page** group);
     void setAddress(std::uintptr_t addr);
@@ -50,17 +48,16 @@ public:
 
     Page* prevSibling();
     Page* nextSibling();
-    Page* next();
-    Page* prev();
     Page* nextGroup();
     Page* prevGroup();
-    std::size_t groupSize();
     std::uintptr_t address();
+    std::size_t groupSize();
     bool isUsed();
 
 private:
     union Flags {
         struct {
+            std::size_t groupSize : 21;
             bool used : 1;
         };
 
@@ -68,11 +65,8 @@ private:
     };
 
 private:
-    Page* m_next;
-    Page* m_prev;
     Page* m_nextGroup;
     Page* m_prevGroup;
-    std::size_t m_groupSize;
     std::uintptr_t m_addr;
     Flags m_flags;
 } __attribute__((packed));
