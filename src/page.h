@@ -41,9 +41,10 @@ public:
 
     void init();
 
-    void addToGroup(Page** group);
-    void removeFromGroup(Page** group);
+    void addToList(Page** list);
+    void removeFromList(Page **list);
     void setAddress(std::uintptr_t addr);
+    void setGroupSize(std::size_t groupSize);
     void setUsed(bool value);
 
     Page* prevSibling();

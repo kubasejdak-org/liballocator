@@ -47,9 +47,12 @@ public:
 
 private:
     std::size_t countPages();
-    int chooseDescRegion();
-    void reserveDescPages();
+    std::size_t chooseDescRegion();
+    std::size_t reserveDescPages();
     int groupIdx(int pageCount);
+    void addGroup(Page* group, std::size_t groupSize);
+    void removeGroup(Page* group);
+    Page* getPage(uintptr_t addr);
 
 private:
     static constexpr int MAX_REGIONS_COUNT = 8;
@@ -57,9 +60,10 @@ private:
 
 private:
     std::array<RegionInfo, MAX_REGIONS_COUNT> m_regionsInfo;
+    std::size_t m_validRegionsCount;
     Page* m_pagesHead;
     Page* m_pagesTail;
-    std::array<Page*, MAX_GROUP_IDX> m_freeGroups;
+    std::array<Page*, MAX_GROUP_IDX> m_freeGroupLists;
     std::size_t m_pagesCount;
 };
 

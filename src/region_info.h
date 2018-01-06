@@ -40,8 +40,9 @@ struct RegionInfo {
     std::uintptr_t end;
     std::uintptr_t alignedStart;
     std::uintptr_t alignedEnd;
-    std::size_t size;
     std::size_t pageCount;
+    std::size_t size;
+    std::size_t alignedSize;
     Page* firstPage;
     Page* lastPage;
 };

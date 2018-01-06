@@ -38,12 +38,12 @@ void Page::init()
     m_flags.value = 0;
 }
 
-void Page::addToGroup(Page** group)
+void Page::addToList(Page **group)
 {
     // TODO: implement.
 }
 
-void Page::removeFromGroup(Page** group)
+void Page::removeFromList(Page **group)
 {
     // TODO: implement.
 }
@@ -51,6 +51,11 @@ void Page::removeFromGroup(Page** group)
 void Page::setAddress(std::uintptr_t addr)
 {
     m_addr = addr;
+}
+
+void Page::setGroupSize(std::size_t groupSize)
+{
+    m_flags.groupSize = groupSize;
 }
 
 void Page::setUsed(bool value)
