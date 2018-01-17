@@ -4,9 +4,9 @@
 
 VERSION=${1}
 if [ "${2}" == "Linux" ]; then
-    OS=Linux
+    OS="Linux"
 elif [ "${2}" == "macOS" ]; then
-    OS=Darwin
+    OS="Darwin"
 fi
 
 if [ -z ${VERSION} ]; then
@@ -31,4 +31,4 @@ tar -xzf ${PACKAGE_BIN_NAME}
 
 export PATH=${PWD}/${PACKAGE_NAME}/bin:${PATH}
 
-echo "Installing CMake v${1} OK."
+echo "Installing CMake v${VERSION} OK."
