@@ -19,4 +19,4 @@ if [ ${?} -ne 0 ]; then
     exit 3
 fi
 
-echo "Format check success."
+echo "Format check OK."
