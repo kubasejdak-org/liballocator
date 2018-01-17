@@ -33,7 +33,7 @@
 
 namespace Memory {
 
-bool Allocator::init(Region *regions, std::size_t pageSize)
+bool Allocator::init(Region* regions, std::size_t pageSize)
 {
     if (!pageAllocator().init(regions, pageSize))
         return false;
@@ -43,10 +43,12 @@ bool Allocator::init(Region *regions, std::size_t pageSize)
 
 bool Allocator::init(std::uintptr_t start, std::uintptr_t end, std::size_t pageSize)
 {
+    // clang-format off
     Region regions[2] = {
-        { .address = start, .size = end - start },
-        { .address = 0    , .size = 0           }
+        {.address = start, .size = end - start},
+        {.address = 0,     .size = 0}
     };
+    // clang-format on
 
     return init(regions, pageSize);
 }
@@ -57,23 +59,23 @@ void Allocator::clear()
     zoneAllocator().clear();
 }
 
-void *Allocator::allocate(std::size_t size)
+void* Allocator::allocate(std::size_t size)
 {
     return zoneAllocator().allocate(size);
 }
 
-void Allocator::release(void *ptr)
+void Allocator::release(void* ptr)
 {
     zoneAllocator().release(ptr);
 }
 
-PageAllocator &Allocator::pageAllocator()
+PageAllocator& Allocator::pageAllocator()
 {
     static PageAllocator pageAllocator;
     return pageAllocator;
 }
 
-ZoneAllocator &Allocator::zoneAllocator()
+ZoneAllocator& Allocator::zoneAllocator()
 {
     static ZoneAllocator zoneAllocator;
     return zoneAllocator;

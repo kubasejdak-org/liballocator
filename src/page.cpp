@@ -38,12 +38,12 @@ void Page::init()
     m_flags.value = 0;
 }
 
-void Page::addToList(Page **group)
+void Page::addToList(Page** group)
 {
     // TODO: implement.
 }
 
-void Page::removeFromList(Page **group)
+void Page::removeFromList(Page** group)
 {
     // TODO: implement.
 }

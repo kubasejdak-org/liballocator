@@ -31,16 +31,18 @@
 #include <iostream>
 
 // Make access to private members for testing.
+// clang-format off
 #define private     public
+// clang-format on
 
-#include <zone_allocator/allocator.h>
 #include <page_allocator.h>
+#include <zone_allocator/allocator.h>
 
 using namespace Memory;
 
 TEST_CASE("Page structure is small and naturally aligned", "[page_allocator]")
 {
-    size_t requiredSize = 0;
+    std::size_t requiredSize = 0;
     requiredSize += sizeof(Page*);          // nextGroup
     requiredSize += sizeof(Page*);          // prevGroup
     requiredSize += sizeof(std::uintptr_t); // addr

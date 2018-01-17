@@ -42,7 +42,7 @@ public:
     void init();
 
     void addToList(Page** list);
-    void removeFromList(Page **list);
+    void removeFromList(Page** list);
     void setAddress(std::uintptr_t addr);
     void setGroupSize(std::size_t groupSize);
     void setUsed(bool value);
