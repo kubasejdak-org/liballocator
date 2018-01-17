@@ -1,0 +1,16 @@
+language: cpp
+
+install:
+
+  - |
+    # Linux
+    if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+      tools/ci_install-cmake.sh 3.10.1 Linux;
+      tools/ci_install-gcc-embedded.sh 7.2 Linux;
+    fi
+
+script:
+  - mkdir -p build
+  - cd build
+  - cmake ..
+  - make
