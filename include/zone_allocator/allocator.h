@@ -31,8 +31,8 @@
 
 #include "region.h"
 
-#include <cstdint>
 #include <cstddef>
+#include <cstdint>
 
 namespace Memory {
 

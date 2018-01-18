@@ -29,8 +29,8 @@
 #ifndef REGION_H
 #define REGION_H
 
-#include <cstdint>
 #include <cstddef>
+#include <cstdint>
 
 namespace Memory {
 
