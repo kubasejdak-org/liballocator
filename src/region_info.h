@@ -33,6 +33,9 @@
 
 #include <zone_allocator/region.h>
 
+#include <cstddef>
+#include <cstdint>
+
 namespace Memory {
 
 struct RegionInfo {

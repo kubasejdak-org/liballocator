@@ -35,6 +35,8 @@
 #include <zone_allocator/region.h>
 
 #include <array>
+#include <cstddef>
+#include <cstdint>
 
 namespace Memory {
 
@@ -52,7 +54,7 @@ private:
     int groupIdx(int pageCount);
     void addGroup(Page* group, std::size_t groupSize);
     void removeGroup(Page* group);
-    Page* getPage(uintptr_t addr);
+    Page* getPage(std::uintptr_t addr);
 
 private:
     static constexpr int MAX_REGIONS_COUNT = 8;

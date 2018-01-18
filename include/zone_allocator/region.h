@@ -30,6 +30,7 @@
 #define REGION_H
 
 #include <cstdint>
+#include <cstddef>
 
 namespace Memory {
 

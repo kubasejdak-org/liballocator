@@ -148,7 +148,7 @@ void PageAllocator::removeGroup(Page* group)
     lastPage->setGroupSize(0);
 }
 
-Page* PageAllocator::getPage(uintptr_t addr)
+Page* PageAllocator::getPage(std::uintptr_t addr)
 {
     RegionInfo* pageRegion = nullptr;
     for (std::size_t i = 0; i < m_validRegionsCount; ++i) {

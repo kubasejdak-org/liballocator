@@ -31,7 +31,7 @@
 
 #include "page_allocator.h"
 
-#include <cstdint>
+#include <cstddef>
 
 namespace Memory {
 

@@ -29,6 +29,7 @@
 #ifndef PAGE_H
 #define PAGE_H
 
+#include <cstddef>
 #include <cstdint>
 
 namespace Memory {

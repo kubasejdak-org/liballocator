@@ -32,6 +32,7 @@
 #include "region.h"
 
 #include <cstdint>
+#include <cstddef>
 
 namespace Memory {
 
@@ -40,7 +41,7 @@ class ZoneAllocator;
 
 class Allocator {
 public:
-    static inline const char* version() { return "0.1"; }
+    static const char* version() { return "0.1"; }
 
     static bool init(Region* regions, std::size_t pageSize);
     static bool init(std::uintptr_t start, std::uintptr_t end, std::size_t pageSize);
