@@ -1,5 +1,5 @@
 #!/bin/bash
-# $1 - GCC version to be installed (e.g. 3.8.2)
+# $1 - arm-none-eabi-gcc version to be installed (e.g. 3.8.2)
 # $2 - Host OS (Linux or macOS)
 
 VERSION=${1}
@@ -10,7 +10,7 @@ elif [ "${2}" == "macOS" ]; then
 fi
 
 if [ -z ${VERSION} ]; then
-    echo "No GCC version specified. Aborting."
+    echo "No arm-none-eabi-gcc version specified. Aborting."
     exit 1
 fi
 
@@ -22,7 +22,7 @@ fi
 echo "Installing arm-none-eabi-gcc v${VERSION}"
 
 case "${VERSION}" in
-    "7.2")
+    "7.2.0")
         PACKAGE_NAME="gcc-arm-none-eabi-7-2017-q4-major"
         PACKAGE_BIN_NAME="${PACKAGE_NAME}-${OS}.tar.bz2"
         if [ "${OS}" == "linux" ]; then

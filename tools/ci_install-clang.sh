@@ -10,7 +10,7 @@ elif [ "${2}" == "macOS" ]; then
 fi
 
 if [ -z ${VERSION} ]; then
-    echo "No GCC version specified. Aborting."
+    echo "No clang version specified. Aborting."
     exit 1
 fi
 
