@@ -3,9 +3,9 @@
 # $2 - Host OS (Linux or macOS)
 
 VERSION=${1}
-if [ "${2}" == "Linux" ]; then
+if [ "${2}" == "linux" ]; then
     OS="linux-gnu-ubuntu-14.04"
-elif [ "${2}" == "macOS" ]; then
+elif [ "${2}" == "osx" ]; then
     OS="apple-darwin"
 fi
 

@@ -6,15 +6,12 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-7
-      
+
 install:
 
   - |
-    # Linux
-    if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-      tools/ci_install-cmake.sh 3.10.1 Linux;
-      tools/ci_install-clang.sh 5.0.1 Linux;
-    fi
+    tools/ci_install-cmake.sh 3.10.1 $TRAVIS_OS_NAME;
+    tools/ci_install-clang.sh 5.0.1 $TRAVIS_OS_NAME;
 
 script:
   - mkdir -p build
