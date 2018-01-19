@@ -2,19 +2,18 @@ language: cpp
 
 addons:
   apt:
-    sources:
-      - llvm-toolchain-trusty-5.0
-      - key_url: 'http://apt.llvm.org/llvm-snapshot.gpg.key'
+    sources: 
+      - ubuntu-toolchain-r-test
     packages:
-      - clang-format-5.0
-
+      - g++-7
+      
 install:
 
   - |
     # Linux
     if [ "$TRAVIS_OS_NAME" == "linux" ]; then
       tools/ci_install-cmake.sh 3.10.1 Linux;
-      tools/ci_install-gcc-embedded.sh 7.2 Linux;
+      tools/ci_install-clang.sh 5.0.1 Linux;
     fi
 
 script:
