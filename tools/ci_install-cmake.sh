@@ -30,5 +30,7 @@ wget --no-check-certificate ${PACKAGE_URL}
 tar -xf ${PACKAGE_BIN_NAME}
 
 export PATH=${PWD}/${PACKAGE_NAME}/bin:${PATH}
+cmake --version
+${PWD}/${PACKAGE_NAME}/bin/cmake --version
 
 echo "Installing CMake v${VERSION} OK."
