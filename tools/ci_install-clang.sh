@@ -26,7 +26,7 @@ PACKAGE_BIN_NAME="${PACKAGE_NAME}.tar.xz"
 PACKAGE_URL="http://releases.llvm.org/${VERSION}/${PACKAGE_BIN_NAME}"
 
 wget --no-check-certificate ${PACKAGE_URL}
-tar -xjf ${PACKAGE_BIN_NAME}
+tar -xf ${PACKAGE_BIN_NAME}
 
 export PATH=${PWD}/${PACKAGE_NAME}/bin:${PATH}
 

@@ -27,7 +27,7 @@ PACKAGE_BIN_NAME="${PACKAGE_NAME}.tar.gz"
 PACKAGE_URL="https://cmake.org/files/v${SHORT_VERSION}/${PACKAGE_BIN_NAME}"
 
 wget --no-check-certificate ${PACKAGE_URL}
-tar -xzf ${PACKAGE_BIN_NAME}
+tar -xf ${PACKAGE_BIN_NAME}
 
 export PATH=${PWD}/${PACKAGE_NAME}/bin:${PATH}
 
