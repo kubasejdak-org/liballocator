@@ -7,13 +7,11 @@ addons:
     packages:
       - g++-7
 
-install:
-
-  - |
-    tools/ci_install-cmake.sh 3.10.2 $TRAVIS_OS_NAME;
-    tools/ci_install-clang.sh 5.0.1 $TRAVIS_OS_NAME;
-
 script:
+  # Install dependencies.
+  - tools/ci_install-cmake.sh 3.10.2 $TRAVIS_OS_NAME;
+  - tools/ci_install-clang.sh 5.0.1 $TRAVIS_OS_NAME;
+
   - mkdir -p build
   - cd build
   - cmake -DCMAKE_C_COMPILER=gcc-7 -DCMAKE_CXX_COMPILER=g++-7 ..
