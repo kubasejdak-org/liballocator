@@ -10,7 +10,7 @@ addons:
 install:
 
   - |
-    tools/ci_install-cmake.sh 3.10.1 $TRAVIS_OS_NAME;
+    tools/ci_install-cmake.sh 3.10.2 $TRAVIS_OS_NAME;
     tools/ci_install-clang.sh 5.0.1 $TRAVIS_OS_NAME;
 
 script:
