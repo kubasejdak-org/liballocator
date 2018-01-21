@@ -2,6 +2,8 @@
 # $1 - arm-none-eabi-gcc version to be installed (e.g. 3.8.2)
 # $2 - Host OS (Linux or macOS)
 
+set -ev
+
 VERSION=${1}
 if [ "${2}" == "linux" ]; then
     OS="linux"
@@ -17,6 +19,10 @@ fi
 if [ -z ${OS} ]; then
     echo "No host OS specified. Aborting."
     exit 2
+fi
+
+if [ -d gcc ]; then
+    exit 0;
 fi
 
 echo "Installing arm-none-eabi-gcc v${VERSION}"
@@ -38,8 +44,7 @@ case "${VERSION}" in
 esac
 
 wget --no-check-certificate ${PACKAGE_URL} -O ${PACKAGE_BIN_NAME}
-tar -xjf ${PACKAGE_BIN_NAME}
-
-export PATH=${PWD}/${PACKAGE_NAME}/bin:${PATH}
+mkdir -p gcc
+tar -xf ${PACKAGE_BIN_NAME} -C gcc
 
 echo "Installing arm-none-eabi-gcc v${VERSION} OK."
