@@ -29,7 +29,5 @@ PACKAGE_URL="https://cmake.org/files/v${SHORT_VERSION}/${PACKAGE_BIN_NAME}"
 wget --no-check-certificate ${PACKAGE_URL}
 tar -xf ${PACKAGE_BIN_NAME}
 export PATH=${PWD}/${PACKAGE_NAME}/bin:${PATH}
-export CC=gcc-7
-export CXX=g++-7
 
 echo "Installing CMake v${VERSION} OK."
