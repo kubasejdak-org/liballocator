@@ -28,8 +28,6 @@ PACKAGE_BIN_NAME="${PACKAGE_NAME}.tar.xz"
 PACKAGE_URL="http://releases.llvm.org/${VERSION}/${PACKAGE_BIN_NAME}"
 
 wget --no-check-certificate ${PACKAGE_URL}
-tar -xf ${PACKAGE_BIN_NAME}
-
-export PATH=${PWD}/${PACKAGE_NAME}/bin:${PATH}
+tar -xf ${PACKAGE_BIN_NAME} -C clang
 
 echo "Installing clang v${VERSION} OK."
