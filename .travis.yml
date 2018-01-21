@@ -3,23 +3,25 @@ language: cpp
 matrix:
   include:
     - os: linux
-      compiler: gcc
       addons:
         apt:
           sources: 
             - ubuntu-toolchain-r-test
           packages:
             - g++-7
-      env: CC="gcc-7" CXX="g++-7"
+      env: COMPILER=g++-7
+
+before_install:
+  # Set the ${CXX} variable properly
+  - export CXX=${COMPILER}
+  - ${CXX} --version
 
 install:
-  - tools/ci_install-cmake.sh 3.10.2 $TRAVIS_OS_NAME
-  - tools/ci_install-clang.sh 5.0.1 $TRAVIS_OS_NAME
+  - tools/ci_install-cmake.sh 3.10.2 ${TRAVIS_OS_NAME}
+  - tools/ci_install-clang.sh 5.0.1 ${TRAVIS_OS_NAME}
 
 script:
   - mkdir -p build
   - cd build
-  - export CC="$CC"
-  - export CXX="$CXX"
   - cmake ..
   - make
