@@ -23,9 +23,11 @@ before_script:
   - which ${CC}
   - which ${CXX}
   - which cmake
+  - which clang-format
 
   - ${CXX} --version
   - cmake --version
+  - clang-format --version
 
 script:
   - mkdir -p build
