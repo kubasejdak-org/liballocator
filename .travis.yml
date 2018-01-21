@@ -9,19 +9,30 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-7
-      env: COMPILER=g++-7
+      env: COMPILER_ENV="CC=gcc-7 && CXX=g++-7"
 
 before_install:
-  # Set the ${CXX} variable properly
-  - export CXX=${COMPILER}
-  - ${CXX} --version
+  # Set the ${CC} ${CXX} variables properly.
+  - eval ${COMPILER_ENV}
 
 install:
   - tools/ci_install-cmake.sh 3.10.2 ${TRAVIS_OS_NAME}
   - tools/ci_install-clang.sh 5.0.1 ${TRAVIS_OS_NAME}
+
+before_script:
+  - which ${CC}
+  - which ${CXX}
+  - which cmake
+
+  - ${CXX} --version
+  - cmake --version
 
 script:
   - mkdir -p build
   - cd build
   - cmake ..
   - make
+
+after_script:
+  # Check code format using clang-format.
+  - tools/ci_format.sh
