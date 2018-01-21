@@ -39,6 +39,7 @@ script:
   - cd build
   - cmake ..
   - make
+  - cd -
 
 after_script:
   # Check code format using clang-format.
