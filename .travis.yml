@@ -13,8 +13,8 @@ matrix:
       env: COMPILER_VER="7.2.0"
 
 install:
-    tools/ci_install-cmake.sh 3.10.2 $TRAVIS_OS_NAME;
-    tools/ci_install-clang.sh 5.0.1 $TRAVIS_OS_NAME;
+  - tools/ci_install-cmake.sh 3.10.2 $TRAVIS_OS_NAME
+  - tools/ci_install-clang.sh 5.0.1 $TRAVIS_OS_NAME
 
 script:
   - mkdir -p build
