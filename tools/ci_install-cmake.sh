@@ -2,7 +2,7 @@
 # $1 - CMake version to be installed (e.g. 3.8.2)
 # $2 - Host OS (Linux or macOS)
 
-set -v
+set -ev
 
 VERSION=${1}
 if [ "${2}" == "linux" ]; then
@@ -21,6 +21,10 @@ if [ -z ${OS} ]; then
     exit 2
 fi
 
+if [ -d cmake ]; then
+    exit 0
+fi
+
 echo "Installing CMake v${VERSION}"
 
 SHORT_VERSION=`echo ${VERSION} | cut -d . -f 1-2`
@@ -29,6 +33,7 @@ PACKAGE_BIN_NAME="${PACKAGE_NAME}.tar.gz"
 PACKAGE_URL="https://cmake.org/files/v${SHORT_VERSION}/${PACKAGE_BIN_NAME}"
 
 wget --no-check-certificate ${PACKAGE_URL}
+mkdir -p cmake
 tar -xf ${PACKAGE_BIN_NAME} -C cmake
 
 echo "Installing CMake v${VERSION} OK."
