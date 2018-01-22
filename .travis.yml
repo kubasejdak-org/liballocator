@@ -17,7 +17,7 @@ before_install:
 
 install:
   - tools/ci_install-cmake.sh 3.10.2 ${TRAVIS_OS_NAME}
-  - export PATH="${PWD}/cmake/bin:${PATH}"
+  - eval "PATH=${PWD}/cmake/bin:${PATH}"
 
 #  - tools/ci_install-clang.sh 5.0.1 ${TRAVIS_OS_NAME}
 #  - export PATH="${PWD}/clang/bin:${PATH}"
