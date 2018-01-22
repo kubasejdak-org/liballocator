@@ -16,8 +16,12 @@ before_install:
   - eval ${COMPILER_ENV}
 
 install:
+  - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
+  - mkdir -p ${DEPS_DIR}
+  - cd ${DEPS_DIR}
+
   - tools/ci_install-cmake.sh 3.10.2 ${TRAVIS_OS_NAME}
-  - eval "PATH=${PWD}/cmake/bin:${PATH}"
+  - export PATH=${DEPS_DIR}/cmake/bin:${PATH}
 
 #  - tools/ci_install-clang.sh 5.0.1 ${TRAVIS_OS_NAME}
 #  - export PATH="${PWD}/clang/bin:${PATH}"
@@ -32,8 +36,9 @@ before_script:
  # - ${CXX} --version
   - cmake --version
  # - clang-format --version
+ #cd ${TRAVIS_BUILD_DIR}
 
-#script:
+script:
 #  - mkdir -p build
 #  - cd build
 #  - cmake ..
