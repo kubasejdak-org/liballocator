@@ -24,8 +24,8 @@ install:
   - echo ${PATH}
 
 before_script:
-  - which ${CC}
-  - which ${CXX}
+#  - which ${CC}
+#  - which ${CXX}
   - which cmake
   - which clang-format
 
