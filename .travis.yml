@@ -29,7 +29,7 @@ before_script:
   - which cmake
   - which clang-format
 
-  - ${CXX} --version
+ # - ${CXX} --version
   - cmake --version
   - clang-format --version
 
