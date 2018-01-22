@@ -23,6 +23,7 @@ install:
   # clang-format.
   - tools/ci_install-clang.sh 5.0.1 ${TRAVIS_OS_NAME}
   - export PATH="${PWD}/clang/bin:${PATH}"
+  - echo ${PATH}
 
 before_script:
   - which ${CC}
