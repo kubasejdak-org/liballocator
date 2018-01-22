@@ -16,12 +16,13 @@ before_install:
   - eval ${COMPILER_ENV}
 
 install:
-  - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
-  - mkdir -p ${DEPS_DIR}
-  - cd ${DEPS_DIR}
-
-  - ${TRAVIS_BUILD_DIR}/tools/ci_install-cmake.sh 3.10.2 ${TRAVIS_OS_NAME}
-  - export PATH=${DEPS_DIR}/cmake/bin:${PATH}
+  - |
+    CMAKE_URL="https://cmake.org/files/v3.10/cmake-3.10.2-Linux-x86_64.tar.gz"
+    mkdir -p cmake
+    travis_retry wget --no-check-certificate --quiet -O - "${CMAKE_URL}" | tar --strip-components=1 -xz -C cmake
+    export PATH="cmake/bin:${PATH}"
+#  - ${TRAVIS_BUILD_DIR}/tools/ci_install-cmake.sh 3.10.2 ${TRAVIS_OS_NAME}
+#  - export PATH=${DEPS_DIR}/cmake/bin:${PATH}
 
 #  - tools/ci_install-clang.sh 5.0.1 ${TRAVIS_OS_NAME}
 #  - export PATH="${PWD}/clang/bin:${PATH}"
