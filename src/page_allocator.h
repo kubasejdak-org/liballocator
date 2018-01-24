@@ -47,11 +47,14 @@ public:
     [[nodiscard]] bool init(Region* regions, std::size_t pageSize);
     void clear();
 
+    [[nodiscard]] Page* allocate(std::size_t count);
+    void release(Page* pages);
+
 private:
     std::size_t countPages();
     std::size_t chooseDescRegion();
     std::size_t reserveDescPages();
-    int groupIdx(int pageCount);
+    std::size_t groupIdx(std::size_t pageCount);
     void addGroup(Page* group, std::size_t groupSize);
     void removeGroup(Page* group);
     Page* getPage(std::uintptr_t addr);
@@ -67,6 +70,7 @@ private:
     Page* m_pagesTail;
     std::array<Page*, MAX_GROUP_IDX> m_freeGroupLists;
     std::size_t m_pagesCount;
+    std::size_t m_freePagesCount;
 };
 
 } // namespace Memory

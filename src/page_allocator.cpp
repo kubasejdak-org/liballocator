@@ -81,6 +81,18 @@ void PageAllocator::clear()
     m_pagesTail = nullptr;
     m_freeGroupLists.fill(nullptr);
     m_pagesCount = 0;
+    m_freePagesCount = 0;
+}
+
+Page* PageAllocator::allocate(std::size_t count)
+{
+    // TODO: implement.
+    return nullptr;
+}
+
+void PageAllocator::release(Page* pages)
+{
+    // TODO: implement.
 }
 
 std::size_t PageAllocator::countPages()
@@ -121,9 +133,9 @@ std::size_t PageAllocator::reserveDescPages()
     return reservedCount;
 }
 
-int PageAllocator::groupIdx(int pageCount)
+std::size_t PageAllocator::groupIdx(std::size_t pageCount)
 {
-    return static_cast<int>(ceil(log2(pageCount)) - 1);
+    return static_cast<std::size_t>(ceil(log2(pageCount)) - 1);
 }
 
 void PageAllocator::addGroup(Page* group, std::size_t groupSize)
@@ -133,14 +145,16 @@ void PageAllocator::addGroup(Page* group, std::size_t groupSize)
     firstPage->setGroupSize(groupSize);
     lastPage->setGroupSize(groupSize);
 
-    int idx = groupIdx(groupSize);
+    std::size_t idx = groupIdx(groupSize);
     group->addToList(&m_freeGroupLists[idx]);
+    m_freePagesCount += groupSize;
 }
 
 void PageAllocator::removeGroup(Page* group)
 {
-    int idx = groupIdx(group->groupSize());
+    std::size_t idx = groupIdx(group->groupSize());
     group->removeFromList(&m_freeGroupLists[idx]);
+    m_freePagesCount -= group->groupSize();
 
     Page* firstPage = group;
     Page* lastPage = group + group->groupSize();
