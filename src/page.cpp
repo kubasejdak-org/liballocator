@@ -38,14 +38,29 @@ void Page::init()
     m_flags.value = 0;
 }
 
-void Page::addToList(Page** group)
+void Page::addToList(Page** list)
 {
-    // TODO: implement.
+    if (*list) {
+        m_nextGroup = *list;
+        m_nextGroup->m_prevGroup = this;
+    }
+
+    *list = this;
 }
 
-void Page::removeFromList(Page** group)
+void Page::removeFromList(Page** list)
 {
-    // TODO: implement.
+    if (m_nextGroup)
+        m_nextGroup->m_prevGroup = m_prevGroup;
+
+    if (m_prevGroup)
+        m_prevGroup->m_nextGroup = m_nextGroup;
+
+    if (*list == this)
+        *list = m_nextGroup;
+
+    m_nextGroup = nullptr;
+    m_prevGroup = nullptr;
 }
 
 void Page::setAddress(std::uintptr_t addr)
