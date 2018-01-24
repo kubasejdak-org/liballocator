@@ -1,51 +1,66 @@
 language: cpp
+sudo: required
+group: travis_latest
 
 matrix:
   include:
     - os: linux
-      #addons:
-      #  apt:
-      #    sources: 
-      #      - ubuntu-toolchain-r-test
-      #    packages:
-      #      - g++-7
-      env: COMPILER_ENV="CC=gcc-7 && CXX=g++-7"
+      compiler: gcc
+      env: COMPILER_VER=7.2.0 CMAKE_VER=3.10.2
+    - os: linux
+      compiler: clang
+      env: COMPILER_VER=5.0.1 CMAKE_VER=3.10.2
+    - os: osx
+      osx_image: xcode9.2
+      compiler: gcc
+      env: COMPILER_VER=7.2.0 CMAKE_VER=3.10.2
+    - os: osx
+      osx_image: xcode9.2
+      compiler: clang
+      env: COMPILER_VER=5.0.1 CMAKE_VER=3.10.2
 
 before_install:
-  # Set the ${CC} ${CXX} variables properly.
-  - eval ${COMPILER_ENV}
+  # Add CI scripts to PATH.
+  - export PATH=${TRAVIS_BUILD_DIR}/tools:${PATH}
+
+  # Create path for dependencies.
+  - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+  - mkdir -p ${DEPS_DIR}
+  - cd ${DEPS_DIR}
 
 install:
+  # Compiler.
+  - ci_install-${CC}.sh ${COMPILER_VER} ${TRAVIS_OS_NAME}
   - |
-    CMAKE_URL="https://cmake.org/files/v3.10/cmake-3.10.2-Linux-x86_64.tar.gz"
-    mkdir -p cmake
-    travis_retry wget --no-check-certificate --quiet -O - "${CMAKE_URL}" | tar --strip-components=1 -xz -C cmake
-    export PATH="cmake/bin:${PATH}"
-#  - ${TRAVIS_BUILD_DIR}/tools/ci_install-cmake.sh 3.10.2 ${TRAVIS_OS_NAME}
-#  - export PATH=${DEPS_DIR}/cmake/bin:${PATH}
+    if [ "${CC}" == "gcc" ]; then
+      MAJOR_VER=`echo ${COMPILER_VER} | cut -d . -f 1`
+      export CC="${CC}-${MAJOR_VER}"
+      export CXX="${CXX}-${MAJOR_VER}"
+    else
+      MAJOR_VER=`echo ${COMPILER_VER} | cut -d . -f 1-2`
+      export CC="${CC}-${MAJOR_VER}"
+      export CXX="${CXX}"
+    fi
 
-#  - tools/ci_install-clang.sh 5.0.1 ${TRAVIS_OS_NAME}
-#  - export PATH="${PWD}/clang/bin:${PATH}"
-  - echo ${PATH}
+  # CMake.
+  - ci_install-cmake.sh ${CMAKE_VER} ${TRAVIS_OS_NAME}
+  - export PATH=${DEPS_DIR}/cmake/bin:${PATH}
 
 before_script:
-#  - which ${CC}
-#  - which ${CXX}
-  - which cmake
- # - which clang-format
-
- # - ${CXX} --version
+  # Check versions of used tools.
+  - ${CXX} --version
   - cmake --version
- # - clang-format --version
- #cd ${TRAVIS_BUILD_DIR}
+  - clang-format --version
+
+  - cd ${TRAVIS_BUILD_DIR}
 
 script:
-#  - mkdir -p build
-#  - cd build
-#  - cmake ..
-#  - make
-#  - cd -
+  - mkdir -p build
+  - cd build
+  - cmake ..
+  - make
+  - cd ${TRAVIS_BUILD_DIR}
 
-#after_script:
+after_script:
   # Check code format using clang-format.
-#  - tools/ci_format.sh
+  - ci_format.sh .
