@@ -118,7 +118,33 @@ Page* PageAllocator::allocate(std::size_t count)
 
 void PageAllocator::release(Page* pages)
 {
-    // TODO: implement.
+    Page* joinedGroup = pages;
+
+    // Try joining with pages above released group.
+    do {
+        Page* lastAbove = joinedGroup->prevSibling();
+        if (!lastAbove || lastAbove->isUsed())
+            break;
+
+        Page* firstAbove = lastAbove - lastAbove->groupSize() + 1;
+        removeGroup(firstAbove);
+        joinedGroup = joinGroup(firstAbove, joinedGroup);
+    }
+    while (true);
+
+    // Try joining with pages below released group.
+    do {
+        Page* lastJoined = joinedGroup + joinedGroup->groupSize() - 1;
+        Page* firstBelow = lastJoined->nextSibling();
+        if (!firstBelow || firstBelow->isUsed())
+            break;
+
+        removeGroup(firstBelow);
+        joinedGroup = joinGroup(joinedGroup, firstBelow);
+    }
+    while (true);
+
+    addGroup(joinedGroup);
 }
 
 std::size_t PageAllocator::countPages()
