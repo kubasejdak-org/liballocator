@@ -29,6 +29,7 @@ if [ "${OS}" == "linux" ]; then
     sudo apt-get update -qq
     sudo apt-get install gcc-${MAJOR_VERSION} g++-${MAJOR_VERSION} -y
 else
+    brew uninstall gcc
     brew install gcc@${MAJOR_VERSION}
 fi
 

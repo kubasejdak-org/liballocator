@@ -37,6 +37,7 @@ install:
       export CC="${CC}-${MAJOR_VER}"
       export CXX="${CXX}-${MAJOR_VER}"
     else
+      export PATH=${DEPS_DIR}/clang/bin:${PATH}
       MAJOR_VER=`echo ${COMPILER_VER} | cut -d . -f 1-2`
       export CC="${CC}-${MAJOR_VER}"
       export CXX="${CXX}"
