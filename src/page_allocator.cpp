@@ -102,11 +102,17 @@ Page* PageAllocator::allocate(std::size_t count)
             if (group->groupSize() < count)
                 continue;
 
-            group->removeFromList(&m_freeGroupLists[i]);
+            removeGroup(group);
+
+            Page* remainingGroup = nullptr;
+            Page* allocatedGroup = nullptr;
+            std::tie(remainingGroup, allocatedGroup) = splitGroup(group, count);
+
+            addGroup(remainingGroup);
+            return allocatedGroup;
         }
     }
 
-    // TODO: implement.
     return nullptr;
 }
 
@@ -202,6 +208,11 @@ void PageAllocator::addGroup(Page* group)
     std::size_t idx = groupIdx(group->groupSize());
     group->addToList(&m_freeGroupLists[idx]);
     m_freePagesCount += group->groupSize();
+
+    for (std::size_t i = 0; i < group->groupSize(); ++i) {
+        auto* page = group + i;
+        page->setUsed(false);
+    }
 }
 
 void PageAllocator::removeGroup(Page* group)
@@ -209,6 +220,11 @@ void PageAllocator::removeGroup(Page* group)
     std::size_t idx = groupIdx(group->groupSize());
     group->removeFromList(&m_freeGroupLists[idx]);
     m_freePagesCount -= group->groupSize();
+
+    for (std::size_t i = 0; i < group->groupSize(); ++i) {
+        auto* page = group + i;
+        page->setUsed(true);
+    }
 }
 
 std::tuple<Page*, Page*> PageAllocator::splitGroup(Page* group, std::size_t size)
