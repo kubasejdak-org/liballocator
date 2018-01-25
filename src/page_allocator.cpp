@@ -118,6 +118,7 @@ Page* PageAllocator::allocate(std::size_t count)
 
 void PageAllocator::release(Page* pages)
 {
+    // clang-format off
     Page* joinedGroup = pages;
 
     // Try joining with pages above released group.
@@ -143,6 +144,7 @@ void PageAllocator::release(Page* pages)
         joinedGroup = joinGroup(joinedGroup, firstBelow);
     }
     while (true);
+    // clang-format on
 
     addGroup(joinedGroup);
 }
@@ -215,16 +217,16 @@ std::size_t PageAllocator::groupIdx(std::size_t pageCount)
 
 void PageAllocator::initGroup(Page* group, std::size_t groupSize)
 {
-    Page *firstPage = group;
-    Page *lastPage = group + groupSize - 1;
+    Page* firstPage = group;
+    Page* lastPage = group + groupSize - 1;
     firstPage->setGroupSize(groupSize);
     lastPage->setGroupSize(groupSize);
 }
 
 void PageAllocator::clearGroup(Page* group)
 {
-    Page *firstPage = group;
-    Page *lastPage = group + group->groupSize() - 1;
+    Page* firstPage = group;
+    Page* lastPage = group + group->groupSize() - 1;
     firstPage->setGroupSize(0);
     lastPage->setGroupSize(0);
 }
