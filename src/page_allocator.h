@@ -37,6 +37,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <tuple>
 
 namespace Memory {
 
@@ -54,10 +55,15 @@ private:
     std::size_t countPages();
     std::size_t chooseDescRegion();
     std::size_t reserveDescPages();
-    std::size_t groupIdx(std::size_t pageCount);
-    void addGroup(Page* group, std::size_t groupSize);
-    void removeGroup(Page* group);
     Page* getPage(std::uintptr_t addr);
+
+    std::size_t groupIdx(std::size_t pageCount);
+    void initGroup(Page* group, std::size_t groupSize);
+    void clearGroup(Page* group);
+    void addGroup(Page* group);
+    void removeGroup(Page* group);
+    std::tuple<Page*, Page*> splitGroup(Page* group, std::size_t size);
+    Page* joinGroup(Page* firstGroup, Page* secondGroup);
 
 private:
     static constexpr int MAX_REGIONS_COUNT = 8;

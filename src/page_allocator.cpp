@@ -64,8 +64,15 @@ bool PageAllocator::init(Region* regions, std::size_t pageSize)
             page = page->nextSibling();
         }
 
-        std::size_t skipCount = (i == descRegionIdx) ? reserveDescPages() : 0;
-        addGroup(region.firstPage + skipCount, region.pageCount - skipCount);
+        Page* group = region.firstPage;
+        initGroup(group, region.pageCount);
+
+        if (i == descRegionIdx) {
+            std::size_t reservedCount = reserveDescPages();
+            std::tie(std::ignore, group) = splitGroup(group, reservedCount);
+        }
+
+        addGroup(group);
     }
 
     return true;
@@ -86,6 +93,19 @@ void PageAllocator::clear()
 
 Page* PageAllocator::allocate(std::size_t count)
 {
+    if (m_freePagesCount < count)
+        return nullptr;
+
+    std::size_t idx = groupIdx(count);
+    for (auto i = idx; i < m_freeGroupLists.size(); ++i) {
+        for (Page* group = m_freeGroupLists[i]; group != nullptr; group = group->nextGroup()) {
+            if (group->groupSize() < count)
+                continue;
+
+            group->removeFromList(&m_freeGroupLists[i]);
+        }
+    }
+
     // TODO: implement.
     return nullptr;
 }
@@ -133,35 +153,6 @@ std::size_t PageAllocator::reserveDescPages()
     return reservedCount;
 }
 
-std::size_t PageAllocator::groupIdx(std::size_t pageCount)
-{
-    return static_cast<std::size_t>(ceil(log2(pageCount)) - 1);
-}
-
-void PageAllocator::addGroup(Page* group, std::size_t groupSize)
-{
-    Page* firstPage = group;
-    Page* lastPage = group + groupSize;
-    firstPage->setGroupSize(groupSize);
-    lastPage->setGroupSize(groupSize);
-
-    std::size_t idx = groupIdx(groupSize);
-    group->addToList(&m_freeGroupLists[idx]);
-    m_freePagesCount += groupSize;
-}
-
-void PageAllocator::removeGroup(Page* group)
-{
-    std::size_t idx = groupIdx(group->groupSize());
-    group->removeFromList(&m_freeGroupLists[idx]);
-    m_freePagesCount -= group->groupSize();
-
-    Page* firstPage = group;
-    Page* lastPage = group + group->groupSize();
-    firstPage->setGroupSize(0);
-    lastPage->setGroupSize(0);
-}
-
 Page* PageAllocator::getPage(std::uintptr_t addr)
 {
     RegionInfo* pageRegion = nullptr;
@@ -183,6 +174,66 @@ Page* PageAllocator::getPage(std::uintptr_t addr)
     }
 
     return nullptr;
+}
+
+std::size_t PageAllocator::groupIdx(std::size_t pageCount)
+{
+    return static_cast<std::size_t>(ceil(log2(pageCount)) - 1);
+}
+
+void PageAllocator::initGroup(Page* group, std::size_t groupSize)
+{
+    Page *firstPage = group;
+    Page *lastPage = group + groupSize - 1;
+    firstPage->setGroupSize(groupSize);
+    lastPage->setGroupSize(groupSize);
+}
+
+void PageAllocator::clearGroup(Page* group)
+{
+    Page *firstPage = group;
+    Page *lastPage = group + group->groupSize() - 1;
+    firstPage->setGroupSize(0);
+    lastPage->setGroupSize(0);
+}
+
+void PageAllocator::addGroup(Page* group)
+{
+    std::size_t idx = groupIdx(group->groupSize());
+    group->addToList(&m_freeGroupLists[idx]);
+    m_freePagesCount += group->groupSize();
+}
+
+void PageAllocator::removeGroup(Page* group)
+{
+    std::size_t idx = groupIdx(group->groupSize());
+    group->removeFromList(&m_freeGroupLists[idx]);
+    m_freePagesCount -= group->groupSize();
+}
+
+std::tuple<Page*, Page*> PageAllocator::splitGroup(Page* group, std::size_t size)
+{
+    std::size_t secondSize = group->groupSize() - size;
+    clearGroup(group);
+
+    Page* firstGroup = group;
+    Page* secondGroup = group + size;
+
+    initGroup(firstGroup, size);
+    initGroup(secondGroup, secondSize);
+
+    return std::make_tuple(firstGroup, secondGroup);
+}
+
+Page* PageAllocator::joinGroup(Page* firstGroup, Page* secondGroup)
+{
+    std::size_t joinedSize = firstGroup->groupSize() + secondGroup->groupSize();
+
+    clearGroup(firstGroup);
+    clearGroup(secondGroup);
+    initGroup(firstGroup, joinedSize);
+
+    return firstGroup;
 }
 
 } // namespace Memory
