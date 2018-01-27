@@ -30,16 +30,22 @@ before_install:
 
 install:
   # Compiler.
-  - ci_install-${CC}.sh ${COMPILER_VER} ${TRAVIS_OS_NAME}
   - |
     if [ "${CC}" == "gcc" ]; then
+      ci_install-gcc.sh ${COMPILER_VER} ${TRAVIS_OS_NAME}
       MAJOR_VER=`echo ${COMPILER_VER} | cut -d . -f 1`
       export CC=gcc-${MAJOR_VER}
       export CXX=g++-${MAJOR_VER}
-    else
+    elif [ "${CC}" == "clang" ]; then
+      ci_install-clang.sh ${COMPILER_VER} ${TRAVIS_OS_NAME}
       MAJOR_VER=`echo ${COMPILER_VER} | cut -d . -f 1-2`
       export CC=clang-${MAJOR_VER}
       export CXX=clang++
+    else
+      ci_install-gcc-embedded.sh ${COMPILER_VER} ${TRAVIS_OS_NAME}
+      export CC=arm-none-eabi-gcc
+      export CXX=arm-none-eabi-g++
+      export PATH=${DEPS_DIR}/gcc-embedded/bin:${PATH}
     fi
 
   # CMake.

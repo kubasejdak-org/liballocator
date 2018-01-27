@@ -34,6 +34,11 @@ PACKAGE_BIN_NAME="${PACKAGE_NAME}.tar.gz"
 PACKAGE_URL="https://cmake.org/files/v${SHORT_VERSION}/${PACKAGE_BIN_NAME}"
 
 wget --no-check-certificate --quiet ${PACKAGE_URL}
+if [ ! -f ${PACKAGE_BIN_NAME} ]; then
+    echo "Failed to download CMake v${VERSION}."
+    exit 3
+fi
+
 mkdir -p cmake
 tar --strip-components=1 -xf ${PACKAGE_BIN_NAME} -C cmake
 

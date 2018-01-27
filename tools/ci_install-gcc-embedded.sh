@@ -22,13 +22,13 @@ if [ -z ${OS} ]; then
 fi
 
 if [ -d gcc ]; then
-    exit 0;
+    exit 0
 fi
 
 echo "Installing arm-none-eabi-gcc v${VERSION}"
 
 case "${VERSION}" in
-    "7.2.0")
+    "7.2")
         PACKAGE_NAME="gcc-arm-none-eabi-7-2017-q4-major"
         PACKAGE_BIN_NAME="${PACKAGE_NAME}-${OS}.tar.bz2"
         if [ "${OS}" == "linux" ]; then
@@ -44,7 +44,12 @@ case "${VERSION}" in
 esac
 
 wget --no-check-certificate --quiet ${PACKAGE_URL} -O ${PACKAGE_BIN_NAME}
+if [ ! -f ${PACKAGE_BIN_NAME} ]; then
+    echo "Failed to download arm-none-eabi-gcc v${VERSION}."
+    exit 4
+fi
+
 mkdir -p gcc
-tar --strip-components=1 -xf ${PACKAGE_BIN_NAME} -C gcc
+tar --strip-components=1 -xf ${PACKAGE_BIN_NAME} -C gcc-embedded
 
 echo "Installing arm-none-eabi-gcc v${VERSION} OK."
