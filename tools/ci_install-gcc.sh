@@ -29,7 +29,8 @@ if [ "${OS}" == "linux" ]; then
     sudo apt-get update -qq
     sudo apt-get install gcc-${MAJOR_VERSION} g++-${MAJOR_VERSION} -y
 else
-    brew uninstall gcc
+    # Workaround for Travis macOS image problem.
+    brew cask uninstall --force oclint
     brew install gcc@${MAJOR_VERSION}
 fi
 
