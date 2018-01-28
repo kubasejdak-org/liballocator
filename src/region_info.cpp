@@ -57,13 +57,19 @@ void clearRegionInfo(RegionInfo& regionInfo)
     regionInfo.lastPage = nullptr;
 }
 
-void initRegionInfo(RegionInfo& regionInfo, Region& region, std::size_t pageSize)
+bool initRegionInfo(RegionInfo& regionInfo, Region& region, std::size_t pageSize)
 {
+    if (region.size < pageSize)
+        return false;
+
     regionInfo.start = region.address;
     regionInfo.end = region.address + region.size;
     regionInfo.alignedStart = alignedStart(region, pageSize);
     regionInfo.alignedEnd = alignedEnd(region, pageSize);
     regionInfo.pageCount = (regionInfo.alignedEnd - regionInfo.alignedStart) / pageSize;
+    if (!regionInfo.pageCount)
+        return false;
+
     regionInfo.size = region.size;
     regionInfo.alignedSize = regionInfo.pageCount * pageSize;
     regionInfo.firstPage = nullptr;

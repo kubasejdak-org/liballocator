@@ -51,7 +51,7 @@ struct RegionInfo {
 };
 
 void clearRegionInfo(RegionInfo& regionInfo);
-void initRegionInfo(RegionInfo& regionInfo, Region& region, std::size_t pageSize);
+bool initRegionInfo(RegionInfo& regionInfo, Region& region, std::size_t pageSize);
 
 } // namespace Memory
 

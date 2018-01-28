@@ -40,8 +40,9 @@ PageAllocator::PageAllocator()
 bool PageAllocator::init(Region* regions, std::size_t pageSize)
 {
     for (std::size_t i = 0; i < regions[i].size != 0; ++i) {
-        initRegionInfo(m_regionsInfo[i], regions[i], pageSize);
-        ++m_validRegionsCount;
+        RegionInfo regionInfo;
+        if (initRegionInfo(regionInfo, regions[i], pageSize))
+            m_regionsInfo[m_validRegionsCount++] = regionInfo;
     }
 
     if (!countPages())

@@ -26,7 +26,6 @@ if [ -d cmake ]; then
 fi
 
 echo "Installing CMake v${VERSION}"
-echo $PWD
 
 SHORT_VERSION=`echo ${VERSION} | cut -d . -f 1-2`
 PACKAGE_NAME="cmake-${VERSION}-${OS}-x86_64"
