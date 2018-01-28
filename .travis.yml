@@ -52,6 +52,9 @@ install:
   - ci_install-cmake.sh ${CMAKE_VER} ${TRAVIS_OS_NAME}
   - export PATH=${DEPS_DIR}/cmake/bin:${PATH}
 
+  # Clang-format.
+  - ci_install-clang.sh ${COMPILER_VER} ${TRAVIS_OS_NAME}
+
 before_script:
   # Check versions of used tools.
   - ${CXX} --version
