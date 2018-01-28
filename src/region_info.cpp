@@ -30,7 +30,7 @@
 
 namespace Memory {
 
-std::uintptr_t alignedStart(Region& region, std::size_t pageSize)
+static std::uintptr_t alignedStart(Region& region, std::size_t pageSize)
 {
     auto start = region.address & ~(pageSize - 1);
     if (start < region.address)
@@ -39,7 +39,7 @@ std::uintptr_t alignedStart(Region& region, std::size_t pageSize)
     return start;
 }
 
-std::uintptr_t alignedEnd(Region& region, std::size_t pageSize)
+static std::uintptr_t alignedEnd(Region& region, std::size_t pageSize)
 {
     return (region.address + region.size) & ~(pageSize - 1);
 }

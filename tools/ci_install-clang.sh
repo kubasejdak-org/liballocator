@@ -23,7 +23,7 @@ echo "Installing gcc v${MAJOR_VERSION}"
 if [ "${OS}" == "linux" ]; then
     case "${VERSION}" in
     "3.9" | "4.0" | "5.0")
-        sudo add-apt-repository ppa:llvm-toolchain-trusty-${LONG_VERSION} -y
+        sudo add-apt-repository ppa:llvm-toolchain-trusty-${VERSION} -y
         ;;
     *)
         echo "Unsupported clang version."
