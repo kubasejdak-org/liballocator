@@ -102,11 +102,6 @@ Page* Page::nextGroup()
     return m_nextGroup;
 }
 
-Page* Page::prevGroup()
-{
-    return m_prevGroup;
-}
-
 std::uintptr_t Page::address()
 {
     return m_addr;

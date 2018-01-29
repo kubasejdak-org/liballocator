@@ -51,7 +51,6 @@ public:
     Page* prevSibling();
     Page* nextSibling();
     Page* nextGroup();
-    Page* prevGroup();
     std::uintptr_t address();
     std::size_t groupSize();
     bool isUsed();
