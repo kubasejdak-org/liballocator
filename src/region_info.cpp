@@ -28,20 +28,29 @@
 
 #include "region_info.h"
 
+#include <optional>
+
 namespace Memory {
 
-static std::uintptr_t alignedStart(Region& region, std::size_t pageSize)
+static std::optional<std::uintptr_t> alignedStart(Region& region, std::size_t pageSize)
 {
     auto start = region.address & ~(pageSize - 1);
     if (start < region.address)
         start += pageSize;
 
+    if (start > (region.address + region.size))
+        return {};
+
     return start;
 }
 
-static std::uintptr_t alignedEnd(Region& region, std::size_t pageSize)
+static std::optional<std::uintptr_t> alignedEnd(Region& region, std::size_t pageSize)
 {
-    return (region.address + region.size) & ~(pageSize - 1);
+    auto end = (region.address + region.size) & ~(pageSize - 1);
+    if (end < region.address)
+        return {};
+
+    return end;
 }
 
 void clearRegionInfo(RegionInfo& regionInfo)
@@ -64,8 +73,16 @@ bool initRegionInfo(RegionInfo& regionInfo, Region& region, std::size_t pageSize
 
     regionInfo.start = region.address;
     regionInfo.end = region.address + region.size;
-    regionInfo.alignedStart = alignedStart(region, pageSize);
-    regionInfo.alignedEnd = alignedEnd(region, pageSize);
+    auto start = alignedStart(region, pageSize);
+    if (!start)
+        return false;
+
+    regionInfo.alignedStart = *start;
+    auto end = alignedEnd(region, pageSize);
+    if (!end)
+        return false;
+
+    regionInfo.alignedEnd = *end;
     regionInfo.pageCount = (regionInfo.alignedEnd - regionInfo.alignedStart) / pageSize;
     if (!regionInfo.pageCount)
         return false;
