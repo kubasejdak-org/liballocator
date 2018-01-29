@@ -28,6 +28,8 @@
 
 #include "page.h"
 
+#include <cassert>
+
 namespace Memory {
 
 void Page::init()
@@ -40,6 +42,10 @@ void Page::init()
 
 void Page::addToList(Page** list)
 {
+    assert(list);
+    assert(!m_nextGroup);
+    assert(!m_prevGroup);
+
     if (*list) {
         m_nextGroup = *list;
         m_nextGroup->m_prevGroup = this;
@@ -50,6 +56,9 @@ void Page::addToList(Page** list)
 
 void Page::removeFromList(Page** list)
 {
+    assert(list);
+    assert(m_nextGroup || m_prevGroup);
+
     if (m_nextGroup)
         m_nextGroup->m_prevGroup = m_prevGroup;
 
