@@ -28,15 +28,76 @@
 
 #include "catch.hpp"
 
-// Make access to private members for testing.
-// clang-format off
-#define private     public
-// clang-format on
-
-#include <page_allocator.h>
+#include <region_info.h>
 
 using namespace Memory;
 
-TEST_CASE("Page allocator is properly cleared", "[page_allocator]")
+TEST_CASE("RegionInfo structure is properly cleared", "[region_info]")
 {
+}
+
+TEST_CASE("Aligned start address is properly computed", "[region_info]")
+{
+    SECTION("Already start-aligned region") {
+    }
+
+    SECTION("Not start-aligned region and aligned start is within region boundaries") {
+    }
+
+    SECTION("Not start-aligned region and aligned start is outside region boundaries") {
+    }
+}
+
+TEST_CASE("Aligned end address is properly computed", "[region_info]")
+{
+    SECTION("Already end-aligned region") {
+    }
+
+    SECTION("Not end-aligned region and aligned end is within region boundaries") {
+    }
+
+    SECTION("Not end-aligned region and aligned end is outsude region boundaries") {
+    }
+}
+
+TEST_CASE("RegionInfo is properly initialized", "[region_info]")
+{
+    SECTION("Region smaller than one page") {
+    }
+
+    SECTION("Fully aligned region, lays on 1 page") {
+    }
+
+    SECTION("Fully aligned region, lays on 5 pages") {
+    }
+
+    SECTION("Start-aligned region, lays on 1 page") {
+    }
+
+    SECTION("Start-aligned region, lays on 2 pages") {
+    }
+
+    SECTION("Start-aligned region, lays on 5 pages") {
+    }
+
+    SECTION("End-aligned region, lays on 1 page") {
+    }
+
+    SECTION("End-aligned region, lays on 2 pages") {
+    }
+
+    SECTION("End-aligned region, lays on 5 pages") {
+    }
+
+    SECTION("Fully unaligned region, lays on 1 page") {
+    }
+
+    SECTION("Fully unaligned region, lays on 2 pages") {
+    }
+
+    SECTION("End-aligned region, lays on 3 pages") {
+    }
+
+    SECTION("End-aligned region, lays on 5 pages") {
+    }
 }

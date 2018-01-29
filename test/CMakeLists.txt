@@ -24,7 +24,7 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 
 # List project configuration.
 message(STATUS "Project configuration:")
-message(STATUS "  Build type   : " ${CMAKE_BUILD_TYPE})
+message(STATUS "  Build type : " ${CMAKE_BUILD_TYPE})
 
 #################################################################################################################
 # OTHER SETTINGS
@@ -42,7 +42,9 @@ include_directories(../src)
 set(SOURCES
     catch.hpp
     main.cpp
+    test_page.cpp
     test_page_allocator.cpp
+    test_region_info.cpp
 )
 
 register_executable(${PROJECT_NAME})

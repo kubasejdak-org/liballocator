@@ -33,10 +33,57 @@
 #define private     public
 // clang-format on
 
-#include <page_allocator.h>
+#include <page.h>
 
 using namespace Memory;
 
-TEST_CASE("Page allocator is properly cleared", "[page_allocator]")
+TEST_CASE("Page structure is naturally aligned", "[page]")
+{
+    std::size_t requiredSize = 0;
+    requiredSize += sizeof(Page*);          // m_nextGroup
+    requiredSize += sizeof(Page*);          // m_prevGroup
+    requiredSize += sizeof(std::uintptr_t); // m_addr
+    requiredSize += sizeof(Page::Flags);    // m_flags
+
+    REQUIRE(sizeof(Page) == requiredSize);
+}
+
+TEST_CASE("Page is properly initialized", "[page]")
+{
+}
+
+TEST_CASE("Accessing siblings works as expected", "[page]")
+{
+    SECTION("Previous sibling") {
+    }
+
+    SECTION("Next sibling") {
+    }
+}
+
+TEST_CASE("Adding to empty list", "[page]")
+{
+}
+
+TEST_CASE("Adding to non-empty list", "[page]")
+{
+}
+
+TEST_CASE("Removing from list with 5 pages", "[page]")
+{
+    SECTION("Removing first page") {
+    }
+
+    SECTION("Removing middle page") {
+    }
+
+    SECTION("Removing last page") {
+    }
+
+    SECTION("Removing all pages") {
+    }
+}
+
+TEST_CASE("Removing from list with 1 page", "[page]")
 {
 }
