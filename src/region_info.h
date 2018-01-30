@@ -35,6 +35,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 
 namespace Memory {
 
@@ -53,6 +54,12 @@ struct RegionInfo {
 void clearRegionInfo(RegionInfo& regionInfo);
 bool initRegionInfo(RegionInfo& regionInfo, Region& region, std::size_t pageSize);
 
+namespace detail {
+
+std::optional<std::uintptr_t> alignedStart(Region& region, std::size_t pageSize);
+std::optional<std::uintptr_t> alignedEnd(Region& region, std::size_t pageSize);
+
+} // namespace detail
 } // namespace Memory
 
 #endif
