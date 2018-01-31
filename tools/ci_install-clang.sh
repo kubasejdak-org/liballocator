@@ -7,12 +7,12 @@ set -ev
 VERSION=${1}
 OS=${2}
 
-if [ -z ${VERSION} ]; then
+if [ -z "${VERSION}" ]; then
     echo "No gcc version specified. Aborting."
     exit 1
 fi
 
-if [ -z ${OS} ]; then
+if [ -z "${OS}" ]; then
     echo "No host OS specified. Aborting."
     exit 2
 fi
