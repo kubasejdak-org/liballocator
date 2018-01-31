@@ -74,12 +74,14 @@ TEST_CASE("Accessing siblings works as expected", "[page]")
         page[i]->setAddress(i);
     }
 
-    SECTION("Previous sibling") {
+    SECTION("Previous sibling")
+    {
         auto* prev = page[1]->prevSibling();
         REQUIRE(prev->address() == page[0]->address());
     }
 
-    SECTION("Next sibling") {
+    SECTION("Next sibling")
+    {
         auto* next = page[1]->nextSibling();
         REQUIRE(next->address() == page[2]->address());
     }
@@ -115,8 +117,9 @@ TEST_CASE("Adding to non-empty list", "[page]")
         page[i]->addToList(&list);
     }
 
-    SECTION("All pages are in the list") {
-        bool pagePresent[pageCount] = { false };
+    SECTION("All pages are in the list")
+    {
+        bool pagePresent[pageCount] = {false};
 
         for (auto* it = list; it != nullptr; it = it->nextGroup()) {
             auto idx = it->address();
@@ -129,9 +132,10 @@ TEST_CASE("Adding to non-empty list", "[page]")
             REQUIRE(pagePresent[i]);
     }
 
-    SECTION("All pages are in correct order") {
+    SECTION("All pages are in correct order")
+    {
         int idx = pageCount - 1;
-        for (auto* it = list; it != nullptr; it = it->nextGroup(), --idx)
+        for (auto *it = list; it != nullptr; it = it->nextGroup(), --idx)
             REQUIRE(it->address() == page[idx]->address());
     }
 }
@@ -150,7 +154,8 @@ TEST_CASE("Removing from list with 5 pages", "[page]")
         page[i]->addToList(&list);
     }
 
-    SECTION("Removing first page from list") {
+    SECTION("Removing first page from list")
+    {
         int idx = 4;
         page[idx]->removeFromList(&list);
         REQUIRE(page[idx]->address() == idx);
@@ -158,7 +163,7 @@ TEST_CASE("Removing from list with 5 pages", "[page]")
         REQUIRE(page[idx]->m_prevGroup == nullptr);
 
         int i = pageCount - 1;
-        for (auto* it = list; it != nullptr; it = it->nextGroup(), --i) {
+        for (auto *it = list; it != nullptr; it = it->nextGroup(), --i) {
             if (i == idx)
                 --i;
 
@@ -166,7 +171,8 @@ TEST_CASE("Removing from list with 5 pages", "[page]")
         }
     }
 
-    SECTION("Removing middle page from list") {
+    SECTION("Removing middle page from list")
+    {
         int idx = 2;
         page[idx]->removeFromList(&list);
         REQUIRE(page[idx]->address() == idx);
@@ -174,7 +180,7 @@ TEST_CASE("Removing from list with 5 pages", "[page]")
         REQUIRE(page[idx]->m_prevGroup == nullptr);
 
         int i = pageCount - 1;
-        for (auto* it = list; it != nullptr; it = it->nextGroup(), --i) {
+        for (auto *it = list; it != nullptr; it = it->nextGroup(), --i) {
             if (i == idx)
                 --i;
 
@@ -182,7 +188,8 @@ TEST_CASE("Removing from list with 5 pages", "[page]")
         }
     }
 
-    SECTION("Removing last page from list") {
+    SECTION("Removing last page from list")
+    {
         int idx = 0;
         page[idx]->removeFromList(&list);
         REQUIRE(page[idx]->address() == idx);
@@ -190,7 +197,7 @@ TEST_CASE("Removing from list with 5 pages", "[page]")
         REQUIRE(page[idx]->m_prevGroup == nullptr);
 
         int i = pageCount - 1;
-        for (auto* it = list; it != nullptr; it = it->nextGroup(), --i) {
+        for (auto *it = list; it != nullptr; it = it->nextGroup(), --i) {
             if (i == idx)
                 --i;
 
@@ -198,7 +205,8 @@ TEST_CASE("Removing from list with 5 pages", "[page]")
         }
     }
 
-    SECTION("Removing all pages starting from first") {
+    SECTION("Removing all pages starting from first")
+    {
         for (int i = pageCount - 1; i >= 0; --i) {
             page[i]->removeFromList(&list);
             REQUIRE(page[i]->address() == i);
@@ -209,7 +217,8 @@ TEST_CASE("Removing from list with 5 pages", "[page]")
         REQUIRE(list == nullptr);
     }
 
-    SECTION("Removing all pages starting from last") {
+    SECTION("Removing all pages starting from last")
+    {
         for (int i = 0; i < pageCount; ++i) {
             page[i]->removeFromList(&list);
             REQUIRE(page[i]->address() == i);
