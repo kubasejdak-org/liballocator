@@ -7,18 +7,18 @@ set -ev
 VERSION=${1}
 OS=${2}
 
-if [ -n "${VERSION}" ]; then
-    echo "No gcc version specified. Aborting."
+if [ -z ${VERSION} ]; then
+    echo "No clang version specified. Aborting."
     exit 1
 fi
 
-if [ -n "${OS}" ]; then
+if [ -z ${OS} ]; then
     echo "No host OS specified. Aborting."
     exit 2
 fi
 
 MAJOR_VERSION=`echo ${VERSION} | cut -d . -f 1`
-echo "Installing gcc v${MAJOR_VERSION}"
+echo "Installing clang v${MAJOR_VERSION}"
 
 if [ "${OS}" == "linux" ]; then
     case "${VERSION}" in
@@ -37,4 +37,4 @@ else
     brew install llvm@${MAJOR_VERSION}
 fi
 
-echo "Installing gcc v${VERSION} OK."
+echo "Installing clang v${VERSION} OK."

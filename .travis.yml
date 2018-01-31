@@ -53,7 +53,8 @@ install:
   - export PATH=${DEPS_DIR}/cmake/bin:${PATH}
 
   # Clang-format.
-  - ci_install-clang.sh "5.0" ${TRAVIS_OS_NAME}
+  - export CLANG_FORMAT_VER=5.0
+  - ci_install-clang.sh ${CLANG_FORMAT_VER} ${TRAVIS_OS_NAME}
 
 before_script:
   # Check versions of used tools.
