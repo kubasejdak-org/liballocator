@@ -57,7 +57,7 @@ void Page::addToList(Page** list)
 void Page::removeFromList(Page** list)
 {
     assert(list);
-    assert(m_nextGroup || m_prevGroup);
+    assert(this == *list || m_nextGroup || m_prevGroup);
 
     if (m_nextGroup)
         m_nextGroup->m_prevGroup = m_prevGroup;
