@@ -74,24 +74,26 @@ bool initRegionInfo(RegionInfo& regionInfo, Region& region, std::size_t pageSize
 
 namespace detail {
 
-    std::optional<std::uintptr_t> alignedStart(Region &region, std::size_t pageSize) {
-        auto start = region.address & ~(pageSize - 1);
-        if (start < region.address)
-            start += pageSize;
+std::optional<std::uintptr_t> alignedStart(Region &region, std::size_t pageSize)
+{
+    auto start = region.address & ~(pageSize - 1);
+    if (start < region.address)
+        start += pageSize;
 
-        if (start > (region.address + region.size))
-            return {};
+    if (start > (region.address + region.size))
+        return {};
 
-        return start;
-    }
+    return start;
+}
 
-    std::optional<std::uintptr_t> alignedEnd(Region &region, std::size_t pageSize) {
-        auto end = (region.address + region.size) & ~(pageSize - 1);
-        if (end < region.address)
-            return {};
+std::optional<std::uintptr_t> alignedEnd(Region &region, std::size_t pageSize)
+{
+    auto end = (region.address + region.size) & ~(pageSize - 1);
+    if (end < region.address)
+        return {};
 
-        return end;
-    }
+    return end;
+}
 
 } // namespace detail
 } // namespace Memory
