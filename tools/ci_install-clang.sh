@@ -21,9 +21,12 @@ MAJOR_VERSION=`echo ${VERSION} | cut -d . -f 1`
 echo "Installing clang v${MAJOR_VERSION}"
 
 if [ "${OS}" == "linux" ]; then
+    wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+
     case "${VERSION}" in
     "3.9" | "4.0" | "5.0")
-        sudo add-apt-repository ppa:llvm-toolchain-trusty-${VERSION} -y
+        sudo apt-add-repository "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-${VERSION} main" -y
+        #sudo add-apt-repository ppa:llvm-toolchain-trusty-${VERSION} -y
         ;;
     *)
         echo "Unsupported clang version."
