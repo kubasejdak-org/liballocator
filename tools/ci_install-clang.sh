@@ -35,7 +35,7 @@ if [ "${OS}" == "linux" ]; then
     esac
 
     sudo apt-get update -qq
-    sudo apt-get install clang-${VERSION} -y libstdc++
+    sudo apt-get install clang-${VERSION} -y
 else
     brew install llvm@${MAJOR_VERSION}
 fi
