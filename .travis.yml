@@ -32,7 +32,7 @@ install:
   # Compiler.
   - |
     if [ "${CC}" == "gcc" ]; then
-      ci_install-gcc.sh ${COMPILER_VER} ${TRAVIS_OS_NAME}  true
+      ci_install-gcc.sh ${COMPILER_VER} ${TRAVIS_OS_NAME} 1
       #MAJOR_VER=`echo ${COMPILER_VER} | cut -d . -f 1`
       #export CC=gcc-${MAJOR_VER}
       #export CXX=g++-${MAJOR_VER}
