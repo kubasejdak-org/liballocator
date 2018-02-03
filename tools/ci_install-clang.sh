@@ -36,8 +36,6 @@ if [ "${OS}" == "linux" ]; then
     sudo apt-get update -qq
     sudo apt-get install clang-${VERSION} -y
 else
-    brew update
-    brew upgrade
     brew install llvm@${MAJOR_VERSION}
 
     echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> ~/.bash_profile
