@@ -7,9 +7,9 @@ matrix:
     - os: linux
       compiler: gcc
       env: COMPILER_VER=7.2.0 CMAKE_VER=3.10.2
-    - os: linux
-      compiler: clang
-      env: COMPILER_VER=5.0 CMAKE_VER=3.10.2
+    #- os: linux
+    #  compiler: clang
+    #  env: COMPILER_VER=5.0 CMAKE_VER=3.10.2
     #- os: osx
     #  osx_image: xcode9.2
     #  compiler: gcc
@@ -53,13 +53,13 @@ install:
   - export PATH=${DEPS_DIR}/cmake/bin:${PATH}
 
   # Clang-format.
-  - ci_install-clang.sh 5.0 ${TRAVIS_OS_NAME}
+  #- ci_install-clang.sh 5.0 ${TRAVIS_OS_NAME}
 
 before_script:
   # Check versions of used tools.
   - ${CXX} --version
   - cmake --version
-  - clang-format --version
+  #- clang-format --version
 
   - cd ${TRAVIS_BUILD_DIR}
 
@@ -72,4 +72,4 @@ script:
 
 after_script:
   # Check code format using clang-format.
-  - ci_format.sh .
+  #- ci_format.sh .
