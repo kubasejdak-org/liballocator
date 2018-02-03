@@ -1,7 +1,6 @@
 #!/bin/bash
 # $1 - gcc version to be installed (e.g. 3.8.2)
 # $2 - Host OS (Linux or macOS)
-# $3 - export compiler
 
 set -ev
 
@@ -11,7 +10,6 @@ if [ "${2}" == "linux" ]; then
 elif [ "${2}" == "osx" ]; then
     OS="mac"
 fi
-EXPORT=${3}
 
 if [ -z ${VERSION} ]; then
     echo "No gcc version specified. Aborting."
@@ -34,11 +32,6 @@ else
     # Workaround for Travis macOS image problem.
     brew cask uninstall --force oclint
     brew install gcc@${MAJOR_VERSION}
-fi
-
-if [ -z ${EXPORT} ]; then
-    echo 'export CC=gcc-${MAJOR_VERSION}' >> ~/.bash_profile
-    echo 'export CXX=g++-${MAJOR_VERSION}' >> ~/.bash_profile
 fi
 
 echo "Installing gcc v${MAJOR_VERSION} OK."
