@@ -9,7 +9,7 @@ matrix:
       env: COMPILER_VER=7.2.0 CMAKE_VER=3.10.2
     - os: linux
       compiler: clang
-      env: COMPILER_VER=5.0 CMAKE_VER=3.10.2
+      env: COMPILER_VER=6.0 CMAKE_VER=3.10.2
     #- os: osx
     #  osx_image: xcode9.2
     #  compiler: gcc
