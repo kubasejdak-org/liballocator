@@ -40,7 +40,7 @@ install:
       ci_install-clang.sh ${COMPILER_VER} ${TRAVIS_OS_NAME}
       MAJOR_VER=`echo ${COMPILER_VER} | cut -d . -f 1-2`
       export CC=clang-${MAJOR_VER}
-      export CXX=clang++
+      export CXX=clang-${MAJOR_VER}
     else
       ci_install-gcc-embedded.sh ${COMPILER_VER} ${TRAVIS_OS_NAME}
       export CC=arm-none-eabi-gcc
