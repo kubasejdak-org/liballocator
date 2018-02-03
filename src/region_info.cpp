@@ -70,6 +70,8 @@ bool initRegionInfo(RegionInfo& regionInfo, Region& region, std::size_t pageSize
     regionInfo.alignedSize = regionInfo.pageCount * pageSize;
     regionInfo.firstPage = nullptr;
     regionInfo.lastPage = nullptr;
+
+    return true;
 }
 
 namespace detail {

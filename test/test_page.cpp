@@ -123,8 +123,7 @@ TEST_CASE("Adding to non-empty list", "[page]")
 
         for (auto* it = list; it != nullptr; it = it->nextGroup()) {
             auto idx = it->address();
-            bool validIdx = (idx >= 0 && idx < pageCount);
-            REQUIRE(validIdx);
+            REQUIRE(idx < pageCount);
             pagePresent[idx] = true;
         }
 
