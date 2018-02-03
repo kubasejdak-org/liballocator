@@ -40,3 +40,116 @@ using namespace Memory;
 TEST_CASE("Page allocator is properly cleared", "[page_allocator]")
 {
 }
+
+TEST_CASE("Pages are correctly counted", "[page_allocator]")
+{
+    SECTION("All regions are cleared")
+    {
+    }
+
+    SECTION("Regions: 1(1)")
+    {
+    }
+
+    SECTION("Regions: 1(535), 2(87), 3(4)")
+    {
+    }
+
+    SECTION("All regions have 5 pages")
+    {
+    }
+}
+
+TEST_CASE("Region where page descriptors are stored is properly selected", "[page_allocator]")
+{
+    SECTION("Regions: 1(1)")
+    {
+    }
+
+    SECTION("Regions: 1(535), 2(87), 3(4)")
+    {
+    }
+
+    SECTION("All regions have 5 pages")
+    {
+    }
+
+    SECTION("Selected region is completly filled")
+    {
+    }
+}
+
+TEST_CASE("Pages with page descriptors are properly reserved", "[page_allocator]")
+{
+    SECTION("All descriptors lay on 1 page in first region")
+    {
+    }
+
+    SECTION("All descriptors lay on 3 pages in first region")
+    {
+    }
+
+    SECTION("All descriptors lay on 1 page in third region")
+    {
+    }
+
+    SECTION("All descriptors lay on 3 pages in third region")
+    {
+    }
+}
+
+TEST_CASE("Group index is properly computed", "[page_allocator]")
+{
+}
+
+TEST_CASE("Group is properly initialized", "[page_allocator]")
+{
+    SECTION("Group has 1 page")
+    {
+    }
+
+    SECTION("Group has 5 pages")
+    {
+    }
+}
+
+TEST_CASE("Group is properly cleared", "[page_allocator]")
+{
+    SECTION("Group has 1 page")
+    {
+    }
+
+    SECTION("Group has 5 pages")
+    {
+    }
+}
+
+TEST_CASE("Group is properly added to list", "[page_allocator]")
+{
+    SECTION("Group is stored at index 0")
+    {
+    }
+
+    SECTION("Group is stored at index 4")
+    {
+    }
+}
+
+TEST_CASE("Group is properly removed from list", "[page_allocator]")
+{
+    SECTION("Group is stored at index 0")
+    {
+    }
+
+    SECTION("Group is stored at index 4")
+    {
+    }
+}
+
+// TODO:
+// - tests for splitting group
+// - tests for joining groups
+// - tests for initialization
+// - tests for allocation
+// - tests for releasing
+// - integration tests (long-term)

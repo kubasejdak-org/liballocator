@@ -28,6 +28,7 @@
 
 #include "page_allocator.h"
 
+#include <cassert>
 #include <cmath>
 
 namespace Memory {
@@ -258,6 +259,7 @@ void PageAllocator::removeGroup(Page* group)
 
 std::tuple<Page*, Page*> PageAllocator::splitGroup(Page* group, std::size_t size)
 {
+    assert(size < group->groupSize());
     std::size_t secondSize = group->groupSize() - size;
     clearGroup(group);
 
