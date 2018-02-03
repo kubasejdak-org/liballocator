@@ -26,7 +26,6 @@ if [ "${OS}" == "linux" ]; then
     case "${VERSION}" in
     "3.9" | "4.0" | "5.0" | "6.0")
         sudo apt-add-repository "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-${VERSION} main" -y
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
         ;;
     *)
         echo "Unsupported clang version."
@@ -35,7 +34,7 @@ if [ "${OS}" == "linux" ]; then
     esac
 
     sudo apt-get update -qq
-    sudo apt-get install clang-${VERSION} libstdc++-6-dev -y
+    sudo apt-get install clang-${VERSION} -y
 else
     brew install llvm@${MAJOR_VERSION}
 fi

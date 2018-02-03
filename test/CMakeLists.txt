@@ -23,8 +23,7 @@ set(CMAKE_BUILD_TYPE Debug)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 
 # List project configuration.
-message(STATUS "Project configuration:")
-message(STATUS "  Build type : " ${CMAKE_BUILD_TYPE})
+show_build_configuration()
 
 #################################################################################################################
 # OTHER SETTINGS
