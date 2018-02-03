@@ -56,8 +56,8 @@ install:
   - ci_install-clang.sh 5.0 ${TRAVIS_OS_NAME}
 
 before_script:
-  - |
   # Import .bash_profile.
+  - |
     if [ -f ~/.bash_profile ]; then
       source ~/.bash_profile
     fi
