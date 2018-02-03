@@ -59,7 +59,7 @@ before_script:
   # Check versions of used tools.
   - ${CXX} --version
   - cmake --version
-  #- clang-format --version
+  - clang-format --version
 
   - cd ${TRAVIS_BUILD_DIR}
 
@@ -72,4 +72,4 @@ script:
 
 after_script:
   # Check code format using clang-format.
-  #- ci_format.sh .
+  - ci_format.sh .

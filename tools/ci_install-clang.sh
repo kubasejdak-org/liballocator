@@ -26,7 +26,7 @@ if [ "${OS}" == "linux" ]; then
     case "${VERSION}" in
     "3.9" | "4.0" | "5.0")
         sudo apt-add-repository "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-${VERSION} main" -y
-        #sudo add-apt-repository ppa:llvm-toolchain-trusty-${VERSION} -y
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
         ;;
     *)
         echo "Unsupported clang version."
