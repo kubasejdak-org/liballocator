@@ -30,6 +30,7 @@
 
 #include <region_info.h>
 
+#include <array>
 #include <cstddef>
 #include <cstring>
 

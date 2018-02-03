@@ -48,6 +48,11 @@ install:
       export PATH=${DEPS_DIR}/gcc-embedded/bin:${PATH}
     fi
 
+    # Import .bash_profile.
+    if [ -f ~/.bash_aliases ]; then
+    	source ~/.bash_aliases
+    fi
+
   # CMake.
   - ci_install-cmake.sh ${CMAKE_VER} ${TRAVIS_OS_NAME}
   - export PATH=${DEPS_DIR}/cmake/bin:${PATH}
