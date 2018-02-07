@@ -33,9 +33,9 @@ install:
   - |
     if [ "${CC}" == "gcc" ]; then
       ci_install-gcc.sh ${COMPILER_VER} ${TRAVIS_OS_NAME}
-      MAJOR_VER=`echo ${COMPILER_VER} | cut -d . -f 1`
-      export CC=gcc-${MAJOR_VER}
-      export CXX=g++-${MAJOR_VER}
+  # MAJOR_VER=`echo ${COMPILER_VER} | cut -d . -f 1`
+  # export CC=gcc-${MAJOR_VER}
+  # export CXX=g++-${MAJOR_VER}
     elif [ "${CC}" == "clang" ]; then
       ci_install-clang.sh ${COMPILER_VER} ${TRAVIS_OS_NAME}
       MAJOR_VER=`echo ${COMPILER_VER} | cut -d . -f 1-2`
@@ -50,7 +50,6 @@ install:
 
   # CMake.
   - ci_install-cmake.sh ${CMAKE_VER} ${TRAVIS_OS_NAME}
-  #- export PATH=${DEPS_DIR}/cmake/bin:${PATH}
 
   # Clang-format.
   - ci_install-clang.sh 5.0 ${TRAVIS_OS_NAME}
