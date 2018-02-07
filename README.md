@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ksejdak/zone-allocator.svg?branch=master)](https://travis-ci.org/ksejdak/zone-allocator)
+
 # zone-allocator
 
 The purpose of this project is to provide a convinient and fairly robust mechnism for memory allocation for embedded environments in C++. It is based on FreeBSD's UMA (Universal Memory Allocator), called the zone allocator and some concepts taken from SLAB allocator.
