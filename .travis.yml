@@ -62,6 +62,9 @@ before_script:
   - ${CXX} --version
   - cmake --version
   - clang-format --version
+  - which ${CXX}
+  - which cmake
+  - which clang-format
 
   - cd ${TRAVIS_BUILD_DIR}
 
