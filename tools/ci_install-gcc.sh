@@ -34,7 +34,7 @@ else
     brew install gcc@${MAJOR_VERSION}
 fi
 
-echo 'export CC="gcc-${MAJOR_VERSION}"' >> ~/.bash_profile
-echo 'export CXX="g++-${MAJOR_VERSION}"' >> ~/.bash_profile
+echo "export CC=gcc-${MAJOR_VERSION}" >> ~/.bash_profile
+echo "export CXX=g++-${MAJOR_VERSION}" >> ~/.bash_profile
 
 echo "Installing gcc v${MAJOR_VERSION} OK."
