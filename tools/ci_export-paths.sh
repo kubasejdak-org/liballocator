@@ -4,6 +4,7 @@ set -ev
 
 EXPORTS_FILE="~/path_exports"
 
+ls ~
 if [ ! -f "~/path_exports" ]; then
     echo "No ~/path_exports file found. Skipping."
     exit 0
