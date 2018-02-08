@@ -46,7 +46,7 @@ install:
   - ci_install-cmake.sh ${CMAKE_VER} ${TRAVIS_OS_NAME}
 
   # Clang-format.
-  - ci_install-clang.sh 5.0 ${TRAVIS_OS_NAME}
+  - ci_install-clang.sh 5.0 ${TRAVIS_OS_NAME} false
 
 before_script:
   # Import .bash_profile.
