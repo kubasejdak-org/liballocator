@@ -41,6 +41,8 @@ fi
 mkdir -p cmake
 tar --strip-components=1 -xf ${PACKAGE_BIN_NAME} -C cmake
 
+ls ~
 echo "${PWD}/cmake/bin" >> ~/path_exports
+ls ~
 
 echo "Installing CMake v${VERSION} OK."
