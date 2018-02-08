@@ -40,9 +40,6 @@ install:
       export CXX=clang-${MAJOR_VER}
     else
       ci_install-gcc-embedded.sh ${COMPILER_VER} ${TRAVIS_OS_NAME}
-      export CC=arm-none-eabi-gcc
-      export CXX=arm-none-eabi-g++
-      export PATH=${DEPS_DIR}/gcc-embedded/bin:${PATH}
     fi
 
   # CMake.
@@ -55,7 +52,6 @@ before_script:
   # Import .bash_profile.
   - |
     if [ -f ~/.bash_profile ]; then
-      cat ~/.bash_profile
       source ~/.bash_profile
     fi
 
