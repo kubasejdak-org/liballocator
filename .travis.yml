@@ -5,15 +5,13 @@ group: travis_latest
 matrix:
   include:
     - os: linux
-      compiler: gcc
-      env: COMPILER_VER=7 CMAKE_VER=3.10.2
+      env: COMPILER=gcc COMPILER_VER=7 CMAKE_VER=3.10.2
     #- os: linux
     #  compiler: clang
     #  env: COMPILER_VER=5.0 CMAKE_VER=3.10.2
     - os: osx
       osx_image: xcode9.2
-      compiler: gcc
-      env: COMPILER_VER=7 CMAKE_VER=3.10.2
+      env: COMPILER=gcc COMPILER_VER=7 CMAKE_VER=3.10.2
     #- os: osx
     #  osx_image: xcode9.2
     #  compiler: clang
@@ -29,23 +27,8 @@ before_install:
   - cd ${DEPS_DIR}
 
 install:
-  # Compiler.
-  - |
-    if [ "${CC}" == "gcc" ]; then
-      ci_install-gcc.sh ${COMPILER_VER} ${TRAVIS_OS_NAME}
-    elif [ "${CC}" == "clang" ]; then
-      ci_install-clang.sh ${COMPILER_VER} ${TRAVIS_OS_NAME}
-      MAJOR_VER=`echo ${COMPILER_VER} | cut -d . -f 1-2`
-      export CC=clang-${MAJOR_VER}
-      export CXX=clang-${MAJOR_VER}
-    else
-      ci_install-gcc-embedded.sh ${COMPILER_VER} ${TRAVIS_OS_NAME}
-    fi
-
-  # CMake.
+  - ci_install-${COMPILER}.sh ${COMPILER_VER} ${TRAVIS_OS_NAME}
   - ci_install-cmake.sh ${CMAKE_VER} ${TRAVIS_OS_NAME}
-
-  # Clang-format.
   - ci_install-clang.sh 5.0 ${TRAVIS_OS_NAME} false
 
 before_script:
