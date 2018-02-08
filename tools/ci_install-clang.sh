@@ -1,11 +1,13 @@
 #!/bin/bash
 # $1 - clang version to be installed (e.g. 3.8.2)
 # $2 - Host OS (Linux or macOS)
+# $3 - Export CC flag (true/false)
 
 set -ev
 
 VERSION=${1}
 OS=${2}
+EXPORT=${3}
 
 if [ -z ${VERSION} ]; then
     echo "No clang version specified. Aborting."
@@ -15,6 +17,11 @@ fi
 if [ -z ${OS} ]; then
     echo "No host OS specified. Aborting."
     exit 2
+fi
+
+if [ -z ${EXPORT} ]; then
+    echo "No export CC flag specified. Using 'true' by default."
+    EXPORT=true
 fi
 
 echo "Installing clang v${VERSION}"
@@ -41,7 +48,9 @@ else
     echo "export PATH=/usr/local/opt/llvm/bin:${PATH}" >> ~/.bash_profile
 fi
 
-echo "export CC=clang-${VERSION}" >> ~/.bash_profile
-echo "export CXX=clang-${VERSION}" >> ~/.bash_profile
+if [ "${EXPORT}" == "true" ]; then
+    echo "export CC=clang-${VERSION}" >> ~/.bash_profile
+    echo "export CXX=clang-${VERSION}" >> ~/.bash_profile
+fi
 
 echo "Installing clang v${VERSION} OK."
