@@ -30,6 +30,7 @@ install:
   - ci_install-clang.sh 5.0 ${TRAVIS_OS_NAME} false
 
 before_script:
+  - cat ~/path_exports
   - ci_export-paths.sh
   - source ~/.bash_profile
   - echo $PATH
