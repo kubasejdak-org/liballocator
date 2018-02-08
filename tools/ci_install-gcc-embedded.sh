@@ -28,7 +28,7 @@ fi
 echo "Installing arm-none-eabi-gcc v${VERSION}"
 
 case "${VERSION}" in
-    "7.2")
+    "7")
         PACKAGE_NAME="gcc-arm-none-eabi-7-2017-q4-major"
         PACKAGE_BIN_NAME="${PACKAGE_NAME}-${OS}.tar.bz2"
         if [ "${OS}" == "linux" ]; then
@@ -51,5 +51,9 @@ fi
 
 mkdir -p gcc
 tar --strip-components=1 -xf ${PACKAGE_BIN_NAME} -C gcc-embedded
+
+echo "export CC=arm-none-eabi-gcc" >> ~/.bash_profile
+echo "export CXX=arm-none-eabi-g++" >> ~/.bash_profile
+echo "export PATH=${PWD}/gcc-embedded/bin:${PATH}" >> ~/.bash_profile
 
 echo "Installing arm-none-eabi-gcc v${VERSION} OK."
