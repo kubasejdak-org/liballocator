@@ -1,6 +1,7 @@
 #!/bin/bash
 # $1 - gcc major version to be installed (e.g. 7)
 # $2 - Host OS (Linux or macOS)
+# $3 - Export CC flag (true/false)
 
 set -ev
 
@@ -10,6 +11,7 @@ if [ "${2}" == "linux" ]; then
 elif [ "${2}" == "osx" ]; then
     OS="mac"
 fi
+EXPORT=${3}
 
 if [ -z ${VERSION} ]; then
     echo "No gcc version specified. Aborting."
@@ -19,6 +21,11 @@ fi
 if [ -z ${OS} ]; then
     echo "No host OS specified. Aborting."
     exit 2
+fi
+
+if [ -z ${EXPORT} ]; then
+    echo "No export CC flag specified. Using 'true' by default."
+    EXPORT=true
 fi
 
 echo "Installing gcc v${VERSION}"
@@ -33,7 +40,9 @@ else
     brew install gcc@${VERSION}
 fi
 
-echo "export CC=gcc-${VERSION}" >> ~/.bash_profile
-echo "export CXX=g++-${VERSION}" >> ~/.bash_profile
+if [ "${EXPORT}" == "true" ]; then
+    echo "export CC=gcc-${VERSION}" >> ~/.bash_profile
+    echo "export CXX=g++-${VERSION}" >> ~/.bash_profile
+fi
 
 echo "Installing gcc v${VERSION} OK."
