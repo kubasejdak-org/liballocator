@@ -2,7 +2,7 @@
 
 set -ev
 
-EXPORTS_FILE="{$HOME}/path_exports"
+EXPORTS_FILE="${HOME}/path_exports"
 
 ls ~
 if [ ! -f ${EXPORTS_FILE} ]; then
