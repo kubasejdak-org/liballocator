@@ -33,7 +33,7 @@ before_script:
   - cat ~/path_exports
   - ci_export-paths.sh
   - cat ~/.bash_profile
-  - source ~/.bash_profile
+  - source ${HOME}/.bash_profile
   - echo $PATH
 
   # Check versions of used tools.
