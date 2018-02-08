@@ -1,6 +1,7 @@
 #!/bin/bash
 # $1 - arm-none-eabi-gcc version to be installed (e.g. 3.8.2)
 # $2 - Host OS (Linux or macOS)
+# $3 - Export CC flag (true/false)
 
 set -ev
 
@@ -10,6 +11,7 @@ if [ "${2}" == "linux" ]; then
 elif [ "${2}" == "osx" ]; then
     OS="mac"
 fi
+EXPORT=${3}
 
 if [ -z ${VERSION} ]; then
     echo "No arm-none-eabi-gcc version specified. Aborting."
@@ -19,6 +21,11 @@ fi
 if [ -z ${OS} ]; then
     echo "No host OS specified. Aborting."
     exit 2
+fi
+
+if [ -z ${EXPORT} ]; then
+    echo "No export CC flag specified. Using 'true' by default."
+    EXPORT=true
 fi
 
 if [ -d gcc ]; then
@@ -52,8 +59,12 @@ fi
 mkdir -p gcc
 tar --strip-components=1 -xf ${PACKAGE_BIN_NAME} -C gcc-embedded
 
-echo "export CC=arm-none-eabi-gcc" >> ~/.bash_profile
-echo "export CXX=arm-none-eabi-g++" >> ~/.bash_profile
+if [ "${EXPORT}" == "true" ]; then
+    echo "export CC=arm-none-eabi-gcc" >> ~/.bash_profile
+    echo "export CXX=arm-none-eabi-g++" >> ~/.bash_profile
+fi
+
 echo "export PATH=${PWD}/gcc-embedded/bin:${PATH}" >> ~/.bash_profile
+echo "${PWD}/gcc-embedded/bin" >> ~/path_export
 
 echo "Installing arm-none-eabi-gcc v${VERSION} OK."
