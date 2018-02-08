@@ -55,6 +55,7 @@ before_script:
   # Import .bash_profile.
   - |
     if [ -f ~/.bash_profile ]; then
+      cat ~/.bash_profile
       source ~/.bash_profile
     fi
 
