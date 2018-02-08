@@ -38,7 +38,7 @@ if [ "${OS}" == "linux" ]; then
 else
     brew install llvm@${MAJOR_VERSION}
 
-    echo "export PATH=/usr/local/opt/llvm/bin:$PATH" >> ~/.bash_profile
+    echo "export PATH=/usr/local/opt/llvm/bin:${PATH}" >> ~/.bash_profile
 fi
 
 echo "Installing clang v${VERSION} OK."
