@@ -2,7 +2,7 @@
 
 set -ev
 
-EXPORTS_FILE="~/path_export"
+EXPORTS_FILE="~/path_exports"
 
 if [ ! -f ${EXPORTS_FILE} ]; then
     echo "No ${EXPORTS_FILE} file found. Skipping."

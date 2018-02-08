@@ -64,7 +64,6 @@ if [ "${EXPORT}" == "true" ]; then
     echo "export CXX=arm-none-eabi-g++" >> ~/.bash_profile
 fi
 
-echo "export PATH=${PWD}/gcc-embedded/bin:${PATH}" >> ~/.bash_profile
-echo "${PWD}/gcc-embedded/bin" >> ~/path_export
+echo "${PWD}/gcc-embedded/bin" >> ~/path_exports
 
 echo "Installing arm-none-eabi-gcc v${VERSION} OK."

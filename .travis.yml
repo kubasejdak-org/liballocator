@@ -32,6 +32,7 @@ install:
 before_script:
   - ci_export-paths.sh
   - source ~/.bash_profile
+  - echo $PATH
 
   # Check versions of used tools.
   - ${CXX} --version

@@ -45,8 +45,7 @@ else
     MAJOR_VERSION=`echo ${VERSION} | cut -d . -f 1`
     brew install llvm@${MAJOR_VERSION}
 
-    echo "export PATH=/usr/local/opt/llvm/bin:${PATH}" >> ~/.bash_profile
-    echo "/usr/local/opt/llvm/bin" >> ~/path_export
+    echo "/usr/local/opt/llvm/bin" >> ~/path_exports
 fi
 
 if [ "${EXPORT}" == "true" ]; then
