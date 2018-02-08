@@ -1,5 +1,5 @@
 #!/bin/bash
-# $1 - gcc version to be installed (e.g. 3.8.2)
+# $1 - gcc major version to be installed (e.g. 7)
 # $2 - Host OS (Linux or macOS)
 
 set -ev
@@ -21,20 +21,19 @@ if [ -z ${OS} ]; then
     exit 2
 fi
 
-MAJOR_VERSION=`echo ${VERSION} | cut -d . -f 1`
-echo "Installing gcc v${MAJOR_VERSION}"
+echo "Installing gcc v${VERSION}"
 
 if [ "${OS}" == "linux" ]; then
     sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
     sudo apt-get update -qq
-    sudo apt-get install gcc-${MAJOR_VERSION} g++-${MAJOR_VERSION} -y
+    sudo apt-get install gcc-${VERSION} g++-${VERSION} -y
 else
     # Workaround for Travis macOS image problem.
     brew cask uninstall --force oclint
-    brew install gcc@${MAJOR_VERSION}
+    brew install gcc@${VERSION}
 fi
 
-echo "export CC=gcc-${MAJOR_VERSION}" >> ~/.bash_profile
-echo "export CXX=g++-${MAJOR_VERSION}" >> ~/.bash_profile
+echo "export CC=gcc-${VERSION}" >> ~/.bash_profile
+echo "export CXX=g++-${VERSION}" >> ~/.bash_profile
 
-echo "Installing gcc v${MAJOR_VERSION} OK."
+echo "Installing gcc v${VERSION} OK."
