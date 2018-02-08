@@ -17,8 +17,7 @@ if [ -z ${OS} ]; then
     exit 2
 fi
 
-MAJOR_VERSION=`echo ${VERSION} | cut -d . -f 1`
-echo "Installing clang v${MAJOR_VERSION}"
+echo "Installing clang v${VERSION}"
 
 if [ "${OS}" == "linux" ]; then
     wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
@@ -36,9 +35,13 @@ if [ "${OS}" == "linux" ]; then
     sudo apt-get update -qq
     sudo apt-get install clang-${VERSION} -y
 else
+    MAJOR_VERSION=`echo ${VERSION} | cut -d . -f 1`
     brew install llvm@${MAJOR_VERSION}
 
     echo "export PATH=/usr/local/opt/llvm/bin:${PATH}" >> ~/.bash_profile
 fi
+
+echo "export CC=clang-${VERSION}" >> ~/.bash_profile
+echo "export CXX=clang-${VERSION}" >> ~/.bash_profile
 
 echo "Installing clang v${VERSION} OK."
