@@ -6,8 +6,8 @@ matrix:
   include:
     - os: linux
       env: COMPILER=gcc COMPILER_VER=7 CMAKE_VER=3.10.2
-    #- os: linux
-    #  env: COMPILER=clang COMPILER_VER=5.0 CMAKE_VER=3.10.2
+    - os: linux
+      env: COMPILER=clang COMPILER_VER=5.0 CMAKE_VER=3.10.2
     - os: osx
       osx_image: xcode9.2
       env: COMPILER=gcc COMPILER_VER=7 CMAKE_VER=3.10.2
