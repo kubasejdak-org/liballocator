@@ -41,8 +41,10 @@ fi
 mkdir -p cmake
 tar --strip-components=1 -xf ${PACKAGE_BIN_NAME} -C cmake
 
-ls -l
-ls -l ${PWD}/cmake
-echo "${PWD}/cmake/bin" >> ~/path_exports
+if [ "${OS}" == "Linux" ]; then
+    echo "${PWD}/cmake/bin" >> ~/path_exports
+else
+    echo "${PWD}/CMake.app/Contents/bin" >> ~/path_exports
+fi
 
 echo "Installing CMake v${VERSION} OK."
