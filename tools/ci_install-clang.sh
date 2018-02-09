@@ -41,10 +41,10 @@ if [ "${OS}" == "linux" ]; then
     esac
 
     sudo apt-get update -qq
-    sudo apt-get install clang-${VERSION} libstdc++-6-dev -y
+    sudo apt-get install clang-${VERSION} libstdc++-7-dev -y
 else
     MAJOR_VERSION=`echo ${VERSION} | cut -d . -f 1`
-    brew install llvm@${MAJOR_VERSION}
+    brew install llvm@${MAJOR_VERSION} gcc@7
 
     echo "/usr/local/opt/llvm/bin" >> ~/path_exports
 fi
