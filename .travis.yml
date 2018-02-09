@@ -30,19 +30,13 @@ install:
   - ci_install-clang.sh 5.0 ${TRAVIS_OS_NAME} false
 
 before_script:
-  - cat ~/path_exports
   - ci_export-paths.sh
-  - cat ~/.bash_profile
   - source ${HOME}/.bash_profile
-  - echo $PATH
 
   # Check versions of used tools.
   - ${CXX} --version
   - cmake --version
   - clang-format --version
-  - which ${CXX}
-  - which cmake
-  - which clang-format
 
   - cd ${TRAVIS_BUILD_DIR}
 
