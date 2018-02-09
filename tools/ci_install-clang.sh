@@ -41,7 +41,7 @@ if [ "${OS}" == "linux" ]; then
     esac
 
     sudo apt-get update -qq
-    sudo apt-get install clang-${VERSION} libc++-dev -y
+    sudo apt-get install clang-${VERSION} libstdc++-7-dev -y
 else
     MAJOR_VERSION=`echo ${VERSION} | cut -d . -f 1`
     # Workaround for Travis macOS image problem.
