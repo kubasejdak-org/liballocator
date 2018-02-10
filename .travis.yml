@@ -34,7 +34,6 @@ before_script:
   - source ${HOME}/.bash_profile
 
   # Check versions of used tools.
-  - ${CXX} --version
   - cmake --version
   - clang-format --version
 
