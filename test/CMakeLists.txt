@@ -21,8 +21,6 @@ set(ALLOCATOR_SRC_PATH ${CMAKE_SOURCE_DIR}/src)
 
 set(CMAKE_BUILD_TYPE Debug)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
-#set(CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS} -L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib" )
-#set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib" )
 
 # List project configuration.
 show_build_configuration()
