@@ -51,7 +51,7 @@ fi
 
 if [ "${EXPORT}" == "true" ]; then
     echo "export CC=clang-${VERSION}" >> ~/.bash_profile
-    echo "export CXX=clang-${VERSION}" >> ~/.bash_profile
+    echo "export CXX=clang++" >> ~/.bash_profile
 fi
 
 echo "Installing clang v${VERSION} OK."
