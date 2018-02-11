@@ -17,19 +17,19 @@ matrix:
 
 before_install:
   # Add CI scripts to PATH.
-  - export PATH=${TRAVIS_BUILD_DIR}/tools:${PATH}
+  - export PATH=${TRAVIS_BUILD_DIR}/tools/ci:${PATH}
 
   # Create path for dependencies.
   - mkdir -p deps
   - cd deps
 
 install:
-  - ci/install-${COMPILER}.sh ${COMPILER_VER} ${TRAVIS_OS_NAME}
-  - ci/install-cmake.sh ${CMAKE_VER} ${TRAVIS_OS_NAME}
-  - ci/install-clang.sh 5.0 ${TRAVIS_OS_NAME} false
+  - install-${COMPILER}.sh ${COMPILER_VER} ${TRAVIS_OS_NAME}
+  - install-cmake.sh ${CMAKE_VER} ${TRAVIS_OS_NAME}
+  - install-clang.sh 5.0 ${TRAVIS_OS_NAME} false
 
 before_script:
-  - ci/export-paths.sh
+  - export-paths.sh
   - source ${HOME}/.bash_profile
 
   # Check versions of used tools.
@@ -47,4 +47,4 @@ script:
 
 after_script:
   # Check code format using clang-format.
-  - ci/check-format.sh .
+  - check-format.sh .

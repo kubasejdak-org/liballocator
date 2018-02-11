@@ -6,7 +6,7 @@ if [ -z ${1} ]; then
     exit 1
 fi
 
-code/check-format.sh ${1}
+tools/code/check-format.sh ${1}
 if [ ${?} -ne 0 ]; then
     echo "Failed to run check_format.sh script."
     exit 2
