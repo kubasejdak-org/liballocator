@@ -20,19 +20,16 @@ before_install:
   - export PATH=${TRAVIS_BUILD_DIR}/tools:${PATH}
 
   # Create path for dependencies.
-  #- DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
-  #- mkdir -p ${DEPS_DIR}
-  #- cd ${DEPS_DIR}
   - mkdir -p deps
   - cd deps
 
 install:
-  - ci_install-${COMPILER}.sh ${COMPILER_VER} ${TRAVIS_OS_NAME}
-  - ci_install-cmake.sh ${CMAKE_VER} ${TRAVIS_OS_NAME}
-  - ci_install-clang.sh 5.0 ${TRAVIS_OS_NAME} false
+  - ci/install-${COMPILER}.sh ${COMPILER_VER} ${TRAVIS_OS_NAME}
+  - ci/install-cmake.sh ${CMAKE_VER} ${TRAVIS_OS_NAME}
+  - ci/install-clang.sh 5.0 ${TRAVIS_OS_NAME} false
 
 before_script:
-  - ci_export-paths.sh
+  - ci/export-paths.sh
   - source ${HOME}/.bash_profile
 
   # Check versions of used tools.
@@ -50,4 +47,4 @@ script:
 
 after_script:
   # Check code format using clang-format.
-  - ci_format.sh .
+  - ci/check-format.sh .

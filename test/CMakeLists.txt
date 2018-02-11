@@ -3,7 +3,7 @@
 #################################################################################################################
 
 # Additional user defined macros.
-include(${CMAKE_SOURCE_DIR}/cmake/macros.cmake)
+include(${CMAKE_SOURCE_DIR}/tools/cmake/macros.cmake)
 
 #################################################################################################################
 # PROJECT SETTINGS
