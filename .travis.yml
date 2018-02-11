@@ -20,9 +20,11 @@ before_install:
   - export PATH=${TRAVIS_BUILD_DIR}/tools:${PATH}
 
   # Create path for dependencies.
-  - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
-  - mkdir -p ${DEPS_DIR}
-  - cd ${DEPS_DIR}
+  #- DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+  #- mkdir -p ${DEPS_DIR}
+  #- cd ${DEPS_DIR}
+  - mkdir -p deps
+  - cd deps
 
 install:
   - ci_install-${COMPILER}.sh ${COMPILER_VER} ${TRAVIS_OS_NAME}
