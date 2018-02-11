@@ -17,10 +17,7 @@ matrix:
 
 before_install:
   # Add CI scripts to PATH.
-  - export PATH=${TRAVIS_BUILD_DIR}/tools_old/ci:${PATH}
-
-  - ls
-  - if [ -d tools ]; then ls tools; fi
+  - export PATH=${TRAVIS_BUILD_DIR}/tools/ci:${PATH}
 
   # Create path for dependencies.
   - mkdir -p deps
