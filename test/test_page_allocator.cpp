@@ -27,6 +27,7 @@
 ////////////////////////////////////////////////////////////////////////////////////
 
 #include "catch.hpp"
+#include "utils.h"
 
 // Make access to private members for testing.
 // clang-format off
@@ -35,28 +36,115 @@
 
 #include <page_allocator.h>
 
+#include <cstdlib>
+#include <cstring>
+
 using namespace Memory;
 
 TEST_CASE("Page allocator is properly cleared", "[page_allocator]")
 {
+    PageAllocator pageAllocator;
+    std::memset(&pageAllocator, 0x5a, sizeof(PageAllocator));
+
+    pageAllocator.clear();
+    for (const auto& region : pageAllocator.m_regionsInfo) {
+        REQUIRE(region.start == 0);
+        REQUIRE(region.end == 0);
+        REQUIRE(region.alignedStart == 0);
+        REQUIRE(region.alignedEnd == 0);
+        REQUIRE(region.pageCount == 0);
+        REQUIRE(region.size == 0);
+        REQUIRE(region.alignedSize == 0);
+        REQUIRE(region.firstPage == nullptr);
+        REQUIRE(region.lastPage == nullptr);
+    }
+    REQUIRE(pageAllocator.m_validRegionsCount == 0);
+    REQUIRE(pageAllocator.m_pagesHead == nullptr);
+    REQUIRE(pageAllocator.m_pagesTail == nullptr);
+    for (const auto* page : pageAllocator.m_freeGroupLists)
+        REQUIRE(page == nullptr);
+    REQUIRE(pageAllocator.m_pagesCount == 0);
+    REQUIRE(pageAllocator.m_freePagesCount == 0);
 }
 
 TEST_CASE("Pages are correctly counted", "[page_allocator]")
 {
-    SECTION("All regions are cleared")
-    {
-    }
+    std::size_t pageSize = 256;
+    PageAllocator pageAllocator;
 
     SECTION("Regions: 1(1)")
     {
+        std::size_t pagesCount = 1;
+        auto size = pageSize * pagesCount;
+        auto memory = test_alignedAlloc(pageSize, size);
+
+        // clang-format off
+        Region regions[] = {
+            {std::uintptr_t(memory.get()), size},
+            {0,                            0}
+        };
+        // clang-format on
+
+        REQUIRE(pageAllocator.init(regions, pageSize));
+        REQUIRE(pageAllocator.m_pagesCount == pagesCount);
     }
 
     SECTION("Regions: 1(535), 2(87), 3(4)")
     {
+        std::size_t pageSize = 256;
+        std::size_t pagesCount1 = 535;
+        std::size_t pagesCount2 = 87;
+        std::size_t pagesCount3 = 4;
+        auto size1 = pageSize * pagesCount1;
+        auto size2 = pageSize * pagesCount2;
+        auto size3 = pageSize * pagesCount3;
+        auto memory1 = test_alignedAlloc(pageSize, size1);
+        auto memory2 = test_alignedAlloc(pageSize, size2);
+        auto memory3 = test_alignedAlloc(pageSize, size3);
+
+        // clang-format off
+        Region regions[] = {
+            {std::uintptr_t(memory1.get()), size1},
+            {std::uintptr_t(memory2.get()), size2},
+            {std::uintptr_t(memory3.get()), size3},
+            {0,                             0}
+        };
+        // clang-format on
+
+        REQUIRE(pageAllocator.init(regions, pageSize));
+        REQUIRE(pageAllocator.m_pagesCount == (pagesCount1 + pagesCount2 + pagesCount3));
     }
 
     SECTION("All regions have 5 pages")
     {
+        std::size_t pageSize = 256;
+        std::size_t pagesCount = 5;
+        auto size = pageSize * pagesCount;
+        auto memory1 = test_alignedAlloc(pageSize, size);
+        auto memory2 = test_alignedAlloc(pageSize, size);
+        auto memory3 = test_alignedAlloc(pageSize, size);
+        auto memory4 = test_alignedAlloc(pageSize, size);
+        auto memory5 = test_alignedAlloc(pageSize, size);
+        auto memory6 = test_alignedAlloc(pageSize, size);
+        auto memory7 = test_alignedAlloc(pageSize, size);
+        auto memory8 = test_alignedAlloc(pageSize, size);
+
+        // clang-format off
+        Region regions[] = {
+            {std::uintptr_t(memory1.get()), size},
+            {std::uintptr_t(memory2.get()), size},
+            {std::uintptr_t(memory3.get()), size},
+            {std::uintptr_t(memory4.get()), size},
+            {std::uintptr_t(memory5.get()), size},
+            {std::uintptr_t(memory6.get()), size},
+            {std::uintptr_t(memory7.get()), size},
+            {std::uintptr_t(memory8.get()), size},
+            {0,                              0}
+        };
+        // clang-format on
+
+        REQUIRE(pageAllocator.init(regions, pageSize));
+        REQUIRE(pageAllocator.m_pagesCount == (pagesCount * 8));
     }
 }
 

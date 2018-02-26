@@ -44,6 +44,7 @@ set(SOURCES
     test_page.cpp
     test_page_allocator.cpp
     test_region_info.cpp
+    utils.cpp
 )
 
 register_executable(${PROJECT_NAME})

@@ -54,7 +54,7 @@ public:
 private:
     std::size_t countPages();
     std::size_t chooseDescRegion();
-    std::size_t reserveDescPages();
+    std::size_t reserveDescPages(std::size_t pageSize);
     Page* getPage(std::uintptr_t addr);
 
     std::size_t groupIdx(std::size_t pageCount);

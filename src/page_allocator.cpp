@@ -40,7 +40,12 @@ PageAllocator::PageAllocator()
 
 bool PageAllocator::init(Region* regions, std::size_t pageSize)
 {
+    assert(regions);
+
     for (std::size_t i = 0; i < regions[i].size != 0; ++i) {
+        if (i == MAX_REGIONS_COUNT)
+            return false;
+
         RegionInfo regionInfo;
         if (initRegionInfo(regionInfo, regions[i], pageSize))
             m_regionsInfo[m_validRegionsCount++] = regionInfo;
@@ -70,11 +75,12 @@ bool PageAllocator::init(Region* regions, std::size_t pageSize)
         initGroup(group, region.pageCount);
 
         if (i == descRegionIdx) {
-            std::size_t reservedCount = reserveDescPages();
+            std::size_t reservedCount = reserveDescPages(pageSize);
             std::tie(std::ignore, group) = splitGroup(group, reservedCount);
         }
 
-        addGroup(group);
+        if (group)
+            addGroup(group);
     }
 
     return true;
@@ -95,7 +101,7 @@ void PageAllocator::clear()
 
 Page* PageAllocator::allocate(std::size_t count)
 {
-    if (m_freePagesCount < count)
+    if (m_freePagesCount < count || count == 0)
         return nullptr;
 
     std::size_t idx = groupIdx(count);
@@ -120,6 +126,9 @@ Page* PageAllocator::allocate(std::size_t count)
 
 void PageAllocator::release(Page* pages)
 {
+    if (!pages)
+        return;
+
     // clang-format off
     Page* joinedGroup = pages;
 
@@ -175,10 +184,10 @@ std::size_t PageAllocator::chooseDescRegion()
     return selectedIdx;
 }
 
-std::size_t PageAllocator::reserveDescPages()
+std::size_t PageAllocator::reserveDescPages(std::size_t pageSize)
 {
     std::size_t reservedCount = 0;
-    for (auto* page = m_pagesHead; page <= m_pagesTail; page = page->nextSibling()) {
+    for (auto* page = m_pagesHead; page <= m_pagesTail; page += pageSize) {
         if (page->address() >= reinterpret_cast<uintptr_t>(m_pagesTail->nextSibling()))
             break;
 
@@ -219,6 +228,8 @@ std::size_t PageAllocator::groupIdx(std::size_t pageCount)
 
 void PageAllocator::initGroup(Page* group, std::size_t groupSize)
 {
+    assert(group);
+
     Page* firstPage = group;
     Page* lastPage = group + groupSize - 1;
     firstPage->setGroupSize(groupSize);
@@ -227,6 +238,8 @@ void PageAllocator::initGroup(Page* group, std::size_t groupSize)
 
 void PageAllocator::clearGroup(Page* group)
 {
+    assert(group);
+
     Page* firstPage = group;
     Page* lastPage = group + group->groupSize() - 1;
     firstPage->setGroupSize(0);
@@ -235,6 +248,8 @@ void PageAllocator::clearGroup(Page* group)
 
 void PageAllocator::addGroup(Page* group)
 {
+    assert(group);
+
     std::size_t idx = groupIdx(group->groupSize());
     group->addToList(&m_freeGroupLists[idx]);
     m_freePagesCount += group->groupSize();
@@ -247,6 +262,8 @@ void PageAllocator::addGroup(Page* group)
 
 void PageAllocator::removeGroup(Page* group)
 {
+    assert(group);
+
     std::size_t idx = groupIdx(group->groupSize());
     group->removeFromList(&m_freeGroupLists[idx]);
     m_freePagesCount -= group->groupSize();
@@ -259,7 +276,12 @@ void PageAllocator::removeGroup(Page* group)
 
 std::tuple<Page*, Page*> PageAllocator::splitGroup(Page* group, std::size_t size)
 {
-    assert(size < group->groupSize());
+    assert(group);
+    assert(size <= group->groupSize());
+
+    if (size == group->groupSize())
+        return std::tuple<Page*, Page*>(group, nullptr);
+
     std::size_t secondSize = group->groupSize() - size;
     clearGroup(group);
 
@@ -274,6 +296,9 @@ std::tuple<Page*, Page*> PageAllocator::splitGroup(Page* group, std::size_t size
 
 Page* PageAllocator::joinGroup(Page* firstGroup, Page* secondGroup)
 {
+    assert(firstGroup);
+    assert(secondGroup);
+
     std::size_t joinedSize = firstGroup->groupSize() + secondGroup->groupSize();
 
     clearGroup(firstGroup);
