@@ -51,11 +51,11 @@ bool PageAllocator::init(Region* regions, std::size_t pageSize)
             m_regionsInfo[m_validRegionsCount++] = regionInfo;
     }
 
-    if (!countPages())
+    if (!(m_pagesCount = countPages()))
         return false;
 
-    std::size_t descRegionIdx = chooseDescRegion();
-    m_pagesHead = reinterpret_cast<Page*>(m_regionsInfo[descRegionIdx].alignedStart);
+    m_descRegionIdx = chooseDescRegion();
+    m_pagesHead = reinterpret_cast<Page*>(m_regionsInfo[m_descRegionIdx].alignedStart);
     m_pagesTail = m_pagesHead + m_pagesCount - 1;
 
     auto* page = m_pagesHead;
@@ -74,9 +74,9 @@ bool PageAllocator::init(Region* regions, std::size_t pageSize)
         Page* group = region.firstPage;
         initGroup(group, region.pageCount);
 
-        if (i == descRegionIdx) {
-            std::size_t reservedCount = reserveDescPages(pageSize);
-            std::tie(std::ignore, group) = splitGroup(group, reservedCount);
+        if (i == m_descRegionIdx) {
+            m_descPagesCount = reserveDescPages(pageSize);
+            std::tie(std::ignore, group) = splitGroup(group, m_descPagesCount);
         }
 
         if (group)
@@ -92,6 +92,8 @@ void PageAllocator::clear()
         clearRegionInfo(region);
 
     m_validRegionsCount = 0;
+    m_descRegionIdx = 0;
+    m_descPagesCount = 0;
     m_pagesHead = nullptr;
     m_pagesTail = nullptr;
     m_freeGroupLists.fill(nullptr);
@@ -162,10 +164,11 @@ void PageAllocator::release(Page* pages)
 
 std::size_t PageAllocator::countPages()
 {
+    std::size_t pagesCount = 0;
     for (auto& region : m_regionsInfo)
-        m_pagesCount += region.pageCount;
+        pagesCount += region.pageCount;
 
-    return m_pagesCount;
+    return pagesCount;
 }
 
 std::size_t PageAllocator::chooseDescRegion()
@@ -219,6 +222,17 @@ Page* PageAllocator::getPage(std::uintptr_t addr)
     }
 
     return nullptr;
+}
+
+PageAllocator::Stats PageAllocator::getStats()
+{
+    Stats stats;
+    stats.pagesCount = m_pagesCount;
+    stats.freePagesCount = m_freePagesCount;
+    stats.descRegionIdx = m_descRegionIdx;
+    stats.descPagesCount = m_descPagesCount;
+
+    return stats;
 }
 
 std::size_t PageAllocator::groupIdx(std::size_t pageCount)
