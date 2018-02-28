@@ -386,23 +386,63 @@ TEST_CASE("Group index is properly computed", "[page_allocator]")
 
 TEST_CASE("Group is properly initialized", "[page_allocator]")
 {
+    PageAllocator pageAllocator;
+
     SECTION("Group has 1 page")
     {
+        constexpr std::size_t groupSize = 1;
+        std::array<std::byte, sizeof(Page) * groupSize> memory;
+        memory.fill(std::byte(0));
+
+        auto* group = reinterpret_cast<Page*>(std::begin(memory));
+        pageAllocator.initGroup(group, groupSize);
+        REQUIRE(group->groupSize() == groupSize);
     }
 
     SECTION("Group has 5 pages")
     {
+        constexpr std::size_t groupSize = 5;
+        std::array<std::byte, sizeof(Page) * groupSize> memory;
+        memory.fill(std::byte(0));
+
+        auto* group = reinterpret_cast<Page*>(std::begin(memory));
+        pageAllocator.initGroup(group, groupSize);
+        Page* firstPage = group;
+        Page* lastPage = group + groupSize - 1;
+        REQUIRE(firstPage->groupSize() == groupSize);
+        REQUIRE(lastPage->groupSize() == groupSize);
     }
 }
 
 TEST_CASE("Group is properly cleared", "[page_allocator]")
 {
+    PageAllocator pageAllocator;
+
     SECTION("Group has 1 page")
     {
+        constexpr std::size_t groupSize = 1;
+        std::array<std::byte, sizeof(Page) * groupSize> memory;
+        memory.fill(std::byte(0));
+
+        auto* group = reinterpret_cast<Page*>(std::begin(memory));
+        pageAllocator.initGroup(group, groupSize);
+        pageAllocator.clearGroup(group);
+        REQUIRE(group->groupSize() == 0);
     }
 
     SECTION("Group has 5 pages")
     {
+        constexpr std::size_t groupSize = 5;
+        std::array<std::byte, sizeof(Page) * groupSize> memory;
+        memory.fill(std::byte(0));
+
+        auto* group = reinterpret_cast<Page*>(std::begin(memory));
+        pageAllocator.initGroup(group, groupSize);
+        pageAllocator.clearGroup(group);
+        Page* firstPage = group;
+        Page* lastPage = group + groupSize - 1;
+        REQUIRE(firstPage->groupSize() == 0);
+        REQUIRE(lastPage->groupSize() == 0);
     }
 }
 
