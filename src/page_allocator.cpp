@@ -190,12 +190,16 @@ std::size_t PageAllocator::chooseDescRegion()
 std::size_t PageAllocator::reserveDescPages(std::size_t pageSize)
 {
     std::size_t reservedCount = 0;
-    for (auto* page = m_pagesHead; page <= m_pagesTail; page += pageSize) {
+    auto& descRegion = m_regionsInfo[m_descRegionIdx];
+    for (auto* page = descRegion.firstPage; page <= m_pagesTail; page = page->nextSibling()) {
         if (page->address() >= reinterpret_cast<uintptr_t>(m_pagesTail->nextSibling()))
             break;
 
         page->setUsed(true);
         ++reservedCount;
+
+        if (page == descRegion.lastPage)
+            break;
     }
 
     return reservedCount;
