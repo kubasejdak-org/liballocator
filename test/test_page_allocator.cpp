@@ -93,7 +93,6 @@ TEST_CASE("Pages are correctly counted", "[page_allocator]")
 
     SECTION("Regions: 1(535), 2(87), 3(4)")
     {
-        std::size_t pageSize = 256;
         std::size_t pagesCount1 = 535;
         std::size_t pagesCount2 = 87;
         std::size_t pagesCount3 = 4;
@@ -119,7 +118,6 @@ TEST_CASE("Pages are correctly counted", "[page_allocator]")
 
     SECTION("All regions have 5 pages")
     {
-        std::size_t pageSize = 256;
         std::size_t pagesCount = 5;
         auto size = pageSize * pagesCount;
         auto memory1 = test_alignedAlloc(pageSize, size);
@@ -150,7 +148,6 @@ TEST_CASE("Pages are correctly counted", "[page_allocator]")
     }
 }
 
-#include <iostream>
 TEST_CASE("Region where page descriptors are stored is properly selected", "[page_allocator]")
 {
     std::size_t pageSize = 256;
@@ -176,7 +173,6 @@ TEST_CASE("Region where page descriptors are stored is properly selected", "[pag
 
     SECTION("Regions: 1(535), 2(87), 3(4)")
     {
-        std::size_t pageSize = 256;
         std::size_t pagesCount1 = 535;
         std::size_t pagesCount2 = 87;
         std::size_t pagesCount3 = 4;
@@ -202,7 +198,6 @@ TEST_CASE("Region where page descriptors are stored is properly selected", "[pag
 
     SECTION("All regions have 5 pages")
     {
-        std::size_t pageSize = 256;
         std::size_t pagesCount = 5;
         auto size = pageSize * pagesCount;
         auto memory1 = test_alignedAlloc(pageSize, size);
@@ -234,7 +229,6 @@ TEST_CASE("Region where page descriptors are stored is properly selected", "[pag
 
     SECTION("Selected region is completly filled")
     {
-        std::size_t pageSize = 256;
         std::size_t pagesCount1 = 1;
         std::size_t pagesCount2 = 7;
         auto size1 = pageSize * pagesCount1;
@@ -244,9 +238,9 @@ TEST_CASE("Region where page descriptors are stored is properly selected", "[pag
 
         // clang-format off
         Region regions[] = {
-                {std::uintptr_t(memory1.get()), size1},
-                {std::uintptr_t(memory2.get()), size2},
-                {0,                             0}
+            {std::uintptr_t(memory1.get()), size1},
+            {std::uintptr_t(memory2.get()), size2},
+            {0,                             0}
         };
         // clang-format on
 
@@ -257,20 +251,102 @@ TEST_CASE("Region where page descriptors are stored is properly selected", "[pag
 
 TEST_CASE("Pages with page descriptors are properly reserved", "[page_allocator]")
 {
-    SECTION("All descriptors lay on 1 page in first region")
+    std::size_t pageSize = 256;
+    PageAllocator pageAllocator;
+
+    SECTION("Regions: 1(1)")
     {
+        std::size_t pagesCount = 1;
+        auto size = pageSize * pagesCount;
+        auto memory = test_alignedAlloc(pageSize, size);
+
+        // clang-format off
+        Region regions[] = {
+            {std::uintptr_t(memory.get()), size},
+            {0,                            0}
+        };
+        // clang-format on
+
+        REQUIRE(pageAllocator.init(regions, pageSize));
+        REQUIRE(pageAllocator.m_descPagesCount == 1);
+
     }
 
-    SECTION("All descriptors lay on 3 pages in first region")
+    SECTION("Regions: 1(535), 2(87), 3(4)")
     {
+        std::size_t pagesCount1 = 535;
+        std::size_t pagesCount2 = 87;
+        std::size_t pagesCount3 = 4;
+        auto size1 = pageSize * pagesCount1;
+        auto size2 = pageSize * pagesCount2;
+        auto size3 = pageSize * pagesCount3;
+        auto memory1 = test_alignedAlloc(pageSize, size1);
+        auto memory2 = test_alignedAlloc(pageSize, size2);
+        auto memory3 = test_alignedAlloc(pageSize, size3);
+
+        // clang-format off
+        Region regions[] = {
+            {std::uintptr_t(memory1.get()), size1},
+            {std::uintptr_t(memory2.get()), size2},
+            {std::uintptr_t(memory3.get()), size3},
+            {0,                             0}
+        };
+        // clang-format on
+
+        REQUIRE(pageAllocator.init(regions, pageSize));
+        REQUIRE(pageAllocator.m_descPagesCount == 79);
     }
 
-    SECTION("All descriptors lay on 1 page in third region")
+    SECTION("All regions have 5 pages")
     {
+        std::size_t pagesCount = 5;
+        auto size = pageSize * pagesCount;
+        auto memory1 = test_alignedAlloc(pageSize, size);
+        auto memory2 = test_alignedAlloc(pageSize, size);
+        auto memory3 = test_alignedAlloc(pageSize, size);
+        auto memory4 = test_alignedAlloc(pageSize, size);
+        auto memory5 = test_alignedAlloc(pageSize, size);
+        auto memory6 = test_alignedAlloc(pageSize, size);
+        auto memory7 = test_alignedAlloc(pageSize, size);
+        auto memory8 = test_alignedAlloc(pageSize, size);
+
+        // clang-format off
+        Region regions[] = {
+            {std::uintptr_t(memory1.get()), size},
+            {std::uintptr_t(memory2.get()), size},
+            {std::uintptr_t(memory3.get()), size},
+            {std::uintptr_t(memory4.get()), size},
+            {std::uintptr_t(memory5.get()), size},
+            {std::uintptr_t(memory6.get()), size},
+            {std::uintptr_t(memory7.get()), size},
+            {std::uintptr_t(memory8.get()), size},
+            {0,                              0}
+        };
+        // clang-format on
+
+        REQUIRE(pageAllocator.init(regions, pageSize));
+        REQUIRE(pageAllocator.m_descPagesCount == 5);
     }
 
-    SECTION("All descriptors lay on 3 pages in third region")
+    SECTION("Selected region is completly filled")
     {
+        std::size_t pagesCount1 = 1;
+        std::size_t pagesCount2 = 7;
+        auto size1 = pageSize * pagesCount1;
+        auto size2 = pageSize * pagesCount2;
+        auto memory1 = test_alignedAlloc(pageSize, size1);
+        auto memory2 = test_alignedAlloc(pageSize, size2);
+
+        // clang-format off
+        Region regions[] = {
+            {std::uintptr_t(memory1.get()), size1},
+            {std::uintptr_t(memory2.get()), size2},
+            {0,                             0}
+        };
+        // clang-format on
+
+        REQUIRE(pageAllocator.init(regions, pageSize));
+        REQUIRE(pageAllocator.m_descPagesCount == 1);
     }
 }
 
