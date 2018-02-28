@@ -38,6 +38,7 @@
 
 #include <cstdlib>
 #include <cstring>
+#include <map>
 
 using namespace Memory;
 
@@ -352,6 +353,35 @@ TEST_CASE("Pages with page descriptors are properly reserved", "[page_allocator]
 
 TEST_CASE("Group index is properly computed", "[page_allocator]")
 {
+    PageAllocator pageAllocator;
+    std::map<std::size_t, std::pair<std::size_t, size_t>> idxRange = {
+        {0, {0, 3}},
+        {1, {4, 7}},
+        {2, {8, 15}},
+        {3, {16, 31}},
+        {4, {32, 63}},
+        {5, {64, 127}},
+        {6, {128, 255}},
+        {7, {256, 511}},
+        {8, {512, 1023}},
+        {9, {1024, 2047}},
+        {10, {2048, 4095}},
+        {11, {4096, 8191}},
+        {12, {8192, 16383}},
+        {13, {16384, 32767}},
+        {14, {32768, 65535}},
+        {15, {65536, 131071}},
+        {16, {131072, 262143}},
+        {17, {262144, 524287}},
+        {18, {524288, 1048575}},
+        {19, {1048576, 2097151}}
+    };
+
+    for (std::size_t i = 0; i < 0x200000; ++i) {
+        auto idx = pageAllocator.groupIdx(i);
+        REQUIRE(i >= idxRange[idx].first);
+        REQUIRE(i <= idxRange[idx].second);
+    }
 }
 
 TEST_CASE("Group is properly initialized", "[page_allocator]")
@@ -401,7 +431,7 @@ TEST_CASE("Group is properly removed from list", "[page_allocator]")
 // TODO:
 // - tests for splitting group
 // - tests for joining groups
-// - tests for initialization
+// - tests for resolving page from address
 // - tests for allocation
 // - tests for releasing
 // - integration tests (long-term)

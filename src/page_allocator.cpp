@@ -241,7 +241,10 @@ PageAllocator::Stats PageAllocator::getStats()
 
 std::size_t PageAllocator::groupIdx(std::size_t pageCount)
 {
-    return static_cast<std::size_t>(ceil(log2(pageCount)) - 1);
+    if (pageCount < 2)
+        return 0;
+
+    return static_cast<std::size_t>(std::floor(std::log2(pageCount)) - 1);
 }
 
 void PageAllocator::initGroup(Page* group, std::size_t groupSize)
