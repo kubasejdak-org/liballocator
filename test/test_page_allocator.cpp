@@ -544,15 +544,132 @@ TEST_CASE("Group is properly added to list", "[page_allocator]")
     }
 }
 
-TEST_CASE("Group is properly removed from list", "[page_allocator]")
+TEST_CASE("Group is properly removed from list at index 0", "[page_allocator]")
 {
-    SECTION("Group is stored at index 0")
+    PageAllocator pageAllocator;
+    constexpr std::size_t groupSize = 3;
+    std::size_t pagesCount = 0;
+    std::array<std::byte, sizeof(Page) * groupSize> memory1;
+    std::array<std::byte, sizeof(Page) * groupSize> memory2;
+    std::array<std::byte, sizeof(Page) * groupSize> memory3;
+    memory1.fill(std::byte(0));
+    memory2.fill(std::byte(0));
+    memory3.fill(std::byte(0));
+
+    auto* group1 = reinterpret_cast<Page*>(std::begin(memory1));
+    auto* group2 = reinterpret_cast<Page*>(std::begin(memory2));
+    auto* group3 = reinterpret_cast<Page*>(std::begin(memory3));
+    pageAllocator.initGroup(group1, groupSize);
+    pageAllocator.initGroup(group2, groupSize);
+    pageAllocator.initGroup(group3, groupSize);
+    pageAllocator.addGroup(group1);
+    pageAllocator.addGroup(group2);
+    pageAllocator.addGroup(group3);
+
+    SECTION("First of three group is removed")
     {
+        pageAllocator.removeGroup(group1);
+        int idx = 0;
+        for (Page* group = pageAllocator.m_freeGroupLists[0]; group != nullptr; group = group->nextGroup()) {
+            REQUIRE(group->groupSize() == groupSize);
+            REQUIRE(group == (idx == 0 ? group3 : group2));
+
+            ++pagesCount;
+            ++idx;
+        }
     }
 
-    SECTION("Group is stored at index 4")
+    SECTION("Second of three group is removed")
     {
+        pageAllocator.removeGroup(group2);
+        int idx = 0;
+        for (Page* group = pageAllocator.m_freeGroupLists[0]; group != nullptr; group = group->nextGroup()) {
+            REQUIRE(group->groupSize() == groupSize);
+            REQUIRE(group == (idx == 0 ? group3 : group1));
+
+            ++pagesCount;
+            ++idx;
+        }
     }
+
+    SECTION("Third of three group is removed")
+    {
+        pageAllocator.removeGroup(group3);
+        int idx = 0;
+        for (Page* group = pageAllocator.m_freeGroupLists[0]; group != nullptr; group = group->nextGroup()) {
+            REQUIRE(group->groupSize() == groupSize);
+            REQUIRE(group == (idx == 0 ? group2 : group1));
+
+            ++pagesCount;
+            ++idx;
+        }
+    }
+
+    REQUIRE(pagesCount == 2);
+}
+
+TEST_CASE("Group is properly removed from list at index 4", "[page_allocator]")
+{
+    PageAllocator pageAllocator;
+    constexpr std::size_t groupSize = 34;
+    std::size_t pagesCount = 0;
+    std::array<std::byte, sizeof(Page) * groupSize> memory1;
+    std::array<std::byte, sizeof(Page) * groupSize> memory2;
+    std::array<std::byte, sizeof(Page) * groupSize> memory3;
+    memory1.fill(std::byte(0));
+    memory2.fill(std::byte(0));
+    memory3.fill(std::byte(0));
+
+    auto* group1 = reinterpret_cast<Page*>(std::begin(memory1));
+    auto* group2 = reinterpret_cast<Page*>(std::begin(memory2));
+    auto* group3 = reinterpret_cast<Page*>(std::begin(memory3));
+    pageAllocator.initGroup(group1, groupSize);
+    pageAllocator.initGroup(group2, groupSize);
+    pageAllocator.initGroup(group3, groupSize);
+    pageAllocator.addGroup(group1);
+    pageAllocator.addGroup(group2);
+    pageAllocator.addGroup(group3);
+
+    SECTION("First of three group is removed")
+    {
+        pageAllocator.removeGroup(group1);
+        int idx = 0;
+        for (Page* group = pageAllocator.m_freeGroupLists[4]; group != nullptr; group = group->nextGroup()) {
+            REQUIRE(group->groupSize() == groupSize);
+            REQUIRE(group == (idx == 0 ? group3 : group2));
+
+            ++pagesCount;
+            ++idx;
+        }
+    }
+
+    SECTION("Second of three group is removed")
+    {
+        pageAllocator.removeGroup(group2);
+        int idx = 0;
+        for (Page* group = pageAllocator.m_freeGroupLists[4]; group != nullptr; group = group->nextGroup()) {
+            REQUIRE(group->groupSize() == groupSize);
+            REQUIRE(group == (idx == 0 ? group3 : group1));
+
+            ++pagesCount;
+            ++idx;
+        }
+    }
+
+    SECTION("Third of three group is removed")
+    {
+        pageAllocator.removeGroup(group3);
+        int idx = 0;
+        for (Page* group = pageAllocator.m_freeGroupLists[4]; group != nullptr; group = group->nextGroup()) {
+            REQUIRE(group->groupSize() == groupSize);
+            REQUIRE(group == (idx == 0 ? group2 : group1));
+
+            ++pagesCount;
+            ++idx;
+        }
+    }
+
+    REQUIRE(pagesCount == 2);
 }
 
 // TODO:
