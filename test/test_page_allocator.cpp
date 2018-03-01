@@ -448,12 +448,99 @@ TEST_CASE("Group is properly cleared", "[page_allocator]")
 
 TEST_CASE("Group is properly added to list", "[page_allocator]")
 {
-    SECTION("Group is stored at index 0")
+    PageAllocator pageAllocator;
+    std::size_t pagesCount = 0;
+
+    SECTION("1 group is stored at index 0")
     {
+        constexpr std::size_t groupSize = 3;
+        std::array<std::byte, sizeof(Page) * groupSize> memory;
+        memory.fill(std::byte(0));
+
+        auto* group = reinterpret_cast<Page*>(std::begin(memory));
+        pageAllocator.initGroup(group, groupSize);
+        pageAllocator.addGroup(group);
+
+        for (Page* group = pageAllocator.m_freeGroupLists[0]; group != nullptr; group = group->nextGroup()) {
+            REQUIRE(group->groupSize() == groupSize);
+            ++pagesCount;
+        }
+
+        REQUIRE(pagesCount == 1);
     }
 
-    SECTION("Group is stored at index 4")
+    SECTION("3 groups are stored at index 0")
     {
+        constexpr std::size_t groupSize = 3;
+        std::array<std::byte, sizeof(Page) * groupSize> memory1;
+        std::array<std::byte, sizeof(Page) * groupSize> memory2;
+        std::array<std::byte, sizeof(Page) * groupSize> memory3;
+        memory1.fill(std::byte(0));
+        memory2.fill(std::byte(0));
+        memory3.fill(std::byte(0));
+
+        auto* group1 = reinterpret_cast<Page*>(std::begin(memory1));
+        auto* group2 = reinterpret_cast<Page*>(std::begin(memory2));
+        auto* group3 = reinterpret_cast<Page*>(std::begin(memory3));
+        pageAllocator.initGroup(group1, groupSize);
+        pageAllocator.initGroup(group2, groupSize);
+        pageAllocator.initGroup(group3, groupSize);
+        pageAllocator.addGroup(group1);
+        pageAllocator.addGroup(group2);
+        pageAllocator.addGroup(group3);
+
+        for (Page* group = pageAllocator.m_freeGroupLists[0]; group != nullptr; group = group->nextGroup()) {
+            REQUIRE(group->groupSize() == groupSize);
+            ++pagesCount;
+        }
+
+        REQUIRE(pagesCount == 3);
+    }
+
+    SECTION("1 group is stored at index 4")
+    {
+        constexpr std::size_t groupSize = 34;
+        std::array<std::byte, sizeof(Page) * groupSize> memory;
+        memory.fill(std::byte(0));
+
+        auto* group = reinterpret_cast<Page*>(std::begin(memory));
+        pageAllocator.initGroup(group, groupSize);
+        pageAllocator.addGroup(group);
+
+        for (Page* group = pageAllocator.m_freeGroupLists[4]; group != nullptr; group = group->nextGroup()) {
+            REQUIRE(group->groupSize() == groupSize);
+            ++pagesCount;
+        }
+
+        REQUIRE(pagesCount == 1);
+    }
+
+    SECTION("3 groups are stored at index 4")
+    {
+        constexpr std::size_t groupSize = 34;
+        std::array<std::byte, sizeof(Page) * groupSize> memory1;
+        std::array<std::byte, sizeof(Page) * groupSize> memory2;
+        std::array<std::byte, sizeof(Page) * groupSize> memory3;
+        memory1.fill(std::byte(0));
+        memory2.fill(std::byte(0));
+        memory3.fill(std::byte(0));
+
+        auto* group1 = reinterpret_cast<Page*>(std::begin(memory1));
+        auto* group2 = reinterpret_cast<Page*>(std::begin(memory2));
+        auto* group3 = reinterpret_cast<Page*>(std::begin(memory3));
+        pageAllocator.initGroup(group1, groupSize);
+        pageAllocator.initGroup(group2, groupSize);
+        pageAllocator.initGroup(group3, groupSize);
+        pageAllocator.addGroup(group1);
+        pageAllocator.addGroup(group2);
+        pageAllocator.addGroup(group3);
+
+        for (Page* group = pageAllocator.m_freeGroupLists[4]; group != nullptr; group = group->nextGroup()) {
+            REQUIRE(group->groupSize() == groupSize);
+            ++pagesCount;
+        }
+
+        REQUIRE(pagesCount == 3);
     }
 }
 
