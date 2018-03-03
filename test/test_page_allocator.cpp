@@ -1024,6 +1024,67 @@ TEST_CASE("Pages are correctly allocated", "[page_allocator]")
         REQUIRE(idx8Count == 1);
         REQUIRE(pageAllocator.m_freeGroupLists[8]->groupSize() == pagesCount1 - 17);
     }
+
+    SECTION("Allocating whole region")
+    {
+        page = pageAllocator.allocate(pagesCount1);
+        REQUIRE(page);
+        REQUIRE(page->address() == std::uintptr_t(memory1.get()));
+        REQUIRE(pageAllocator.m_freePagesCount == freePages - pagesCount1);
+    }
+
+
+    SECTION("Allocate 1 page 4 times")
+    {
+        Page* pages[4];
+
+        for (int i = 0; i < 4; ++i) {
+            pages[i]= pageAllocator.allocate(1);
+            REQUIRE(pages[i]);
+            REQUIRE(pages[i]->address() == std::uintptr_t(memory3.get()) + i * pageSize);
+            REQUIRE(pageAllocator.m_freePagesCount == freePages - i - 1);
+        }
+    }
+
+    SECTION("Only 2 pages are left in each region")
+    {
+        Page* pages[3];
+
+        pages[0]= pageAllocator.allocate(2);
+        REQUIRE(pages[0]);
+        REQUIRE(pages[0]->address() == std::uintptr_t(memory3.get()));
+        REQUIRE(pageAllocator.m_freePagesCount == freePages - 2);
+
+        pages[1]= pageAllocator.allocate(6);
+        REQUIRE(pages[1]);
+        REQUIRE(pages[1]->address() == std::uintptr_t(memory2.get() + pageAllocator.m_descPagesCount * pageSize));
+        REQUIRE(pageAllocator.m_freePagesCount == freePages - 8);
+
+        pages[2]= pageAllocator.allocate(533);
+        REQUIRE(pages[2]);
+        REQUIRE(pages[2]->address() == std::uintptr_t(memory1.get()));
+        REQUIRE(pageAllocator.m_freePagesCount == freePages - 541);
+    }
+
+    SECTION("Allocate all pages one by one")
+    {
+        Page* pages[547];
+
+        for (int i = 0; i < 547; ++i) {
+            pages[i]= pageAllocator.allocate(1);
+            REQUIRE(pages[i]);
+            REQUIRE(pageAllocator.m_freePagesCount == freePages - i - 1);
+            REQUIRE(pageAllocator.getPage(pages[i]->address()) == pages[i]);
+        }
+
+        for (int i = 0; i < PageAllocator::MAX_GROUP_IDX; ++i) {
+            std::size_t idxCount = 0;
+            for (Page* group = pageAllocator.m_freeGroupLists[i]; group != nullptr; group = group->nextGroup())
+                ++idxCount;
+
+            REQUIRE(idxCount == 0);
+        }
+    }
 }
 
 TEST_CASE("Pages are correctly released", "[page_allocator]")
