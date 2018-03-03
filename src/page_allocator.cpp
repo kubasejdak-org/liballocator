@@ -116,9 +116,9 @@ Page* PageAllocator::allocate(std::size_t count)
 
             removeGroup(group);
 
-            Page* remainingGroup = nullptr;
             Page* allocatedGroup = nullptr;
-            std::tie(remainingGroup, allocatedGroup) = splitGroup(group, count);
+            Page* remainingGroup = nullptr;
+            std::tie(allocatedGroup, remainingGroup) = splitGroup(group, count);
 
             addGroup(remainingGroup);
             return allocatedGroup;
