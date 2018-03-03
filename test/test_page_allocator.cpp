@@ -1007,6 +1007,22 @@ TEST_CASE("Pages are correctly allocated", "[page_allocator]")
             ++idx0Count;
 
         REQUIRE(idx0Count == 1);
+        REQUIRE(pageAllocator.m_freeGroupLists[0]->groupSize() == pagesCount3 - 1);
+    }
+
+    SECTION("Allocating 17 pages")
+    {
+        page = pageAllocator.allocate(17);
+        REQUIRE(page);
+        REQUIRE(page->address() == std::uintptr_t(memory1.get()));
+        REQUIRE(pageAllocator.m_freePagesCount == freePages - 17);
+
+        std::size_t idx8Count = 0;
+        for (Page* group = pageAllocator.m_freeGroupLists[8]; group != nullptr; group = group->nextGroup())
+            ++idx8Count;
+
+        REQUIRE(idx8Count == 1);
+        REQUIRE(pageAllocator.m_freeGroupLists[8]->groupSize() == pagesCount1 - 17);
     }
 }
 
