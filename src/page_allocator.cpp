@@ -54,6 +54,7 @@ bool PageAllocator::init(Region* regions, std::size_t pageSize)
     if (!(m_pagesCount = countPages()))
         return false;
 
+    m_pageSize = pageSize;
     m_descRegionIdx = chooseDescRegion();
     m_pagesHead = reinterpret_cast<Page*>(m_regionsInfo[m_descRegionIdx].alignedStart);
     m_pagesTail = m_pagesHead + m_pagesCount - 1;
@@ -65,7 +66,7 @@ bool PageAllocator::init(Region* regions, std::size_t pageSize)
         region.firstPage = page;
         region.lastPage = page + region.pageCount - 1;
 
-        for (auto addr = region.alignedStart; addr != region.alignedEnd; addr += pageSize) {
+        for (auto addr = region.alignedStart; addr != region.alignedEnd; addr += m_pageSize) {
             page->init();
             page->setAddress(addr);
             page = page->nextSibling();
@@ -75,7 +76,7 @@ bool PageAllocator::init(Region* regions, std::size_t pageSize)
         initGroup(group, region.pageCount);
 
         if (i == m_descRegionIdx) {
-            m_descPagesCount = reserveDescPages(pageSize);
+            m_descPagesCount = reserveDescPages();
             std::tie(std::ignore, group) = splitGroup(group, m_descPagesCount);
         }
 
@@ -92,6 +93,7 @@ void PageAllocator::clear()
         clearRegionInfo(region);
 
     m_validRegionsCount = 0;
+    m_pageSize = 0;
     m_descRegionIdx = 0;
     m_descPagesCount = 0;
     m_pagesHead = nullptr;
@@ -187,7 +189,7 @@ std::size_t PageAllocator::chooseDescRegion()
     return selectedIdx;
 }
 
-std::size_t PageAllocator::reserveDescPages(std::size_t pageSize)
+std::size_t PageAllocator::reserveDescPages()
 {
     std::size_t reservedCount = 0;
     auto& descRegion = m_regionsInfo[m_descRegionIdx];
@@ -207,11 +209,13 @@ std::size_t PageAllocator::reserveDescPages(std::size_t pageSize)
 
 Page* PageAllocator::getPage(std::uintptr_t addr)
 {
+    auto alignedAddr = addr & ~(m_pageSize - 1);
+
     RegionInfo* pageRegion = nullptr;
     for (std::size_t i = 0; i < m_validRegionsCount; ++i) {
         auto& region = m_regionsInfo[i];
 
-        if (region.alignedStart <= addr && region.alignedEnd >= addr) {
+        if (region.alignedStart <= alignedAddr && region.alignedEnd >= alignedAddr) {
             pageRegion = &region;
             break;
         }
@@ -221,7 +225,7 @@ Page* PageAllocator::getPage(std::uintptr_t addr)
         return nullptr;
 
     for (auto* page = pageRegion->firstPage; page <= pageRegion->lastPage; page = page->nextSibling()) {
-        if (page->address() == addr)
+        if (page->address() == alignedAddr)
             return page;
     }
 
@@ -231,6 +235,7 @@ Page* PageAllocator::getPage(std::uintptr_t addr)
 PageAllocator::Stats PageAllocator::getStats()
 {
     Stats stats;
+    stats.pageSize = m_pageSize;
     stats.pagesCount = m_pagesCount;
     stats.freePagesCount = m_freePagesCount;
     stats.descRegionIdx = m_descRegionIdx;

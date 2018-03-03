@@ -44,6 +44,7 @@ namespace Memory {
 class PageAllocator {
 public:
     struct Stats {
+        std::size_t pageSize;
         std::size_t pagesCount;
         std::size_t freePagesCount;
         std::size_t descRegionIdx;
@@ -61,7 +62,7 @@ public:
 private:
     std::size_t countPages();
     std::size_t chooseDescRegion();
-    std::size_t reserveDescPages(std::size_t pageSize);
+    std::size_t reserveDescPages();
     Page* getPage(std::uintptr_t addr);
     Stats getStats();
 
@@ -80,6 +81,7 @@ private:
 private:
     std::array<RegionInfo, MAX_REGIONS_COUNT> m_regionsInfo;
     std::size_t m_validRegionsCount;
+    std::size_t m_pageSize;
     std::size_t m_descRegionIdx;
     std::size_t m_descPagesCount;
     Page* m_pagesHead;

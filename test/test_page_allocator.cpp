@@ -60,6 +60,7 @@ TEST_CASE("Page allocator is properly cleared", "[page_allocator]")
         REQUIRE(region.lastPage == nullptr);
     }
     REQUIRE(pageAllocator.m_validRegionsCount == 0);
+    REQUIRE(pageAllocator.m_pageSize == 0);
     REQUIRE(pageAllocator.m_descRegionIdx == 0);
     REQUIRE(pageAllocator.m_descPagesCount == 0);
     REQUIRE(pageAllocator.m_pagesHead == nullptr);
@@ -763,12 +764,129 @@ TEST_CASE("Group is properly joined", "[page_allocator]")
     REQUIRE(joinedGroup->groupSize() == groupSize);
 }
 
-TEST_CASE("Page is properly resolved from address", "[page_allocator]")
-{
-}
-
 TEST_CASE("Pages are correctly resolved from address", "[page_allocator]")
 {
+    std::size_t pageSize = 256;
+    PageAllocator pageAllocator;
+
+    std::size_t pagesCount1 = 535;
+    std::size_t pagesCount2 = 87;
+    std::size_t pagesCount3 = 4;
+    auto size1 = pageSize * pagesCount1;
+    auto size2 = pageSize * pagesCount2;
+    auto size3 = pageSize * pagesCount3;
+    auto memory1 = test_alignedAlloc(pageSize, size1);
+    auto memory2 = test_alignedAlloc(pageSize, size2);
+    auto memory3 = test_alignedAlloc(pageSize, size3);
+
+    // clang-format off
+    Region regions[] = {
+        {std::uintptr_t(memory1.get()), size1},
+        {std::uintptr_t(memory2.get()), size2},
+        {std::uintptr_t(memory3.get()), size3},
+        {0,                             0}
+    };
+    // clang-format on
+
+    REQUIRE(pageAllocator.init(regions, pageSize));
+
+    Page* page = nullptr;
+
+    SECTION("Address it outside any region")
+    {
+        page = pageAllocator.getPage(std::uintptr_t(memory1.get()) - 1);
+        REQUIRE(page == nullptr);
+    }
+
+    SECTION("Address points to the beginning of the first region")
+    {
+        page = pageAllocator.getPage(std::uintptr_t(memory1.get()));
+        REQUIRE(page);
+        REQUIRE(page->address() == std::uintptr_t(memory1.get()));
+    }
+
+    SECTION("Address points to the beginning of the second region")
+    {
+        page = pageAllocator.getPage(std::uintptr_t(memory2.get()));
+        REQUIRE(page);
+        REQUIRE(page->address() == std::uintptr_t(memory2.get()));
+    }
+
+    SECTION("Address points to the end of the first region")
+    {
+        page = pageAllocator.getPage(std::uintptr_t(memory1.get()) + size1 - 1);
+        REQUIRE(page);
+        REQUIRE(page->address() == (std::uintptr_t(memory1.get()) + (pagesCount1 - 1) * pageSize));
+    }
+
+    SECTION("Address points to the end of the second region")
+    {
+        page = pageAllocator.getPage(std::uintptr_t(memory2.get()) + size2 - 1);
+        REQUIRE(page);
+        REQUIRE(page->address() == (std::uintptr_t(memory2.get()) + (pagesCount2 - 1) * pageSize));
+    }
+
+    SECTION("Address points to the 16th page in the first region")
+    {
+        page = pageAllocator.getPage(std::uintptr_t(memory1.get()) + 16 * pageSize);
+        REQUIRE(page);
+        REQUIRE(page->address() == (std::uintptr_t(memory1.get()) + 16 * pageSize));
+    }
+
+    SECTION("Address points to the 7th page in the second region")
+    {
+        page = pageAllocator.getPage(std::uintptr_t(memory2.get()) + 7 * pageSize);
+        REQUIRE(page);
+        REQUIRE(page->address() == (std::uintptr_t(memory2.get()) + 7 * pageSize));
+    }
+
+    SECTION("Address points to in the middle of the second page in the first region")
+    {
+        page = pageAllocator.getPage(std::uintptr_t(memory1.get()) + pageSize + pageSize / 2);
+        REQUIRE(page);
+        REQUIRE(page->address() == (std::uintptr_t(memory1.get()) + pageSize));
+    }
+
+    SECTION("Address points to in the middle of the third page in the third region")
+    {
+        page = pageAllocator.getPage(std::uintptr_t(memory3.get()) + 2 * pageSize + pageSize / 2);
+        REQUIRE(page);
+        REQUIRE(page->address() == (std::uintptr_t(memory3.get()) + 2 * pageSize));
+    }
+}
+
+TEST_CASE("Stats are properly initialized", "[page_allocator]")
+{
+    std::size_t pageSize = 256;
+    PageAllocator pageAllocator;
+
+    std::size_t pagesCount1 = 535;
+    std::size_t pagesCount2 = 87;
+    std::size_t pagesCount3 = 4;
+    auto size1 = pageSize * pagesCount1;
+    auto size2 = pageSize * pagesCount2;
+    auto size3 = pageSize * pagesCount3;
+    auto memory1 = test_alignedAlloc(pageSize, size1);
+    auto memory2 = test_alignedAlloc(pageSize, size2);
+    auto memory3 = test_alignedAlloc(pageSize, size3);
+
+    // clang-format off
+    Region regions[] = {
+            {std::uintptr_t(memory1.get()), size1},
+            {std::uintptr_t(memory2.get()), size2},
+            {std::uintptr_t(memory3.get()), size3},
+            {0,                             0}
+    };
+    // clang-format on
+
+    REQUIRE(pageAllocator.init(regions, pageSize));
+
+    auto stats = pageAllocator.getStats();
+    REQUIRE(stats.pageSize == pageAllocator.m_pageSize);
+    REQUIRE(stats.pagesCount == pageAllocator.m_pagesCount);
+    REQUIRE(stats.freePagesCount == pageAllocator.m_freePagesCount);
+    REQUIRE(stats.descRegionIdx == pageAllocator.m_descRegionIdx);
+    REQUIRE(stats.descPagesCount == pageAllocator.m_descPagesCount);
 }
 
 TEST_CASE("Pages are correctly allocated", "[page_allocator]")
