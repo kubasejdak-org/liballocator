@@ -298,6 +298,7 @@ void PageAllocator::removeGroup(Page* group)
 std::tuple<Page*, Page*> PageAllocator::splitGroup(Page* group, std::size_t size)
 {
     assert(group);
+    assert(size);
     assert(size <= group->groupSize());
 
     if (size == group->groupSize())

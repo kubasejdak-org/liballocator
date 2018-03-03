@@ -672,10 +672,113 @@ TEST_CASE("Group is properly removed from list at index 4", "[page_allocator]")
     REQUIRE(pagesCount == 2);
 }
 
-// TODO:
-// - tests for splitting group
-// - tests for joining groups
-// - tests for resolving page from address
-// - tests for allocation
-// - tests for releasing
-// - integration tests (long-term)
+TEST_CASE("Group is properly splitted", "[page_allocator]")
+{
+    constexpr std::size_t groupSize = 10;
+    std::array<std::byte, sizeof(Page) * groupSize> memory;
+    memory.fill(std::byte(0));
+
+    auto* group = reinterpret_cast<Page*>(std::begin(memory));
+
+    PageAllocator pageAllocator;
+    pageAllocator.initGroup(group, groupSize);
+
+    Page* firstGroup = nullptr;
+    Page* secondGroup = nullptr;
+    std::size_t splitSize = 0;
+
+    SECTION("Split size is equal to group size")
+    {
+        splitSize = groupSize;
+        std::tie(firstGroup, secondGroup) = pageAllocator.splitGroup(group, splitSize);
+        REQUIRE(firstGroup);
+        REQUIRE(firstGroup->groupSize() == splitSize);
+        REQUIRE(secondGroup == nullptr);
+    }
+
+    SECTION("First group should have 1 page")
+    {
+        splitSize = 1;
+        std::tie(firstGroup, secondGroup) = pageAllocator.splitGroup(group, splitSize);
+        REQUIRE(firstGroup);
+        REQUIRE(secondGroup);
+        REQUIRE(firstGroup->groupSize() == splitSize);
+        REQUIRE(secondGroup->groupSize() == groupSize - splitSize);
+    }
+
+    SECTION("First group should have 3 pages")
+    {
+        splitSize = 3;
+        std::tie(firstGroup, secondGroup) = pageAllocator.splitGroup(group, splitSize);
+        REQUIRE(firstGroup);
+        REQUIRE(secondGroup);
+        REQUIRE(firstGroup->groupSize() == splitSize);
+        REQUIRE(secondGroup->groupSize() == groupSize - splitSize);
+    }
+
+    SECTION("First group should have 5 pages")
+    {
+        splitSize = 5;
+        std::tie(firstGroup, secondGroup) = pageAllocator.splitGroup(group, splitSize);
+        REQUIRE(firstGroup);
+        REQUIRE(secondGroup);
+        REQUIRE(firstGroup->groupSize() == splitSize);
+        REQUIRE(secondGroup->groupSize() == groupSize - splitSize);
+    }
+}
+
+TEST_CASE("Group is properly joined", "[page_allocator]")
+{
+    constexpr std::size_t groupSize = 10;
+    std::array<std::byte, sizeof(Page) * groupSize> memory;
+    memory.fill(std::byte(0));
+
+    auto* group = reinterpret_cast<Page*>(std::begin(memory));
+
+    PageAllocator pageAllocator;
+    pageAllocator.initGroup(group, groupSize);
+
+    std::size_t splitSize = 0;
+
+    SECTION("First group should have 1 page")
+    {
+        splitSize = 1;
+    }
+
+    SECTION("First group should have 3 pages")
+    {
+        splitSize = 3;
+    }
+
+    SECTION("First group should have 5 pages")
+    {
+        splitSize = 5;
+    }
+
+    Page* firstGroup = nullptr;
+    Page* secondGroup = nullptr;
+    std::tie(firstGroup, secondGroup) = pageAllocator.splitGroup(group, splitSize);
+    Page* joinedGroup = pageAllocator.joinGroup(firstGroup, secondGroup);
+    REQUIRE(joinedGroup);
+    REQUIRE(joinedGroup->groupSize() == groupSize);
+}
+
+TEST_CASE("Page is properly resolved from address", "[page_allocator]")
+{
+}
+
+TEST_CASE("Pages are correctly resolved from address", "[page_allocator]")
+{
+}
+
+TEST_CASE("Pages are correctly allocated", "[page_allocator]")
+{
+}
+
+TEST_CASE("Pages are correctly released", "[page_allocator]")
+{
+}
+
+TEST_CASE("Integration tests (long-term)", "[page_allocator]")
+{
+}
