@@ -462,8 +462,8 @@ TEST_CASE("Group is properly added to list", "[page_allocator]")
         pageAllocator.initGroup(group, groupSize);
         pageAllocator.addGroup(group);
 
-        for (Page* group = pageAllocator.m_freeGroupLists[0]; group != nullptr; group = group->nextGroup()) {
-            REQUIRE(group->groupSize() == groupSize);
+        for (Page* it = pageAllocator.m_freeGroupLists[0]; it != nullptr; it = it->nextGroup()) {
+            REQUIRE(it->groupSize() == groupSize);
             ++pagesCount;
         }
 
@@ -508,8 +508,8 @@ TEST_CASE("Group is properly added to list", "[page_allocator]")
         pageAllocator.initGroup(group, groupSize);
         pageAllocator.addGroup(group);
 
-        for (Page* group = pageAllocator.m_freeGroupLists[4]; group != nullptr; group = group->nextGroup()) {
-            REQUIRE(group->groupSize() == groupSize);
+        for (Page* it = pageAllocator.m_freeGroupLists[4]; it != nullptr; it = it->nextGroup()) {
+            REQUIRE(it->groupSize() == groupSize);
             ++pagesCount;
         }
 
