@@ -39,6 +39,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <map>
+#include <vector>
 
 using namespace Memory;
 
@@ -969,31 +970,31 @@ TEST_CASE("Pages are correctly allocated", "[page_allocator]")
 
     REQUIRE(pageAllocator.init(regions, pageSize));
     auto freePages = pageAllocator.m_freePagesCount;
-    Page* page = nullptr;
+    std::vector<Page*> pages;
 
     SECTION("Allocating 0 pages")
     {
-        page = pageAllocator.allocate(0);
-        REQUIRE(page == nullptr);
+        pages.push_back(pageAllocator.allocate(0));
+        REQUIRE(pages.back() == nullptr);
     }
 
     SECTION("Allocating more pages than free count")
     {
-        page = pageAllocator.allocate(pagesCount1 + pagesCount2 + pagesCount3 + 1);
-        REQUIRE(page == nullptr);
+        pages.push_back(pageAllocator.allocate(pagesCount1 + pagesCount2 + pagesCount3 + 1));
+        REQUIRE(pages.back() == nullptr);
     }
 
-    SECTION("Allocating more pages than bigger free continues group")
+    SECTION("Allocating more pages than biggest free continues group")
     {
-        page = pageAllocator.allocate(pagesCount1 + 1);
-        REQUIRE(page == nullptr);
+        pages.push_back(pageAllocator.allocate(pagesCount1 + 1));
+        REQUIRE(pages.back() == nullptr);
     }
 
     SECTION("Allocating 1 page")
     {
-        page = pageAllocator.allocate(1);
-        REQUIRE(page);
-        REQUIRE(page->address() == std::uintptr_t(memory3.get()));
+        pages.push_back(pageAllocator.allocate(1));
+        REQUIRE(pages.back());
+        REQUIRE(pages.back()->address() == std::uintptr_t(memory3.get()));
         REQUIRE(pageAllocator.m_freePagesCount == freePages - 1);
 
         std::size_t idx1Count = 0;
@@ -1012,9 +1013,9 @@ TEST_CASE("Pages are correctly allocated", "[page_allocator]")
 
     SECTION("Allocating 17 pages")
     {
-        page = pageAllocator.allocate(17);
-        REQUIRE(page);
-        REQUIRE(page->address() == std::uintptr_t(memory1.get()));
+        pages.push_back(pageAllocator.allocate(17));
+        REQUIRE(pages.back());
+        REQUIRE(pages.back()->address() == std::uintptr_t(memory1.get()));
         REQUIRE(pageAllocator.m_freePagesCount == freePages - 17);
 
         std::size_t idx8Count = 0;
@@ -1027,19 +1028,17 @@ TEST_CASE("Pages are correctly allocated", "[page_allocator]")
 
     SECTION("Allocating whole region")
     {
-        page = pageAllocator.allocate(pagesCount1);
-        REQUIRE(page);
-        REQUIRE(page->address() == std::uintptr_t(memory1.get()));
+        pages.push_back(pageAllocator.allocate(pagesCount1));
+        REQUIRE(pages.back());
+        REQUIRE(pages.back()->address() == std::uintptr_t(memory1.get()));
         REQUIRE(pageAllocator.m_freePagesCount == freePages - pagesCount1);
     }
 
 
     SECTION("Allocate 1 page 4 times")
     {
-        Page* pages[4];
-
         for (int i = 0; i < 4; ++i) {
-            pages[i]= pageAllocator.allocate(1);
+            pages.push_back(pageAllocator.allocate(1));
             REQUIRE(pages[i]);
             REQUIRE(pages[i]->address() == std::uintptr_t(memory3.get()) + i * pageSize);
             REQUIRE(pageAllocator.m_freePagesCount == freePages - i - 1);
@@ -1048,33 +1047,34 @@ TEST_CASE("Pages are correctly allocated", "[page_allocator]")
 
     SECTION("Only 2 pages are left in each region")
     {
-        Page* pages[3];
+        std::size_t allocated = 0;
 
-        pages[0]= pageAllocator.allocate(2);
-        REQUIRE(pages[0]);
-        REQUIRE(pages[0]->address() == std::uintptr_t(memory3.get()));
-        REQUIRE(pageAllocator.m_freePagesCount == freePages - 2);
+        pages.push_back(pageAllocator.allocate(pagesCount3 - 2));
+        allocated += pagesCount3 - 2;
+        REQUIRE(pages.back());
+        REQUIRE(pages.back()->address() == std::uintptr_t(memory3.get()));
+        REQUIRE(pageAllocator.m_freePagesCount == freePages - allocated);
 
-        pages[1]= pageAllocator.allocate(6);
-        REQUIRE(pages[1]);
-        REQUIRE(pages[1]->address() == std::uintptr_t(memory2.get() + pageAllocator.m_descPagesCount * pageSize));
+        pages.push_back(pageAllocator.allocate(pagesCount2 - pageAllocator.m_descPagesCount - 2));
+        allocated += pagesCount2 - pageAllocator.m_descPagesCount - 2;
+        REQUIRE(pages.back());
+        REQUIRE(pages.back()->address() == std::uintptr_t(memory2.get() + pageAllocator.m_descPagesCount * pageSize));
         REQUIRE(pageAllocator.m_freePagesCount == freePages - 8);
 
-        pages[2]= pageAllocator.allocate(533);
-        REQUIRE(pages[2]);
-        REQUIRE(pages[2]->address() == std::uintptr_t(memory1.get()));
-        REQUIRE(pageAllocator.m_freePagesCount == freePages - 541);
+        pages.push_back(pageAllocator.allocate(pagesCount1 - 2));
+        allocated += pagesCount1 - 2;
+        REQUIRE(pages.back());
+        REQUIRE(pages.back()->address() == std::uintptr_t(memory1.get()));
+        REQUIRE(pageAllocator.m_freePagesCount == freePages - allocated);
     }
 
     SECTION("Allocate all pages one by one")
     {
-        Page* pages[547];
-
-        for (int i = 0; i < 547; ++i) {
-            pages[i]= pageAllocator.allocate(1);
-            REQUIRE(pages[i]);
+        for (int i = 0; i < freePages; ++i) {
+            pages.push_back(pageAllocator.allocate(1));
+            REQUIRE(pages.back());
             REQUIRE(pageAllocator.m_freePagesCount == freePages - i - 1);
-            REQUIRE(pageAllocator.getPage(pages[i]->address()) == pages[i]);
+            REQUIRE(pageAllocator.getPage(pages.back()->address()) == pages[i]);
         }
 
         for (int i = 0; i < PageAllocator::MAX_GROUP_IDX; ++i) {
