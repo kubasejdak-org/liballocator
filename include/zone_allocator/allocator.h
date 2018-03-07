@@ -34,27 +34,17 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace Memory {
+namespace Memory::Allocator {
 
-class PageAllocator;
-class ZoneAllocator;
+const char* version();
 
-class Allocator {
-public:
-    static const char* version() { return "0.1"; }
+bool init(Region* regions, std::size_t pageSize);
+bool init(std::uintptr_t start, std::uintptr_t end, std::size_t pageSize);
+void clear();
 
-    static bool init(Region* regions, std::size_t pageSize);
-    static bool init(std::uintptr_t start, std::uintptr_t end, std::size_t pageSize);
-    static void clear();
+void* allocate(std::size_t size);
+void release(void* ptr);
 
-    static void* allocate(std::size_t size);
-    static void release(void* ptr);
-
-private:
-    static PageAllocator& pageAllocator();
-    static ZoneAllocator& zoneAllocator();
-};
-
-} // namespace Memory
+} // namespace Memory::Allocator
 
 #endif

@@ -31,20 +31,30 @@
 
 #include <zone_allocator/allocator.h>
 
-namespace Memory {
+namespace {
 
-bool Allocator::init(Region* regions, std::size_t pageSize)
-{
-    if (!pageAllocator().init(regions, pageSize))
-        return false;
+Memory::PageAllocator pageAllocator;
+Memory::ZoneAllocator zoneAllocator;
 
-    return zoneAllocator().init(&pageAllocator());
+} // namespace
+
+namespace Memory::Allocator {
+
+const char *version() {
+    return "0.1";
 }
 
-bool Allocator::init(std::uintptr_t start, std::uintptr_t end, std::size_t pageSize)
+bool init(Region *regions, std::size_t pageSize) {
+    if (!pageAllocator.init(regions, pageSize))
+        return false;
+
+    return zoneAllocator.init(&pageAllocator);
+}
+
+bool init(std::uintptr_t start, std::uintptr_t end, std::size_t pageSize)
 {
     // clang-format off
-    Region regions[2] = {
+    Region regions[] = {
         {.address = start, .size = end - start},
         {.address = 0,     .size = 0}
     };
@@ -53,32 +63,22 @@ bool Allocator::init(std::uintptr_t start, std::uintptr_t end, std::size_t pageS
     return init(regions, pageSize);
 }
 
-void Allocator::clear()
+void clear()
 {
-    pageAllocator().clear();
-    zoneAllocator().clear();
+    pageAllocator.clear();
+    zoneAllocator.clear();
 }
 
-void* Allocator::allocate(std::size_t size)
+void *allocate(std::size_t size)
 {
-    return zoneAllocator().allocate(size);
+    // return zoneAllocator.allocate(size);
+    return pageAllocator.allocate(size / 0x1000);
 }
 
-void Allocator::release(void* ptr)
+void release(void *ptr)
 {
-    zoneAllocator().release(ptr);
+    // zoneAllocator.release(ptr);
+    pageAllocator.release(reinterpret_cast<Page*>(ptr));
 }
 
-PageAllocator& Allocator::pageAllocator()
-{
-    static PageAllocator pageAllocator;
-    return pageAllocator;
-}
-
-ZoneAllocator& Allocator::zoneAllocator()
-{
-    static ZoneAllocator zoneAllocator;
-    return zoneAllocator;
-}
-
-} // namespace Memory
+} // namespace Memory::Allocator
