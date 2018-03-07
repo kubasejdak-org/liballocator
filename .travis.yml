@@ -48,3 +48,6 @@ script:
 after_script:
   # Check code format using clang-format.
   - check-format.sh .
+
+  # Run tests.
+  - ${TRAVIS_BUILD_DIR}/bin/zone-allocator -r xml -d yes --order lex "" -o /dev/null
