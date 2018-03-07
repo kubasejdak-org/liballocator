@@ -36,9 +36,11 @@
 
 #include <page_allocator.h>
 
+#include <chrono>
 #include <cstdlib>
 #include <cstring>
 #include <map>
+#include <random>
 #include <vector>
 
 using namespace Memory;
@@ -866,13 +868,13 @@ TEST_CASE("Page is properly verified as valid", "[page_allocator]")
     SECTION("Page points before first page desc")
     {
         auto* page = pageAllocator.m_pagesHead - 1;
-        REQUIRE(pageAllocator.isValidPage(page) == false);
+        REQUIRE(!pageAllocator.isValidPage(page));
     }
 
     SECTION("Page points after last page desc")
     {
         auto* page = pageAllocator.m_pagesTail + 1;
-        REQUIRE(pageAllocator.isValidPage(page) == false);
+        REQUIRE(!pageAllocator.isValidPage(page));
     }
 }
 
@@ -1344,6 +1346,88 @@ TEST_CASE("Pages are correctly released", "[page_allocator]")
     REQUIRE(pageAllocator.m_freeGroupLists[8]->groupSize() == pagesCount1);
 }
 
+#define USE_CHRONO 0
+
 TEST_CASE("Integration tests (long-term)", "[page_allocator][integration][.]")
 {
+#if USE_CHRONO
+    using namespace std::chrono_literals;
+    constexpr auto testDuration = 30min;
+#else
+    constexpr int testIterations = 1000000;
+#endif
+    constexpr int allocationsCount = 100;
+
+    std::size_t pageSize = 256;
+    PageAllocator pageAllocator;
+
+    std::size_t pagesCount1 = 535;
+    std::size_t pagesCount2 = 87;
+    std::size_t pagesCount3 = 4;
+    auto size1 = pageSize * pagesCount1;
+    auto size2 = pageSize * pagesCount2;
+    auto size3 = pageSize * pagesCount3;
+    auto memory1 = test_alignedAlloc(pageSize, size1);
+    auto memory2 = test_alignedAlloc(pageSize, size2);
+    auto memory3 = test_alignedAlloc(pageSize, size3);
+
+    // clang-format off
+    Region regions[] = {
+        {std::uintptr_t(memory1.get()), size1},
+        {std::uintptr_t(memory2.get()), size2},
+        {std::uintptr_t(memory3.get()), size3},
+        {0,                             0}
+    };
+    // clang-format on
+
+    REQUIRE(pageAllocator.init(regions, pageSize));
+    auto freePages = pageAllocator.m_freePagesCount;
+
+    // Initialize random number generator.
+    std::random_device randomDevice;
+    std::mt19937 randomGenerator(randomDevice());
+    std::uniform_int_distribution<std::size_t> distribution(0, freePages / 4);
+
+    std::array<Page*, allocationsCount> pages;
+
+#if USE_CHRONO
+    for (auto start = test_getCurrentTime(); !test_timeElapsed(start, testDuration);) {
+#else
+    for (int j = 0; j < testIterations; ++j) {
+#endif
+        pages.fill(nullptr);
+
+        // Allocate pages.
+        for (int i = 0; i < pages.size(); ++i) {
+            auto n = distribution(randomGenerator);
+            pages[i] = pageAllocator.allocate(n);
+        }
+
+        // Release pages.
+        for (int i = 0; i < pages.size(); ++i)
+            pageAllocator.release(pages[i]);
+
+        REQUIRE(pageAllocator.m_freePagesCount == freePages);
+
+        std::size_t idx1Count = 0;
+        for (Page* group = pageAllocator.m_freeGroupLists[1]; group != nullptr; group = group->nextGroup())
+            ++idx1Count;
+
+        REQUIRE(idx1Count == 1);
+        REQUIRE(pageAllocator.m_freeGroupLists[1]->groupSize() == pagesCount3);
+
+        std::size_t idx2Count = 0;
+        for (Page* group = pageAllocator.m_freeGroupLists[2]; group != nullptr; group = group->nextGroup())
+            ++idx2Count;
+
+        REQUIRE(idx2Count == 1);
+        REQUIRE(pageAllocator.m_freeGroupLists[2]->groupSize() == pagesCount2 - pageAllocator.m_descPagesCount);
+
+        std::size_t idx8Count = 0;
+        for (Page* group = pageAllocator.m_freeGroupLists[8]; group != nullptr; group = group->nextGroup())
+            ++idx8Count;
+
+        REQUIRE(idx8Count == 1);
+        REQUIRE(pageAllocator.m_freeGroupLists[8]->groupSize() == pagesCount1);
+    }
 }

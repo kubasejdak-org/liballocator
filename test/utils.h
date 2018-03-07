@@ -29,10 +29,16 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <chrono>
 #include <cstddef>
 #include <cstdlib>
 #include <memory>
 
 std::unique_ptr<std::byte, decltype(&std::free)> test_alignedAlloc(std::size_t alignment, std::size_t size);
+
+std::chrono::time_point<std::chrono::system_clock> test_getCurrentTime();
+
+template <typename T>
+bool test_timeElapsed(std::chrono::time_point<std::chrono::system_clock>& start, const T& duration);
 
 #endif

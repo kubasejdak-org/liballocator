@@ -37,4 +37,17 @@ std::unique_ptr<std::byte, decltype(&std::free)> test_alignedAlloc(std::size_t a
     posix_memalign(&ptr, alignment, size);
 
     return std::unique_ptr<std::byte, decltype(&std::free)>(reinterpret_cast<std::byte*>(ptr), &std::free);
-};
+}
+
+std::chrono::time_point<std::chrono::system_clock> test_getCurrentTime()
+{
+    return std::chrono::system_clock::now();
+}
+
+template <typename T>
+bool test_timeElapsed(std::chrono::time_point<std::chrono::system_clock>& start, const T& duration)
+{
+    auto elapsedSeconds = test_getCurrentTime() - start;
+    auto durationSeconds = std::chrono::duration_cast<std::chrono::seconds>(duration);
+    return (elapsedSeconds >= durationSeconds);
+}
