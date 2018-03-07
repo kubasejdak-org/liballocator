@@ -819,6 +819,132 @@ TEST_CASE("Group is properly joined", "[page_allocator]")
     REQUIRE(joinedGroup->groupSize() == groupSize);
 }
 
+TEST_CASE("Page is properly verified as valid", "[page_allocator]")
+{
+    std::size_t pageSize = 256;
+    PageAllocator pageAllocator;
+
+    std::size_t pagesCount1 = 535;
+    std::size_t pagesCount2 = 87;
+    std::size_t pagesCount3 = 4;
+    auto size1 = pageSize * pagesCount1;
+    auto size2 = pageSize * pagesCount2;
+    auto size3 = pageSize * pagesCount3;
+    auto memory1 = test_alignedAlloc(pageSize, size1);
+    auto memory2 = test_alignedAlloc(pageSize, size2);
+    auto memory3 = test_alignedAlloc(pageSize, size3);
+
+    // clang-format off
+    Region regions[] = {
+        {std::uintptr_t(memory1.get()), size1},
+        {std::uintptr_t(memory2.get()), size2},
+        {std::uintptr_t(memory3.get()), size3},
+        {0,                             0}
+    };
+    // clang-format on
+
+    REQUIRE(pageAllocator.init(regions, pageSize));
+
+    SECTION("Page points to the first page desc")
+    {
+        auto* page = pageAllocator.m_pagesHead;
+        REQUIRE(pageAllocator.isValidPage(page));
+    }
+
+    SECTION("Page points to the last page desc")
+    {
+        auto* page = pageAllocator.m_pagesTail;
+        REQUIRE(pageAllocator.isValidPage(page));
+    }
+
+    SECTION("Page points in the middle of page desc list")
+    {
+        auto* page = pageAllocator.m_pagesHead + pageAllocator.m_descPagesCount / 2;
+        REQUIRE(pageAllocator.isValidPage(page));
+    }
+
+    SECTION("Page points before first page desc")
+    {
+        auto* page = pageAllocator.m_pagesHead - 1;
+        REQUIRE(pageAllocator.isValidPage(page) == false);
+    }
+
+    SECTION("Page points after last page desc")
+    {
+        auto* page = pageAllocator.m_pagesTail + 1;
+        REQUIRE(pageAllocator.isValidPage(page) == false);
+    }
+}
+
+TEST_CASE("Region is properly resolved from address", "[page_allocator]")
+{
+    std::size_t pageSize = 256;
+    PageAllocator pageAllocator;
+
+    std::size_t pagesCount1 = 535;
+    std::size_t pagesCount2 = 87;
+    std::size_t pagesCount3 = 4;
+    auto size1 = pageSize * pagesCount1;
+    auto size2 = pageSize * pagesCount2;
+    auto size3 = pageSize * pagesCount3;
+    auto memory1 = test_alignedAlloc(pageSize, size1);
+    auto memory2 = test_alignedAlloc(pageSize, size2);
+    auto memory3 = test_alignedAlloc(pageSize, size3);
+
+    // clang-format off
+    Region regions[] = {
+        {std::uintptr_t(memory1.get()), size1},
+        {std::uintptr_t(memory2.get()), size2},
+        {std::uintptr_t(memory3.get()), size3},
+        {0,                             0}
+    };
+    // clang-format on
+
+    REQUIRE(pageAllocator.init(regions, pageSize));
+
+    SECTION("Address points to the beginning of the first region")
+    {
+        auto* region = pageAllocator.getRegion(std::uintptr_t(memory1.get()));
+        REQUIRE(region == &pageAllocator.m_regionsInfo[0]);
+    }
+
+    SECTION("Address points to the end of the first region")
+    {
+        auto* region = pageAllocator.getRegion(std::uintptr_t(memory1.get()) + size1 - 1);
+        REQUIRE(region == &pageAllocator.m_regionsInfo[0]);
+    }
+
+    SECTION("Address points to the middle of the first region")
+    {
+        auto* region = pageAllocator.getRegion(std::uintptr_t(memory1.get()) + size1 / 2);
+        REQUIRE(region == &pageAllocator.m_regionsInfo[0]);
+    }
+
+    SECTION("Address points to the beginning of the third region")
+    {
+        auto* region = pageAllocator.getRegion(std::uintptr_t(memory3.get()));
+        REQUIRE(region == &pageAllocator.m_regionsInfo[2]);
+    }
+
+    SECTION("Address points to the end of the third region")
+    {
+        auto* region = pageAllocator.getRegion(std::uintptr_t(memory3.get()) + size3 - 1);
+        REQUIRE(region == &pageAllocator.m_regionsInfo[2]);
+    }
+
+    SECTION("Address points to the middle of the third region")
+    {
+        auto* region = pageAllocator.getRegion(std::uintptr_t(memory3.get()) + size3 / 2);
+        REQUIRE(region == &pageAllocator.m_regionsInfo[2]);
+    }
+
+    SECTION("Address points to outside of any region")
+    {
+        auto* region = pageAllocator.getRegion(std::uintptr_t(memory1.get()) - 1);
+        REQUIRE(region == nullptr);
+    }
+}
+
 TEST_CASE("Pages are correctly resolved from address", "[page_allocator]")
 {
     std::size_t pageSize = 256;
@@ -1089,8 +1215,135 @@ TEST_CASE("Pages are correctly allocated", "[page_allocator]")
 
 TEST_CASE("Pages are correctly released", "[page_allocator]")
 {
+    std::size_t pageSize = 256;
+    PageAllocator pageAllocator;
+
+    std::size_t pagesCount1 = 535;
+    std::size_t pagesCount2 = 87;
+    std::size_t pagesCount3 = 4;
+    auto size1 = pageSize * pagesCount1;
+    auto size2 = pageSize * pagesCount2;
+    auto size3 = pageSize * pagesCount3;
+    auto memory1 = test_alignedAlloc(pageSize, size1);
+    auto memory2 = test_alignedAlloc(pageSize, size2);
+    auto memory3 = test_alignedAlloc(pageSize, size3);
+
+    // clang-format off
+    Region regions[] = {
+        {std::uintptr_t(memory1.get()), size1},
+        {std::uintptr_t(memory2.get()), size2},
+        {std::uintptr_t(memory3.get()), size3},
+        {0,                             0}
+    };
+    // clang-format on
+
+    REQUIRE(pageAllocator.init(regions, pageSize));
+    auto freePages = pageAllocator.m_freePagesCount;
+    std::vector<Page*> pages;
+
+    SECTION("Releasing nullptr is a valid operation")
+    {
+        pageAllocator.release(nullptr);
+    }
+
+    SECTION("Releasing 1 page")
+    {
+        pages.push_back(pageAllocator.allocate(1));
+        pageAllocator.release(pages.back());
+    }
+
+    SECTION("Releasing 17 pages")
+    {
+        pages.push_back(pageAllocator.allocate(17));
+        pageAllocator.release(pages.back());
+    }
+
+    SECTION("Releasing whole region")
+    {
+        pages.push_back(pageAllocator.allocate(pagesCount1));
+        pageAllocator.release(pages.back());
+    }
+
+    SECTION("Allocate 1 page 4 times, release from first")
+    {
+        for (std::size_t i = 0; i < 4; ++i)
+            pages.push_back(pageAllocator.allocate(1));
+
+        for (std::size_t i = 0; i < pages.size(); ++i)
+            pageAllocator.release(pages[i]);
+    }
+
+    SECTION("Allocate 1 page 4 times, release from last")
+    {
+        for (std::size_t i = 0; i < 4; ++i)
+            pages.push_back(pageAllocator.allocate(1));
+
+        for (std::size_t i = 0; i < pages.size(); ++i)
+            pageAllocator.release(pages[pages.size() - 1 - i]);
+    }
+
+    SECTION("Only 2 pages are left in each region, release from first")
+    {
+        pages.push_back(pageAllocator.allocate(pagesCount3 - 2));
+        pages.push_back(pageAllocator.allocate(pagesCount2 - pageAllocator.m_descPagesCount - 2));
+        pages.push_back(pageAllocator.allocate(pagesCount1 - 2));
+
+        for (std::size_t i = 0; i < pages.size(); ++i)
+            pageAllocator.release(pages[i]);
+    }
+
+    SECTION("Only 2 pages are left in each region, release from last")
+    {
+        pages.push_back(pageAllocator.allocate(pagesCount3 - 2));
+        pages.push_back(pageAllocator.allocate(pagesCount2 - pageAllocator.m_descPagesCount - 2));
+        pages.push_back(pageAllocator.allocate(pagesCount1 - 2));
+
+        for (std::size_t i = 0; i < pages.size(); ++i)
+            pageAllocator.release(pages[pages.size() - 1 - i]);
+    }
+
+    SECTION("Allocate all pages one by one, release from first")
+    {
+        for (int i = 0; i < freePages; ++i)
+            pages.push_back(pageAllocator.allocate(1));
+
+        for (std::size_t i = 0; i < pages.size(); ++i)
+            pageAllocator.release(pages[i]);
+    }
+
+    SECTION("Allocate all pages one by one, release from first")
+    {
+        for (int i = 0; i < freePages; ++i)
+            pages.push_back(pageAllocator.allocate(1));
+
+        for (std::size_t i = 0; i < pages.size(); ++i)
+            pageAllocator.release(pages[pages.size() - 1 - i]);
+    }
+
+    REQUIRE(pageAllocator.m_freePagesCount == freePages);
+
+    std::size_t idx1Count = 0;
+    for (Page* group = pageAllocator.m_freeGroupLists[1]; group != nullptr; group = group->nextGroup())
+        ++idx1Count;
+
+    REQUIRE(idx1Count == 1);
+    REQUIRE(pageAllocator.m_freeGroupLists[1]->groupSize() == pagesCount3);
+
+    std::size_t idx2Count = 0;
+    for (Page* group = pageAllocator.m_freeGroupLists[2]; group != nullptr; group = group->nextGroup())
+        ++idx2Count;
+
+    REQUIRE(idx2Count == 1);
+    REQUIRE(pageAllocator.m_freeGroupLists[2]->groupSize() == pagesCount2 - pageAllocator.m_descPagesCount);
+
+    std::size_t idx8Count = 0;
+    for (Page* group = pageAllocator.m_freeGroupLists[8]; group != nullptr; group = group->nextGroup())
+        ++idx8Count;
+
+    REQUIRE(idx8Count == 1);
+    REQUIRE(pageAllocator.m_freeGroupLists[8]->groupSize() == pagesCount1);
 }
 
-TEST_CASE("Integration tests (long-term)", "[page_allocator]")
+TEST_CASE("Integration tests (long-term)", "[page_allocator][integration][.]")
 {
 }

@@ -141,7 +141,13 @@ void PageAllocator::release(Page* pages)
     // Try joining with pages above released group.
     do {
         Page* lastAbove = joinedGroup->prevSibling();
-        if (!lastAbove || lastAbove->isUsed())
+        if (!isValidPage(lastAbove))
+            break;
+
+        if (getRegion(joinedGroup->address()) != getRegion(lastAbove->address()))
+            break;
+
+        if (lastAbove->isUsed())
             break;
 
         Page* firstAbove = lastAbove - lastAbove->groupSize() + 1;
@@ -154,7 +160,13 @@ void PageAllocator::release(Page* pages)
     do {
         Page* lastJoined = joinedGroup + joinedGroup->groupSize() - 1;
         Page* firstBelow = lastJoined->nextSibling();
-        if (!firstBelow || firstBelow->isUsed())
+        if (!isValidPage(firstBelow))
+            break;
+
+        if (getRegion(lastJoined->address()) != getRegion(firstBelow->address()))
+            break;
+
+        if (firstBelow->isUsed())
             break;
 
         removeGroup(firstBelow);
@@ -209,20 +221,30 @@ std::size_t PageAllocator::reserveDescPages()
     return reservedCount;
 }
 
+bool PageAllocator::isValidPage(Page* page)
+{
+    return (page >= m_pagesHead && page <= m_pagesTail);
+}
+
+RegionInfo* PageAllocator::getRegion(std::uintptr_t addr)
+{
+    auto alignedAddr = addr & ~(m_pageSize - 1);
+
+    for (std::size_t i = 0; i < m_validRegionsCount; ++i) {
+        auto& region = m_regionsInfo[i];
+
+        if (region.alignedStart <= alignedAddr && region.alignedEnd >= alignedAddr)
+            return &region;
+    }
+
+    return nullptr;
+}
+
 Page* PageAllocator::getPage(std::uintptr_t addr)
 {
     auto alignedAddr = addr & ~(m_pageSize - 1);
 
-    RegionInfo* pageRegion = nullptr;
-    for (std::size_t i = 0; i < m_validRegionsCount; ++i) {
-        auto& region = m_regionsInfo[i];
-
-        if (region.alignedStart <= alignedAddr && region.alignedEnd >= alignedAddr) {
-            pageRegion = &region;
-            break;
-        }
-    }
-
+    RegionInfo* pageRegion = getRegion(alignedAddr);
     if (!pageRegion)
         return nullptr;
 

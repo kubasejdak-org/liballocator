@@ -63,6 +63,8 @@ private:
     std::size_t countPages();
     std::size_t chooseDescRegion();
     std::size_t reserveDescPages();
+    bool isValidPage(Page* page);
+    RegionInfo* getRegion(std::uintptr_t addr);
     Page* getPage(std::uintptr_t addr);
     Stats getStats();
 
