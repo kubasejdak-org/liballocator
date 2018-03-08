@@ -395,8 +395,7 @@ TEST_CASE("Group is properly initialized", "[page_allocator]")
     SECTION("Group has 1 page")
     {
         constexpr std::size_t groupSize = 1;
-        std::array<std::byte, sizeof(Page) * groupSize> memory;
-        memory.fill(std::byte(0));
+        std::array<std::byte, sizeof(Page) * groupSize> memory{};
 
         auto* group = reinterpret_cast<Page*>(std::begin(memory));
         pageAllocator.initGroup(group, groupSize);
@@ -406,8 +405,7 @@ TEST_CASE("Group is properly initialized", "[page_allocator]")
     SECTION("Group has 5 pages")
     {
         constexpr std::size_t groupSize = 5;
-        std::array<std::byte, sizeof(Page) * groupSize> memory;
-        memory.fill(std::byte(0));
+        std::array<std::byte, sizeof(Page) * groupSize> memory{};
 
         auto* group = reinterpret_cast<Page*>(std::begin(memory));
         pageAllocator.initGroup(group, groupSize);
@@ -425,8 +423,7 @@ TEST_CASE("Group is properly cleared", "[page_allocator]")
     SECTION("Group has 1 page")
     {
         constexpr std::size_t groupSize = 1;
-        std::array<std::byte, sizeof(Page) * groupSize> memory;
-        memory.fill(std::byte(0));
+        std::array<std::byte, sizeof(Page) * groupSize> memory{};
 
         auto* group = reinterpret_cast<Page*>(std::begin(memory));
         pageAllocator.initGroup(group, groupSize);
@@ -437,8 +434,7 @@ TEST_CASE("Group is properly cleared", "[page_allocator]")
     SECTION("Group has 5 pages")
     {
         constexpr std::size_t groupSize = 5;
-        std::array<std::byte, sizeof(Page) * groupSize> memory;
-        memory.fill(std::byte(0));
+        std::array<std::byte, sizeof(Page) * groupSize> memory{};
 
         auto* group = reinterpret_cast<Page*>(std::begin(memory));
         pageAllocator.initGroup(group, groupSize);
@@ -458,8 +454,7 @@ TEST_CASE("Group is properly added to list", "[page_allocator]")
     SECTION("1 group is stored at index 0")
     {
         constexpr std::size_t groupSize = 3;
-        std::array<std::byte, sizeof(Page) * groupSize> memory;
-        memory.fill(std::byte(0));
+        std::array<std::byte, sizeof(Page) * groupSize> memory{};
 
         auto* group = reinterpret_cast<Page*>(std::begin(memory));
         pageAllocator.initGroup(group, groupSize);
@@ -478,12 +473,9 @@ TEST_CASE("Group is properly added to list", "[page_allocator]")
     SECTION("3 groups are stored at index 0")
     {
         constexpr std::size_t groupSize = 3;
-        std::array<std::byte, sizeof(Page) * groupSize> memory1;
-        std::array<std::byte, sizeof(Page) * groupSize> memory2;
-        std::array<std::byte, sizeof(Page) * groupSize> memory3;
-        memory1.fill(std::byte(0));
-        memory2.fill(std::byte(0));
-        memory3.fill(std::byte(0));
+        std::array<std::byte, sizeof(Page) * groupSize> memory1{};
+        std::array<std::byte, sizeof(Page) * groupSize> memory2{};
+        std::array<std::byte, sizeof(Page) * groupSize> memory3{};
 
         auto* group1 = reinterpret_cast<Page*>(std::begin(memory1));
         auto* group2 = reinterpret_cast<Page*>(std::begin(memory2));
@@ -508,8 +500,7 @@ TEST_CASE("Group is properly added to list", "[page_allocator]")
     SECTION("1 group is stored at index 4")
     {
         constexpr std::size_t groupSize = 34;
-        std::array<std::byte, sizeof(Page) * groupSize> memory;
-        memory.fill(std::byte(0));
+        std::array<std::byte, sizeof(Page) * groupSize> memory{};
 
         auto* group = reinterpret_cast<Page*>(std::begin(memory));
         pageAllocator.initGroup(group, groupSize);
@@ -528,12 +519,9 @@ TEST_CASE("Group is properly added to list", "[page_allocator]")
     SECTION("3 groups are stored at index 4")
     {
         constexpr std::size_t groupSize = 34;
-        std::array<std::byte, sizeof(Page) * groupSize> memory1;
-        std::array<std::byte, sizeof(Page) * groupSize> memory2;
-        std::array<std::byte, sizeof(Page) * groupSize> memory3;
-        memory1.fill(std::byte(0));
-        memory2.fill(std::byte(0));
-        memory3.fill(std::byte(0));
+        std::array<std::byte, sizeof(Page) * groupSize> memory1{};
+        std::array<std::byte, sizeof(Page) * groupSize> memory2{};
+        std::array<std::byte, sizeof(Page) * groupSize> memory3{};
 
         auto* group1 = reinterpret_cast<Page*>(std::begin(memory1));
         auto* group2 = reinterpret_cast<Page*>(std::begin(memory2));
@@ -561,12 +549,9 @@ TEST_CASE("Group is properly removed from list at index 0", "[page_allocator]")
     PageAllocator pageAllocator;
     constexpr std::size_t groupSize = 3;
     std::size_t pagesCount = 0;
-    std::array<std::byte, sizeof(Page) * groupSize> memory1;
-    std::array<std::byte, sizeof(Page) * groupSize> memory2;
-    std::array<std::byte, sizeof(Page) * groupSize> memory3;
-    memory1.fill(std::byte(0));
-    memory2.fill(std::byte(0));
-    memory3.fill(std::byte(0));
+    std::array<std::byte, sizeof(Page) * groupSize> memory1{};
+    std::array<std::byte, sizeof(Page) * groupSize> memory2{};
+    std::array<std::byte, sizeof(Page) * groupSize> memory3{};
 
     auto* group1 = reinterpret_cast<Page*>(std::begin(memory1));
     auto* group2 = reinterpret_cast<Page*>(std::begin(memory2));
@@ -648,12 +633,9 @@ TEST_CASE("Group is properly removed from list at index 4", "[page_allocator]")
     PageAllocator pageAllocator;
     constexpr std::size_t groupSize = 34;
     std::size_t pagesCount = 0;
-    std::array<std::byte, sizeof(Page) * groupSize> memory1;
-    std::array<std::byte, sizeof(Page) * groupSize> memory2;
-    std::array<std::byte, sizeof(Page) * groupSize> memory3;
-    memory1.fill(std::byte(0));
-    memory2.fill(std::byte(0));
-    memory3.fill(std::byte(0));
+    std::array<std::byte, sizeof(Page) * groupSize> memory1{};
+    std::array<std::byte, sizeof(Page) * groupSize> memory2{};
+    std::array<std::byte, sizeof(Page) * groupSize> memory3{};
 
     auto* group1 = reinterpret_cast<Page*>(std::begin(memory1));
     auto* group2 = reinterpret_cast<Page*>(std::begin(memory2));
@@ -733,8 +715,7 @@ TEST_CASE("Group is properly removed from list at index 4", "[page_allocator]")
 TEST_CASE("Group is properly splitted", "[page_allocator]")
 {
     constexpr std::size_t groupSize = 10;
-    std::array<std::byte, sizeof(Page) * groupSize> memory;
-    memory.fill(std::byte(0));
+    std::array<std::byte, sizeof(Page) * groupSize> memory{};
 
     auto* group = reinterpret_cast<Page*>(std::begin(memory));
 
@@ -788,8 +769,7 @@ TEST_CASE("Group is properly splitted", "[page_allocator]")
 TEST_CASE("Group is properly joined", "[page_allocator]")
 {
     constexpr std::size_t groupSize = 10;
-    std::array<std::byte, sizeof(Page) * groupSize> memory;
-    memory.fill(std::byte(0));
+    std::array<std::byte, sizeof(Page) * groupSize> memory{};
 
     auto* group = reinterpret_cast<Page*>(std::begin(memory));
 
@@ -1271,8 +1251,8 @@ TEST_CASE("Pages are correctly released", "[page_allocator]")
         for (std::size_t i = 0; i < 4; ++i)
             pages.push_back(pageAllocator.allocate(1));
 
-        for (std::size_t i = 0; i < pages.size(); ++i)
-            pageAllocator.release(pages[i]);
+        for (auto* page : pages)
+            pageAllocator.release(page);
     }
 
     SECTION("Allocate 1 page 4 times, release from last")
@@ -1290,8 +1270,8 @@ TEST_CASE("Pages are correctly released", "[page_allocator]")
         pages.push_back(pageAllocator.allocate(pagesCount2 - pageAllocator.m_descPagesCount - 2));
         pages.push_back(pageAllocator.allocate(pagesCount1 - 2));
 
-        for (std::size_t i = 0; i < pages.size(); ++i)
-            pageAllocator.release(pages[i]);
+        for (auto* page : pages)
+            pageAllocator.release(page);
     }
 
     SECTION("Only 2 pages are left in each region, release from last")
@@ -1309,8 +1289,8 @@ TEST_CASE("Pages are correctly released", "[page_allocator]")
         for (int i = 0; i < freePages; ++i)
             pages.push_back(pageAllocator.allocate(1));
 
-        for (std::size_t i = 0; i < pages.size(); ++i)
-            pageAllocator.release(pages[i]);
+        for (auto* page : pages)
+            pageAllocator.release(page);
     }
 
     SECTION("Allocate all pages one by one, release from first")
@@ -1382,20 +1362,20 @@ TEST_CASE("Integration tests (long-term)", "[page_allocator][integration][.]")
     std::mt19937 randomGenerator(randomDevice());
     std::uniform_int_distribution<std::size_t> distribution(0, freePages / 4);
 
-    std::array<Page*, allocationsCount> pages;
+    std::array<Page*, allocationsCount> pages{};
 
     for (auto start = test_currentTime(); !test_timeElapsed(start, testDuration);) {
         pages.fill(nullptr);
 
         // Allocate pages.
-        for (int i = 0; i < pages.size(); ++i) {
+        for (auto*& page : pages) {
             auto n = distribution(randomGenerator);
-            pages[i] = pageAllocator.allocate(n);
+            page = pageAllocator.allocate(n);
         }
 
         // Release pages.
-        for (int i = 0; i < pages.size(); ++i)
-            pageAllocator.release(pages[i]);
+        for (auto* page : pages)
+            pageAllocator.release(page);
 
         REQUIRE(pageAllocator.m_freePagesCount == freePages);
 

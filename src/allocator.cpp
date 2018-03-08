@@ -40,11 +40,13 @@ Memory::ZoneAllocator zoneAllocator;
 
 namespace Memory::Allocator {
 
-const char *version() {
+const char *version()
+{
     return "0.1";
 }
 
-bool init(Region *regions, std::size_t pageSize) {
+bool init(Region *regions, std::size_t pageSize)
+{
     if (!pageAllocator.init(regions, pageSize))
         return false;
 

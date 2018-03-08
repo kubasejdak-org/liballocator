@@ -71,7 +71,7 @@ TEST_CASE("Accessing siblings works as expected", "[page]")
     for (int i = 0; i < pageCount; ++i) {
         page[i] = reinterpret_cast<Page*>(buffer) + i;
         page[i]->init();
-        page[i]->setAddress(i);
+        page[i]->setAddress(std::uintptr_t(i));
     }
 
     SECTION("Previous sibling")
@@ -113,13 +113,13 @@ TEST_CASE("Adding to non-empty list", "[page]")
     for (int i = 0; i < pageCount; ++i) {
         page[i] = reinterpret_cast<Page*>(buffer) + i;
         page[i]->init();
-        page[i]->setAddress(i);
+        page[i]->setAddress(std::uintptr_t(i));
         page[i]->addToList(&list);
     }
 
     SECTION("All pages are in the list")
     {
-        bool pagePresent[pageCount] = {false};
+        bool pagePresent[pageCount] = {};
 
         for (auto* it = list; it != nullptr; it = it->nextGroup()) {
             auto idx = it->address();
@@ -127,8 +127,8 @@ TEST_CASE("Adding to non-empty list", "[page]")
             pagePresent[idx] = true;
         }
 
-        for (int i = 0; i < pageCount; ++i)
-            REQUIRE(pagePresent[i]);
+        for (auto& present : pagePresent)
+            REQUIRE(present);
     }
 
     SECTION("All pages are in correct order")
@@ -149,7 +149,7 @@ TEST_CASE("Removing from list with 5 pages", "[page]")
     for (int i = 0; i < pageCount; ++i) {
         page[i] = reinterpret_cast<Page*>(buffer) + i;
         page[i]->init();
-        page[i]->setAddress(i);
+        page[i]->setAddress(std::uintptr_t(i));
         page[i]->addToList(&list);
     }
 

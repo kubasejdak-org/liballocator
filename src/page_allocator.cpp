@@ -46,7 +46,7 @@ bool PageAllocator::init(Region* regions, std::size_t pageSize)
         if (i == MAX_REGIONS_COUNT)
             return false;
 
-        RegionInfo regionInfo;
+        RegionInfo regionInfo{};
         if (initRegionInfo(regionInfo, regions[i], pageSize))
             m_regionsInfo[m_validRegionsCount++] = regionInfo;
     }
@@ -258,7 +258,7 @@ Page* PageAllocator::getPage(std::uintptr_t addr)
 
 PageAllocator::Stats PageAllocator::getStats()
 {
-    Stats stats;
+    Stats stats{};
     stats.pageSize = m_pageSize;
     stats.pagesCount = m_pagesCount;
     stats.freePagesCount = m_freePagesCount;

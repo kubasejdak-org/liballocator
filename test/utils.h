@@ -50,7 +50,8 @@ std::chrono::time_point<std::chrono::system_clock> test_currentTime()
     return std::chrono::system_clock::now();
 }
 
-bool test_timeElapsed(std::chrono::time_point<std::chrono::system_clock>& start, const auto& duration)
+template <typename T>
+bool test_timeElapsed(std::chrono::time_point<std::chrono::system_clock>& start, const T& duration)
 {
     auto elapsedSeconds = test_currentTime() - start;
     return (elapsedSeconds >= duration);
