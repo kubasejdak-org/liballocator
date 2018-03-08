@@ -11,7 +11,6 @@ include(${CMAKE_SOURCE_DIR}/tools/cmake/macros.cmake)
 
 set(PROJECT_NAME "zone_allocator")
 project(${PROJECT_NAME} CXX)
-enable_testing()
 
 # Project paths.
 set(ALLOCATOR_SRC_PATH ${CMAKE_SOURCE_DIR}/src)
