@@ -34,11 +34,26 @@
 #include <cstdlib>
 #include <memory>
 
-std::unique_ptr<std::byte, decltype(&std::free)> test_alignedAlloc(std::size_t alignment, std::size_t size);
+std::unique_ptr<std::byte, decltype(&std::free)> test_alignedAlloc(std::size_t alignment, std::size_t size)
+{
+    void* ptr = nullptr;
 
-std::chrono::time_point<std::chrono::system_clock> test_getCurrentTime();
+    // TODO: This is a workaround for bug in GCC lacking std::aligned_alloc().
+    // return std::unique_ptr<std::byte, decltype(&std::free)>(std::aligned_alloc(alignment, size));
+    posix_memalign(&ptr, alignment, size);
 
-template <typename T>
-bool test_timeElapsed(std::chrono::time_point<std::chrono::system_clock>& start, const T& duration);
+    return std::unique_ptr<std::byte, decltype(&std::free)>(reinterpret_cast<std::byte*>(ptr), &std::free);
+}
+
+std::chrono::time_point<std::chrono::system_clock> test_currentTime()
+{
+    return std::chrono::system_clock::now();
+}
+
+bool test_timeElapsed(std::chrono::time_point<std::chrono::system_clock>& start, const auto& duration)
+{
+    auto elapsedSeconds = test_currentTime() - start;
+    return (elapsedSeconds >= duration);
+}
 
 #endif

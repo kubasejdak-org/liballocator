@@ -1346,16 +1346,10 @@ TEST_CASE("Pages are correctly released", "[page_allocator]")
     REQUIRE(pageAllocator.m_freeGroupLists[8]->groupSize() == pagesCount1);
 }
 
-#define USE_CHRONO 0
-
 TEST_CASE("Integration tests (long-term)", "[page_allocator][integration][.]")
 {
-#if USE_CHRONO
     using namespace std::chrono_literals;
     constexpr auto testDuration = 30min;
-#else
-    constexpr int testIterations = 1000000;
-#endif
     constexpr int allocationsCount = 100;
 
     std::size_t pageSize = 256;
@@ -1390,11 +1384,7 @@ TEST_CASE("Integration tests (long-term)", "[page_allocator][integration][.]")
 
     std::array<Page*, allocationsCount> pages;
 
-#if USE_CHRONO
-    for (auto start = test_getCurrentTime(); !test_timeElapsed(start, testDuration);) {
-#else
-    for (int j = 0; j < testIterations; ++j) {
-#endif
+    for (auto start = test_currentTime(); !test_timeElapsed(start, testDuration);) {
         pages.fill(nullptr);
 
         // Allocate pages.
