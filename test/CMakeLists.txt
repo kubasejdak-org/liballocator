@@ -11,6 +11,7 @@ include(${CMAKE_SOURCE_DIR}/tools/cmake/macros.cmake)
 
 set(PROJECT_NAME "zone_allocator")
 project(${PROJECT_NAME} CXX)
+enable_testing()
 
 # Project paths.
 set(ALLOCATOR_SRC_PATH ${CMAKE_SOURCE_DIR}/src)
@@ -50,3 +51,6 @@ set(SOURCES
 register_executable(${PROJECT_NAME})
 
 link_targetEx(${PROJECT_NAME} ${ALLOCATOR_SRC_PATH})
+
+add_test(UnitTests ${EXECUTABLE_OUTPUT_PATH}/${PROJECT_NAME} -r xml -d yes --order lex "")
+add_test(IntegrationTests ${EXECUTABLE_OUTPUT_PATH}/${PROJECT_NAME} [.][integration] -r xml -d yes --order lex "")
