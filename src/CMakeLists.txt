@@ -1,4 +1,4 @@
-message(STATUS "  Configuring '${CMAKE_CURRENT_SOURCE_DIR}/version.h'")
+utils_log("Configuring '${CMAKE_CURRENT_SOURCE_DIR}/version.h'")
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/version.h)
 
 add_library(zoneallocator

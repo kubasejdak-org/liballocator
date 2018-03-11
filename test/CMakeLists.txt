@@ -21,3 +21,5 @@ target_link_libraries(zoneallocator_tests PUBLIC catch2
 # Test definitions.
 add_test(UnitTests ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/zoneallocator_tests -r xml -d yes --order lex "")
 add_test(IntegrationTests ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/zoneallocator_tests [.][integration] -r xml -d yes --order lex "")
+
+utils_showBuildConfig()
