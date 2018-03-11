@@ -6,6 +6,7 @@ bin/
 CMakeLists.txt.user
 .vscode/
 .idea/
+version.h
 
 # macOS files.
 .DS_Store

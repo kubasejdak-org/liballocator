@@ -26,62 +26,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
-#include "page_allocator.h"
-#include "version.h"
-#include "zone_allocator.h"
+#ifndef VERSION_H
+#define VERSION_H
 
-#include <zone_allocator/allocator.h>
+#define ZONEALLOCATOR_VERSION "@libzoneallocator_VERSION@"
 
-namespace {
-
-Memory::PageAllocator pageAllocator;
-Memory::ZoneAllocator zoneAllocator;
-
-} // namespace
-
-namespace Memory::Allocator {
-
-const char *version()
-{
-    return ZONEALLOCATOR_VERSION;
-}
-
-bool init(Region *regions, std::size_t pageSize)
-{
-    if (!pageAllocator.init(regions, pageSize))
-        return false;
-
-    return zoneAllocator.init(&pageAllocator);
-}
-
-bool init(std::uintptr_t start, std::uintptr_t end, std::size_t pageSize)
-{
-    // clang-format off
-    Region regions[] = {
-        {.address = start, .size = end - start},
-        {.address = 0,     .size = 0}
-    };
-    // clang-format on
-
-    return init(regions, pageSize);
-}
-
-void clear()
-{
-    pageAllocator.clear();
-    zoneAllocator.clear();
-}
-
-void *allocate(std::size_t size)
-{
-    // return zoneAllocator.allocate(size);
-    return pageAllocator.allocate(size / 0x1000);
-}
-
-void release(void *ptr)
-{
-    // zoneAllocator.release(ptr);
-    pageAllocator.release(reinterpret_cast<Page*>(ptr));
-}
-
-} // namespace Memory::Allocator
+#endif

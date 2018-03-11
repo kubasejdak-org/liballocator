@@ -1,8 +1,12 @@
+message(STATUS "  Configuring '${CMAKE_CURRENT_SOURCE_DIR}/version.h'")
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/version.h)
+
 add_library(zoneallocator
     allocator.cpp
     page_allocator.cpp
     page.cpp
     region_info.cpp
+    version.h
     zone_allocator.cpp
 )
 
