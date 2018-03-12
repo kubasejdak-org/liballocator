@@ -30,7 +30,7 @@
 #include "version.h"
 #include "zone_allocator.h"
 
-#include <zone_allocator/allocator.h>
+#include <allocator/allocator.h>
 
 namespace {
 

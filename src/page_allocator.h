@@ -32,7 +32,7 @@
 #include "page.h"
 #include "region_info.h"
 
-#include <zone_allocator/region.h>
+#include <allocator/region.h>
 
 #include <array>
 #include <cstddef>

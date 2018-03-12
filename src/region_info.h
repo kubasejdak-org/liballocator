@@ -31,7 +31,7 @@
 
 #include "page.h"
 
-#include <zone_allocator/region.h>
+#include <allocator/region.h>
 
 #include <cstddef>
 #include <cstdint>
