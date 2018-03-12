@@ -43,7 +43,7 @@ namespace Memory::Allocator {
 
 const char *version()
 {
-    return ZONEALLOCATOR_VERSION;
+    return ALLOCATOR_VERSION;
 }
 
 bool init(Region *regions, std::size_t pageSize)
