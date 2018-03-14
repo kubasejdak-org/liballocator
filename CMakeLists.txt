@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.9)
 include(tools/cmake/utils.cmake)
 
+utils_getVersion(VERSION)
+project(liballocator VERSION ${VERSION} LANGUAGES CXX)
+
 # Project options.
 option(WITH_TESTS "Build unit tests" OFF)
 

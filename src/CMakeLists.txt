@@ -1,6 +1,3 @@
-utils_getVersion(VERSION)
-project(liballocator VERSION ${VERSION} LANGUAGES CXX)
-
 utils_log("Configuring '${CMAKE_CURRENT_SOURCE_DIR}/version.h'")
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/version.h)
 

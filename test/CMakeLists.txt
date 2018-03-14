@@ -1,5 +1,3 @@
-project(tests CXX)
-
 add_executable(tests
     main.cpp
     test_page_allocator.cpp
