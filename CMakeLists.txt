@@ -7,7 +7,7 @@ project(liballocator VERSION ${VERSION} LANGUAGES CXX)
 # Project options.
 option(WITH_TESTS "Build unit tests" OFF)
 
-utils_setOutputPath(${CMAKE_SOURCE_DIR}/bin)
+utils_setOutputPath(${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
 add_subdirectory(src)
 if(WITH_TESTS)
