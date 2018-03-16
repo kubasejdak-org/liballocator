@@ -1,3 +1,4 @@
+[![Github Releases](https://img.shields.io/github/release/ksejdak/liballocator.svg)](https://github.com/ksejdak/liballocator/releases)
 [![Build Status](https://travis-ci.org/ksejdak/liballocator.svg?branch=master)](https://travis-ci.org/ksejdak/liballocator)
 
 # liballocator
