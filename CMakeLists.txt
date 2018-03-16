@@ -5,14 +5,13 @@ utils_getVersion(VERSION)
 project(liballocator VERSION ${VERSION} LANGUAGES CXX)
 
 # Project options.
-option(WITH_TESTS "Build unit tests" OFF)
+option(LIBALLOCATOR_TESTS "Build unit tests" OFF)
 
-utils_setOutputPath(${CMAKE_CURRENT_SOURCE_DIR}/bin)
-
+add_subdirectory(include)
 add_subdirectory(lib)
 add_subdirectory(src)
 
-if(WITH_TESTS)
+if(LIBALLOCATOR_TESTS)
     utils_log("Building liballocator with tests")
     enable_testing()
     add_subdirectory(test)

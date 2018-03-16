@@ -13,9 +13,11 @@ get_target_property(ALLOCATOR_INCLUDES allocator INCLUDE_DIRECTORIES)
 target_include_directories(tests PRIVATE ${ALLOCATOR_INCLUDES})
 
 target_link_libraries(tests
-    PUBLIC catch2
+    PUBLIC catch2 liballocator_include
     PRIVATE allocator
 )
+
+utils_setOutputPath(tests ${CMAKE_SOURCE_DIR}/bin)
 
 # Test definitions.
 add_test(UnitTests ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/tests -r xml -d yes --order lex "")

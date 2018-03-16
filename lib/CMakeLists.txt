@@ -1,3 +1,3 @@
-if(WITH_TESTS)
+if(LIBALLOCATOR_TESTS)
     add_subdirectory(catch2)
 endif()
