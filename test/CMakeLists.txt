@@ -1,4 +1,4 @@
-add_executable(tests
+add_executable(liballocator_tests
     main.cpp
     test_page_allocator.cpp
     test_page.cpp
@@ -6,21 +6,20 @@ add_executable(tests
     utils.h
 )
 
-target_compile_features(tests PRIVATE cxx_std_17)
+target_compile_features(liballocator_tests PRIVATE cxx_std_17)
 
 # Link with library private implementation for testing.
 get_target_property(ALLOCATOR_INCLUDES allocator INCLUDE_DIRECTORIES)
-target_include_directories(tests PRIVATE ${ALLOCATOR_INCLUDES})
+target_include_directories(liballocator_tests PRIVATE ${ALLOCATOR_INCLUDES})
 
-target_link_libraries(tests
+target_link_libraries(liballocator_tests
     PUBLIC catch2 liballocator_include
     PRIVATE allocator
 )
 
-utils_setOutputPath(tests ${CMAKE_SOURCE_DIR}/bin)
+utils_setOutputPath(liballocator_tests ${CMAKE_SOURCE_DIR}/bin)
 
 # Test definitions.
-add_test(UnitTests ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/tests -r xml -d yes --order lex "")
-add_test(IntegrationTests ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/tests [.][integration] -r xml -d yes --order lex "")
-
-utils_showBuildConfig()
+get_target_property(RUNTIME_OUTPUT liballocator_tests RUNTIME_OUTPUT_DIRECTORY)
+add_test(UnitTests ${RUNTIME_OUTPUT}/liballocator_tests -r xml -d yes --order lex "")
+add_test(IntegrationTests ${RUNTIME_OUTPUT}/liballocator_tests [.][integration] -r xml -d yes --order lex "")
