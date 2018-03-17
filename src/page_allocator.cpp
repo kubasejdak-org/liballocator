@@ -42,7 +42,7 @@ bool PageAllocator::init(Region* regions, std::size_t pageSize)
 {
     assert(regions);
 
-    for (std::size_t i = 0; i < regions[i].size != 0; ++i) {
+    for (std::size_t i = 0; regions[i].size != 0; ++i) {
         if (i == MAX_REGIONS_COUNT)
             return false;
 

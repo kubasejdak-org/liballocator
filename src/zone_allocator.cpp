@@ -46,12 +46,12 @@ void ZoneAllocator::clear() noexcept
     m_pageAllocator = nullptr;
 }
 
-void* ZoneAllocator::allocate(std::size_t size)
+void* ZoneAllocator::allocate(std::size_t size __attribute__((unused)))
 {
     return nullptr;
 }
 
-void ZoneAllocator::release(void* ptr)
+void ZoneAllocator::release(void* ptr __attribute__((unused)))
 {
 }
 

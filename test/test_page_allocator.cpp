@@ -1179,14 +1179,14 @@ TEST_CASE("Pages are correctly allocated", "[page_allocator]")
 
     SECTION("Allocate all pages one by one")
     {
-        for (int i = 0; i < freePages; ++i) {
+        for (std::size_t i = 0; i < freePages; ++i) {
             pages.push_back(pageAllocator.allocate(1));
             REQUIRE(pages.back());
             REQUIRE(pageAllocator.m_freePagesCount == freePages - i - 1);
             REQUIRE(pageAllocator.getPage(pages.back()->address()) == pages[i]);
         }
 
-        for (int i = 0; i < PageAllocator::MAX_GROUP_IDX; ++i) {
+        for (std::size_t i = 0; i < PageAllocator::MAX_GROUP_IDX; ++i) {
             std::size_t idxCount = 0;
             for (Page* group = pageAllocator.m_freeGroupLists[i]; group != nullptr; group = group->nextGroup())
                 ++idxCount;
@@ -1287,7 +1287,7 @@ TEST_CASE("Pages are correctly released", "[page_allocator]")
 
     SECTION("Allocate all pages one by one, release from first")
     {
-        for (int i = 0; i < freePages; ++i)
+        for (std::size_t i = 0; i < freePages; ++i)
             pages.push_back(pageAllocator.allocate(1));
 
         for (auto* page : pages)
@@ -1296,7 +1296,7 @@ TEST_CASE("Pages are correctly released", "[page_allocator]")
 
     SECTION("Allocate all pages one by one, release from first")
     {
-        for (int i = 0; i < freePages; ++i)
+        for (std::size_t i = 0; i < freePages; ++i)
             pages.push_back(pageAllocator.allocate(1));
 
         for (std::size_t i = 0; i < pages.size(); ++i)
