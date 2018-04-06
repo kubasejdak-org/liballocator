@@ -87,14 +87,14 @@ void Page::setUsed(bool value)
     m_flags.used = value;
 }
 
-Page* Page::prevSibling()
-{
-    return (this - 1);
-}
-
 Page* Page::nextSibling()
 {
     return (this + 1);
+}
+
+Page* Page::prevSibling()
+{
+    return (this - 1);
 }
 
 Page* Page::nextGroup()

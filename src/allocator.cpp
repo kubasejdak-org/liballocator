@@ -48,10 +48,12 @@ const char *version()
 
 bool init(Region *regions, std::size_t pageSize)
 {
+    clear();
+
     if (!pageAllocator.init(regions, pageSize))
         return false;
 
-    return zoneAllocator.init(&pageAllocator);
+    return zoneAllocator.init(&pageAllocator, pageSize);
 }
 
 bool init(std::uintptr_t start, std::uintptr_t end, std::size_t pageSize)
@@ -74,14 +76,12 @@ void clear()
 
 void *allocate(std::size_t size)
 {
-    // return zoneAllocator.allocate(size);
-    return pageAllocator.allocate(size / 0x1000);
+    return zoneAllocator.allocate(size);
 }
 
 void release(void *ptr)
 {
-    // zoneAllocator.release(ptr);
-    pageAllocator.release(reinterpret_cast<Page*>(ptr));
+    zoneAllocator.release(ptr);
 }
 
 } // namespace Memory::Allocator

@@ -48,8 +48,8 @@ public:
     void setGroupSize(std::size_t groupSize);
     void setUsed(bool value);
 
-    Page* prevSibling();
     Page* nextSibling();
+    Page* prevSibling();
     Page* nextGroup();
     std::uintptr_t address();
     std::size_t groupSize();
