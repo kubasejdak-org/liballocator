@@ -1,13 +1,14 @@
 utils_log("Configuring '${CMAKE_CURRENT_SOURCE_DIR}/version.h'")
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/version.h)
 
-#add_compile_options(-Wall -Wextra)
 add_library(allocator
     allocator.cpp
+    chunk.cpp
     page_allocator.cpp
     page.cpp
     region_info.cpp
     version.h
+    zone.cpp
     zone_allocator.cpp
 )
 

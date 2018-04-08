@@ -26,45 +26,58 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef ZONE_ALLOCATOR_H
-#define ZONE_ALLOCATOR_H
+#include "chunk.h"
 
-#include "zone.h"
-
-#include <array>
-#include <cstddef>
+#include <cassert>
 
 namespace Memory {
 
-class PageAllocator;
+void Chunk::init()
+{
+    m_next = nullptr;
+    m_prev = nullptr;
+}
 
-class ZoneAllocator {
-public:
-    ZoneAllocator();
+Chunk* Chunk::nextSibling()
+{
+    return (this + 1);
+}
 
-    [[nodiscard]] bool init(PageAllocator* pageAllocator, std::size_t pageSize);
-    void clear();
+Chunk* Chunk::prevSibling()
+{
+    return (this - 1);
+}
 
-    [[nodiscard]] void* allocate(std::size_t size);
-    void release(void* ptr);
+void Chunk::addToList(Chunk** list)
+{
+    assert(list);
+    assert(!m_next);
+    assert(!m_prev);
 
-private:
-    std::size_t chunkSize(std::size_t size);
-    std::size_t zoneIdx(std::size_t chunkSize);
-    void addZone(Zone* zone);
-    void removeZone(Zone* zone);
+    if (*list) {
+        m_next = *list;
+        m_next->m_prev = this;
+    }
 
-private:
-    static constexpr std::size_t MINIMAL_ALLOC_SIZE = 16;
-    static constexpr int MAX_ZONE_IDX = 8;
+    *list = this;
+}
 
-private:
-    PageAllocator* m_pageAllocator;
-    std::size_t m_pageSize;
-    std::array<Zone*, MAX_ZONE_IDX> m_zones;
-    Zone m_initialZone;
-};
+void Chunk::removeFromList(Chunk** list)
+{
+    assert(list);
+    assert(this == *list || m_next || m_prev);
+
+    if (m_next)
+        m_next->m_prev = m_prev;
+
+    if (m_prev)
+        m_prev->m_next = m_next;
+
+    if (*list == this)
+        *list = m_next;
+
+    m_next = nullptr;
+    m_prev = nullptr;
+}
 
 } // namespace Memory
-
-#endif

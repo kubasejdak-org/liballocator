@@ -26,44 +26,38 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef ZONE_ALLOCATOR_H
-#define ZONE_ALLOCATOR_H
+#ifndef ZONE_H
+#define ZONE_H
 
-#include "zone.h"
-
-#include <array>
 #include <cstddef>
 
 namespace Memory {
 
-class PageAllocator;
+class Page;
+class Chunk;
 
-class ZoneAllocator {
+class Zone {
 public:
-    ZoneAllocator();
+    Zone() = default;
+    Zone(const Zone& other) = delete;
+    Zone(Zone&& other) = delete;
 
-    [[nodiscard]] bool init(PageAllocator* pageAllocator, std::size_t pageSize);
+    void init(Page* page, std::size_t pageSize, std::size_t chunkSize);
     void clear();
+    void addToList(Zone** list);
+    void removeFromList(Zone** list);
 
-    [[nodiscard]] void* allocate(std::size_t size);
-    void release(void* ptr);
-
-private:
-    std::size_t chunkSize(std::size_t size);
-    std::size_t zoneIdx(std::size_t chunkSize);
-    void addZone(Zone* zone);
-    void removeZone(Zone* zone);
+    std::size_t chunkSize();
+    std::size_t freeChunksCount();
 
 private:
-    static constexpr std::size_t MINIMAL_ALLOC_SIZE = 16;
-    static constexpr int MAX_ZONE_IDX = 8;
-
-private:
-    PageAllocator* m_pageAllocator;
-    std::size_t m_pageSize;
-    std::array<Zone*, MAX_ZONE_IDX> m_zones;
-    Zone m_initialZone;
-};
+    Zone* m_next;
+    Zone* m_prev;
+    Page* m_page;
+    std::size_t m_chunkSize;
+    std::size_t m_freeChunksCount;
+    Chunk* m_freeChunks;
+} __attribute__((packed));
 
 } // namespace Memory
 

@@ -26,45 +26,84 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef ZONE_ALLOCATOR_H
-#define ZONE_ALLOCATOR_H
-
 #include "zone.h"
 
-#include <array>
-#include <cstddef>
+#include "chunk.h"
+#include "page.h"
+
+#include <cassert>
 
 namespace Memory {
 
-class PageAllocator;
+void Zone::init(Page* page, std::size_t pageSize, std::size_t chunkSize)
+{
+    assert(page);
+    assert(pageSize);
+    assert(chunkSize);
 
-class ZoneAllocator {
-public:
-    ZoneAllocator();
+    clear();
 
-    [[nodiscard]] bool init(PageAllocator* pageAllocator, std::size_t pageSize);
-    void clear();
+    m_page = page;
+    m_chunkSize = chunkSize;
+    m_freeChunksCount = pageSize / chunkSize;
 
-    [[nodiscard]] void* allocate(std::size_t size);
-    void release(void* ptr);
+    auto* chunk = reinterpret_cast<Chunk*>(page->address());
+    for (std::size_t i = 0; i < m_freeChunksCount; ++i, chunk = chunk->nextSibling()) {
+        chunk->init();
+        chunk->addToList(&m_freeChunks);
+    }
+}
 
-private:
-    std::size_t chunkSize(std::size_t size);
-    std::size_t zoneIdx(std::size_t chunkSize);
-    void addZone(Zone* zone);
-    void removeZone(Zone* zone);
+void Zone::clear()
+{
+    m_next = nullptr;
+    m_prev = nullptr;
+    m_page = nullptr;
+    m_chunkSize = 0;
+    m_freeChunksCount = 0;
+    m_freeChunks = nullptr;
+}
 
-private:
-    static constexpr std::size_t MINIMAL_ALLOC_SIZE = 16;
-    static constexpr int MAX_ZONE_IDX = 8;
+void Zone::addToList(Zone** list)
+{
+    assert(list);
+    assert(!m_next);
+    assert(!m_prev);
 
-private:
-    PageAllocator* m_pageAllocator;
-    std::size_t m_pageSize;
-    std::array<Zone*, MAX_ZONE_IDX> m_zones;
-    Zone m_initialZone;
-};
+    if (*list) {
+        m_next = *list;
+        m_next->m_prev = this;
+    }
+
+    *list = this;
+}
+
+void Zone::removeFromList(Zone** list)
+{
+    assert(list);
+    assert(this == *list || m_next || m_prev);
+
+    if (m_next)
+        m_next->m_prev = m_prev;
+
+    if (m_prev)
+        m_prev->m_next = m_next;
+
+    if (*list == this)
+        *list = m_next;
+
+    m_next = nullptr;
+    m_prev = nullptr;
+}
+
+std::size_t Zone::chunkSize()
+{
+    return m_chunkSize;
+}
+
+std::size_t Zone::freeChunksCount()
+{
+    return m_freeChunksCount;
+}
 
 } // namespace Memory
-
-#endif
