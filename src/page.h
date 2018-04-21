@@ -55,7 +55,6 @@ public:
     std::size_t groupSize();
     bool isUsed();
 
-private:
     static constexpr bool isNaturallyAligned()
     {
         constexpr std::size_t requiredSize = sizeof(Page*)          // m_nextGroup

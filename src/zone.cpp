@@ -36,6 +36,8 @@
 
 namespace Memory {
 
+static_assert(Zone::isNaturallyAligned(), "class Zone is not naturally aligned");
+
 void Zone::init(Page* page, std::size_t pageSize, std::size_t chunkSize)
 {
     assert(page);

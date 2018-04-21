@@ -53,6 +53,17 @@ public:
     Chunk* takeChunk();
     void giveChunk(Chunk* chunk);
 
+    static constexpr bool isNaturallyAligned()
+    {
+        constexpr std::size_t requiredSize = sizeof(Zone*)          // m_next
+                                           + sizeof(Zone*)          // m_prev
+                                           + sizeof(Page*)          // m_page
+                                           + sizeof(std::size_t)    // m_chunkSize
+                                           + sizeof(std::size_t)    // m_freeChunksCount
+                                           + sizeof(Chunk*);        // m_freeChunks
+        return (requiredSize == sizeof(Zone));
+    }
+
 private:
     Zone* m_next;
     Zone* m_prev;
@@ -60,7 +71,7 @@ private:
     std::size_t m_chunkSize;
     std::size_t m_freeChunksCount;
     Chunk* m_freeChunks;
-} __attribute__((packed));
+};
 
 } // namespace Memory
 
