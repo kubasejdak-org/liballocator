@@ -40,8 +40,6 @@ public:
     Chunk(Chunk&& other) = delete;
 
     void init();
-    Chunk* nextSibling();
-    Chunk* prevSibling();
 
     void addToList(Chunk** list);
     void removeFromList(Chunk** list);
@@ -49,7 +47,7 @@ public:
 private:
     Chunk* m_next;
     Chunk* m_prev;
-} __attribute__((packed));
+};
 
 } // namespace Memory
 

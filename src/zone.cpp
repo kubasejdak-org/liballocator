@@ -30,6 +30,7 @@
 
 #include "chunk.h"
 #include "page.h"
+#include "utils.h"
 
 #include <cassert>
 
@@ -48,7 +49,7 @@ void Zone::init(Page* page, std::size_t pageSize, std::size_t chunkSize)
     m_freeChunksCount = pageSize / chunkSize;
 
     auto* chunk = reinterpret_cast<Chunk*>(page->address());
-    for (std::size_t i = 0; i < m_freeChunksCount; ++i, chunk = chunk->nextSibling()) {
+    for (std::size_t i = 0; i < m_freeChunksCount; ++i, chunk = utils_movePtr(chunk, m_chunkSize)) {
         chunk->init();
         chunk->addToList(&m_freeChunks);
     }
@@ -96,6 +97,11 @@ void Zone::removeFromList(Zone** list)
     m_prev = nullptr;
 }
 
+Zone* Zone::next()
+{
+    return m_next;
+}
+
 std::size_t Zone::chunkSize()
 {
     return m_chunkSize;
@@ -104,6 +110,25 @@ std::size_t Zone::chunkSize()
 std::size_t Zone::freeChunksCount()
 {
     return m_freeChunksCount;
+}
+
+Chunk* Zone::takeChunk()
+{
+    assert(m_freeChunksCount);
+
+    auto* chunk = m_freeChunks;
+    chunk->removeFromList(&m_freeChunks);
+    --m_freeChunksCount;
+
+    return chunk;
+}
+
+void Zone::giveChunk(Chunk* chunk)
+{
+    assert(chunk);
+
+    chunk->addToList(&m_freeChunks);
+    ++m_freeChunksCount;
 }
 
 } // namespace Memory

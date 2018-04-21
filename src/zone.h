@@ -46,9 +46,12 @@ public:
     void clear();
     void addToList(Zone** list);
     void removeFromList(Zone** list);
-
+    Zone* next();
     std::size_t chunkSize();
     std::size_t freeChunksCount();
+
+    Chunk* takeChunk();
+    void giveChunk(Chunk* chunk);
 
 private:
     Zone* m_next;

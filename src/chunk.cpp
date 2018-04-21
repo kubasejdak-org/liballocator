@@ -38,16 +38,6 @@ void Chunk::init()
     m_prev = nullptr;
 }
 
-Chunk* Chunk::nextSibling()
-{
-    return (this + 1);
-}
-
-Chunk* Chunk::prevSibling()
-{
-    return (this - 1);
-}
-
 void Chunk::addToList(Chunk** list)
 {
     assert(list);
