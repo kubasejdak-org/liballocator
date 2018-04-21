@@ -41,13 +41,7 @@ using namespace Memory;
 
 TEST_CASE("Page structure is naturally aligned", "[page]")
 {
-    std::size_t requiredSize = 0;
-    requiredSize += sizeof(Page*);          // m_nextGroup
-    requiredSize += sizeof(Page*);          // m_prevGroup
-    requiredSize += sizeof(std::uintptr_t); // m_addr
-    requiredSize += sizeof(Page::Flags);    // m_flags
-
-    REQUIRE(sizeof(Page) == requiredSize);
+    REQUIRE(Page::isNaturallyAligned());
 }
 
 TEST_CASE("Page is properly initialized", "[page]")

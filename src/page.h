@@ -56,6 +56,16 @@ public:
     bool isUsed();
 
 private:
+    static constexpr bool isNaturallyAligned()
+    {
+        constexpr std::size_t requiredSize = sizeof(Page*)          // m_nextGroup
+                                           + sizeof(Page*)          // m_prevGroup
+                                           + sizeof(std::uintptr_t) // m_addr
+                                           + sizeof(Page::Flags);   // m_flags
+        return (requiredSize == sizeof(Page));
+    }
+
+private:
     union Flags {
         struct {
             std::size_t groupSize : 21;
@@ -70,7 +80,7 @@ private:
     Page* m_prevGroup;
     std::uintptr_t m_addr;
     Flags m_flags;
-} __attribute__((packed));
+};
 
 } // namespace Memory
 

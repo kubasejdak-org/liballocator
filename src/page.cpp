@@ -38,6 +38,8 @@ void Page::init()
     m_prevGroup = nullptr;
     m_addr = 0;
     m_flags.value = 0;
+
+    static_assert(isNaturallyAligned(), "class Page is not naturally aligned");
 }
 
 void Page::addToList(Page** list)
