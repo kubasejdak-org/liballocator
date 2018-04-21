@@ -126,8 +126,10 @@ void ZoneAllocator::removeZone(Zone* zone)
     zone->removeFromList(&m_zones[idx]);
 }
 
-Zone* ZoneAllocator::findZone(Chunk* chunk __unused)
+Zone* ZoneAllocator::findZone(Chunk* chunk)
 {
+    assert(chunk);
+
     // TODO: implement.
     return nullptr;
 }
