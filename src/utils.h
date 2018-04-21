@@ -26,46 +26,36 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef ZONE_ALLOCATOR_H
-#define ZONE_ALLOCATOR_H
+#ifndef UTILS_H
+#define UTILS_H
 
-#include "zone.h"
-
-#include <array>
 #include <cstddef>
 
 namespace Memory {
 
-class PageAllocator;
-class Chunk;
+inline std::size_t utils_roundPower2(std::size_t value)
+{
+    auto result = value;
 
-class ZoneAllocator {
-public:
-    ZoneAllocator();
+    --result;
+    result |= (result >> 1);
+    result |= (result >> 2);
+    result |= (result >> 4);
+    result |= (result >> 8);
+    result |= (result >> 16);
+    ++result;
 
-    [[nodiscard]] bool init(PageAllocator* pageAllocator, std::size_t pageSize);
-    void clear();
+    return result;
+}
 
-    [[nodiscard]] void* allocate(std::size_t size);
-    void release(void* ptr);
+template <typename T>
+T* utils_movePtr(T* ptr, std::size_t step)
+{
+    auto* tmp = reinterpret_cast<char*>(ptr);
+    tmp += step;
 
-private:
-    std::size_t chunkSize(std::size_t size);
-    std::size_t zoneIdx(std::size_t chunkSize);
-    void addZone(Zone* zone);
-    void removeZone(Zone* zone);
-    Zone* findZone(Chunk* chunk);
-
-private:
-    static constexpr std::size_t MINIMAL_ALLOC_SIZE = 16;
-    static constexpr int MAX_ZONE_IDX = 8;
-
-private:
-    PageAllocator* m_pageAllocator;
-    std::size_t m_pageSize;
-    std::array<Zone*, MAX_ZONE_IDX> m_zones;
-    Zone m_initialZone;
-};
+    return reinterpret_cast<T*>(tmp);
+}
 
 } // namespace Memory
 

@@ -28,9 +28,12 @@
 
 #include "zone_allocator.h"
 
+#include "chunk.h"
 #include "page_allocator.h"
+#include "utils.h"
 
 #include <cassert>
+#include <cmath>
 
 namespace Memory {
 
@@ -69,18 +72,22 @@ void* ZoneAllocator::allocate(std::size_t size)
         return nullptr;
 
     if (size >= m_pageSize) {
-        // TODO: implement.
-        return nullptr;
+        auto pageCount = static_cast<std::size_t>(std::ceil(double(size) / double(m_pageSize)));
+        auto* page = m_pageAllocator->allocate(pageCount);
+        return reinterpret_cast<void*>(page->address());
     }
 
     std::size_t allocSize = chunkSize(size);
     std::size_t idx = zoneIdx(allocSize);
 
-    if (!m_zones[idx]) {
-        // TODO: implement.
+    for (auto* zone = m_zones[idx]; zone != nullptr; zone = zone->next()) {
+        if (!zone->freeChunksCount())
+            continue;
+
+        return reinterpret_cast<void*>(zone->takeChunk());
     }
 
-    // Zone* zone = m_zones[idx];
+    // TODO: alloc new zone.
 
     return nullptr;
 }
@@ -94,23 +101,12 @@ void ZoneAllocator::release(void* ptr)
 std::size_t ZoneAllocator::chunkSize(std::size_t size)
 {
     std::size_t chunkSize = (size < MINIMAL_ALLOC_SIZE) ? MINIMAL_ALLOC_SIZE : size;
-
-    // Algorithm to find next highest power of 2.
-    --chunkSize;
-    chunkSize |= chunkSize >> 1;
-    chunkSize |= chunkSize >> 2;
-    chunkSize |= chunkSize >> 4;
-    chunkSize |= chunkSize >> 8;
-    chunkSize |= chunkSize >> 16;
-    ++chunkSize;
-
-    return chunkSize;
+    return utils_roundPower2(chunkSize);
 }
 
-std::size_t ZoneAllocator::zoneIdx(std::size_t chunkSize __attribute__((unused)))
+std::size_t ZoneAllocator::zoneIdx(std::size_t chunkSize)
 {
-    // TODO: implement.
-    return 0;
+    return static_cast<std::size_t>(std::floor(std::log2(chunkSize)) - 4);
 }
 
 void ZoneAllocator::addZone(Zone* zone)
@@ -128,6 +124,12 @@ void ZoneAllocator::removeZone(Zone* zone)
 
     auto idx = zoneIdx(zone->chunkSize());
     zone->removeFromList(&m_zones[idx]);
+}
+
+Zone* ZoneAllocator::findZone(Chunk* chunk __unused)
+{
+    // TODO: implement.
+    return nullptr;
 }
 
 } // namespace Memory

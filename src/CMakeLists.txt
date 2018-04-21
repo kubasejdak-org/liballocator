@@ -7,6 +7,7 @@ add_library(allocator
     page_allocator.cpp
     page.cpp
     region_info.cpp
+    utils.h
     version.h
     zone.cpp
     zone_allocator.cpp
