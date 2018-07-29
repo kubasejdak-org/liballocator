@@ -49,7 +49,7 @@ using namespace Memory;
 TEST_CASE("Page allocator is properly cleared", "[page_allocator]")
 {
     PageAllocator pageAllocator;
-    std::memset(&pageAllocator, 0x5a, sizeof(PageAllocator));
+    std::memset(reinterpret_cast<void*>(&pageAllocator), 0x5a, sizeof(PageAllocator));
 
     pageAllocator.clear();
     for (const auto& region : pageAllocator.m_regionsInfo) {
@@ -233,7 +233,7 @@ TEST_CASE("Region where page descriptors are stored is properly selected", "[pag
         REQUIRE(pageAllocator.m_descRegionIdx == 0);
     }
 
-    SECTION("Selected region is completly filled")
+    SECTION("Selected region is completely filled")
     {
         std::size_t pagesCount1 = 1;
         std::size_t pagesCount2 = 7;
