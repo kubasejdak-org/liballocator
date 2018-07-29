@@ -30,7 +30,6 @@ install:
 
 before_script:
   - export-paths.sh
-  - cat ${HOME}/.bash_profile
   - source ${HOME}/.bash_profile
 
   # Check versions of used tools.
