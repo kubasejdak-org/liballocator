@@ -83,6 +83,44 @@ void ZoneAllocator::release(void* ptr)
 {
     if (!ptr)
         return;
+
+    if (deallocateChunk(ptr))
+        return;
+
+    auto* pages = reinterpret_cast<Page*>(ptr);
+    m_pageAllocator->release(pages);
+}
+
+template <typename T>
+T* ZoneAllocator::allocateChunk(Zone* zone)
+{
+    std::size_t idx = zoneIdx(zone->chunkSize());
+    m_zones[idx].freeChunksCount--;
+    return reinterpret_cast<T*>(zone->takeChunk());
+}
+
+template <typename T>
+bool ZoneAllocator::deallocateChunk(T* chunk)
+{
+    auto* zoneChunk = reinterpret_cast<Chunk*>(chunk);
+    auto* zone = findZone(zoneChunk);
+    if (!zone)
+        return false;
+
+    if (!zone->isValidChunk(zoneChunk))
+        return false;
+
+    std::size_t idx = zoneIdx(zone->chunkSize());
+    m_zones[idx].freeChunksCount++;
+    zone->giveChunk(zoneChunk);
+
+    if (zone->chunksCount() == zone->freeChunksCount()) {
+        removeZone(zone);
+        clearZone(zone);
+        return deallocateChunk(zone);
+    }
+
+    return true;
 }
 
 std::size_t ZoneAllocator::chunkSize(std::size_t size)
@@ -140,6 +178,14 @@ bool ZoneAllocator::initZone(Zone* zone, std::size_t chunkSize)
     return false;
 }
 
+void ZoneAllocator::clearZone(Zone* zone)
+{
+    assert(zone);
+
+    m_pageAllocator->release(zone->page());
+    zone->clear();
+}
+
 void ZoneAllocator::addZone(Zone* zone)
 {
     assert(zone);
@@ -163,7 +209,16 @@ Zone* ZoneAllocator::findZone(Chunk* chunk)
 {
     assert(chunk);
 
-    // TODO: implement.
+    auto chunkAddr = reinterpret_cast<std::uintptr_t>(chunk);
+    auto* page = reinterpret_cast<Page*>(chunkAddr & ~(m_pageSize - 1));
+
+    for (auto& zoneInfo : m_zones) {
+        for (auto* zone = zoneInfo.head; zone != nullptr; zone = zone->next()) {
+            if (zone->page() == page)
+                return zone;
+        }
+    }
+
     return nullptr;
 }
 

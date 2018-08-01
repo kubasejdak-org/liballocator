@@ -47,11 +47,14 @@ public:
     void addToList(Zone** list);
     void removeFromList(Zone** list);
     Zone* next();
+    Page* page();
     std::size_t chunkSize();
+    std::size_t chunksCount();
     std::size_t freeChunksCount();
 
     Chunk* takeChunk();
     void giveChunk(Chunk* chunk);
+    bool isValidChunk(Chunk* chunk);
 
     static constexpr bool isNaturallyAligned()
     {
@@ -59,6 +62,7 @@ public:
                                            + sizeof(Zone*)          // m_prev
                                            + sizeof(Page*)          // m_page
                                            + sizeof(std::size_t)    // m_chunkSize
+                                           + sizeof(std::size_t)    // m_chunksCount
                                            + sizeof(std::size_t)    // m_freeChunksCount
                                            + sizeof(Chunk*);        // m_freeChunks
         return (requiredSize == sizeof(Zone));
@@ -69,6 +73,7 @@ private:
     Zone* m_prev;
     Page* m_page;
     std::size_t m_chunkSize;
+    std::size_t m_chunksCount;
     std::size_t m_freeChunksCount;
     Chunk* m_freeChunks;
 };

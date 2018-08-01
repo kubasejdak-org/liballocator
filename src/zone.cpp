@@ -48,10 +48,11 @@ void Zone::init(Page* page, std::size_t pageSize, std::size_t chunkSize)
 
     m_page = page;
     m_chunkSize = chunkSize;
-    m_freeChunksCount = pageSize / chunkSize;
+    m_chunksCount = pageSize / chunkSize;
+    m_freeChunksCount = m_chunksCount;
 
     auto* chunk = reinterpret_cast<Chunk*>(page->address());
-    for (std::size_t i = 0; i < m_freeChunksCount; ++i, chunk = utils_movePtr(chunk, m_chunkSize)) {
+    for (std::size_t i = 0; i < m_chunksCount; ++i, chunk = utils_movePtr(chunk, m_chunkSize)) {
         chunk->init();
         chunk->addToList(&m_freeChunks);
     }
@@ -63,6 +64,7 @@ void Zone::clear()
     m_prev = nullptr;
     m_page = nullptr;
     m_chunkSize = 0;
+    m_chunksCount = 0;
     m_freeChunksCount = 0;
     m_freeChunks = nullptr;
 }
@@ -104,9 +106,19 @@ Zone* Zone::next()
     return m_next;
 }
 
+Page* Zone::page()
+{
+    return m_page;
+}
+
 std::size_t Zone::chunkSize()
 {
     return m_chunkSize;
+}
+
+std::size_t Zone::chunksCount()
+{
+    return m_chunksCount;
 }
 
 std::size_t Zone::freeChunksCount()
@@ -131,6 +143,17 @@ void Zone::giveChunk(Chunk* chunk)
 
     chunk->addToList(&m_freeChunks);
     ++m_freeChunksCount;
+}
+
+bool Zone::isValidChunk(Chunk* chunk)
+{
+    auto* it = reinterpret_cast<Chunk*>(m_page->address());
+    for (std::size_t i = 0; i < m_chunksCount; ++i, it = utils_movePtr(it, m_chunkSize)) {
+        if (it == chunk)
+            return true;
+    }
+
+    return false;
 }
 
 } // namespace Memory

@@ -52,12 +52,9 @@ public:
 
 private:
     template <typename T>
-    T* allocateChunk(Zone* zone)
-    {
-        std::size_t idx = zoneIdx(zone->chunkSize());
-        m_zones[idx].freeChunksCount--;
-        return reinterpret_cast<T*>(zone->takeChunk());
-    }
+    T* allocateChunk(Zone* zone);
+    template <typename T>
+    bool deallocateChunk(T* chunk);
 
     std::size_t chunkSize(std::size_t size);
     std::size_t zoneIdx(std::size_t chunkSize);
@@ -65,6 +62,7 @@ private:
     bool shouldAllocateZone(std::size_t idx);
     Zone* allocateZone(std::size_t chunkSize);
     bool initZone(Zone* zone, std::size_t chunkSize);
+    void clearZone(Zone* zone);
     void addZone(Zone* zone);
     void removeZone(Zone* zone);
     Zone* findZone(Chunk* chunk);
