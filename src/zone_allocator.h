@@ -30,6 +30,7 @@
 #define ZONE_ALLOCATOR_H
 
 #include "zone.h"
+#include "utils.h"
 
 #include <array>
 #include <cstddef>
@@ -50,21 +51,40 @@ public:
     void release(void* ptr);
 
 private:
+    template <typename T>
+    T* allocateChunk(Zone* zone)
+    {
+        std::size_t idx = zoneIdx(zone->chunkSize());
+        m_zones[idx].freeChunksCount--;
+        return reinterpret_cast<T*>(zone->takeChunk());
+    }
+
     std::size_t chunkSize(std::size_t size);
     std::size_t zoneIdx(std::size_t chunkSize);
+    Zone* getFreeZone(std::size_t idx);
+    bool shouldAllocateZone(std::size_t idx);
+    Zone* allocateZone(std::size_t chunkSize);
+    bool initZone(Zone* zone, std::size_t chunkSize);
     void addZone(Zone* zone);
     void removeZone(Zone* zone);
     Zone* findZone(Chunk* chunk);
 
 private:
     static constexpr std::size_t MINIMAL_ALLOC_SIZE = 16;
-    static constexpr int MAX_ZONE_IDX = 8;
+    static constexpr std::size_t MAX_ZONE_IDX = 8;
 
 private:
+    struct ZoneInfo {
+        Zone* head = nullptr;
+        std::size_t freeChunksCount = 0;
+    };
+
     PageAllocator* m_pageAllocator;
     std::size_t m_pageSize;
-    std::array<Zone*, MAX_ZONE_IDX> m_zones;
+    std::size_t m_zoneDescChunkSize;
+    std::size_t m_zoneDescIdx;
     Zone m_initialZone;
+    std::array<ZoneInfo, MAX_ZONE_IDX> m_zones;
 };
 
 } // namespace Memory

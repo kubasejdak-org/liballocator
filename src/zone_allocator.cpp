@@ -30,7 +30,7 @@
 
 #include "chunk.h"
 #include "page_allocator.h"
-#include "utils.h"
+
 
 #include <cassert>
 #include <cmath>
@@ -48,22 +48,18 @@ bool ZoneAllocator::init(PageAllocator* pageAllocator, std::size_t pageSize)
 
     m_pageAllocator = pageAllocator;
     m_pageSize = pageSize;
-
-    auto* page = m_pageAllocator->allocate(1);
-    if (!page)
-        return false;
-
-    m_initialZone.init(page, m_pageSize, chunkSize(sizeof(Zone)));
-    addZone(&m_initialZone);
-    return true;
+    m_zoneDescChunkSize = chunkSize(sizeof(Zone));
+    m_zoneDescIdx = zoneIdx(m_zoneDescChunkSize);
+    return initZone(&m_initialZone, m_zoneDescChunkSize);
 }
 
 void ZoneAllocator::clear()
 {
     m_pageAllocator = nullptr;
     m_pageSize = 0;
-    m_zones.fill(nullptr);
+    m_zoneDescIdx = 0;
     m_initialZone.clear();
+    m_zones.fill({});
 }
 
 void* ZoneAllocator::allocate(std::size_t size)
@@ -80,16 +76,8 @@ void* ZoneAllocator::allocate(std::size_t size)
     std::size_t allocSize = chunkSize(size);
     std::size_t idx = zoneIdx(allocSize);
 
-    for (auto* zone = m_zones[idx]; zone != nullptr; zone = zone->next()) {
-        if (!zone->freeChunksCount())
-            continue;
-
-        return reinterpret_cast<void*>(zone->takeChunk());
-    }
-
-    // TODO: alloc new zone.
-
-    return nullptr;
+    Zone* zone = shouldAllocateZone(idx) ? allocateZone(allocSize) : getFreeZone(idx);
+    return allocateChunk<void>(zone);
 }
 
 void ZoneAllocator::release(void* ptr)
@@ -109,12 +97,56 @@ std::size_t ZoneAllocator::zoneIdx(std::size_t chunkSize)
     return static_cast<std::size_t>(std::floor(std::log2(chunkSize)) - 4);
 }
 
+Zone* ZoneAllocator::getFreeZone(std::size_t idx)
+{
+    for (auto* zone = m_zones[idx].head; zone != nullptr; zone = zone->next()) {
+        if (!zone->freeChunksCount())
+            continue;
+
+        return zone;
+    }
+
+    return nullptr;
+}
+
+bool ZoneAllocator::shouldAllocateZone(std::size_t idx)
+{
+    std::size_t triggerCount = (idx == m_zoneDescIdx) ? 1 : 0;
+    return (m_zones[idx].freeChunksCount == triggerCount);
+}
+
+Zone* ZoneAllocator::allocateZone(std::size_t chunkSize)
+{
+    if (chunkSize != m_zoneDescChunkSize && shouldAllocateZone(m_zoneDescIdx))
+        allocateZone(m_zoneDescChunkSize);
+
+    auto* zone = allocateChunk<Zone>(getFreeZone(m_zoneDescIdx));
+    if (!initZone(zone, chunkSize))
+        return nullptr;
+
+    addZone(zone);
+    return zone;
+}
+
+bool ZoneAllocator::initZone(Zone* zone, std::size_t chunkSize)
+{
+    assert(zone);
+
+    if (auto* page = m_pageAllocator->allocate(1)) {
+        zone->init(page, m_pageSize, chunkSize);
+        return true;
+    }
+
+    return false;
+}
+
 void ZoneAllocator::addZone(Zone* zone)
 {
     assert(zone);
 
     auto idx = zoneIdx(zone->chunkSize());
-    zone->addToList(&m_zones[idx]);
+    zone->addToList(&m_zones[idx].head);
+    m_zones[idx].freeChunksCount += zone->freeChunksCount();
 }
 
 void ZoneAllocator::removeZone(Zone* zone)
@@ -123,7 +155,8 @@ void ZoneAllocator::removeZone(Zone* zone)
     assert(zone != &m_initialZone);
 
     auto idx = zoneIdx(zone->chunkSize());
-    zone->removeFromList(&m_zones[idx]);
+    zone->removeFromList(&m_zones[idx].head);
+    m_zones[idx].freeChunksCount -= zone->freeChunksCount();
 }
 
 Zone* ZoneAllocator::findZone(Chunk* chunk)
