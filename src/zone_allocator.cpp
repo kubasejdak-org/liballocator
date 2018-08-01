@@ -31,7 +31,6 @@
 #include "chunk.h"
 #include "page_allocator.h"
 
-
 #include <cassert>
 #include <cmath>
 
@@ -120,12 +119,13 @@ Zone* ZoneAllocator::allocateZone(std::size_t chunkSize)
     if (chunkSize != m_zoneDescChunkSize && shouldAllocateZone(m_zoneDescIdx))
         allocateZone(m_zoneDescChunkSize);
 
-    auto* zone = allocateChunk<Zone>(getFreeZone(m_zoneDescIdx));
-    if (!initZone(zone, chunkSize))
+    auto* zone = getFreeZone(m_zoneDescIdx);
+    auto* newZone = allocateChunk<Zone>(zone);
+    if (!initZone(newZone, chunkSize))
         return nullptr;
 
-    addZone(zone);
-    return zone;
+    addZone(newZone);
+    return newZone;
 }
 
 bool ZoneAllocator::initZone(Zone* zone, std::size_t chunkSize)
