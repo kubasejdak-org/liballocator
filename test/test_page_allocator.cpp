@@ -145,7 +145,7 @@ TEST_CASE("Pages are correctly counted", "[page_allocator]")
             {std::uintptr_t(memory6.get()), size},
             {std::uintptr_t(memory7.get()), size},
             {std::uintptr_t(memory8.get()), size},
-            {0,                              0}
+            {0,                             0}
         };
         // clang-format on
 
@@ -225,7 +225,7 @@ TEST_CASE("Region where page descriptors are stored is properly selected", "[pag
             {std::uintptr_t(memory6.get()), size},
             {std::uintptr_t(memory7.get()), size},
             {std::uintptr_t(memory8.get()), size},
-            {0,                              0}
+            {0,                             0}
         };
         // clang-format on
 
@@ -326,7 +326,7 @@ TEST_CASE("Pages with page descriptors are properly reserved", "[page_allocator]
             {std::uintptr_t(memory6.get()), size},
             {std::uintptr_t(memory7.get()), size},
             {std::uintptr_t(memory8.get()), size},
-            {0,                              0}
+            {0,                             0}
         };
         // clang-format on
 
