@@ -41,12 +41,12 @@ Memory::ZoneAllocator zoneAllocator;
 
 namespace Memory::Allocator {
 
-const char *version()
+const char* version()
 {
     return ALLOCATOR_VERSION;
 }
 
-bool init(Region *regions, std::size_t pageSize)
+bool init(Region* regions, std::size_t pageSize)
 {
     clear();
 
@@ -74,12 +74,12 @@ void clear()
     zoneAllocator.clear();
 }
 
-void *allocate(std::size_t size)
+void* allocate(std::size_t size)
 {
     return zoneAllocator.allocate(size);
 }
 
-void release(void *ptr)
+void release(void* ptr)
 {
     zoneAllocator.release(ptr);
 }
