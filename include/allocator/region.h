@@ -43,7 +43,7 @@ namespace Memory {
 struct Region {
     std::uintptr_t address;     ///< Physical address of the memory block.
     std::size_t size;           ///< Size of the memory block in bytes.
-} __attribute__((packed));
+};
 
 } // namespace Memory
 
