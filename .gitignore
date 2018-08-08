@@ -2,6 +2,9 @@
 build/
 bin/
 
+# Documentation.
+doc/html/
+
 # Project files.
 CMakeLists.txt.user
 .vscode/
