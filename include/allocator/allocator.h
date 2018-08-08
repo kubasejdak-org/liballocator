@@ -40,13 +40,35 @@
 
 namespace Memory::Allocator {
 
+/// @brief Returns version of liballocator.
+/// @return Version of liballocator.
 const char* version();
 
+/// @brief Initializes liballocator with the given array of memory regions and page size.
+/// @param[in] regions      Array of memory regions to be used by liballocator. Last entry should be zeroed.
+/// @param[in] pageSize     Size of the page on the current platform.
+/// @return True on success, false otherwise.
 bool init(Region* regions, std::size_t pageSize);
+
+/// @brief Initializes liballocator with the given array of memory boundaries and page size.
+/// @param[in] start        Start address of a memory region to be used by liballocator.
+/// @param[in] end          End address of a memory region to be used by liballocator.
+/// @param[in] pageSize     Size of the page on the current platform.
+/// @return True on success, false otherwise.
+/// @note This overload is equivalent to the above version of init() with only one memory region entry.
 bool init(std::uintptr_t start, std::uintptr_t end, std::size_t pageSize);
+
+/// @brief Clears the internal state of liballocator.
 void clear();
 
+/// @brief Allocates memory block with the given size.
+/// @param[in] size         Demanded size of the allocated memory block.
+/// @return Pointer to the allocated memory block on success, nullptr otherwise.
 void* allocate(std::size_t size);
+
+/// @brief Releases the memory block pointed by given pointer.
+/// @param[in] ptr          Pointer to the memory block, that should be released.
+/// @note If the given pointer is nullptr, then function exists without an error.
 void release(void* ptr);
 
 } // namespace Memory::Allocator
