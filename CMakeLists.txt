@@ -27,5 +27,5 @@ endif()
 
 if(LIBALLOCATOR_DOCS)
     utils_log("Building liballocator with docs")
-    doxygen_addTarget(${PROJECT_SOURCE_DIR})
+    #doxygen_addTarget(${PROJECT_SOURCE_DIR})
 endif()
