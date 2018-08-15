@@ -49,7 +49,7 @@ void clearRegionInfo(RegionInfo& regionInfo)
     regionInfo.lastPage = nullptr;
 }
 
-bool initRegionInfo(RegionInfo& regionInfo, Region& region, std::size_t pageSize)
+bool initRegionInfo(RegionInfo& regionInfo, const Region& region, std::size_t pageSize)
 {
     clearRegionInfo(regionInfo);
 
@@ -80,7 +80,7 @@ bool initRegionInfo(RegionInfo& regionInfo, Region& region, std::size_t pageSize
 
 namespace detail {
 
-std::optional<std::uintptr_t> alignedStart(Region& region, std::size_t pageSize)
+std::optional<std::uintptr_t> alignedStart(const Region& region, std::size_t pageSize)
 {
     auto start = region.address & ~(pageSize - 1);
     if (start < region.address)
@@ -92,7 +92,7 @@ std::optional<std::uintptr_t> alignedStart(Region& region, std::size_t pageSize)
     return start;
 }
 
-std::optional<std::uintptr_t> alignedEnd(Region& region, std::size_t pageSize)
+std::optional<std::uintptr_t> alignedEnd(const Region& region, std::size_t pageSize)
 {
     auto end = (region.address + region.size) & ~(pageSize - 1);
     if (end < region.address)

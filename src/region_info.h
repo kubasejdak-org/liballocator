@@ -43,25 +43,44 @@
 
 namespace Memory {
 
+/// @class RegionInfo
+/// @brief Represents the meta data of the physical memory region.
 struct RegionInfo {
-    std::uintptr_t start;
-    std::uintptr_t end;
-    std::uintptr_t alignedStart;
-    std::uintptr_t alignedEnd;
-    std::size_t pageCount;
-    std::size_t size;
-    std::size_t alignedSize;
-    Page* firstPage;
-    Page* lastPage;
+    std::uintptr_t start;           ///< Physical address of the region start.
+    std::uintptr_t end;             ///< Physical address of the region end.
+    std::uintptr_t alignedStart;    ///< Aligned physical address of the region start.
+    std::uintptr_t alignedEnd;      ///< Aligned physical address of the region end.
+    std::size_t pageCount;          ///< Number of pages, that this region contains.
+    std::size_t size;               ///< Size of the region.
+    std::size_t alignedSize;        ///< Size of the aligned part of the region.
+    Page* firstPage;                ///< Pointer to the first page in the region.
+    Page* lastPage;                 ///< Pointer to the last page in the region.
 };
 
+/// @brief Clears the contents of the region info.
+/// @param[in,out] regionInfo       Region info to be cleared.
 void clearRegionInfo(RegionInfo& regionInfo);
-bool initRegionInfo(RegionInfo& regionInfo, Region& region, std::size_t pageSize);
+
+/// @brief Initializes region info with the given region.
+/// @param[in,out] regionInfo       Region info to be initialized.
+/// @param[in]     region           Region to be initialized from.
+/// @param[in]     pageSize         Size of the physical page.
+/// @return True on success, false otherwise.
+bool initRegionInfo(RegionInfo& regionInfo, const Region& region, std::size_t pageSize);
 
 namespace detail {
 
-std::optional<std::uintptr_t> alignedStart(Region& region, std::size_t pageSize);
-std::optional<std::uintptr_t> alignedEnd(Region& region, std::size_t pageSize);
+/// @brief Calculates the aligned physical address of the region start.
+/// @param[in]     region           Region from which address should be taken.
+/// @param[in]     pageSize         Size of the physical page.
+/// @return Aligned physical address of the region start if exists, std::nullopt otherwise.
+std::optional<std::uintptr_t> alignedStart(const Region& region, std::size_t pageSize);
+
+/// @brief Calculates the aligned physical address of the region end.
+/// @param[in]     region           Region from which address should be taken.
+/// @param[in]     pageSize         Size of the physical page.
+/// @return Aligned physical address of the region end if exists, std::nullopt otherwise.
+std::optional<std::uintptr_t> alignedEnd(const Region& region, std::size_t pageSize);
 
 } // namespace detail
 } // namespace Memory
