@@ -3,7 +3,6 @@ add_executable(liballocator_tests
     test_page_allocator.cpp
     test_page.cpp
     test_region_info.cpp
-    utils.h
 )
 
 target_compile_features(liballocator_tests PRIVATE cxx_std_17)
