@@ -1,0 +1,4 @@
+<map id="Memory::RegionInfo" name="Memory::RegionInfo">
+<area shape="rect" id="node2" href="$class_memory_1_1_page.html" title="Represents a physical memory page. " alt="" coords="25,93,133,118"/>
+<area shape="rect" id="node3" href="$union_memory_1_1_page_1_1_flags.html" title="Represents a packed set of flags used internally by pages. " alt="" coords="5,5,153,31"/>
+</map>

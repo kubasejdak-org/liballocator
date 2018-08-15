@@ -1,0 +1,7 @@
+<map id="src/region_info.h" name="src/region_info.h">
+<area shape="rect" id="node2" href="$page__allocator_8h.html" title="src/page_allocator.h" alt="" coords="154,79,295,104"/>
+<area shape="rect" id="node6" href="$region__info_8cpp.html" title="src/region_info.cpp" alt="" coords="319,79,453,104"/>
+<area shape="rect" id="node3" href="$allocator_8cpp.html" title="src/allocator.cpp" alt="" coords="5,152,123,177"/>
+<area shape="rect" id="node4" href="$page__allocator_8cpp.html" title="src/page_allocator.cpp" alt="" coords="147,152,302,177"/>
+<area shape="rect" id="node5" href="$zone__allocator_8cpp.html" title="src/zone_allocator.cpp" alt="" coords="326,152,480,177"/>
+</map>
