@@ -144,7 +144,7 @@ void PageAllocator::release(Page* pages)
     // clang-format off
     Page* joinedGroup = pages;
 
-    // Try joining with pages above released group.
+    // Try joining with pages above the released group.
     do {
         Page* lastAbove = joinedGroup->prevSibling();
         if (!isValidPage(lastAbove))
@@ -162,7 +162,7 @@ void PageAllocator::release(Page* pages)
     }
     while (true);
 
-    // Try joining with pages below released group.
+    // Try joining with pages below the released group.
     do {
         Page* lastJoined = joinedGroup + joinedGroup->groupSize() - 1;
         Page* firstBelow = lastJoined->nextSibling();
