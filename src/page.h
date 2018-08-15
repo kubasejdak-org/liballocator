@@ -38,27 +38,75 @@
 
 namespace Memory {
 
+/// @class Page
+/// @brief Represents a physical memory page.
 class Page {
 public:
+    /// @brief Default constructor.
+    /// @note This constructor is deleted, because pages should be initialized only in-place.
     Page() = delete;
+
+    /// @brief Copy constructor.
+    /// @param[in] other        Page to be used in initialization.
+    /// @note This constructor is deleted, because pages should be initialized only in-place.
     Page(const Page& other) = delete;
+
+    /// @brief Move constructor.
+    /// @param[in] other        Page to be used in initialization.
+    /// @note This constructor is deleted, because pages should be initialized only in-place.
     Page(Page&& other) = delete;
 
+    /// @brief Initializes the page. It is used as a replacement for the constructor.
     void init();
 
+    /// @brief Adds current page to the given list.
+    /// @param[in,out] list     Pointer to the list, to which page should be added.
     void addToList(Page** list);
+
+    /// @brief Removes current page from the given list.
+    /// @param[in,out] list     Pointer to the list, from which page should be removed.
     void removeFromList(Page** list);
+
+    /// @brief Sets the physical address of the given page.
+    /// @param[in] addr         Physical address to be set.
     void setAddress(std::uintptr_t addr);
+
+    /// @brief Sets the size of the pages group, that this page represents.
+    /// @param[in] groupSize    Size of the group to be set.
+    /// @note Group size should be set only to the first and to the last page in the group.
     void setGroupSize(std::size_t groupSize);
+
+    /// @brief Sets the 'used' flag of the current page to the given state.
+    /// @param[in] value        State to be set.
     void setUsed(bool value);
 
+    /// @brief Returns the page, that lies immediately after the given page.
+    /// @return Pointer to the next sibling page.
     Page* nextSibling();
+
+    /// @brief Returns the page, that lies immediately before the given page.
+    /// @return Pointer to the previous sibling page.
     Page* prevSibling();
+
+    /// @brief Returns the beginning of the next group from the list, that current page is part of.
+    /// @return Pointer to the next group.
     Page* nextGroup();
+
+    /// @brief Returns physical address of the current page.
+    /// @return Physical address.
     std::uintptr_t address();
+
+    /// @brief Returns size of the group represented by the current page.
+    /// @return Size of the group.
     std::size_t groupSize();
+
+    /// @brief Returns flag indicating if current page is used or not.
+    /// @return True if page is used, false otherwise.
     bool isUsed();
 
+    /// @brief Checks if the Page class is naturally aligned.
+    /// @return True if Page class is naturally aligned, false otherwise.
+    /// @note Natural alignment of a class means, that its size is equal to the sum of all its data members.
     static constexpr bool isNaturallyAligned()
     {
         constexpr std::size_t requiredSize = sizeof(Page*)          // m_nextGroup
@@ -69,20 +117,22 @@ public:
     }
 
 private:
+    /// @class Flags
+    /// @brief Represents a packed set of flags used internally by pages.
     union Flags {
         struct {
-            std::size_t groupSize : 21;
-            bool used : 1;
+            std::size_t groupSize : 21;     ///< Size of the group. This is set only for the first and to the last page in the group.
+            bool used : 1;                  ///< Flag indicating whether this page is used or not.
         };
 
-        std::uint32_t value;
+        std::uint32_t value;                ///< Raw bytes used to store the flags.
     };
 
 private:
-    Page* m_nextGroup;
-    Page* m_prevGroup;
-    std::uintptr_t m_addr;
-    Flags m_flags;
+    Page* m_nextGroup;          ///< Pointer to the next group of pages in the list.
+    Page* m_prevGroup;          ///< Pointer to the previous group of pages in the list.
+    std::uintptr_t m_addr;      ///< Physical address of the page.
+    Flags m_flags;              ///< Flags of the page.
 };
 
 } // namespace Memory
