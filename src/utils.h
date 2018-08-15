@@ -37,6 +37,9 @@
 
 namespace Memory {
 
+/// @brief Returns the given value, that is rounded up to the closest power of 2.
+/// @param[in] value        Value to be rounded.
+/// @return Value rounded up to the closest power of 2.
 inline std::size_t utils_roundPower2(std::size_t value)
 {
     auto result = value;
@@ -52,6 +55,10 @@ inline std::size_t utils_roundPower2(std::size_t value)
     return result;
 }
 
+/// @brief Returns the given pointer moved by given number of bytes.
+/// @param[in] ptr          Pointer to be moved.
+/// @param[in] step         Number of bytes to move the pointer.
+/// @return Value of the moved pointer.
 template <typename T>
 T* utils_movePtr(T* ptr, std::size_t step)
 {
