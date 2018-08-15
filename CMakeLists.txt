@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.12)
 include(tools/cmake/all.cmake)
 
 utils_getVersion(VERSION)
@@ -27,5 +27,5 @@ endif()
 
 if(LIBALLOCATOR_DOCS)
     utils_log("Building liballocator with docs")
-    #doxygen_addTarget(${PROJECT_SOURCE_DIR})
+    doxygen_addTarget(${PROJECT_SOURCE_DIR})
 endif()
