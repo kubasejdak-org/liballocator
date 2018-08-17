@@ -40,42 +40,9 @@ static_assert(Page::isNaturallyAligned(), "class Page is not naturally aligned")
 
 void Page::init()
 {
-    m_nextGroup = nullptr;
-    m_prevGroup = nullptr;
+    initListNode();
     m_addr = 0;
     m_flags.value = 0;
-}
-
-void Page::addToList(Page** list)
-{
-    assert(list);
-    assert(!m_nextGroup);
-    assert(!m_prevGroup);
-
-    if (*list) {
-        m_nextGroup = *list;
-        m_nextGroup->m_prevGroup = this;
-    }
-
-    *list = this;
-}
-
-void Page::removeFromList(Page** list)
-{
-    assert(list);
-    assert(this == *list || m_nextGroup || m_prevGroup);
-
-    if (m_nextGroup)
-        m_nextGroup->m_prevGroup = m_prevGroup;
-
-    if (m_prevGroup)
-        m_prevGroup->m_nextGroup = m_nextGroup;
-
-    if (*list == this)
-        *list = m_nextGroup;
-
-    m_nextGroup = nullptr;
-    m_prevGroup = nullptr;
 }
 
 void Page::setAddress(std::uintptr_t addr)
@@ -101,11 +68,6 @@ Page* Page::nextSibling()
 Page* Page::prevSibling()
 {
     return (this - 1);
-}
-
-Page* Page::nextGroup()
-{
-    return m_nextGroup;
 }
 
 std::uintptr_t Page::address()

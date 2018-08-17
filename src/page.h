@@ -33,6 +33,8 @@
 #ifndef PAGE_H
 #define PAGE_H
 
+#include "list_node.h"
+
 #include <cstddef>
 #include <cstdint>
 
@@ -40,7 +42,7 @@ namespace Memory {
 
 /// @class Page
 /// @brief Represents a physical memory page.
-class Page {
+class Page : public ListNode<Page> {
 public:
     /// @brief Default constructor.
     /// @note This constructor is deleted, because pages should be initialized only in-place.
@@ -58,14 +60,6 @@ public:
 
     /// @brief Initializes the page. It is used as a replacement for the constructor.
     void init();
-
-    /// @brief Adds current page to the given list.
-    /// @param[in,out] list     Pointer to the list, to which page should be added.
-    void addToList(Page** list);
-
-    /// @brief Removes current page from the given list.
-    /// @param[in,out] list     Pointer to the list, from which page should be removed.
-    void removeFromList(Page** list);
 
     /// @brief Sets the physical address of the given page.
     /// @param[in] addr         Physical address to be set.
@@ -88,10 +82,6 @@ public:
     /// @return Pointer to the previous sibling page.
     Page* prevSibling();
 
-    /// @brief Returns the beginning of the next group from the list, that current page is part of.
-    /// @return Pointer to the next group.
-    Page* nextGroup();
-
     /// @brief Returns physical address of the current page.
     /// @return Physical address.
     std::uintptr_t address();
@@ -109,8 +99,7 @@ public:
     /// @note Natural alignment of a class means, that its size is equal to the sum of all its data members.
     static constexpr bool isNaturallyAligned()
     {
-        constexpr std::size_t requiredSize = sizeof(Page*)          // m_nextGroup
-                                           + sizeof(Page*)          // m_prevGroup
+        constexpr std::size_t requiredSize = sizeof(ListNode<Page>) // Inherited fields
                                            + sizeof(std::uintptr_t) // m_addr
                                            + sizeof(Page::Flags);   // m_flags
         return (requiredSize == sizeof(Page));
@@ -129,8 +118,6 @@ private:
     };
 
 private:
-    Page* m_nextGroup;          ///< Pointer to the next group of pages in the list.
-    Page* m_prevGroup;          ///< Pointer to the previous group of pages in the list.
     std::uintptr_t m_addr;      ///< Physical address of the page.
     Flags m_flags;              ///< Flags of the page.
 };

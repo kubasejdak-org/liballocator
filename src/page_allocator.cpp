@@ -116,7 +116,7 @@ Page* PageAllocator::allocate(std::size_t count)
 
     std::size_t idx = groupIdx(count);
     for (auto i = idx; i < m_freeGroupLists.size(); ++i) {
-        for (Page* group = m_freeGroupLists[i]; group != nullptr; group = group->nextGroup()) {
+        for (Page* group = m_freeGroupLists[i]; group != nullptr; group = group->next()) {
             if (group->groupSize() < count)
                 continue;
 

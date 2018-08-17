@@ -1,5 +1,6 @@
 add_executable(liballocator_tests
     main.cpp
+    test_list_node.cpp
     test_page_allocator.cpp
     test_page.cpp
     test_region_info.cpp

@@ -465,7 +465,7 @@ TEST_CASE("Group is properly added to list", "[page_allocator]")
         pageAllocator.initGroup(group, groupSize);
         pageAllocator.addGroup(group);
 
-        for (Page* it = pageAllocator.m_freeGroupLists[0]; it != nullptr; it = it->nextGroup()) {
+        for (Page* it = pageAllocator.m_freeGroupLists[0]; it != nullptr; it = it->next()) {
             REQUIRE(it->groupSize() == groupSize);
             REQUIRE(!it->isUsed());
             ++groupCount;
@@ -492,7 +492,7 @@ TEST_CASE("Group is properly added to list", "[page_allocator]")
         pageAllocator.addGroup(group2);
         pageAllocator.addGroup(group3);
 
-        for (Page* group = pageAllocator.m_freeGroupLists[0]; group != nullptr; group = group->nextGroup()) {
+        for (Page* group = pageAllocator.m_freeGroupLists[0]; group != nullptr; group = group->next()) {
             REQUIRE(group->groupSize() == groupSize);
             REQUIRE(!group->isUsed());
             ++groupCount;
@@ -511,7 +511,7 @@ TEST_CASE("Group is properly added to list", "[page_allocator]")
         pageAllocator.initGroup(group, groupSize);
         pageAllocator.addGroup(group);
 
-        for (Page* it = pageAllocator.m_freeGroupLists[4]; it != nullptr; it = it->nextGroup()) {
+        for (Page* it = pageAllocator.m_freeGroupLists[4]; it != nullptr; it = it->next()) {
             REQUIRE(it->groupSize() == groupSize);
             REQUIRE(!it->isUsed());
             ++groupCount;
@@ -538,7 +538,7 @@ TEST_CASE("Group is properly added to list", "[page_allocator]")
         pageAllocator.addGroup(group2);
         pageAllocator.addGroup(group3);
 
-        for (Page* group = pageAllocator.m_freeGroupLists[4]; group != nullptr; group = group->nextGroup()) {
+        for (Page* group = pageAllocator.m_freeGroupLists[4]; group != nullptr; group = group->next()) {
             REQUIRE(group->groupSize() == groupSize);
             REQUIRE(!group->isUsed());
             ++groupCount;
@@ -574,7 +574,7 @@ TEST_CASE("Group is properly removed from list at index 0", "[page_allocator]")
     {
         pageAllocator.removeGroup(group1);
         int idx = 0;
-        for (Page* group = pageAllocator.m_freeGroupLists[0]; group != nullptr; group = group->nextGroup()) {
+        for (Page* group = pageAllocator.m_freeGroupLists[0]; group != nullptr; group = group->next()) {
             REQUIRE(group->groupSize() == groupSize);
             REQUIRE(group == (idx == 0 ? group3 : group2));
 
@@ -594,7 +594,7 @@ TEST_CASE("Group is properly removed from list at index 0", "[page_allocator]")
     {
         pageAllocator.removeGroup(group2);
         int idx = 0;
-        for (Page* group = pageAllocator.m_freeGroupLists[0]; group != nullptr; group = group->nextGroup()) {
+        for (Page* group = pageAllocator.m_freeGroupLists[0]; group != nullptr; group = group->next()) {
             REQUIRE(group->groupSize() == groupSize);
             REQUIRE(group == (idx == 0 ? group3 : group1));
 
@@ -614,7 +614,7 @@ TEST_CASE("Group is properly removed from list at index 0", "[page_allocator]")
     {
         pageAllocator.removeGroup(group3);
         int idx = 0;
-        for (Page* group = pageAllocator.m_freeGroupLists[0]; group != nullptr; group = group->nextGroup()) {
+        for (Page* group = pageAllocator.m_freeGroupLists[0]; group != nullptr; group = group->next()) {
             REQUIRE(group->groupSize() == groupSize);
             REQUIRE(group == (idx == 0 ? group2 : group1));
 
@@ -658,7 +658,7 @@ TEST_CASE("Group is properly removed from list at index 4", "[page_allocator]")
     {
         pageAllocator.removeGroup(group1);
         int idx = 0;
-        for (Page* group = pageAllocator.m_freeGroupLists[4]; group != nullptr; group = group->nextGroup()) {
+        for (Page* group = pageAllocator.m_freeGroupLists[4]; group != nullptr; group = group->next()) {
             REQUIRE(group->groupSize() == groupSize);
             REQUIRE(group == (idx == 0 ? group3 : group2));
 
@@ -678,7 +678,7 @@ TEST_CASE("Group is properly removed from list at index 4", "[page_allocator]")
     {
         pageAllocator.removeGroup(group2);
         int idx = 0;
-        for (Page* group = pageAllocator.m_freeGroupLists[4]; group != nullptr; group = group->nextGroup()) {
+        for (Page* group = pageAllocator.m_freeGroupLists[4]; group != nullptr; group = group->next()) {
             REQUIRE(group->groupSize() == groupSize);
             REQUIRE(group == (idx == 0 ? group3 : group1));
 
@@ -698,7 +698,7 @@ TEST_CASE("Group is properly removed from list at index 4", "[page_allocator]")
     {
         pageAllocator.removeGroup(group3);
         int idx = 0;
-        for (Page* group = pageAllocator.m_freeGroupLists[4]; group != nullptr; group = group->nextGroup()) {
+        for (Page* group = pageAllocator.m_freeGroupLists[4]; group != nullptr; group = group->next()) {
             REQUIRE(group->groupSize() == groupSize);
             REQUIRE(group == (idx == 0 ? group2 : group1));
 
@@ -1111,13 +1111,13 @@ TEST_CASE("Pages are correctly allocated", "[page_allocator]")
         REQUIRE(pageAllocator.m_freePagesCount == freePages - 1);
 
         std::size_t idx1Count = 0;
-        for (Page* group = pageAllocator.m_freeGroupLists[1]; group != nullptr; group = group->nextGroup())
+        for (Page* group = pageAllocator.m_freeGroupLists[1]; group != nullptr; group = group->next())
             ++idx1Count;
 
         REQUIRE(idx1Count == 0);
 
         std::size_t idx0Count = 0;
-        for (Page* group = pageAllocator.m_freeGroupLists[0]; group != nullptr; group = group->nextGroup())
+        for (Page* group = pageAllocator.m_freeGroupLists[0]; group != nullptr; group = group->next())
             ++idx0Count;
 
         REQUIRE(idx0Count == 1);
@@ -1132,7 +1132,7 @@ TEST_CASE("Pages are correctly allocated", "[page_allocator]")
         REQUIRE(pageAllocator.m_freePagesCount == freePages - 17);
 
         std::size_t idx8Count = 0;
-        for (Page* group = pageAllocator.m_freeGroupLists[8]; group != nullptr; group = group->nextGroup())
+        for (Page* group = pageAllocator.m_freeGroupLists[8]; group != nullptr; group = group->next())
             ++idx8Count;
 
         REQUIRE(idx8Count == 1);
@@ -1192,7 +1192,7 @@ TEST_CASE("Pages are correctly allocated", "[page_allocator]")
 
         for (std::size_t i = 0; i < PageAllocator::MAX_GROUP_IDX; ++i) {
             std::size_t idxCount = 0;
-            for (Page* group = pageAllocator.m_freeGroupLists[i]; group != nullptr; group = group->nextGroup())
+            for (Page* group = pageAllocator.m_freeGroupLists[i]; group != nullptr; group = group->next())
                 ++idxCount;
 
             REQUIRE(idxCount == 0);
@@ -1310,21 +1310,21 @@ TEST_CASE("Pages are correctly released", "[page_allocator]")
     REQUIRE(pageAllocator.m_freePagesCount == freePages);
 
     std::size_t idx1Count = 0;
-    for (Page* group = pageAllocator.m_freeGroupLists[1]; group != nullptr; group = group->nextGroup())
+    for (Page* group = pageAllocator.m_freeGroupLists[1]; group != nullptr; group = group->next())
         ++idx1Count;
 
     REQUIRE(idx1Count == 1);
     REQUIRE(pageAllocator.m_freeGroupLists[1]->groupSize() == pagesCount3);
 
     std::size_t idx2Count = 0;
-    for (Page* group = pageAllocator.m_freeGroupLists[2]; group != nullptr; group = group->nextGroup())
+    for (Page* group = pageAllocator.m_freeGroupLists[2]; group != nullptr; group = group->next())
         ++idx2Count;
 
     REQUIRE(idx2Count == 1);
     REQUIRE(pageAllocator.m_freeGroupLists[2]->groupSize() == pagesCount2 - pageAllocator.m_descPagesCount);
 
     std::size_t idx8Count = 0;
-    for (Page* group = pageAllocator.m_freeGroupLists[8]; group != nullptr; group = group->nextGroup())
+    for (Page* group = pageAllocator.m_freeGroupLists[8]; group != nullptr; group = group->next())
         ++idx8Count;
 
     REQUIRE(idx8Count == 1);
@@ -1385,21 +1385,21 @@ TEST_CASE("Integration tests (long-term)", "[page_allocator][integration][.]")
         REQUIRE(pageAllocator.m_freePagesCount == freePages);
 
         std::size_t idx1Count = 0;
-        for (Page* group = pageAllocator.m_freeGroupLists[1]; group != nullptr; group = group->nextGroup())
+        for (Page* group = pageAllocator.m_freeGroupLists[1]; group != nullptr; group = group->next())
             ++idx1Count;
 
         REQUIRE(idx1Count == 1);
         REQUIRE(pageAllocator.m_freeGroupLists[1]->groupSize() == pagesCount3);
 
         std::size_t idx2Count = 0;
-        for (Page* group = pageAllocator.m_freeGroupLists[2]; group != nullptr; group = group->nextGroup())
+        for (Page* group = pageAllocator.m_freeGroupLists[2]; group != nullptr; group = group->next())
             ++idx2Count;
 
         REQUIRE(idx2Count == 1);
         REQUIRE(pageAllocator.m_freeGroupLists[2]->groupSize() == pagesCount2 - pageAllocator.m_descPagesCount);
 
         std::size_t idx8Count = 0;
-        for (Page* group = pageAllocator.m_freeGroupLists[8]; group != nullptr; group = group->nextGroup())
+        for (Page* group = pageAllocator.m_freeGroupLists[8]; group != nullptr; group = group->next())
             ++idx8Count;
 
         REQUIRE(idx8Count == 1);
