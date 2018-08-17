@@ -77,14 +77,24 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="dynheader">
+Inheritance diagram for Memory::Zone:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_memory_1_1_zone__inherit__graph.png" border="0" usemap="#_memory_1_1_zone_inherit__map" alt="Inheritance graph"/></div>
+<map name="_memory_1_1_zone_inherit__map" id="_memory_1_1_zone_inherit__map">
+<area shape="rect" id="node2" href="class_memory_1_1_list_node.html" title="Memory::ListNode\&lt; Zone \&gt;" alt="" coords="5,5,188,31"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
 Collaboration diagram for Memory::Zone:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_memory_1_1_zone__coll__graph.png" border="0" usemap="#_memory_1_1_zone_coll__map" alt="Collaboration graph"/></div>
 <map name="_memory_1_1_zone_coll__map" id="_memory_1_1_zone_coll__map">
-<area shape="rect" id="node2" href="class_memory_1_1_chunk.html" title="Represents a chunk of memory, that is returned to the user of this allocator. " alt="" coords="5,93,121,118"/>
-<area shape="rect" id="node3" href="class_memory_1_1_page.html" title="Represents a physical memory page. " alt="" coords="217,93,325,118"/>
-<area shape="rect" id="node4" href="class_memory_1_1_list_node.html" title="Memory::ListNode\&lt; Page \&gt;" alt="" coords="237,194,420,219"/>
-<area shape="rect" id="node5" href="union_memory_1_1_page_1_1_flags.html" title="Represents a packed set of flags used internally by pages. " alt="" coords="197,5,345,31"/>
+<area shape="rect" id="node2" href="class_memory_1_1_list_node.html" title="Memory::ListNode\&lt; Zone \&gt;" alt="" coords="192,292,375,317"/>
+<area shape="rect" id="node3" href="class_memory_1_1_chunk.html" title="Memory::Chunk" alt="" coords="91,92,207,117"/>
+<area shape="rect" id="node4" href="class_memory_1_1_list_node.html" title="Memory::ListNode\&lt; Chunk \&gt;" alt="" coords="5,192,196,217"/>
+<area shape="rect" id="node5" href="class_memory_1_1_page.html" title="Represents a physical memory page. " alt="" coords="343,92,451,117"/>
+<area shape="rect" id="node6" href="class_memory_1_1_list_node.html" title="Memory::ListNode\&lt; Page \&gt;" alt="" coords="368,192,551,217"/>
+<area shape="rect" id="node7" href="union_memory_1_1_page_1_1_flags.html" title="Represents a packed set of flags used internally by pages. " alt="" coords="323,5,471,31"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -102,15 +112,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> (<a class="e
 <tr class="memitem:ac3ed5968c4fd585cdca20c90311d9304"><td class="memItemLeft" align="right" valign="top"><a id="ac3ed5968c4fd585cdca20c90311d9304"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> ()</td></tr>
 <tr class="separator:ac3ed5968c4fd585cdca20c90311d9304"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea99e97263794019f1e5aac4d3deb0f2"><td class="memItemLeft" align="right" valign="top"><a id="aea99e97263794019f1e5aac4d3deb0f2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>addToList</b> (<a class="el" href="class_memory_1_1_zone.html">Zone</a> **list)</td></tr>
-<tr class="separator:aea99e97263794019f1e5aac4d3deb0f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4d378ef9762732825e181c9ba40e86c"><td class="memItemLeft" align="right" valign="top"><a id="af4d378ef9762732825e181c9ba40e86c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>removeFromList</b> (<a class="el" href="class_memory_1_1_zone.html">Zone</a> **list)</td></tr>
-<tr class="separator:af4d378ef9762732825e181c9ba40e86c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d6be5986b7c871b115c4233a4417192"><td class="memItemLeft" align="right" valign="top"><a id="a0d6be5986b7c871b115c4233a4417192"></a>
-<a class="el" href="class_memory_1_1_zone.html">Zone</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>next</b> ()</td></tr>
-<tr class="separator:a0d6be5986b7c871b115c4233a4417192"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14659707e6650aa02a2c97d462d7418b"><td class="memItemLeft" align="right" valign="top"><a id="a14659707e6650aa02a2c97d462d7418b"></a>
 <a class="el" href="class_memory_1_1_page.html">Page</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>page</b> ()</td></tr>
 <tr class="separator:a14659707e6650aa02a2c97d462d7418b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -132,6 +133,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>giveChunk</b> (<a cla
 <tr class="memitem:a13dbd20146556a73d3b439e259fe18a4"><td class="memItemLeft" align="right" valign="top"><a id="a13dbd20146556a73d3b439e259fe18a4"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValidChunk</b> (<a class="el" href="class_memory_1_1_chunk.html">Chunk</a> *chunk)</td></tr>
 <tr class="separator:a13dbd20146556a73d3b439e259fe18a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_class_memory_1_1_list_node"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_memory_1_1_list_node')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_memory_1_1_list_node.html">Memory::ListNode&lt; Zone &gt;</a></td></tr>
+<tr class="memitem:a6e9a727d3c01b777e31922da6cad42e9 inherit pub_methods_class_memory_1_1_list_node"><td class="memItemLeft" align="right" valign="top"><a id="a6e9a727d3c01b777e31922da6cad42e9"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_list_node.html#a6e9a727d3c01b777e31922da6cad42e9">ListNode</a> ()</td></tr>
+<tr class="memdesc:a6e9a727d3c01b777e31922da6cad42e9 inherit pub_methods_class_memory_1_1_list_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
+<tr class="separator:a6e9a727d3c01b777e31922da6cad42e9 inherit pub_methods_class_memory_1_1_list_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c40ccf1fc3de70cba60893e7fcd7a51 inherit pub_methods_class_memory_1_1_list_node"><td class="memItemLeft" align="right" valign="top"><a id="a5c40ccf1fc3de70cba60893e7fcd7a51"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_list_node.html#a5c40ccf1fc3de70cba60893e7fcd7a51">initListNode</a> ()</td></tr>
+<tr class="memdesc:a5c40ccf1fc3de70cba60893e7fcd7a51 inherit pub_methods_class_memory_1_1_list_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the node. <br /></td></tr>
+<tr class="separator:a5c40ccf1fc3de70cba60893e7fcd7a51 inherit pub_methods_class_memory_1_1_list_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9a118abcdb35ed240ed4d5de5203daa inherit pub_methods_class_memory_1_1_list_node"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_memory_1_1_zone.html">Zone</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_list_node.html#ad9a118abcdb35ed240ed4d5de5203daa">next</a> ()</td></tr>
+<tr class="memdesc:ad9a118abcdb35ed240ed4d5de5203daa inherit pub_methods_class_memory_1_1_list_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the node from the list.  <a href="class_memory_1_1_list_node.html#ad9a118abcdb35ed240ed4d5de5203daa">More...</a><br /></td></tr>
+<tr class="separator:ad9a118abcdb35ed240ed4d5de5203daa inherit pub_methods_class_memory_1_1_list_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c3d6b4488b4c6024cbff35d540ade26 inherit pub_methods_class_memory_1_1_list_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_list_node.html#a6c3d6b4488b4c6024cbff35d540ade26">addToList</a> (<a class="el" href="class_memory_1_1_zone.html">Zone</a> **list)</td></tr>
+<tr class="memdesc:a6c3d6b4488b4c6024cbff35d540ade26 inherit pub_methods_class_memory_1_1_list_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds current node to the given list.  <a href="class_memory_1_1_list_node.html#a6c3d6b4488b4c6024cbff35d540ade26">More...</a><br /></td></tr>
+<tr class="separator:a6c3d6b4488b4c6024cbff35d540ade26 inherit pub_methods_class_memory_1_1_list_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb3661a13094048cdec99e02d9168972 inherit pub_methods_class_memory_1_1_list_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_list_node.html#afb3661a13094048cdec99e02d9168972">removeFromList</a> (<a class="el" href="class_memory_1_1_zone.html">Zone</a> **list)</td></tr>
+<tr class="memdesc:afb3661a13094048cdec99e02d9168972 inherit pub_methods_class_memory_1_1_list_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes current node from the given list.  <a href="class_memory_1_1_list_node.html#afb3661a13094048cdec99e02d9168972">More...</a><br /></td></tr>
+<tr class="separator:afb3661a13094048cdec99e02d9168972 inherit pub_methods_class_memory_1_1_list_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -141,12 +160,6 @@ static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>isNa
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a7cdc077949421c36334872bca58f05ac"><td class="memItemLeft" align="right" valign="top"><a id="a7cdc077949421c36334872bca58f05ac"></a>
-<a class="el" href="class_memory_1_1_zone.html">Zone</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_next</b></td></tr>
-<tr class="separator:a7cdc077949421c36334872bca58f05ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a112dd3e261168cc4b5031608b0760a42"><td class="memItemLeft" align="right" valign="top"><a id="a112dd3e261168cc4b5031608b0760a42"></a>
-<a class="el" href="class_memory_1_1_zone.html">Zone</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_prev</b></td></tr>
-<tr class="separator:a112dd3e261168cc4b5031608b0760a42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23e8648b19c1e7cf37f989abaa16eb1d"><td class="memItemLeft" align="right" valign="top"><a id="a23e8648b19c1e7cf37f989abaa16eb1d"></a>
 <a class="el" href="class_memory_1_1_page.html">Page</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_page</b></td></tr>
 <tr class="separator:a23e8648b19c1e7cf37f989abaa16eb1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
