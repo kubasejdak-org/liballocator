@@ -33,6 +33,8 @@
 #ifndef ZONE_H
 #define ZONE_H
 
+#include "list_node.h"
+
 #include <cstddef>
 
 namespace Memory {
@@ -40,7 +42,7 @@ namespace Memory {
 class Page;
 class Chunk;
 
-class Zone {
+class Zone : public ListNode<Zone> {
 public:
     Zone() = default;
     Zone(const Zone& other) = delete;
@@ -48,9 +50,6 @@ public:
 
     void init(Page* page, std::size_t pageSize, std::size_t chunkSize);
     void clear();
-    void addToList(Zone** list);
-    void removeFromList(Zone** list);
-    Zone* next();
     Page* page();
     std::size_t chunkSize();
     std::size_t chunksCount();
@@ -62,8 +61,7 @@ public:
 
     static constexpr bool isNaturallyAligned()
     {
-        constexpr std::size_t requiredSize = sizeof(Zone*)          // m_next
-                                           + sizeof(Zone*)          // m_prev
+        constexpr std::size_t requiredSize = sizeof(ListNode<Zone>) // Inherited fields
                                            + sizeof(Page*)          // m_page
                                            + sizeof(std::size_t)    // m_chunkSize
                                            + sizeof(std::size_t)    // m_chunksCount
@@ -73,8 +71,6 @@ public:
     }
 
 private:
-    Zone* m_next;
-    Zone* m_prev;
     Page* m_page;
     std::size_t m_chunkSize;
     std::size_t m_chunksCount;

@@ -64,50 +64,12 @@ void Zone::init(Page* page, std::size_t pageSize, std::size_t chunkSize)
 
 void Zone::clear()
 {
-    m_next = nullptr;
-    m_prev = nullptr;
+    initListNode();
     m_page = nullptr;
     m_chunkSize = 0;
     m_chunksCount = 0;
     m_freeChunksCount = 0;
     m_freeChunks = nullptr;
-}
-
-void Zone::addToList(Zone** list)
-{
-    assert(list);
-    assert(!m_next);
-    assert(!m_prev);
-
-    if (*list) {
-        m_next = *list;
-        m_next->m_prev = this;
-    }
-
-    *list = this;
-}
-
-void Zone::removeFromList(Zone** list)
-{
-    assert(list);
-    assert(this == *list || m_next || m_prev);
-
-    if (m_next)
-        m_next->m_prev = m_prev;
-
-    if (m_prev)
-        m_prev->m_next = m_next;
-
-    if (*list == this)
-        *list = m_next;
-
-    m_next = nullptr;
-    m_prev = nullptr;
-}
-
-Zone* Zone::next()
-{
-    return m_next;
 }
 
 Page* Zone::page()
