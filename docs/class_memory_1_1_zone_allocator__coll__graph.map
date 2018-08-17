@@ -1,7 +1,8 @@
 <map id="Memory::ZoneAllocator" name="Memory::ZoneAllocator">
 <area shape="rect" id="node2" href="$class_memory_1_1_page_allocator.html" title="Memory::PageAllocator" alt="" coords="212,194,372,219"/>
-<area shape="rect" id="node3" href="$class_memory_1_1_page.html" title="Represents a physical memory page. " alt="" coords="228,93,336,118"/>
-<area shape="rect" id="node5" href="$class_memory_1_1_zone.html" title="Memory::Zone" alt="" coords="9,194,117,219"/>
-<area shape="rect" id="node4" href="$union_memory_1_1_page_1_1_flags.html" title="Represents a packed set of flags used internally by pages. " alt="" coords="208,5,356,31"/>
-<area shape="rect" id="node6" href="$class_memory_1_1_chunk.html" title="Represents a chunk of memory, that is returned to the user of this allocator. " alt="" coords="5,93,121,118"/>
+<area shape="rect" id="node3" href="$class_memory_1_1_page.html" title="Represents a physical memory page. " alt="" coords="298,93,406,118"/>
+<area shape="rect" id="node4" href="$class_memory_1_1_list_node.html" title="Memory::ListNode\&lt; Page \&gt;" alt="" coords="397,194,580,219"/>
+<area shape="rect" id="node6" href="$class_memory_1_1_zone.html" title="Memory::Zone" alt="" coords="9,194,117,219"/>
+<area shape="rect" id="node5" href="$union_memory_1_1_page_1_1_flags.html" title="Represents a packed set of flags used internally by pages. " alt="" coords="278,5,426,31"/>
+<area shape="rect" id="node7" href="$class_memory_1_1_chunk.html" title="Represents a chunk of memory, that is returned to the user of this allocator. " alt="" coords="5,93,121,118"/>
 </map>

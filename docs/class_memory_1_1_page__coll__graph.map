@@ -1,3 +1,4 @@
 <map id="Memory::Page" name="Memory::Page">
-<area shape="rect" id="node2" href="$union_memory_1_1_page_1_1_flags.html" title="Represents a packed set of flags used internally by pages. " alt="" coords="5,5,153,31"/>
+<area shape="rect" id="node2" href="$class_memory_1_1_list_node.html" title="Memory::ListNode\&lt; Page \&gt;" alt="" coords="5,192,189,217"/>
+<area shape="rect" id="node3" href="$union_memory_1_1_page_1_1_flags.html" title="Represents a packed set of flags used internally by pages. " alt="" coords="23,5,171,31"/>
 </map>

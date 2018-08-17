@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['region',['Region',['../struct_memory_1_1_region.html',1,'Memory']]],
-  ['regioninfo',['RegionInfo',['../struct_memory_1_1_region_info.html',1,'Memory']]]
+  ['page',['Page',['../class_memory_1_1_page.html',1,'Memory']]],
+  ['pageallocator',['PageAllocator',['../class_memory_1_1_page_allocator.html',1,'Memory']]]
 ];
