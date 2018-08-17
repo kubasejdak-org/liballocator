@@ -42,7 +42,6 @@
 namespace Memory {
 
 class PageAllocator;
-class Chunk;
 
 class ZoneAllocator {
 public:

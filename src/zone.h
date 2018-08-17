@@ -40,7 +40,7 @@
 namespace Memory {
 
 class Page;
-class Chunk;
+class Chunk : public ListNode<Chunk> {};
 
 class Zone : public ListNode<Zone> {
 public:

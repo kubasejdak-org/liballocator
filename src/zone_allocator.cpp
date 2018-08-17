@@ -32,7 +32,6 @@
 
 #include "zone_allocator.h"
 
-#include "chunk.h"
 #include "page_allocator.h"
 
 #include <cassert>

@@ -3,7 +3,6 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/version.h.in ${CMAKE_CURRENT_SOURCE_D
 
 add_library(allocator
     allocator.cpp
-    chunk.cpp
     page_allocator.cpp
     page.cpp
     region_info.cpp

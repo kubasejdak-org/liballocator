@@ -32,7 +32,6 @@
 
 #include "zone.h"
 
-#include "chunk.h"
 #include "page.h"
 #include "utils.h"
 
@@ -57,7 +56,7 @@ void Zone::init(Page* page, std::size_t pageSize, std::size_t chunkSize)
 
     auto* chunk = reinterpret_cast<Chunk*>(page->address());
     for (std::size_t i = 0; i < m_chunksCount; ++i, chunk = utils_movePtr(chunk, m_chunkSize)) {
-        chunk->init();
+        chunk->initListNode();
         chunk->addToList(&m_freeChunks);
     }
 }
