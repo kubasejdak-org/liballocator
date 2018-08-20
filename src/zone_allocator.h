@@ -43,6 +43,8 @@ namespace Memory {
 
 class PageAllocator;
 
+/// @class ZoneAllocator
+/// @brief Represents the zone allocator.
 class ZoneAllocator {
 public:
     ZoneAllocator();
@@ -75,6 +77,8 @@ private:
     static constexpr std::size_t MAX_ZONE_IDX = 8;
 
 private:
+    /// @class ZoneInfo
+    /// @brief Represents the meta-data of the zone.
     struct ZoneInfo {
         Zone* head = nullptr;
         std::size_t freeChunksCount = 0;

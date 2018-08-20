@@ -45,28 +45,57 @@
 
 namespace Memory {
 
+/// @class PageAllocator
+/// @brief Represents an allocator of physical pages.
 class PageAllocator {
 public:
+    /// @class Stats
+    /// @brief Represents the statistical data of the page allocator.
     struct Stats {
-        std::size_t pageSize;
-        std::size_t pagesCount;
-        std::size_t freePagesCount;
-        std::size_t descRegionIdx;
-        std::size_t descPagesCount;
+        std::size_t pageSize;           ///< Size of the page used by page allocator.
+        std::size_t pagesCount;         ///< Total number of pages, that are known to the page allocator.
+        std::size_t freePagesCount;     ///< Current number of the free pages in the page allocator.
+        std::size_t descRegionIdx;      ///< Index of the memory region, that is used to store the page descriptors.
+        std::size_t descPagesCount;     ///< Number of pages used to store the page descriptors.
     };
 
+    /// @brief Default constructor.
     PageAllocator();
 
+    /// @brief Initializes the page allocator with the given memory model.
+    /// @param[in] regions          Array of memory regions to be used by page allocator. Last entry should be zeroed.
+    /// @param[in] pageSize         Size of the page on the current platform.
+    /// @return True on success, false otherwise.
     [[nodiscard]] bool init(Region* regions, std::size_t pageSize);
+
+    /// @brief Clears the internal state of the page allocator.
     void clear();
 
+    /// @brief Allocates the given number of physical pages.
+    /// @param[in] count            Number of pages to be allocated.
+    /// @note All allocated pages must be from the same region.
     [[nodiscard]] Page* allocate(std::size_t count);
+
+    /// @brief Releases the given set of pages.
+    /// @param[in] pages            List of pages to be released.
     void release(Page* pages);
 
 private:
+    /// @brief Returns the total number of pages from all known regions.
+    /// @return Number of all pages from all known regions.
     std::size_t countPages();
+
+    /// @brief Returns the index of the best region to store the page descriptors.
+    /// @return Index of the region, where page descriptors will be stored.
     std::size_t chooseDescRegion();
+
+    /// @brief Reserves the necessary number of pages to store the page descriptors.
+    /// @return Number of pages, that are used to store the page descriptors.
     std::size_t reserveDescPages();
+
+    /// @brief Checks if the given page is valid.
+    /// @param[in] page             Page to be checked.
+    /// @return True if page is valid, false otherwise.
     bool isValidPage(Page* page);
     RegionInfo* getRegion(std::uintptr_t addr);
     Page* getPage(std::uintptr_t addr);
