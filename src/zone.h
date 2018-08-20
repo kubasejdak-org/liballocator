@@ -64,6 +64,9 @@ public:
     Zone(Zone&& other) = delete;
 
     /// @brief Initializes the zone. It is used as a replacement for the constructor.
+    /// @param[in] page         page to be associated with this zone.
+    /// @param[in] pageSize     Size of the associated page.
+    /// @param[in] chunkSize    Size of the chunk to be used within this zone.
     void init(Page* page, std::size_t pageSize, std::size_t chunkSize);
 
     /// @brief Clears the internal state of the zone.
