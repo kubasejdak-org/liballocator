@@ -1,7 +1,7 @@
 <map id="Memory::ZoneAllocator::ZoneInfo" name="Memory::ZoneAllocator::ZoneInfo">
-<area shape="rect" id="node2" href="$class_memory_1_1_zone.html" title="Memory::Zone" alt="" coords="231,192,338,217"/>
+<area shape="rect" id="node2" href="$class_memory_1_1_zone.html" title="Represents a memory zone. Each zone consists of the memory chunks of equal size. " alt="" coords="231,192,338,217"/>
 <area shape="rect" id="node3" href="$class_memory_1_1_list_node.html" title="Memory::ListNode\&lt; Zone \&gt;" alt="" coords="261,299,444,324"/>
-<area shape="rect" id="node4" href="$class_memory_1_1_chunk.html" title="Memory::Chunk" alt="" coords="91,92,207,117"/>
+<area shape="rect" id="node4" href="$class_memory_1_1_chunk.html" title="Represents a memory chunk. Chunks are part of the zone. " alt="" coords="91,92,207,117"/>
 <area shape="rect" id="node5" href="$class_memory_1_1_list_node.html" title="Memory::ListNode\&lt; Chunk \&gt;" alt="" coords="5,192,196,217"/>
 <area shape="rect" id="node6" href="$class_memory_1_1_page.html" title="Represents a physical memory page. " alt="" coords="343,92,451,117"/>
 <area shape="rect" id="node7" href="$class_memory_1_1_list_node.html" title="Memory::ListNode\&lt; Page \&gt;" alt="" coords="368,192,551,217"/>

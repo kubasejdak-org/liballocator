@@ -78,25 +78,31 @@ $(function() {
 <div class="title">Memory::ZoneAllocator Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Represents the zone allocator.  
+ <a href="class_memory_1_1_zone_allocator.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="zone__allocator_8h_source.html">zone_allocator.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for Memory::ZoneAllocator:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_memory_1_1_zone_allocator__coll__graph.png" border="0" usemap="#_memory_1_1_zone_allocator_coll__map" alt="Collaboration graph"/></div>
 <map name="_memory_1_1_zone_allocator_coll__map" id="_memory_1_1_zone_allocator_coll__map">
-<area shape="rect" id="node2" href="class_memory_1_1_page_allocator.html" title="Memory::PageAllocator" alt="" coords="560,192,719,217"/>
+<area shape="rect" id="node2" href="class_memory_1_1_page_allocator.html" title="Represents an allocator of physical pages. " alt="" coords="560,192,719,217"/>
 <area shape="rect" id="node3" href="class_memory_1_1_page.html" title="Represents a physical memory page. " alt="" coords="406,92,514,117"/>
 <area shape="rect" id="node4" href="class_memory_1_1_list_node.html" title="Memory::ListNode\&lt; Page \&gt;" alt="" coords="352,192,535,217"/>
-<area shape="rect" id="node6" href="class_memory_1_1_zone.html" title="Memory::Zone" alt="" coords="221,192,328,217"/>
+<area shape="rect" id="node6" href="class_memory_1_1_zone.html" title="Represents a memory zone. Each zone consists of the memory chunks of equal size. " alt="" coords="221,192,328,217"/>
 <area shape="rect" id="node5" href="union_memory_1_1_page_1_1_flags.html" title="Represents a packed set of flags used internally by pages. " alt="" coords="385,5,534,31"/>
 <area shape="rect" id="node7" href="class_memory_1_1_list_node.html" title="Memory::ListNode\&lt; Zone \&gt;" alt="" coords="163,292,346,317"/>
-<area shape="rect" id="node8" href="class_memory_1_1_chunk.html" title="Memory::Chunk" alt="" coords="111,92,227,117"/>
+<area shape="rect" id="node8" href="class_memory_1_1_chunk.html" title="Represents a memory chunk. Chunks are part of the zone. " alt="" coords="111,92,227,117"/>
 <area shape="rect" id="node9" href="class_memory_1_1_list_node.html" title="Memory::ListNode\&lt; Chunk \&gt;" alt="" coords="5,192,196,217"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_memory_1_1_zone_allocator_1_1_zone_info.html">ZoneInfo</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_memory_1_1_zone_allocator_1_1_zone_info.html">ZoneInfo</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the meta-data of the zone.  <a href="struct_memory_1_1_zone_allocator_1_1_zone_info.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -185,7 +191,9 @@ static constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom">
 static constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_ZONE_IDX</b> = 8</td></tr>
 <tr class="separator:ad275bf9def9934cba4e4dd01499114fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following files:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Represents the zone allocator. </p>
+</div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/<a class="el" href="zone__allocator_8h_source.html">zone_allocator.h</a></li>
 <li>src/<a class="el" href="zone__allocator_8cpp.html">zone_allocator.cpp</a></li>
 </ul>

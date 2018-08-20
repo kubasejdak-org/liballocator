@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['version',['version',['../allocator_8h.html#a82225dc6e38ade948983a9d93495d7ed',1,'Memory::Allocator']]]
+  ['takechunk',['takeChunk',['../class_memory_1_1_zone.html#a2cf4ac06980c2de5f5d4157c3acd660b',1,'Memory::Zone']]]
 ];

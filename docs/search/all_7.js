@@ -1,7 +1,9 @@
 var searchData=
 [
-  ['m_5faddr',['m_addr',['../class_memory_1_1_page.html#a1144ffd69fd9a3bb624dac753e97d2f2',1,'Memory::Page']]],
-  ['m_5fflags',['m_flags',['../class_memory_1_1_page.html#a0221d902ebfdd23a613bb97108de1999',1,'Memory::Page']]],
-  ['m_5fnext',['m_next',['../class_memory_1_1_list_node.html#a3766fd71c8b6465c419b4778d41c0335',1,'Memory::ListNode']]],
-  ['m_5fprev',['m_prev',['../class_memory_1_1_list_node.html#ab1caafaec1815ddfc9f56425492ba6c4',1,'Memory::ListNode']]]
+  ['lastpage',['lastPage',['../struct_memory_1_1_region_info.html#a3224872e6c8d3b076740d2c71b60aab0',1,'Memory::RegionInfo']]],
+  ['list_5fnode_2eh',['list_node.h',['../list__node_8h.html',1,'']]],
+  ['listnode',['ListNode',['../class_memory_1_1_list_node.html',1,'Memory::ListNode&lt; T &gt;'],['../class_memory_1_1_list_node.html#a6e9a727d3c01b777e31922da6cad42e9',1,'Memory::ListNode::ListNode()']]],
+  ['listnode_3c_20chunk_20_3e',['ListNode&lt; Chunk &gt;',['../class_memory_1_1_list_node.html',1,'Memory']]],
+  ['listnode_3c_20page_20_3e',['ListNode&lt; Page &gt;',['../class_memory_1_1_list_node.html',1,'Memory']]],
+  ['listnode_3c_20zone_20_3e',['ListNode&lt; Zone &gt;',['../class_memory_1_1_list_node.html',1,'Memory']]]
 ];

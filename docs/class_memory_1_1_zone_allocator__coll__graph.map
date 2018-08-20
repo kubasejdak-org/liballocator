@@ -1,10 +1,10 @@
 <map id="Memory::ZoneAllocator" name="Memory::ZoneAllocator">
-<area shape="rect" id="node2" href="$class_memory_1_1_page_allocator.html" title="Memory::PageAllocator" alt="" coords="560,192,719,217"/>
+<area shape="rect" id="node2" href="$class_memory_1_1_page_allocator.html" title="Represents an allocator of physical pages. " alt="" coords="560,192,719,217"/>
 <area shape="rect" id="node3" href="$class_memory_1_1_page.html" title="Represents a physical memory page. " alt="" coords="406,92,514,117"/>
 <area shape="rect" id="node4" href="$class_memory_1_1_list_node.html" title="Memory::ListNode\&lt; Page \&gt;" alt="" coords="352,192,535,217"/>
-<area shape="rect" id="node6" href="$class_memory_1_1_zone.html" title="Memory::Zone" alt="" coords="221,192,328,217"/>
+<area shape="rect" id="node6" href="$class_memory_1_1_zone.html" title="Represents a memory zone. Each zone consists of the memory chunks of equal size. " alt="" coords="221,192,328,217"/>
 <area shape="rect" id="node5" href="$union_memory_1_1_page_1_1_flags.html" title="Represents a packed set of flags used internally by pages. " alt="" coords="385,5,534,31"/>
 <area shape="rect" id="node7" href="$class_memory_1_1_list_node.html" title="Memory::ListNode\&lt; Zone \&gt;" alt="" coords="163,292,346,317"/>
-<area shape="rect" id="node8" href="$class_memory_1_1_chunk.html" title="Memory::Chunk" alt="" coords="111,92,227,117"/>
+<area shape="rect" id="node8" href="$class_memory_1_1_chunk.html" title="Represents a memory chunk. Chunks are part of the zone. " alt="" coords="111,92,227,117"/>
 <area shape="rect" id="node9" href="$class_memory_1_1_list_node.html" title="Memory::ListNode\&lt; Chunk \&gt;" alt="" coords="5,192,196,217"/>
 </map>

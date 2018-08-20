@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>liballocator: Memory::ZoneAllocator::ZoneInfo Struct Reference</title>
+<title>liballocator: Memory::ZoneAllocator::ZoneInfo Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -71,17 +71,20 @@ $(function() {
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="struct_memory_1_1_zone_allocator_1_1_zone_info-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">Memory::ZoneAllocator::ZoneInfo Struct Reference</div>  </div>
+<div class="title">Memory::ZoneAllocator::ZoneInfo Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Represents the meta-data of the zone.  
+ <a href="struct_memory_1_1_zone_allocator_1_1_zone_info.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for Memory::ZoneAllocator::ZoneInfo:</div>
 <div class="dyncontent">
 <div class="center"><img src="struct_memory_1_1_zone_allocator_1_1_zone_info__coll__graph.png" border="0" usemap="#_memory_1_1_zone_allocator_1_1_zone_info_coll__map" alt="Collaboration graph"/></div>
 <map name="_memory_1_1_zone_allocator_1_1_zone_info_coll__map" id="_memory_1_1_zone_allocator_1_1_zone_info_coll__map">
-<area shape="rect" id="node2" href="class_memory_1_1_zone.html" title="Memory::Zone" alt="" coords="231,192,338,217"/>
+<area shape="rect" id="node2" href="class_memory_1_1_zone.html" title="Represents a memory zone. Each zone consists of the memory chunks of equal size. " alt="" coords="231,192,338,217"/>
 <area shape="rect" id="node3" href="class_memory_1_1_list_node.html" title="Memory::ListNode\&lt; Zone \&gt;" alt="" coords="261,299,444,324"/>
-<area shape="rect" id="node4" href="class_memory_1_1_chunk.html" title="Memory::Chunk" alt="" coords="91,92,207,117"/>
+<area shape="rect" id="node4" href="class_memory_1_1_chunk.html" title="Represents a memory chunk. Chunks are part of the zone. " alt="" coords="91,92,207,117"/>
 <area shape="rect" id="node5" href="class_memory_1_1_list_node.html" title="Memory::ListNode\&lt; Chunk \&gt;" alt="" coords="5,192,196,217"/>
 <area shape="rect" id="node6" href="class_memory_1_1_page.html" title="Represents a physical memory page. " alt="" coords="343,92,451,117"/>
 <area shape="rect" id="node7" href="class_memory_1_1_list_node.html" title="Memory::ListNode\&lt; Page \&gt;" alt="" coords="368,192,551,217"/>
@@ -98,7 +101,9 @@ Public Attributes</h2></td></tr>
 std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>freeChunksCount</b> = 0</td></tr>
 <tr class="separator:a1c03bb6c23fc427cdefa76f257ce00c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Represents the meta-data of the zone. </p>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/<a class="el" href="zone__allocator_8h_source.html">zone_allocator.h</a></li>
 </ul>
 </div><!-- contents -->

@@ -1,7 +1,9 @@
 var searchData=
 [
-  ['used',['used',['../union_memory_1_1_page_1_1_flags.html#aa001c5e9356436a4cbb24277a0f359c8',1,'Memory::Page::Flags']]],
-  ['utils_2eh',['utils.h',['../utils_8h.html',1,'']]],
-  ['utils_5fmoveptr',['utils_movePtr',['../utils_8h.html#a1d7d483127248dba4b2d7221a6f1a6cb',1,'Memory']]],
-  ['utils_5froundpower2',['utils_roundPower2',['../utils_8h.html#a1c9cb5f9da734b05f5251f10a3b19d42',1,'Memory']]]
+  ['setaddress',['setAddress',['../class_memory_1_1_page.html#ad457ef16e93c91a027b4899e334dda31',1,'Memory::Page']]],
+  ['setgroupsize',['setGroupSize',['../class_memory_1_1_page.html#a63d7a749060c2954bf33585b6dae2742',1,'Memory::Page']]],
+  ['setused',['setUsed',['../class_memory_1_1_page.html#a909eb7e2b402e819233c93053b14980e',1,'Memory::Page']]],
+  ['size',['size',['../struct_memory_1_1_region.html#a320e9366b63d20367320014db002432c',1,'Memory::Region::size()'],['../struct_memory_1_1_region_info.html#a71532d705cbb2ef765fd5862506f7ef6',1,'Memory::RegionInfo::size()']]],
+  ['start',['start',['../struct_memory_1_1_region_info.html#a82d63ca46c13446b9aff26b9d89f697a',1,'Memory::RegionInfo']]],
+  ['stats',['Stats',['../struct_memory_1_1_page_allocator_1_1_stats.html',1,'Memory::PageAllocator']]]
 ];

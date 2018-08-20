@@ -4,5 +4,5 @@ var searchData=
   ['addtolist',['addToList',['../class_memory_1_1_list_node.html#a6c3d6b4488b4c6024cbff35d540ade26',1,'Memory::ListNode']]],
   ['alignedend',['alignedEnd',['../region__info_8cpp.html#aa6374da85e6d2a16dacf66595d8c45fa',1,'Memory::detail']]],
   ['alignedstart',['alignedStart',['../region__info_8cpp.html#a65d09a166c0438582dbb8216357ebdb2',1,'Memory::detail']]],
-  ['allocate',['allocate',['../allocator_8h.html#a7336d093b34ebd3cadcc900929df9c3f',1,'Memory::Allocator']]]
+  ['allocate',['allocate',['../class_memory_1_1_page_allocator.html#a56e4577c63fd73a136791c3818ea8dcb',1,'Memory::PageAllocator::allocate()'],['../allocator_8h.html#a7336d093b34ebd3cadcc900929df9c3f',1,'Memory::Allocator::allocate()']]]
 ];

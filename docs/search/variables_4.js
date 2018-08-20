@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lastpage',['lastPage',['../struct_memory_1_1_region_info.html#a3224872e6c8d3b076740d2c71b60aab0',1,'Memory::RegionInfo']]]
+  ['groupsize',['groupSize',['../union_memory_1_1_page_1_1_flags.html#a9d69a2881a4ce0e8f85e03055aa5a600',1,'Memory::Page::Flags']]]
 ];
