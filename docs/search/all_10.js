@@ -1,10 +1,7 @@
 var searchData=
 [
-  ['zone',['Zone',['../class_memory_1_1_zone.html',1,'Memory::Zone'],['../class_memory_1_1_zone.html#aef9e1a59ea22139efe3ea52cf5b4e881',1,'Memory::Zone::Zone()=default'],['../class_memory_1_1_zone.html#ae5a11a9725ed9e67e361e76090b5015e',1,'Memory::Zone::Zone(const Zone &amp;other)=delete'],['../class_memory_1_1_zone.html#a87564be4c0be8962a0d6e9a0a31326f1',1,'Memory::Zone::Zone(Zone &amp;&amp;other)=delete']]],
-  ['zone_2ecpp',['zone.cpp',['../zone_8cpp.html',1,'']]],
-  ['zone_2eh',['zone.h',['../zone_8h.html',1,'']]],
-  ['zone_5fallocator_2ecpp',['zone_allocator.cpp',['../zone__allocator_8cpp.html',1,'']]],
-  ['zone_5fallocator_2eh',['zone_allocator.h',['../zone__allocator_8h.html',1,'']]],
-  ['zoneallocator',['ZoneAllocator',['../class_memory_1_1_zone_allocator.html',1,'Memory']]],
-  ['zoneinfo',['ZoneInfo',['../struct_memory_1_1_zone_allocator_1_1_zone_info.html',1,'Memory::ZoneAllocator']]]
+  ['used',['used',['../union_memory_1_1_page_1_1_flags.html#aa001c5e9356436a4cbb24277a0f359c8',1,'Memory::Page::Flags']]],
+  ['utils_2eh',['utils.h',['../utils_8h.html',1,'']]],
+  ['utils_5fmoveptr',['utils_movePtr',['../utils_8h.html#a1d7d483127248dba4b2d7221a6f1a6cb',1,'Memory']]],
+  ['utils_5froundpower2',['utils_roundPower2',['../utils_8h.html#a1c9cb5f9da734b05f5251f10a3b19d42',1,'Memory']]]
 ];

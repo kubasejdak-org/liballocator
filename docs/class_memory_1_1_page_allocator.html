@@ -134,82 +134,128 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:ad4c5c70282c9e06e92bbe69b0fe891a5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#ad4c5c70282c9e06e92bbe69b0fe891a5">isValidPage</a> (<a class="el" href="class_memory_1_1_page.html">Page</a> *page)</td></tr>
 <tr class="memdesc:ad4c5c70282c9e06e92bbe69b0fe891a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the given page is valid.  <a href="#ad4c5c70282c9e06e92bbe69b0fe891a5">More...</a><br /></td></tr>
 <tr class="separator:ad4c5c70282c9e06e92bbe69b0fe891a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f1957961cfd0e3af7e11f1d633e4833"><td class="memItemLeft" align="right" valign="top"><a id="a8f1957961cfd0e3af7e11f1d633e4833"></a>
-<a class="el" href="struct_memory_1_1_region_info.html">RegionInfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getRegion</b> (std::uintptr_t addr)</td></tr>
+<tr class="memitem:a8f1957961cfd0e3af7e11f1d633e4833"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_memory_1_1_region_info.html">RegionInfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#a8f1957961cfd0e3af7e11f1d633e4833">getRegion</a> (std::uintptr_t addr)</td></tr>
+<tr class="memdesc:a8f1957961cfd0e3af7e11f1d633e4833"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <a class="el" href="struct_memory_1_1_region_info.html" title="Represents the meta data of the physical memory region. ">RegionInfo</a>, which contains the given address.  <a href="#a8f1957961cfd0e3af7e11f1d633e4833">More...</a><br /></td></tr>
 <tr class="separator:a8f1957961cfd0e3af7e11f1d633e4833"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5803183d5e117191aa3b483703accc76"><td class="memItemLeft" align="right" valign="top"><a id="a5803183d5e117191aa3b483703accc76"></a>
-<a class="el" href="class_memory_1_1_page.html">Page</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getPage</b> (std::uintptr_t addr)</td></tr>
+<tr class="memitem:a5803183d5e117191aa3b483703accc76"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_memory_1_1_page.html">Page</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#a5803183d5e117191aa3b483703accc76">getPage</a> (std::uintptr_t addr)</td></tr>
+<tr class="memdesc:a5803183d5e117191aa3b483703accc76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <a class="el" href="class_memory_1_1_page.html" title="Represents a physical memory page. ">Page</a>, which contains the given address.  <a href="#a5803183d5e117191aa3b483703accc76">More...</a><br /></td></tr>
 <tr class="separator:a5803183d5e117191aa3b483703accc76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06f04a02a1f2c2ff6e76da8f55c40c6d"><td class="memItemLeft" align="right" valign="top"><a id="a06f04a02a1f2c2ff6e76da8f55c40c6d"></a>
-<a class="el" href="struct_memory_1_1_page_allocator_1_1_stats.html">Stats</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getStats</b> ()</td></tr>
+<tr class="memitem:a06f04a02a1f2c2ff6e76da8f55c40c6d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_memory_1_1_page_allocator_1_1_stats.html">Stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#a06f04a02a1f2c2ff6e76da8f55c40c6d">getStats</a> ()</td></tr>
+<tr class="memdesc:a06f04a02a1f2c2ff6e76da8f55c40c6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current statistics of <a class="el" href="class_memory_1_1_page_allocator.html" title="Represents an allocator of physical pages. ">PageAllocator</a>.  <a href="#a06f04a02a1f2c2ff6e76da8f55c40c6d">More...</a><br /></td></tr>
 <tr class="separator:a06f04a02a1f2c2ff6e76da8f55c40c6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1106b317bbc1528532a200443d69ddd"><td class="memItemLeft" align="right" valign="top"><a id="aa1106b317bbc1528532a200443d69ddd"></a>
-std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>groupIdx</b> (std::size_t pageCount)</td></tr>
+<tr class="memitem:aa1106b317bbc1528532a200443d69ddd"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#aa1106b317bbc1528532a200443d69ddd">groupIdx</a> (std::size_t pageCount)</td></tr>
+<tr class="memdesc:aa1106b317bbc1528532a200443d69ddd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates index in the groups array, for which group with the given page count should be stored.  <a href="#aa1106b317bbc1528532a200443d69ddd">More...</a><br /></td></tr>
 <tr class="separator:aa1106b317bbc1528532a200443d69ddd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa93ed9d06475ccfbebb65f82c8e9338"><td class="memItemLeft" align="right" valign="top"><a id="afa93ed9d06475ccfbebb65f82c8e9338"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>initGroup</b> (<a class="el" href="class_memory_1_1_page.html">Page</a> *group, std::size_t groupSize)</td></tr>
+<tr class="memitem:afa93ed9d06475ccfbebb65f82c8e9338"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#afa93ed9d06475ccfbebb65f82c8e9338">initGroup</a> (<a class="el" href="class_memory_1_1_page.html">Page</a> *group, std::size_t groupSize)</td></tr>
+<tr class="memdesc:afa93ed9d06475ccfbebb65f82c8e9338"><td class="mdescLeft">&#160;</td><td class="mdescRight">Intilizes given group.  <a href="#afa93ed9d06475ccfbebb65f82c8e9338">More...</a><br /></td></tr>
 <tr class="separator:afa93ed9d06475ccfbebb65f82c8e9338"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adde73d05393cdeb32e1420b3491f7432"><td class="memItemLeft" align="right" valign="top"><a id="adde73d05393cdeb32e1420b3491f7432"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>clearGroup</b> (<a class="el" href="class_memory_1_1_page.html">Page</a> *group)</td></tr>
+<tr class="memitem:adde73d05393cdeb32e1420b3491f7432"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#adde73d05393cdeb32e1420b3491f7432">clearGroup</a> (<a class="el" href="class_memory_1_1_page.html">Page</a> *group)</td></tr>
+<tr class="memdesc:adde73d05393cdeb32e1420b3491f7432"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the given group.  <a href="#adde73d05393cdeb32e1420b3491f7432">More...</a><br /></td></tr>
 <tr class="separator:adde73d05393cdeb32e1420b3491f7432"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6a585dc9821092301986018a0176e72"><td class="memItemLeft" align="right" valign="top"><a id="aa6a585dc9821092301986018a0176e72"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>addGroup</b> (<a class="el" href="class_memory_1_1_page.html">Page</a> *group)</td></tr>
+<tr class="memitem:aa6a585dc9821092301986018a0176e72"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#aa6a585dc9821092301986018a0176e72">addGroup</a> (<a class="el" href="class_memory_1_1_page.html">Page</a> *group)</td></tr>
+<tr class="memdesc:aa6a585dc9821092301986018a0176e72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds given group to the array of free groups.  <a href="#aa6a585dc9821092301986018a0176e72">More...</a><br /></td></tr>
 <tr class="separator:aa6a585dc9821092301986018a0176e72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab06c9e3ed413ac62a01566e79ac76b30"><td class="memItemLeft" align="right" valign="top"><a id="ab06c9e3ed413ac62a01566e79ac76b30"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>removeGroup</b> (<a class="el" href="class_memory_1_1_page.html">Page</a> *group)</td></tr>
+<tr class="memitem:ab06c9e3ed413ac62a01566e79ac76b30"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#ab06c9e3ed413ac62a01566e79ac76b30">removeGroup</a> (<a class="el" href="class_memory_1_1_page.html">Page</a> *group)</td></tr>
+<tr class="memdesc:ab06c9e3ed413ac62a01566e79ac76b30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes given group from the array of free groups.  <a href="#ab06c9e3ed413ac62a01566e79ac76b30">More...</a><br /></td></tr>
 <tr class="separator:ab06c9e3ed413ac62a01566e79ac76b30"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf9b96f90100d3db243a9880fbaebf14"><td class="memItemLeft" align="right" valign="top"><a id="aaf9b96f90100d3db243a9880fbaebf14"></a>
-std::tuple&lt; <a class="el" href="class_memory_1_1_page.html">Page</a> *, <a class="el" href="class_memory_1_1_page.html">Page</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>splitGroup</b> (<a class="el" href="class_memory_1_1_page.html">Page</a> *group, std::size_t size)</td></tr>
+<tr class="memitem:aaf9b96f90100d3db243a9880fbaebf14"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; <a class="el" href="class_memory_1_1_page.html">Page</a> *, <a class="el" href="class_memory_1_1_page.html">Page</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#aaf9b96f90100d3db243a9880fbaebf14">splitGroup</a> (<a class="el" href="class_memory_1_1_page.html">Page</a> *group, std::size_t size)</td></tr>
+<tr class="memdesc:aaf9b96f90100d3db243a9880fbaebf14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits given group into one of given size and second with the remaining size.  <a href="#aaf9b96f90100d3db243a9880fbaebf14">More...</a><br /></td></tr>
 <tr class="separator:aaf9b96f90100d3db243a9880fbaebf14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b4dd5d13fc692301044c54d5058aa40"><td class="memItemLeft" align="right" valign="top"><a id="a0b4dd5d13fc692301044c54d5058aa40"></a>
-<a class="el" href="class_memory_1_1_page.html">Page</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>joinGroup</b> (<a class="el" href="class_memory_1_1_page.html">Page</a> *firstGroup, <a class="el" href="class_memory_1_1_page.html">Page</a> *secondGroup)</td></tr>
+<tr class="memitem:a0b4dd5d13fc692301044c54d5058aa40"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_memory_1_1_page.html">Page</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#a0b4dd5d13fc692301044c54d5058aa40">joinGroup</a> (<a class="el" href="class_memory_1_1_page.html">Page</a> *firstGroup, <a class="el" href="class_memory_1_1_page.html">Page</a> *secondGroup)</td></tr>
+<tr class="memdesc:a0b4dd5d13fc692301044c54d5058aa40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joins two given groups into one.  <a href="#a0b4dd5d13fc692301044c54d5058aa40">More...</a><br /></td></tr>
 <tr class="separator:a0b4dd5d13fc692301044c54d5058aa40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:ab89d74dfc1d2ca32c8eee80fe89e13f8"><td class="memItemLeft" align="right" valign="top"><a id="ab89d74dfc1d2ca32c8eee80fe89e13f8"></a>
-std::array&lt; <a class="el" href="struct_memory_1_1_region_info.html">RegionInfo</a>, MAX_REGIONS_COUNT &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_regionsInfo</b></td></tr>
+std::array&lt; <a class="el" href="struct_memory_1_1_region_info.html">RegionInfo</a>, <a class="el" href="class_memory_1_1_page_allocator.html#a432a7b12d9c5fdc7dc3aa1887d57450f">MAX_REGIONS_COUNT</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#ab89d74dfc1d2ca32c8eee80fe89e13f8">m_regionsInfo</a></td></tr>
+<tr class="memdesc:ab89d74dfc1d2ca32c8eee80fe89e13f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array describing all known regions. <br /></td></tr>
 <tr class="separator:ab89d74dfc1d2ca32c8eee80fe89e13f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86d12905c5010be32867604919ec2124"><td class="memItemLeft" align="right" valign="top"><a id="a86d12905c5010be32867604919ec2124"></a>
-std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>m_validRegionsCount</b></td></tr>
+std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#a86d12905c5010be32867604919ec2124">m_validRegionsCount</a></td></tr>
+<tr class="memdesc:a86d12905c5010be32867604919ec2124"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of used regions. <br /></td></tr>
 <tr class="separator:a86d12905c5010be32867604919ec2124"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ff0c143f7e0cfbde19a48347f84b43a"><td class="memItemLeft" align="right" valign="top"><a id="a2ff0c143f7e0cfbde19a48347f84b43a"></a>
-std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>m_pageSize</b></td></tr>
+std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#a2ff0c143f7e0cfbde19a48347f84b43a">m_pageSize</a></td></tr>
+<tr class="memdesc:a2ff0c143f7e0cfbde19a48347f84b43a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of the page used on this platform. <br /></td></tr>
 <tr class="separator:a2ff0c143f7e0cfbde19a48347f84b43a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c27d74345e6b40b7d519c55f5839405"><td class="memItemLeft" align="right" valign="top"><a id="a0c27d74345e6b40b7d519c55f5839405"></a>
-std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>m_descRegionIdx</b></td></tr>
+std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#a0c27d74345e6b40b7d519c55f5839405">m_descRegionIdx</a></td></tr>
+<tr class="memdesc:a0c27d74345e6b40b7d519c55f5839405"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index of the region used to store page descriptors. <br /></td></tr>
 <tr class="separator:a0c27d74345e6b40b7d519c55f5839405"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab840e22893435365ce5c59e44488a8f9"><td class="memItemLeft" align="right" valign="top"><a id="ab840e22893435365ce5c59e44488a8f9"></a>
-std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>m_descPagesCount</b></td></tr>
+std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#ab840e22893435365ce5c59e44488a8f9">m_descPagesCount</a></td></tr>
+<tr class="memdesc:ab840e22893435365ce5c59e44488a8f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of pages used to store page descriptors. <br /></td></tr>
 <tr class="separator:ab840e22893435365ce5c59e44488a8f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47a84332cecc9bc7b9c0a89b868a7696"><td class="memItemLeft" align="right" valign="top"><a id="a47a84332cecc9bc7b9c0a89b868a7696"></a>
-<a class="el" href="class_memory_1_1_page.html">Page</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_pagesHead</b></td></tr>
+<a class="el" href="class_memory_1_1_page.html">Page</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#a47a84332cecc9bc7b9c0a89b868a7696">m_pagesHead</a></td></tr>
+<tr class="memdesc:a47a84332cecc9bc7b9c0a89b868a7696"><td class="mdescLeft">&#160;</td><td class="mdescRight">Head of the page descriptors list. <br /></td></tr>
 <tr class="separator:a47a84332cecc9bc7b9c0a89b868a7696"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d64217656cdc883b63c9ae706ea3b50"><td class="memItemLeft" align="right" valign="top"><a id="a4d64217656cdc883b63c9ae706ea3b50"></a>
-<a class="el" href="class_memory_1_1_page.html">Page</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_pagesTail</b></td></tr>
+<a class="el" href="class_memory_1_1_page.html">Page</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#a4d64217656cdc883b63c9ae706ea3b50">m_pagesTail</a></td></tr>
+<tr class="memdesc:a4d64217656cdc883b63c9ae706ea3b50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tail of the page descriptors list. <br /></td></tr>
 <tr class="separator:a4d64217656cdc883b63c9ae706ea3b50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30a0c56e553aa533a815812c8b38900a"><td class="memItemLeft" align="right" valign="top"><a id="a30a0c56e553aa533a815812c8b38900a"></a>
-std::array&lt; <a class="el" href="class_memory_1_1_page.html">Page</a> *, MAX_GROUP_IDX &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_freeGroupLists</b></td></tr>
+std::array&lt; <a class="el" href="class_memory_1_1_page.html">Page</a> *, <a class="el" href="class_memory_1_1_page_allocator.html#a8706f308f34367876cb6f47abd9732da">MAX_GROUP_IDX</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#a30a0c56e553aa533a815812c8b38900a">m_freeGroupLists</a></td></tr>
+<tr class="memdesc:a30a0c56e553aa533a815812c8b38900a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array of the groups with free pages. <br /></td></tr>
 <tr class="separator:a30a0c56e553aa533a815812c8b38900a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b38d344e5fbdd03626587de916a695d"><td class="memItemLeft" align="right" valign="top"><a id="a6b38d344e5fbdd03626587de916a695d"></a>
-std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>m_pagesCount</b></td></tr>
+std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#a6b38d344e5fbdd03626587de916a695d">m_pagesCount</a></td></tr>
+<tr class="memdesc:a6b38d344e5fbdd03626587de916a695d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total number of pages known to the <a class="el" href="class_memory_1_1_page_allocator.html" title="Represents an allocator of physical pages. ">PageAllocator</a>. <br /></td></tr>
 <tr class="separator:a6b38d344e5fbdd03626587de916a695d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a060e511eec3c9b4dacd794b2138a209a"><td class="memItemLeft" align="right" valign="top"><a id="a060e511eec3c9b4dacd794b2138a209a"></a>
-std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>m_freePagesCount</b></td></tr>
+std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#a060e511eec3c9b4dacd794b2138a209a">m_freePagesCount</a></td></tr>
+<tr class="memdesc:a060e511eec3c9b4dacd794b2138a209a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current number of free pages. <br /></td></tr>
 <tr class="separator:a060e511eec3c9b4dacd794b2138a209a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
 <tr class="memitem:a432a7b12d9c5fdc7dc3aa1887d57450f"><td class="memItemLeft" align="right" valign="top"><a id="a432a7b12d9c5fdc7dc3aa1887d57450f"></a>
-static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_REGIONS_COUNT</b> = 8</td></tr>
+static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#a432a7b12d9c5fdc7dc3aa1887d57450f">MAX_REGIONS_COUNT</a> = 8</td></tr>
+<tr class="memdesc:a432a7b12d9c5fdc7dc3aa1887d57450f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximal supported number of memory regions. <br /></td></tr>
 <tr class="separator:a432a7b12d9c5fdc7dc3aa1887d57450f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8706f308f34367876cb6f47abd9732da"><td class="memItemLeft" align="right" valign="top"><a id="a8706f308f34367876cb6f47abd9732da"></a>
-static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_GROUP_IDX</b> = 20</td></tr>
+static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory_1_1_page_allocator.html#a8706f308f34367876cb6f47abd9732da">MAX_GROUP_IDX</a> = 20</td></tr>
+<tr class="memdesc:a8706f308f34367876cb6f47abd9732da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximal index of the group in the free array. <br /></td></tr>
 <tr class="separator:a8706f308f34367876cb6f47abd9732da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents an allocator of physical pages. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aa6a585dc9821092301986018a0176e72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6a585dc9821092301986018a0176e72">&#9670;&nbsp;</a></span>addGroup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Memory::PageAllocator::addGroup </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_memory_1_1_page.html">Page</a> *&#160;</td>
+          <td class="paramname"><em>group</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds given group to the array of free groups. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">group</td><td>Group to be added. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a56e4577c63fd73a136791c3818ea8dcb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a56e4577c63fd73a136791c3818ea8dcb">&#9670;&nbsp;</a></span>allocate()</h2>
 
@@ -233,6 +279,7 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_G
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>A set of allocated pages. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>All allocated pages must be from the same region. </dd></dl>
 
 </div>
@@ -265,6 +312,40 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_G
 
 </div>
 </div>
+<a id="adde73d05393cdeb32e1420b3491f7432"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adde73d05393cdeb32e1420b3491f7432">&#9670;&nbsp;</a></span>clearGroup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Memory::PageAllocator::clearGroup </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_memory_1_1_page.html">Page</a> *&#160;</td>
+          <td class="paramname"><em>group</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Clears the given group. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">group</td><td>Group to be cleared. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a41fa8e38767cca6be5b35dadb9f2dabc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a41fa8e38767cca6be5b35dadb9f2dabc">&#9670;&nbsp;</a></span>countPages()</h2>
 
@@ -290,6 +371,139 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_G
 
 <p>Returns the total number of pages from all known regions. </p>
 <dl class="section return"><dt>Returns</dt><dd>Number of all pages from all known regions. </dd></dl>
+
+</div>
+</div>
+<a id="a5803183d5e117191aa3b483703accc76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5803183d5e117191aa3b483703accc76">&#9670;&nbsp;</a></span>getPage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_memory_1_1_page.html">Page</a> * Memory::PageAllocator::getPage </td>
+          <td>(</td>
+          <td class="paramtype">std::uintptr_t&#160;</td>
+          <td class="paramname"><em>addr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the <a class="el" href="class_memory_1_1_page.html" title="Represents a physical memory page. ">Page</a>, which contains the given address. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">addr</td><td>Address for which <a class="el" href="class_memory_1_1_page.html" title="Represents a physical memory page. ">Page</a> should be found. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to <a class="el" href="class_memory_1_1_page.html" title="Represents a physical memory page. ">Page</a> containing given address if found, nullptr otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="a8f1957961cfd0e3af7e11f1d633e4833"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f1957961cfd0e3af7e11f1d633e4833">&#9670;&nbsp;</a></span>getRegion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_memory_1_1_region_info.html">RegionInfo</a> * Memory::PageAllocator::getRegion </td>
+          <td>(</td>
+          <td class="paramtype">std::uintptr_t&#160;</td>
+          <td class="paramname"><em>addr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the <a class="el" href="struct_memory_1_1_region_info.html" title="Represents the meta data of the physical memory region. ">RegionInfo</a>, which contains the given address. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">addr</td><td>Address for which <a class="el" href="struct_memory_1_1_region_info.html" title="Represents the meta data of the physical memory region. ">RegionInfo</a> should be found. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to <a class="el" href="struct_memory_1_1_region_info.html" title="Represents the meta data of the physical memory region. ">RegionInfo</a> containing given address if found, nullptr otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="a06f04a02a1f2c2ff6e76da8f55c40c6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06f04a02a1f2c2ff6e76da8f55c40c6d">&#9670;&nbsp;</a></span>getStats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_memory_1_1_page_allocator_1_1_stats.html">PageAllocator::Stats</a> Memory::PageAllocator::getStats </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the current statistics of <a class="el" href="class_memory_1_1_page_allocator.html" title="Represents an allocator of physical pages. ">PageAllocator</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="class_memory_1_1_page_allocator.html" title="Represents an allocator of physical pages. ">PageAllocator</a> statistics. </dd></dl>
+
+</div>
+</div>
+<a id="aa1106b317bbc1528532a200443d69ddd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1106b317bbc1528532a200443d69ddd">&#9670;&nbsp;</a></span>groupIdx()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t Memory::PageAllocator::groupIdx </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>pageCount</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calculates index in the groups array, for which group with the given page count should be stored. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pageCount</td><td>Number of pages, for which index should be calculated. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Index in the groups array. </dd></dl>
 
 </div>
 </div>
@@ -331,6 +545,51 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_G
 
 </div>
 </div>
+<a id="afa93ed9d06475ccfbebb65f82c8e9338"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa93ed9d06475ccfbebb65f82c8e9338">&#9670;&nbsp;</a></span>initGroup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Memory::PageAllocator::initGroup </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_memory_1_1_page.html">Page</a> *&#160;</td>
+          <td class="paramname"><em>group</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>groupSize</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Intilizes given group. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">group</td><td>Group to be initialized. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">groupSize</td><td>Size of the initialized group. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ad4c5c70282c9e06e92bbe69b0fe891a5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad4c5c70282c9e06e92bbe69b0fe891a5">&#9670;&nbsp;</a></span>isValidPage()</h2>
 
@@ -366,6 +625,52 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_G
 
 </div>
 </div>
+<a id="a0b4dd5d13fc692301044c54d5058aa40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b4dd5d13fc692301044c54d5058aa40">&#9670;&nbsp;</a></span>joinGroup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_memory_1_1_page.html">Page</a> * Memory::PageAllocator::joinGroup </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_memory_1_1_page.html">Page</a> *&#160;</td>
+          <td class="paramname"><em>firstGroup</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_memory_1_1_page.html">Page</a> *&#160;</td>
+          <td class="paramname"><em>secondGroup</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Joins two given groups into one. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">firstGroup</td><td>First group to be joined. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">secondGroup</td><td>Second group to be joined. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Group that is a sum of the two given groups. </dd></dl>
+
+</div>
+</div>
 <a id="a121e97cecfc2f5b26943c45329dd55b7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a121e97cecfc2f5b26943c45329dd55b7">&#9670;&nbsp;</a></span>release()</h2>
 
@@ -386,6 +691,40 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_G
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">pages</td><td>List of pages to be released. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab06c9e3ed413ac62a01566e79ac76b30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab06c9e3ed413ac62a01566e79ac76b30">&#9670;&nbsp;</a></span>removeGroup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Memory::PageAllocator::removeGroup </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_memory_1_1_page.html">Page</a> *&#160;</td>
+          <td class="paramname"><em>group</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Removes given group from the array of free groups. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">group</td><td>Group to be removed. </td></tr>
   </table>
   </dd>
 </dl>
@@ -417,6 +756,53 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_G
 
 <p>Reserves the necessary number of pages to store the page descriptors. </p>
 <dl class="section return"><dt>Returns</dt><dd>Number of pages, that are used to store the page descriptors. </dd></dl>
+
+</div>
+</div>
+<a id="aaf9b96f90100d3db243a9880fbaebf14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf9b96f90100d3db243a9880fbaebf14">&#9670;&nbsp;</a></span>splitGroup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::tuple&lt; <a class="el" href="class_memory_1_1_page.html">Page</a> *, <a class="el" href="class_memory_1_1_page.html">Page</a> * &gt; Memory::PageAllocator::splitGroup </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_memory_1_1_page.html">Page</a> *&#160;</td>
+          <td class="paramname"><em>group</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Splits given group into one of given size and second with the remaining size. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">group</td><td>Group to be splitted. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>Target size of the first group. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Tuple with group of demanded size and with the group of the remaining size. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>If the given group has already the correct size, then second pointer in the tuple is nullptr. </dd></dl>
 
 </div>
 </div>

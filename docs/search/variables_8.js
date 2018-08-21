@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['size',['size',['../struct_memory_1_1_region.html#a320e9366b63d20367320014db002432c',1,'Memory::Region::size()'],['../struct_memory_1_1_region_info.html#a71532d705cbb2ef765fd5862506f7ef6',1,'Memory::RegionInfo::size()']]],
-  ['start',['start',['../struct_memory_1_1_region_info.html#a82d63ca46c13446b9aff26b9d89f697a',1,'Memory::RegionInfo']]]
+  ['pagecount',['pageCount',['../struct_memory_1_1_region_info.html#a73b4c6660ec47f84600d6c672864a717',1,'Memory::RegionInfo']]],
+  ['pagescount',['pagesCount',['../struct_memory_1_1_page_allocator_1_1_stats.html#ad6c2ddda7cc8b9eba0cf84ee3c109759',1,'Memory::PageAllocator::Stats']]],
+  ['pagesize',['pageSize',['../struct_memory_1_1_page_allocator_1_1_stats.html#ae0a425e4b32eb80780a821b28196d72b',1,'Memory::PageAllocator::Stats']]]
 ];
