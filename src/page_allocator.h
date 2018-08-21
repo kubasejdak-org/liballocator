@@ -73,6 +73,7 @@ public:
 
     /// @brief Allocates the given number of physical pages.
     /// @param[in] count            Number of pages to be allocated.
+    /// @return A set of allocated pages.
     /// @note All allocated pages must be from the same region.
     [[nodiscard]] Page* allocate(std::size_t count);
 
