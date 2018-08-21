@@ -97,33 +97,71 @@ private:
     /// @param[in] page             Page to be checked.
     /// @return True if page is valid, false otherwise.
     bool isValidPage(Page* page);
+
+    /// @brief Returns the RegionInfo, which contains the given address.
+    /// @param[in] addr             Address for which RegionInfo should be found.
+    /// @return Pointer to RegionInfo containing given address if found, nullptr otherwise.
     RegionInfo* getRegion(std::uintptr_t addr);
+
+    /// @brief Returns the Page, which contains the given address.
+    /// @param[in] addr             Address for which Page should be found.
+    /// @return Pointer to Page containing given address if found, nullptr otherwise.
     Page* getPage(std::uintptr_t addr);
+
+    /// @brief Returns the current statistics of PageAllocator.
+    /// @return PageAllocator statistics.
     Stats getStats();
 
+    /// @brief Calculates index in the groups array, for which group with the given page count should be stored.
+    /// @param[in] pageCount        Number of pages, for which index should be calculated.
+    /// @return Index in the groups array.
     std::size_t groupIdx(std::size_t pageCount);
+
+    /// @brief Intilizes given group.
+    /// @param[in,out] group        Group to be initialized.
+    /// @param[in] groupSize        Size of the initialized group.
     void initGroup(Page* group, std::size_t groupSize);
+
+    /// @brief Clears the given group.
+    /// @param[in,out] group        Group to be cleared.
     void clearGroup(Page* group);
+
+    /// @brief Adds given group to the array of free groups.
+    /// @param[in,out] group        Group to be added.
     void addGroup(Page* group);
+
+    /// @brief Removes given group from the array of free groups.
+    /// @param[in,out] group        Group to be removed.
     void removeGroup(Page* group);
+
+    /// @brief Splits given group into one of given size and second with the remaining size.
+    /// @param[in] group            Group to be splitted.
+    /// @param[in] size             Target size of the first group.
+    /// @returns Tuple with group of demanded size and with the group of the remaining size.
+    /// @note If the given group has already the correct size, then second pointer in the tuple is nullptr.
     std::tuple<Page*, Page*> splitGroup(Page* group, std::size_t size);
+
+    /// @brief Joins two given groups into one.
+    /// @param[in] firstGroup       First group to be joined.
+    /// @param[in] secondGroup      Second group to be joined.
+    /// @return Group that is a sum of the two given groups.
     Page* joinGroup(Page* firstGroup, Page* secondGroup);
 
 private:
-    static constexpr int MAX_REGIONS_COUNT = 8;
-    static constexpr int MAX_GROUP_IDX = 20;
+    static constexpr int MAX_REGIONS_COUNT = 8;                 ///< Maximal supported number of memory regions.
+    static constexpr int MAX_GROUP_IDX = 20;                    ///< Maximal index of the group in the free array.
 
 private:
-    std::array<RegionInfo, MAX_REGIONS_COUNT> m_regionsInfo;
-    std::size_t m_validRegionsCount;
-    std::size_t m_pageSize;
-    std::size_t m_descRegionIdx;
-    std::size_t m_descPagesCount;
-    Page* m_pagesHead;
-    Page* m_pagesTail;
-    std::array<Page*, MAX_GROUP_IDX> m_freeGroupLists;
-    std::size_t m_pagesCount;
-    std::size_t m_freePagesCount;
+    std::array<RegionInfo, MAX_REGIONS_COUNT> m_regionsInfo;    ///< Array describing all known regions.
+    std::size_t m_validRegionsCount;                            ///< Number of used regions.
+    std::size_t m_pageSize;                                     ///< Size of the page used on this platform.
+    std::size_t m_descRegionIdx;                                ///< Index of the region used to store page descriptors.
+    std::size_t m_descPagesCount;                               ///< Number of pages used to store page descriptors.
+    Page* m_pagesHead;                                          ///< Head of the page descriptors list.
+    Page* m_pagesTail;                                          ///< Tail of the page descriptors list.
+    std::array<Page*, MAX_GROUP_IDX> m_freeGroupLists;          ///< Array of the groups with free pages.
+    std::size_t m_pagesCount;                                   ///< Total number of pages known to the PageAllocator.
+    std::size_t m_freePagesCount;                               ///< Current number of free pages.
 };
 
 } // namespace Memory
