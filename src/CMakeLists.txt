@@ -16,5 +16,5 @@ target_include_directories(allocator PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(allocator PUBLIC liballocator_include)
 
-utils_setOutputPath(allocator ../bin)
+utils_setOutputPath(allocator ${PROJECT_SOURCE_DIR}/bin)
 utils_showTargetConfig(allocator)

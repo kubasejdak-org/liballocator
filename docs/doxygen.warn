@@ -1,0 +1,3 @@
+/Users/kuba/projects/liballocator/src/page.h:115: warning: parameters of member Memory::Page::Flags::@1 are not (all) documented
+/Users/kuba/projects/liballocator/README.md:2: warning: Unexpected html tag <img> found within <a href=...> context
+/Users/kuba/projects/liballocator/README.md:3: warning: Unexpected html tag <img> found within <a href=...> context
