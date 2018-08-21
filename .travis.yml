@@ -47,6 +47,7 @@ script:
   - cd build
   - cmake -DLIBALLOCATOR_TESTS=ON -DLIBALLOCATOR_DOCS=ON ..
   - make
+  - make doxygen
 
   # Run tests.
   - ctest -R UnitTests
@@ -55,3 +56,6 @@ script:
 after_script:
   # Check code format using clang-format.
   - check-format.sh .
+
+  # Check doxygen documentation.
+  - check-doxygen.sh docs/doxygen.warn build/docs/doxygen.warn
