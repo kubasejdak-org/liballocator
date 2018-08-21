@@ -47,20 +47,47 @@ class PageAllocator;
 /// @brief Represents the zone allocator.
 class ZoneAllocator {
 public:
+    /// @brief Default constructor.
     ZoneAllocator();
 
+    /// @brief Initializes the ZoneAllocator with the given PageAllocator and page size.
+    /// @param[in] pageAllocator        PageAllocator to be used in ZoneAllocator.
+    /// @param[in] pageSize             Size of the physical page.
+    /// @return True on success, false otherwise.
     [[nodiscard]] bool init(PageAllocator* pageAllocator, std::size_t pageSize);
+
+    /// @brief Clears the ZoneAllocator internal state.
     void clear();
 
+    /// @brief Allocates the memory chunk of at least given size.
+    /// @param[in] size                 Size of the demanded memory chunk.
+    /// @return Pointer to the allocated memory chunk on success, nullptr otherwise.
     [[nodiscard]] void* allocate(std::size_t size);
+
+    /// @brief Releases the given memory chunk.
+    /// @param[in] ptr                  Pointer to the memory chunk to be released.
+    /// @note This function accepts nullptr input.
     void release(void* ptr);
 
 private:
+    /// @brief Allocates memory chunk from the given zone.
+    /// @param[in] zone                 Zone from which chunk should be allocated.
+    /// @return Allocated memory chunk.
+    /// @note Template parameter is used here to cast the returned value the given type.
     template <typename T>
     T* allocateChunk(Zone* zone);
+
+    
+    /// @brief Deallocates memory chunk to the given zone.
+    /// @param[in] chunk                Chunk to be deallocated.
+    /// @return True on success, false otherwise.
+    /// @note Template parameter is used here to accept any input without casting.
     template <typename T>
     bool deallocateChunk(T* chunk);
 
+    /// @brief Returns size rounded up to the closest chunk size.
+    /// @param[in] size                 Size to be rounded up.
+    /// @return Closest chunk size.
     std::size_t chunkSize(std::size_t size);
     std::size_t zoneIdx(std::size_t chunkSize);
     Zone* getFreeZone(std::size_t idx);
