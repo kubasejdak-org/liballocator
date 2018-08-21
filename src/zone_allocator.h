@@ -89,34 +89,68 @@ private:
     /// @param[in] size                 Size to be rounded up.
     /// @return Closest chunk size.
     std::size_t chunkSize(std::size_t size);
+
+    /// @brief Returns an index of the zone with the given chunk size.
+    /// @param[in] chunkSize            Chunk size to be used in calculations.
+    /// @return Index of the zone in the array of all known zones.
     std::size_t zoneIdx(std::size_t chunkSize);
+
+    /// @brief Returns the Zone from the given array index, that has at least one free chunk.
+    /// @param[in] idx                  Index from which Zone should be taken.
+    /// @return Pointer to the Zone on success, nullptr otherwise.
     Zone* getFreeZone(std::size_t idx);
+
+    /// @brief Checks if there is the minimal required number of free chunks in the zone at given array index.
+    /// @param[in] idx                  Index to be checked.
+    /// @return True if new Zone with the given index should be allocated, false otherwise.
     bool shouldAllocateZone(std::size_t idx);
+
+    /// @brief Allocates new Zone with the chunks of given size.
+    /// @param[in] chunkSize            Size of the chunks in the allocated zone.
+    /// @return Pointer to the allocated Zone on success, nullptr otherwise.
     Zone* allocateZone(std::size_t chunkSize);
+
+    /// @brief Initializes given zone.
+    /// @param[in,out] zone             Zone to be initialized.
+    /// @param[in] chunkSize            Size of the chunks in this zone.
+    /// @return True on success, false otherwise.
     bool initZone(Zone* zone, std::size_t chunkSize);
+
+    /// @brief Clears the given zone.
+    /// @param[in,out] zone             Zone to be cleared.
     void clearZone(Zone* zone);
+
+    /// @brief Adds the given zone to the array of known zones.
+    /// @param[in,out] zone             Zone to be added.
     void addZone(Zone* zone);
+
+    /// @brief Removes the given zone from the array of known zones.
+    /// @param[in,out] zone             Zone to be removed.
     void removeZone(Zone* zone);
+
+    /// @brief Finds the Zone that given chunk belong to.
+    /// @param[in,out] chunk            Chunk for which zone should be found.
+    /// @return Zone that given chunk belong to if found, nullptr otherwise.
     Zone* findZone(Chunk* chunk);
 
 private:
-    static constexpr std::size_t MINIMAL_ALLOC_SIZE = 16;
-    static constexpr std::size_t MAX_ZONE_IDX = 8;
+    static constexpr std::size_t MINIMAL_ALLOC_SIZE = 16;   ///< Miniamal size of chunk, that can be allocated.
+    static constexpr std::size_t MAX_ZONE_IDX = 8;          ///< Maximal supported index of the zone.
 
 private:
     /// @class ZoneInfo
     /// @brief Represents the meta-data of the zone.
     struct ZoneInfo {
-        Zone* head = nullptr;
-        std::size_t freeChunksCount = 0;
+        Zone* head = nullptr;                               ///< Head of the zones with the given index.
+        std::size_t freeChunksCount = 0;                    ///< Total number of free chunks in zones with the given index.
     };
 
-    PageAllocator* m_pageAllocator;
-    std::size_t m_pageSize;
-    std::size_t m_zoneDescChunkSize;
-    std::size_t m_zoneDescIdx;
-    Zone m_initialZone;
-    std::array<ZoneInfo, MAX_ZONE_IDX> m_zones;
+    PageAllocator* m_pageAllocator;                         ///< PageAllocator to be used as source of new pages.
+    std::size_t m_pageSize;                                 ///< Size of the page on this platform.
+    std::size_t m_zoneDescChunkSize;                        ///< Size of the chunks that are used to store zone descriptors.
+    std::size_t m_zoneDescIdx;                              ///< Index of the zones, from which zone descriptors are allocated.
+    Zone m_initialZone;                                     ///< Initial static zone.
+    std::array<ZoneInfo, MAX_ZONE_IDX> m_zones;             ///< Array of all zones known in the ZoneAllocator.
 };
 
 } // namespace Memory
