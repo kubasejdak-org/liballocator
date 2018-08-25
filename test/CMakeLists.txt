@@ -1,9 +1,13 @@
 add_executable(liballocator_tests
     main.cpp
+    test_allocator.cpp
     test_list_node.cpp
-    test_page_allocator.cpp
     test_page.cpp
+    test_page_allocator.cpp
     test_region_info.cpp
+    test_utils.cpp
+    test_zone.cpp
+    test_zone_allocator.cpp
 )
 
 target_compile_features(liballocator_tests PRIVATE cxx_std_17)
