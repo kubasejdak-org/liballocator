@@ -5,7 +5,9 @@ utils_getVersion(VERSION)
 project(liballocator VERSION ${VERSION} DESCRIPTION "A C++ memory allocator for embedded systems" LANGUAGES CXX)
 
 # Project options.
+option(LIBALLOCATOR_GCOV "Generate gcov report" OFF)
 option(LIBALLOCATOR_TESTS "Build unit tests" OFF)
+option(LIBALLOCATOR_DOCS "Generate doxygen documentation" OFF)
 
 # Common compilation flags.
 if(NOT CMAKE_BUILD_TYPE)
@@ -14,6 +16,11 @@ endif()
 
 add_compile_options(-Wall -Wextra -Werror)
 utils_showToolchainConfig()
+
+if(LIBALLOCATOR_GCOV)
+    utils_log("Building liballocator with gcov")
+    add_compile_options(--coverage)
+endif()
 
 add_subdirectory(include)
 add_subdirectory(lib)
