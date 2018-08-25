@@ -32,7 +32,7 @@
 
 #include <catch2/catch.hpp>
 
-#include "utils.h"
+#include "test_utils.h"
 
 // Make access to private members for testing.
 // clang-format off
