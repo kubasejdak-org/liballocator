@@ -4,7 +4,7 @@
 
 # liballocator
 
-The purpose of this project is to provide a convenient and fairly robust memory allocator for embedded environments in C++. It is based on FreeBSD's UMA (Universal Memory Allocator) called the zone allocator and some concepts taken from SLAB allocator.
+The purpose of this project is to provide a convenient and fairly robust memory allocator for the embedded environments in C++. It is based on FreeBSD's UMA (Universal Memory Allocator) called the zone allocator and some concepts taken from SLAB allocator.
 
 ## Requirements
 
