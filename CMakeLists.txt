@@ -5,7 +5,7 @@ utils_getVersion(VERSION)
 project(liballocator VERSION ${VERSION} DESCRIPTION "A C++ memory allocator for embedded systems" LANGUAGES CXX)
 
 # Project options.
-option(LIBALLOCATOR_GCOV "Generate gcov report" OFF)
+option(LIBALLOCATOR_COVERAGE "Generate coverage report" OFF)
 option(LIBALLOCATOR_TESTS "Build unit tests" OFF)
 option(LIBALLOCATOR_DOCS "Generate doxygen documentation" OFF)
 
@@ -17,9 +17,10 @@ endif()
 add_compile_options(-Wall -Wextra -Werror)
 utils_showToolchainConfig()
 
-if(LIBALLOCATOR_GCOV)
-    utils_log("Building liballocator with gcov")
-    add_compile_options(--coverage)
+if(LIBALLOCATOR_COVERAGE)
+    utils_log("Building liballocator with coverage report")
+    set(COVERAGE_IGNORE '${PROJECT_SOURCE_DIR}/test/*' '${PROJECT_SOURCE_DIR}/lib/*')
+    coverage_addTarget(${COVERAGE_IGNORE})
 endif()
 
 add_subdirectory(include)
