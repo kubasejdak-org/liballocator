@@ -63,7 +63,7 @@ script:
     cd build
     if [[ ${CODECOV} == true ]]; then
       make coverage
-      bash <(curl -s https://codecov.io/bash)
+      bash <(curl -s https://codecov.io/bash) -X gcov
     fi
     cd -
 
