@@ -31,7 +31,8 @@ install:
   - install-cmake.sh ${CMAKE_VER} ${TRAVIS_OS_NAME}
   - install-clang.sh 6.0.1 ${TRAVIS_OS_NAME} false
   - install-doxygen.sh ${TRAVIS_OS_NAME}
-  - if [[ ${CODECOV} == true ]]; then
+  - |
+    if [[ ${CODECOV} == true ]]; then
       install-lcov.sh ${TRAVIS_OS_NAME}
     fi
 
