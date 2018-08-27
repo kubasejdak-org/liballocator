@@ -22,7 +22,7 @@ addons:
 matrix:
   include:
     - os: linux
-      env: COMPILER=gcc COMPILER_VER=8 CMAKE_VER=3.12.0 CODECOV=false COVERITY=false
+      env: COMPILER=gcc COMPILER_VER=8 CMAKE_VER=3.12.0 CODECOV=false COVERITY=true
     - os: linux
       env: COMPILER=clang COMPILER_VER=6.0.1 CMAKE_VER=3.12.0 CODECOV=false COVERITY=false
     #- os: osx
@@ -30,7 +30,7 @@ matrix:
     #  env: COMPILER=gcc COMPILER_VER=8 CMAKE_VER=3.12.0 CODECOV=false COVERITY=false
     - os: osx
       osx_image: xcode10
-      env: COMPILER=clang COMPILER_VER=6.0.1 CMAKE_VER=3.12.0 CODECOV=true COVERITY=true
+      env: COMPILER=clang COMPILER_VER=6.0.1 CMAKE_VER=3.12.0 CODECOV=true COVERITY=false
 
 before_install:
   # Add CI scripts to PATH.
