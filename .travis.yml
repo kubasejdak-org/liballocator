@@ -15,29 +15,32 @@ addons:
       name: "kubasejdak/liballocator"
       description: "A C++ memory allocator for embedded systems"
     notification_email: kuba.sejdak+github@gmail.com
-    build_command_prepend: ""
-    build_command: ""
+    build_command_prepend: "mkdir -p build; cd $_; cmake .."
+    build_command: "make"
     branch_pattern: master
 
 matrix:
   include:
     - os: linux
-      env: COMPILER=gcc COMPILER_VER=8 CMAKE_VER=3.12.0 CODECOV=false
+      env: COMPILER=gcc COMPILER_VER=8 CMAKE_VER=3.12.0 CODECOV=false COVERITY=false
     - os: linux
-      env: COMPILER=clang COMPILER_VER=6.0.1 CMAKE_VER=3.12.0 CODECOV=false
+      env: COMPILER=clang COMPILER_VER=6.0.1 CMAKE_VER=3.12.0 CODECOV=false COVERITY=false
     #- os: osx
     #  osx_image: xcode10
-    #  env: COMPILER=gcc COMPILER_VER=8 CMAKE_VER=3.12.0 CODECOV=false
+    #  env: COMPILER=gcc COMPILER_VER=8 CMAKE_VER=3.12.0 CODECOV=false COVERITY=false
     - os: osx
       osx_image: xcode10
-      env: COMPILER=clang COMPILER_VER=6.0.1 CMAKE_VER=3.12.0 CODECOV=true
+      env: COMPILER=clang COMPILER_VER=6.0.1 CMAKE_VER=3.12.0 CODECOV=true COVERITY=true
 
 before_install:
   # Add CI scripts to PATH.
   - export PATH=${TRAVIS_BUILD_DIR}/tools/ci:${PATH}
   
   # Configure Coverity scan.
-  - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+  - |
+    if [[ ${COVERITY} == true ]]; then
+      echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+    fi
 
   # Create path for dependencies.
   - mkdir -p deps
