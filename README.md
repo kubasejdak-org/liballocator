@@ -2,6 +2,10 @@
 [![Build Status](https://travis-ci.org/kubasejdak/liballocator.svg?branch=master)](https://travis-ci.org/kubasejdak/liballocator)
 [![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
 [![codecov.io](http://codecov.io/github/kubasejdak/liballocator/coverage.svg?branch=master)](http://codecov.io/github/kubasejdak/liballocator?branch=master)
+<a href="https://scan.coverity.com/projects/kubasejdak-liballocator">
+  <img alt="Coverity Scan Build Status"
+       src="https://img.shields.io/coverity/scan/16589.svg"/>
+</a>
 
 # liballocator
 
