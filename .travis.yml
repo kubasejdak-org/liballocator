@@ -19,7 +19,7 @@ addons:
     notification_email: kuba.sejdak@gmail.com
     build_command_prepend: "mkdir -p build && cd $_ && cmake .."
     build_command: "make"
-    branch_pattern: coverity_scan
+    branch_pattern: master
 
 matrix:
   include:
