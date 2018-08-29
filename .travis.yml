@@ -67,6 +67,8 @@ before_script:
   - echo "PWD = $PWD"
   - ls
   - cd ${TRAVIS_BUILD_DIR}
+  - echo "TRAVIS_BUILD_DIR = $TRAVIS_BUILD_DIR"
+  - ls
 
 script:
   # Build.
