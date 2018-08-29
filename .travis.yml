@@ -15,7 +15,7 @@ addons:
       name: "kubasejdak/liballocator"
       description: "A C++ memory allocator for embedded systems"
     notification_email: kuba.sejdak+github@gmail.com
-    build_command_prepend: "echo AAAAAAAAAAAA && echo $PWD && echo ======= && ls && echo BBBBBBBBBBBB && mkdir -p build; cd $_; cmake .."
+    build_command_prepend: "echo AAAAAAAAAAAA && echo $PWD && echo ======= && ls && echo BBBBBBBBBBBB && cmake .."
     build_command: "make"
     branch_pattern: master
 
@@ -37,10 +37,10 @@ before_install:
   - export PATH=${TRAVIS_BUILD_DIR}/tools/ci:${PATH}
   
   # Configure Coverity scan.
-  - |
-    if [[ ${COVERITY} == true ]]; then
-      echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
-    fi
+  #- |
+  #  if [[ ${COVERITY} == true ]]; then
+  #    echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+  #  fi
 
   # Create path for dependencies.
   - mkdir -p deps
@@ -69,6 +69,14 @@ before_script:
 script:
   # Build.
   - mkdir -p build && cd $_
+
+  # Configure Coverity scan.
+  - |
+    if [[ ${COVERITY} == true ]]; then
+      echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+      exit 0
+    fi
+
   - cmake -DLIBALLOCATOR_TESTS=ON -DLIBALLOCATOR_DOCS=ON -DLIBALLOCATOR_COVERAGE=${CODECOV} ..
   - make
   - make doxygen
