@@ -64,6 +64,8 @@ before_script:
   - cmake --version
   - clang-format --version
 
+  - ecbo "PWD = $PWD"
+  - ls
   - cd ${TRAVIS_BUILD_DIR}
 
 script:
