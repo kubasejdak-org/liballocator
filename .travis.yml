@@ -15,7 +15,7 @@ addons:
       name: "kubasejdak/liballocator"
       description: "A C++ memory allocator for embedded systems"
     notification_email: kuba.sejdak+github@gmail.com
-    build_command_prepend: "echo >>>>>>>>>>> && echo $PWD && echo ======= && ls && echo <<<<<<<<<<<<<<< && mkdir -p build; cd $_; cmake .."
+    build_command_prepend: "echo AAAAAAAAAAAA && echo $PWD && echo ======= && ls && echo BBBBBBBBBBBB && mkdir -p build; cd $_; cmake .."
     build_command: "make"
     branch_pattern: master
 
