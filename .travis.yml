@@ -15,7 +15,7 @@ addons:
       name: "kubasejdak/liballocator"
       description: "A C++ memory allocator for embedded systems"
     notification_email: kuba.sejdak+github@gmail.com
-    build_command_prepend: "echo $PWD && echo ======= && ls && cmake .."
+    build_command_prepend: "cov-configure --comptype gcc --compiler gcc-8 && cmake .."
     build_command: "make"
     branch_pattern: master
 
@@ -62,25 +62,24 @@ before_script:
   # Check versions of used tools.
   - cmake --version
   - clang-format --version
+  - doxygen --version
 
-  - echo "PWD = $PWD"
-  - ls
   - cd ${TRAVIS_BUILD_DIR}
-  - ls
   - mkdir build && cd $_
 
 script:
-  # Build.
-  - echo "PWD2 = $PWD2"
-  - ls
-
   # Configure Coverity scan.
   - |
     if [[ ${COVERITY} == true ]]; then
-      echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+      if [ -f /home/travis/build/kubasejdak/liballocator/build/cov-int/build-log.txt ]; then
+        cat /home/travis/build/kubasejdak/liballocator/build/cov-int/build-log.txt
+      fi
+      
+      # echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
       exit 0
     fi
 
+  # Build.
   - cmake -DLIBALLOCATOR_TESTS=ON -DLIBALLOCATOR_DOCS=ON -DLIBALLOCATOR_COVERAGE=${CODECOV} ..
   - make
   - make doxygen
