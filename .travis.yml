@@ -8,6 +8,7 @@ git:
 env:
   global:
    - secure: "QRVIxTzoMF2YEMrbhOVKoLhNlr8SXYNco8vX+tnbgInkcjfPNZNrbmeOH31WwX0gLs7QcjIKF2yp5KE39HeZ8j0YroAVDd8f59gyIWNC82IZUjEOL2UoqtwHN3EYmJvm9VLIF2HwEy10Adt0UITOxTOsR6URa771u1TH8a8c+E446TLypOyRJ2PdqcTjBKTVqjDLBajsTAg5mHiN33HsMDsj6R2++X5S8FrA49C4wA7+OWKbZeNHah8PKRxldwOkIpXMAXmf8oVDENMZvpKRFyx7Jk7thEIIDqOfLldawSwY3PxTnj1V8ynqhFCEkDrIsJzMCeUqMq4xZzBO2qNfhN5glRuKFvXy52z9S+IjU9W8hszeujH4auzj/6AwBk55kV0Va2M3bIah8v4vC2Nv5HdvkOz3woXJUNrcYwYcYonOYJDiF2Ah9NyojHyOinR5oSVqxUBM10nOfuIdSONjsWZt/6HzYtKHfkMQCjkEy4YAEriGgvas2mTdbX2yagD+cc2dRZd9Oe8hSKgETpPYX2K/HELOGEV4/D1iAICsVMWiG8yrx4NusE02KvaqHt6b0HESST5gAwqT7WVgXUP5/3rc4RTE7yESvvZM9jSs3vpDu67H4jO7u2eFOiMKZVevv5xekCQAjIokeOIn+kBO3vn+zGr8RCFlKdy9dSmkqlo="
+   - coverity_scan_run_condition='"${COVERITY}" == true'
 
 addons:
   coverity_scan:
@@ -17,7 +18,6 @@ addons:
     notification_email: kuba.sejdak+github@gmail.com
     build_command_prepend: "cov-configure --comptype gcc --compiler gcc-8 --template && cmake .."
     build_command: "make"
-    coverity_scan_run_condition='"${COVERITY}" == true'
     branch_pattern: master
 
 matrix:
