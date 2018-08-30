@@ -67,12 +67,11 @@ before_script:
   - ls
   - cd ${TRAVIS_BUILD_DIR}
   - ls
+  - mkdir build && cd $_
 
 script:
   # Build.
   - echo "PWD2 = $PWD2"
-  - ls
-  - mkdir -p build
   - ls
 
   # Configure Coverity scan.
@@ -82,7 +81,6 @@ script:
       exit 0
     fi
 
-  - cd build
   - cmake -DLIBALLOCATOR_TESTS=ON -DLIBALLOCATOR_DOCS=ON -DLIBALLOCATOR_COVERAGE=${CODECOV} ..
   - make
   - make doxygen
