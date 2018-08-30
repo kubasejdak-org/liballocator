@@ -17,20 +17,21 @@ addons:
     notification_email: kuba.sejdak+github@gmail.com
     build_command_prepend: "cov-configure --comptype gcc --compiler gcc-8 --template && cmake .."
     build_command: "make"
+    coverity_scan_run_condition='"${COVERITY}" == true'
     branch_pattern: master
 
 matrix:
   include:
     - os: linux
-      env: COMPILER=gcc COMPILER_VER=8 CMAKE_VER=3.12.0 CODECOV=false COVERITY_SCAN_RUN_CONDITION=true
+      env: COMPILER=gcc COMPILER_VER=8 CMAKE_VER=3.12.0 CODECOV=false COVERITY=true
     - os: linux
-      env: COMPILER=clang COMPILER_VER=6.0.1 CMAKE_VER=3.12.0 CODECOV=false COVERITY_SCAN_RUN_CONDITION=false
+      env: COMPILER=clang COMPILER_VER=6.0.1 CMAKE_VER=3.12.0 CODECOV=false COVERITY=false
     #- os: osx
     #  osx_image: xcode10
-    #  env: COMPILER=gcc COMPILER_VER=8 CMAKE_VER=3.12.0 CODECOV=false COVERITY_SCAN_RUN_CONDITION=false
+    #  env: COMPILER=gcc COMPILER_VER=8 CMAKE_VER=3.12.0 CODECOV=false COVERITY=false
     - os: osx
       osx_image: xcode10
-      env: COMPILER=clang COMPILER_VER=6.0.1 CMAKE_VER=3.12.0 CODECOV=true COVERITY_SCAN_RUN_CONDITION=false
+      env: COMPILER=clang COMPILER_VER=6.0.1 CMAKE_VER=3.12.0 CODECOV=true COVERITY=false
 
 before_install:
   - export PATH=${TRAVIS_BUILD_DIR}/tools/ci:${PATH}
@@ -56,10 +57,9 @@ before_script:
 
 script:
   - |
-    if [[ ${COVERITY_SCAN_RUN_CONDITION} == true ]]; then
+    if [[ ${COVERITY} == true ]]; then
       cat /home/travis/build/kubasejdak/liballocator/build/cov-int/build-log.txt
       cat /home/travis/build/kubasejdak/liballocator/build/cov-int/scm_log.txt
-      echo "PWD = $PWD"
       cd ${TRAVIS_BUILD_DIR}/build
       rm -rf *
     fi
