@@ -15,7 +15,7 @@ addons:
       name: "kubasejdak/liballocator"
       description: "A C++ memory allocator for embedded systems"
     notification_email: kuba.sejdak+github@gmail.com
-    build_command_prepend: "echo AAAAAAAAAAAA && echo $PWD && echo ======= && ls && echo BBBBBBBBBBBB && cd build && cmake .."
+    build_command_prepend: "echo $PWD && echo ======= && ls && cd build && cmake .."
     build_command: "make"
     branch_pattern: master
 
@@ -43,8 +43,7 @@ before_install:
   #  fi
 
   # Create path for dependencies.
-  - mkdir -p deps
-  - cd deps
+  - mkdir -p deps && cd $_
 
 install:
   - install-${COMPILER}.sh ${COMPILER_VER} ${TRAVIS_OS_NAME}
@@ -67,12 +66,14 @@ before_script:
   - echo "PWD = $PWD"
   - ls
   - cd ${TRAVIS_BUILD_DIR}
-  - echo "TRAVIS_BUILD_DIR = $TRAVIS_BUILD_DIR"
   - ls
 
 script:
   # Build.
-  - mkdir -p build && cd $_
+  - echo "PWD2 = $PWD2"
+  - ls
+  - mkdir -p build
+  - ls
 
   # Configure Coverity scan.
   - |
@@ -81,6 +82,7 @@ script:
       exit 0
     fi
 
+  - cd build
   - cmake -DLIBALLOCATOR_TESTS=ON -DLIBALLOCATOR_DOCS=ON -DLIBALLOCATOR_COVERAGE=${CODECOV} ..
   - make
   - make doxygen
