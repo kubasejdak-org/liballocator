@@ -15,34 +15,25 @@ addons:
       name: "kubasejdak/liballocator"
       description: "A C++ memory allocator for embedded systems"
     notification_email: kuba.sejdak+github@gmail.com
-    build_command_prepend: "cov-configure --comptype gcc --compiler gcc-8 && cmake .."
+    build_command_prepend: "cov-configure --comptype gcc --compiler gcc-8 --template && cmake .."
     build_command: "make"
     branch_pattern: master
 
 matrix:
   include:
     - os: linux
-      env: COMPILER=gcc COMPILER_VER=8 CMAKE_VER=3.12.0 CODECOV=false COVERITY=true
+      env: COMPILER=gcc COMPILER_VER=8 CMAKE_VER=3.12.0 CODECOV=false COVERITY_SCAN_RUN_CONDITION=true
     - os: linux
-      env: COMPILER=clang COMPILER_VER=6.0.1 CMAKE_VER=3.12.0 CODECOV=false COVERITY=false
+      env: COMPILER=clang COMPILER_VER=6.0.1 CMAKE_VER=3.12.0 CODECOV=false COVERITY_SCAN_RUN_CONDITION=false
     #- os: osx
     #  osx_image: xcode10
-    #  env: COMPILER=gcc COMPILER_VER=8 CMAKE_VER=3.12.0 CODECOV=false COVERITY=false
+    #  env: COMPILER=gcc COMPILER_VER=8 CMAKE_VER=3.12.0 CODECOV=false COVERITY_SCAN_RUN_CONDITION=false
     - os: osx
       osx_image: xcode10
-      env: COMPILER=clang COMPILER_VER=6.0.1 CMAKE_VER=3.12.0 CODECOV=true COVERITY=false
+      env: COMPILER=clang COMPILER_VER=6.0.1 CMAKE_VER=3.12.0 CODECOV=true COVERITY_SCAN_RUN_CONDITION=false
 
 before_install:
-  # Add CI scripts to PATH.
   - export PATH=${TRAVIS_BUILD_DIR}/tools/ci:${PATH}
-  
-  # Configure Coverity scan.
-  #- |
-  #  if [[ ${COVERITY} == true ]]; then
-  #    echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
-  #  fi
-
-  # Create path for dependencies.
   - mkdir -p deps && cd $_
 
 install:
@@ -50,16 +41,12 @@ install:
   - install-cmake.sh ${CMAKE_VER} ${TRAVIS_OS_NAME}
   - install-clang.sh 6.0.1 ${TRAVIS_OS_NAME} false
   - install-doxygen.sh ${TRAVIS_OS_NAME}
-  - |
-    if [[ ${CODECOV} == true ]]; then
-      install-lcov.sh ${TRAVIS_OS_NAME}
-    fi
+  - if [[ ${CODECOV} == true ]]; then install-lcov.sh ${TRAVIS_OS_NAME}; fi
 
 before_script:
   - export-paths.sh
   - source ${HOME}/.bash_profile
 
-  # Check versions of used tools.
   - cmake --version
   - clang-format --version
   - doxygen --version
@@ -68,15 +55,13 @@ before_script:
   - mkdir build && cd $_
 
 script:
-  # Configure Coverity scan.
   - |
-    if [[ ${COVERITY} == true ]]; then
-      if [ -f /home/travis/build/kubasejdak/liballocator/build/cov-int/build-log.txt ]; then
-        cat /home/travis/build/kubasejdak/liballocator/build/cov-int/build-log.txt
-      fi
-      
-      # echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
-      exit 0
+    if [[ ${COVERITY_SCAN_RUN_CONDITION} == true ]]; then
+      cat /home/travis/build/kubasejdak/liballocator/build/cov-int/build-log.txt
+      cat /home/travis/build/kubasejdak/liballocator/build/cov-int/scm_log.txt
+      echo "PWD = $PWD"
+      cd ${TRAVIS_BUILD_DIR}/build
+      rm -rf *
     fi
 
   # Build.
