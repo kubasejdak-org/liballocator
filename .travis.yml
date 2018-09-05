@@ -16,7 +16,7 @@ addons:
       name: "kubasejdak/liballocator"
       description: "A C++ memory allocator for embedded systems"
     notification_email: kuba.sejdak+github@gmail.com
-    build_command_prepend: "cov-configure --comptype g++ --compiler g++-8 --template && cmake .."
+    build_command_prepend: "cov-configure --comptype gcc --compiler /usr/bin/g++-8 --template && cmake .."
     build_command: "make"
     branch_pattern: master
 
@@ -58,7 +58,8 @@ before_script:
 script:
   - |
     if [[ ${COVERITY} == true ]]; then
-      cat /home/travis/build/kubasejdak/liballocator/build/cov-int/build-log.txt
+      #cat /home/travis/build/kubasejdak/liballocator/build/cov-int/build-log.txt
+      echp "============================================================="
       cat /home/travis/build/kubasejdak/liballocator/build/cov-int/scm_log.txt
       cd ${TRAVIS_BUILD_DIR}/build
       rm -rf *
