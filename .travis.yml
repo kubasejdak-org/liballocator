@@ -16,7 +16,7 @@ addons:
       name: "kubasejdak/liballocator"
       description: "A C++ memory allocator for embedded systems"
     notification_email: kuba.sejdak+github@gmail.com
-    build_command_prepend: "sudo rm /usr/bin/cc && sudo ln -s /usr/bin/g++-8 /usr/bin/cc && cov-configure --gcc && cmake -DLIBALLOCATOR_TESTS=ON .."
+    build_command_prepend: "cov-configure --comptype gcc --compiler gcc-8 --template && cmake -DLIBALLOCATOR_TESTS=ON .."
     build_command: "make"
     branch_pattern: master
 
