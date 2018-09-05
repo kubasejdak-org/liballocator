@@ -5,33 +5,18 @@ group: travis_latest
 git:
   depth: false
 
-env:
-  global:
-   - secure: "QRVIxTzoMF2YEMrbhOVKoLhNlr8SXYNco8vX+tnbgInkcjfPNZNrbmeOH31WwX0gLs7QcjIKF2yp5KE39HeZ8j0YroAVDd8f59gyIWNC82IZUjEOL2UoqtwHN3EYmJvm9VLIF2HwEy10Adt0UITOxTOsR6URa771u1TH8a8c+E446TLypOyRJ2PdqcTjBKTVqjDLBajsTAg5mHiN33HsMDsj6R2++X5S8FrA49C4wA7+OWKbZeNHah8PKRxldwOkIpXMAXmf8oVDENMZvpKRFyx7Jk7thEIIDqOfLldawSwY3PxTnj1V8ynqhFCEkDrIsJzMCeUqMq4xZzBO2qNfhN5glRuKFvXy52z9S+IjU9W8hszeujH4auzj/6AwBk55kV0Va2M3bIah8v4vC2Nv5HdvkOz3woXJUNrcYwYcYonOYJDiF2Ah9NyojHyOinR5oSVqxUBM10nOfuIdSONjsWZt/6HzYtKHfkMQCjkEy4YAEriGgvas2mTdbX2yagD+cc2dRZd9Oe8hSKgETpPYX2K/HELOGEV4/D1iAICsVMWiG8yrx4NusE02KvaqHt6b0HESST5gAwqT7WVgXUP5/3rc4RTE7yESvvZM9jSs3vpDu67H4jO7u2eFOiMKZVevv5xekCQAjIokeOIn+kBO3vn+zGr8RCFlKdy9dSmkqlo="
-   - coverity_scan_run_condition='${COVERITY} == true'
-
-addons:
-  coverity_scan:
-    project:
-      name: "kubasejdak/liballocator"
-      description: "A C++ memory allocator for embedded systems"
-    notification_email: kuba.sejdak+github@gmail.com
-    build_command_prepend: "cov-configure --comptype gcc --compiler g++-8 --template && cmake .."
-    build_command: "make"
-    branch_pattern: master
-
 matrix:
   include:
     - os: linux
-      env: COMPILER=gcc COMPILER_VER=8 CMAKE_VER=3.12.0 CODECOV=false COVERITY=true
+      env: COMPILER=gcc COMPILER_VER=8 CMAKE_VER=3.12.0 CODECOV=false
     - os: linux
-      env: COMPILER=clang COMPILER_VER=6.0.1 CMAKE_VER=3.12.0 CODECOV=false COVERITY=false
+      env: COMPILER=clang COMPILER_VER=6.0.1 CMAKE_VER=3.12.0 CODECOV=false
     #- os: osx
     #  osx_image: xcode10
-    #  env: COMPILER=gcc COMPILER_VER=8 CMAKE_VER=3.12.0 CODECOV=false COVERITY=false
+    #  env: COMPILER=gcc COMPILER_VER=8 CMAKE_VER=3.12.0 CODECOV=false
     - os: osx
       osx_image: xcode10
-      env: COMPILER=clang COMPILER_VER=6.0.1 CMAKE_VER=3.12.0 CODECOV=true COVERITY=false
+      env: COMPILER=clang COMPILER_VER=6.0.1 CMAKE_VER=3.12.0 CODECOV=true
 
 before_install:
   - export PATH=${TRAVIS_BUILD_DIR}/tools/ci:${PATH}
@@ -56,25 +41,12 @@ before_script:
   - mkdir build && cd $_
 
 script:
-  - |
-    if [[ ${COVERITY} == true ]]; then
-      #cat /home/travis/build/kubasejdak/liballocator/build/cov-int/build-log.txt
-      echo "1 ==========================================================================="
-      cat /home/travis/build/kubasejdak/liballocator/build/cov-int/scm_log.txt
-      echo "2 ==========================================================================="
-      cd ${TRAVIS_BUILD_DIR}/build
-      rm -rf *
-    fi
-
-  # Build.
   - cmake -DLIBALLOCATOR_TESTS=ON -DLIBALLOCATOR_DOCS=ON -DLIBALLOCATOR_COVERAGE=${CODECOV} ..
   - make
   - make doxygen
 
-  # Run tests.
   - ctest -R UnitTests
 
-  # Run code coverage.
   - |
     if [[ ${CODECOV} == true ]]; then
       make coverage
