@@ -39,4 +39,4 @@
 
 #include <zone.h>
 
-using namespace Memory;
+using namespace memory;

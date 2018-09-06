@@ -38,7 +38,7 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace Memory {
+namespace memory {
 
 /// @class Page
 /// @brief Represents a physical memory page.
@@ -122,6 +122,6 @@ private:
     Flags m_flags;              ///< Flags of the page.
 };
 
-} // namespace Memory
+} // namespace memory
 
 #endif

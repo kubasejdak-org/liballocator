@@ -38,7 +38,7 @@
 #include <cassert>
 #include <cmath>
 
-namespace Memory {
+namespace memory {
 
 ZoneAllocator::ZoneAllocator()
 {
@@ -226,4 +226,4 @@ Zone* ZoneAllocator::findZone(Chunk* chunk)
     return nullptr;
 }
 
-} // namespace Memory
+} // namespace memory

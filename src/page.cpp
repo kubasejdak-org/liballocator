@@ -34,7 +34,7 @@
 
 #include <cassert>
 
-namespace Memory {
+namespace memory {
 
 static_assert(Page::isNaturallyAligned(), "class Page is not naturally aligned");
 
@@ -85,4 +85,4 @@ bool Page::isUsed()
     return m_flags.used;
 }
 
-} // namespace Memory
+} // namespace memory

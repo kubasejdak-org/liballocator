@@ -41,7 +41,7 @@
 
 #include <cstddef>
 
-using namespace Memory;
+using namespace memory;
 
 TEST_CASE("Page structure is naturally aligned", "[page]")
 {

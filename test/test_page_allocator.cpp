@@ -48,7 +48,7 @@
 #include <random>
 #include <vector>
 
-using namespace Memory;
+using namespace memory;
 
 TEST_CASE("Page allocator is properly cleared", "[page_allocator]")
 {

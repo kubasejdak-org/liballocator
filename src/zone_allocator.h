@@ -38,7 +38,7 @@
 #include <array>
 #include <cstddef>
 
-namespace Memory {
+namespace memory {
 
 class PageAllocator;
 
@@ -152,6 +152,6 @@ private:
     std::array<ZoneInfo, MAX_ZONE_IDX> m_zones;             ///< Array of all zones known in the ZoneAllocator.
 };
 
-} // namespace Memory
+} // namespace memory
 
 #endif

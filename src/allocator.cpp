@@ -38,12 +38,12 @@
 
 namespace {
 
-Memory::PageAllocator pageAllocator;
-Memory::ZoneAllocator zoneAllocator;
+memory::PageAllocator pageAllocator;
+memory::ZoneAllocator zoneAllocator;
 
 } // namespace
 
-namespace Memory::Allocator {
+namespace memory::allocator {
 
 const char* version()
 {
@@ -88,4 +88,4 @@ void release(void* ptr)
     zoneAllocator.release(ptr);
 }
 
-} // namespace Memory::Allocator
+} // namespace memory::allocator

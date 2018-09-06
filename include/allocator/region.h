@@ -36,7 +36,7 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace Memory {
+namespace memory {
 
 /// @class Region
 /// @brief Represents a continuous block of physical memory.
@@ -45,6 +45,6 @@ struct Region {
     std::size_t size;           ///< Size of the memory block in bytes.
 };
 
-} // namespace Memory
+} // namespace memory
 
 #endif

@@ -43,7 +43,7 @@
 #include <cstdint>
 #include <tuple>
 
-namespace Memory {
+namespace memory {
 
 /// @class PageAllocator
 /// @brief Represents an allocator of physical pages.
@@ -165,6 +165,6 @@ private:
     std::size_t m_freePagesCount;                               ///< Current number of free pages.
 };
 
-} // namespace Memory
+} // namespace memory
 
 #endif

@@ -39,4 +39,4 @@
 
 #include <allocator/allocator.h>
 
-using namespace Memory;
+using namespace memory;

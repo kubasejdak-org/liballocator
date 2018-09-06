@@ -37,7 +37,7 @@
 
 #include <cassert>
 
-namespace Memory {
+namespace memory {
 
 static_assert(Zone::isNaturallyAligned(), "class Zone is not naturally aligned");
 
@@ -121,4 +121,4 @@ bool Zone::isValidChunk(Chunk* chunk)
     return false;
 }
 
-} // namespace Memory
+} // namespace memory

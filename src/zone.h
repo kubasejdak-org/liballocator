@@ -37,7 +37,7 @@
 
 #include <cstddef>
 
-namespace Memory {
+namespace memory {
 
 class Page;
 
@@ -125,6 +125,6 @@ private:
     Chunk* m_freeChunks;                ///< List of free chunks in this zone.
 };
 
-} // namespace Memory
+} // namespace memory
 
 #endif

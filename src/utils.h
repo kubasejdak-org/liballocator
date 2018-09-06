@@ -35,7 +35,7 @@
 
 #include <cstddef>
 
-namespace Memory::utils {
+namespace memory::utils {
 
 /// @brief Returns the given value, that is rounded up to the closest power of 2.
 /// @param[in] value        Value to be rounded.
@@ -68,6 +68,6 @@ T* movePtr(T* ptr, std::size_t step)
     return reinterpret_cast<T*>(tmp);
 }
 
-} // namespace Memory::utils
+} // namespace memory::utils
 
 #endif

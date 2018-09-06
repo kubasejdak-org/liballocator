@@ -35,7 +35,7 @@
 #include <cassert>
 #include <cmath>
 
-namespace Memory {
+namespace memory {
 
 PageAllocator::PageAllocator()
 {
@@ -365,4 +365,4 @@ Page* PageAllocator::joinGroup(Page* firstGroup, Page* secondGroup)
     return firstGroup;
 }
 
-} // namespace Memory
+} // namespace memory

@@ -38,7 +38,7 @@
 #include <cstddef>
 #include <cstring>
 
-using namespace Memory;
+using namespace memory;
 
 TEST_CASE("RegionInfo structure is properly cleared", "[region_info]")
 {

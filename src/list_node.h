@@ -35,7 +35,7 @@
 
 #include <cassert>
 
-namespace Memory {
+namespace memory {
 
 /// @class ListNode
 /// @brief Represents a node of the generic doubly-linked list.
@@ -103,6 +103,6 @@ private:
     T* m_prev;    ///< Previous node in the list.
 };
 
-} // namespace Memory
+} // namespace memory
 
 #endif

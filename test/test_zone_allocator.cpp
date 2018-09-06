@@ -39,4 +39,4 @@
 
 #include <zone_allocator.h>
 
-using namespace Memory;
+using namespace memory;

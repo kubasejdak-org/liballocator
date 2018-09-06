@@ -39,4 +39,4 @@
 
 #include <utils.h>
 
-using namespace Memory;
+using namespace memory;

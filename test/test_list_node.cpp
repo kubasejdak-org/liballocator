@@ -41,7 +41,7 @@
 
 #include <cstddef>
 
-using namespace Memory;
+using namespace memory;
 
 struct TestNode : public ListNode<TestNode>
 {

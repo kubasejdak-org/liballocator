@@ -38,7 +38,7 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace Memory::Allocator {
+namespace memory::allocator {
 
 /// @brief Returns version of liballocator.
 /// @return Version of liballocator.
@@ -71,6 +71,6 @@ void* allocate(std::size_t size);
 /// @note If the given pointer is nullptr, then function exists without an error.
 void release(void* ptr);
 
-} // namespace Memory::Allocator
+} // namespace memory::allocator
 
 #endif

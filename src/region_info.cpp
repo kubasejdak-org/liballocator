@@ -34,7 +34,7 @@
 
 #include <optional>
 
-namespace Memory {
+namespace memory {
 
 void clearRegionInfo(RegionInfo& regionInfo)
 {
@@ -102,4 +102,4 @@ std::optional<std::uintptr_t> alignedEnd(const Region& region, std::size_t pageS
 }
 
 } // namespace detail
-} // namespace Memory
+} // namespace memory

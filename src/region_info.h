@@ -41,7 +41,7 @@
 #include <cstdint>
 #include <optional>
 
-namespace Memory {
+namespace memory {
 
 /// @class RegionInfo
 /// @brief Represents the meta data of the physical memory region.
@@ -83,6 +83,6 @@ std::optional<std::uintptr_t> alignedStart(const Region& region, std::size_t pag
 std::optional<std::uintptr_t> alignedEnd(const Region& region, std::size_t pageSize);
 
 } // namespace detail
-} // namespace Memory
+} // namespace memory
 
 #endif
