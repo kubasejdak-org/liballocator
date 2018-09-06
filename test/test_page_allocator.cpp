@@ -88,7 +88,7 @@ TEST_CASE("Pages are correctly counted", "[page_allocator]")
     {
         std::size_t pagesCount = 1;
         auto size = pageSize * pagesCount;
-        auto memory = test_alignedAlloc(pageSize, size);
+        auto memory = test::alignedAlloc(pageSize, size);
 
         // clang-format off
         Region regions[] = {
@@ -109,9 +109,9 @@ TEST_CASE("Pages are correctly counted", "[page_allocator]")
         auto size1 = pageSize * pagesCount1;
         auto size2 = pageSize * pagesCount2;
         auto size3 = pageSize * pagesCount3;
-        auto memory1 = test_alignedAlloc(pageSize, size1);
-        auto memory2 = test_alignedAlloc(pageSize, size2);
-        auto memory3 = test_alignedAlloc(pageSize, size3);
+        auto memory1 = test::alignedAlloc(pageSize, size1);
+        auto memory2 = test::alignedAlloc(pageSize, size2);
+        auto memory3 = test::alignedAlloc(pageSize, size3);
 
         // clang-format off
         Region regions[] = {
@@ -130,14 +130,14 @@ TEST_CASE("Pages are correctly counted", "[page_allocator]")
     {
         std::size_t pagesCount = 5;
         auto size = pageSize * pagesCount;
-        auto memory1 = test_alignedAlloc(pageSize, size);
-        auto memory2 = test_alignedAlloc(pageSize, size);
-        auto memory3 = test_alignedAlloc(pageSize, size);
-        auto memory4 = test_alignedAlloc(pageSize, size);
-        auto memory5 = test_alignedAlloc(pageSize, size);
-        auto memory6 = test_alignedAlloc(pageSize, size);
-        auto memory7 = test_alignedAlloc(pageSize, size);
-        auto memory8 = test_alignedAlloc(pageSize, size);
+        auto memory1 = test::alignedAlloc(pageSize, size);
+        auto memory2 = test::alignedAlloc(pageSize, size);
+        auto memory3 = test::alignedAlloc(pageSize, size);
+        auto memory4 = test::alignedAlloc(pageSize, size);
+        auto memory5 = test::alignedAlloc(pageSize, size);
+        auto memory6 = test::alignedAlloc(pageSize, size);
+        auto memory7 = test::alignedAlloc(pageSize, size);
+        auto memory8 = test::alignedAlloc(pageSize, size);
 
         // clang-format off
         Region regions[] = {
@@ -167,7 +167,7 @@ TEST_CASE("Region where page descriptors are stored is properly selected", "[pag
     {
         std::size_t pagesCount = 1;
         auto size = pageSize * pagesCount;
-        auto memory = test_alignedAlloc(pageSize, size);
+        auto memory = test::alignedAlloc(pageSize, size);
 
         // clang-format off
         Region regions[] = {
@@ -189,9 +189,9 @@ TEST_CASE("Region where page descriptors are stored is properly selected", "[pag
         auto size1 = pageSize * pagesCount1;
         auto size2 = pageSize * pagesCount2;
         auto size3 = pageSize * pagesCount3;
-        auto memory1 = test_alignedAlloc(pageSize, size1);
-        auto memory2 = test_alignedAlloc(pageSize, size2);
-        auto memory3 = test_alignedAlloc(pageSize, size3);
+        auto memory1 = test::alignedAlloc(pageSize, size1);
+        auto memory2 = test::alignedAlloc(pageSize, size2);
+        auto memory3 = test::alignedAlloc(pageSize, size3);
 
         // clang-format off
         Region regions[] = {
@@ -210,14 +210,14 @@ TEST_CASE("Region where page descriptors are stored is properly selected", "[pag
     {
         std::size_t pagesCount = 5;
         auto size = pageSize * pagesCount;
-        auto memory1 = test_alignedAlloc(pageSize, size);
-        auto memory2 = test_alignedAlloc(pageSize, size);
-        auto memory3 = test_alignedAlloc(pageSize, size);
-        auto memory4 = test_alignedAlloc(pageSize, size);
-        auto memory5 = test_alignedAlloc(pageSize, size);
-        auto memory6 = test_alignedAlloc(pageSize, size);
-        auto memory7 = test_alignedAlloc(pageSize, size);
-        auto memory8 = test_alignedAlloc(pageSize, size);
+        auto memory1 = test::alignedAlloc(pageSize, size);
+        auto memory2 = test::alignedAlloc(pageSize, size);
+        auto memory3 = test::alignedAlloc(pageSize, size);
+        auto memory4 = test::alignedAlloc(pageSize, size);
+        auto memory5 = test::alignedAlloc(pageSize, size);
+        auto memory6 = test::alignedAlloc(pageSize, size);
+        auto memory7 = test::alignedAlloc(pageSize, size);
+        auto memory8 = test::alignedAlloc(pageSize, size);
 
         // clang-format off
         Region regions[] = {
@@ -243,8 +243,8 @@ TEST_CASE("Region where page descriptors are stored is properly selected", "[pag
         std::size_t pagesCount2 = 7;
         auto size1 = pageSize * pagesCount1;
         auto size2 = pageSize * pagesCount2;
-        auto memory1 = test_alignedAlloc(pageSize, size1);
-        auto memory2 = test_alignedAlloc(pageSize, size2);
+        auto memory1 = test::alignedAlloc(pageSize, size1);
+        auto memory2 = test::alignedAlloc(pageSize, size2);
 
         // clang-format off
         Region regions[] = {
@@ -268,7 +268,7 @@ TEST_CASE("Pages with page descriptors are properly reserved", "[page_allocator]
     {
         std::size_t pagesCount = 1;
         auto size = pageSize * pagesCount;
-        auto memory = test_alignedAlloc(pageSize, size);
+        auto memory = test::alignedAlloc(pageSize, size);
 
         // clang-format off
         Region regions[] = {
@@ -290,9 +290,9 @@ TEST_CASE("Pages with page descriptors are properly reserved", "[page_allocator]
         auto size1 = pageSize * pagesCount1;
         auto size2 = pageSize * pagesCount2;
         auto size3 = pageSize * pagesCount3;
-        auto memory1 = test_alignedAlloc(pageSize, size1);
-        auto memory2 = test_alignedAlloc(pageSize, size2);
-        auto memory3 = test_alignedAlloc(pageSize, size3);
+        auto memory1 = test::alignedAlloc(pageSize, size1);
+        auto memory2 = test::alignedAlloc(pageSize, size2);
+        auto memory3 = test::alignedAlloc(pageSize, size3);
 
         // clang-format off
         Region regions[] = {
@@ -311,14 +311,14 @@ TEST_CASE("Pages with page descriptors are properly reserved", "[page_allocator]
     {
         std::size_t pagesCount = 5;
         auto size = pageSize * pagesCount;
-        auto memory1 = test_alignedAlloc(pageSize, size);
-        auto memory2 = test_alignedAlloc(pageSize, size);
-        auto memory3 = test_alignedAlloc(pageSize, size);
-        auto memory4 = test_alignedAlloc(pageSize, size);
-        auto memory5 = test_alignedAlloc(pageSize, size);
-        auto memory6 = test_alignedAlloc(pageSize, size);
-        auto memory7 = test_alignedAlloc(pageSize, size);
-        auto memory8 = test_alignedAlloc(pageSize, size);
+        auto memory1 = test::alignedAlloc(pageSize, size);
+        auto memory2 = test::alignedAlloc(pageSize, size);
+        auto memory3 = test::alignedAlloc(pageSize, size);
+        auto memory4 = test::alignedAlloc(pageSize, size);
+        auto memory5 = test::alignedAlloc(pageSize, size);
+        auto memory6 = test::alignedAlloc(pageSize, size);
+        auto memory7 = test::alignedAlloc(pageSize, size);
+        auto memory8 = test::alignedAlloc(pageSize, size);
 
         // clang-format off
         Region regions[] = {
@@ -338,14 +338,14 @@ TEST_CASE("Pages with page descriptors are properly reserved", "[page_allocator]
         REQUIRE(pageAllocator.m_descPagesCount == 5);
     }
 
-    SECTION("Selected region is completly filled")
+    SECTION("Selected region is completely filled")
     {
         std::size_t pagesCount1 = 1;
         std::size_t pagesCount2 = 7;
         auto size1 = pageSize * pagesCount1;
         auto size2 = pageSize * pagesCount2;
-        auto memory1 = test_alignedAlloc(pageSize, size1);
-        auto memory2 = test_alignedAlloc(pageSize, size2);
+        auto memory1 = test::alignedAlloc(pageSize, size1);
+        auto memory2 = test::alignedAlloc(pageSize, size2);
 
         // clang-format off
         Region regions[] = {
@@ -817,9 +817,9 @@ TEST_CASE("Page is properly verified as valid", "[page_allocator]")
     auto size1 = pageSize * pagesCount1;
     auto size2 = pageSize * pagesCount2;
     auto size3 = pageSize * pagesCount3;
-    auto memory1 = test_alignedAlloc(pageSize, size1);
-    auto memory2 = test_alignedAlloc(pageSize, size2);
-    auto memory3 = test_alignedAlloc(pageSize, size3);
+    auto memory1 = test::alignedAlloc(pageSize, size1);
+    auto memory2 = test::alignedAlloc(pageSize, size2);
+    auto memory3 = test::alignedAlloc(pageSize, size3);
 
     // clang-format off
     Region regions[] = {
@@ -874,9 +874,9 @@ TEST_CASE("Region is properly resolved from address", "[page_allocator]")
     auto size1 = pageSize * pagesCount1;
     auto size2 = pageSize * pagesCount2;
     auto size3 = pageSize * pagesCount3;
-    auto memory1 = test_alignedAlloc(pageSize, size1);
-    auto memory2 = test_alignedAlloc(pageSize, size2);
-    auto memory3 = test_alignedAlloc(pageSize, size3);
+    auto memory1 = test::alignedAlloc(pageSize, size1);
+    auto memory2 = test::alignedAlloc(pageSize, size2);
+    auto memory3 = test::alignedAlloc(pageSize, size3);
 
     // clang-format off
     Region regions[] = {
@@ -943,9 +943,9 @@ TEST_CASE("Pages are correctly resolved from address", "[page_allocator]")
     auto size1 = pageSize * pagesCount1;
     auto size2 = pageSize * pagesCount2;
     auto size3 = pageSize * pagesCount3;
-    auto memory1 = test_alignedAlloc(pageSize, size1);
-    auto memory2 = test_alignedAlloc(pageSize, size2);
-    auto memory3 = test_alignedAlloc(pageSize, size3);
+    auto memory1 = test::alignedAlloc(pageSize, size1);
+    auto memory2 = test::alignedAlloc(pageSize, size2);
+    auto memory3 = test::alignedAlloc(pageSize, size3);
 
     // clang-format off
     Region regions[] = {
@@ -1034,9 +1034,9 @@ TEST_CASE("Stats are properly initialized", "[page_allocator]")
     auto size1 = pageSize * pagesCount1;
     auto size2 = pageSize * pagesCount2;
     auto size3 = pageSize * pagesCount3;
-    auto memory1 = test_alignedAlloc(pageSize, size1);
-    auto memory2 = test_alignedAlloc(pageSize, size2);
-    auto memory3 = test_alignedAlloc(pageSize, size3);
+    auto memory1 = test::alignedAlloc(pageSize, size1);
+    auto memory2 = test::alignedAlloc(pageSize, size2);
+    auto memory3 = test::alignedAlloc(pageSize, size3);
 
     // clang-format off
     Region regions[] = {
@@ -1068,9 +1068,9 @@ TEST_CASE("Pages are correctly allocated", "[page_allocator]")
     auto size1 = pageSize * pagesCount1;
     auto size2 = pageSize * pagesCount2;
     auto size3 = pageSize * pagesCount3;
-    auto memory1 = test_alignedAlloc(pageSize, size1);
-    auto memory2 = test_alignedAlloc(pageSize, size2);
-    auto memory3 = test_alignedAlloc(pageSize, size3);
+    auto memory1 = test::alignedAlloc(pageSize, size1);
+    auto memory2 = test::alignedAlloc(pageSize, size2);
+    auto memory3 = test::alignedAlloc(pageSize, size3);
 
     // clang-format off
     Region regions[] = {
@@ -1211,9 +1211,9 @@ TEST_CASE("Pages are correctly released", "[page_allocator]")
     auto size1 = pageSize * pagesCount1;
     auto size2 = pageSize * pagesCount2;
     auto size3 = pageSize * pagesCount3;
-    auto memory1 = test_alignedAlloc(pageSize, size1);
-    auto memory2 = test_alignedAlloc(pageSize, size2);
-    auto memory3 = test_alignedAlloc(pageSize, size3);
+    auto memory1 = test::alignedAlloc(pageSize, size1);
+    auto memory2 = test::alignedAlloc(pageSize, size2);
+    auto memory3 = test::alignedAlloc(pageSize, size3);
 
     // clang-format off
     Region regions[] = {
@@ -1346,9 +1346,9 @@ TEST_CASE("Integration tests (long-term)", "[page_allocator][integration][.]")
     auto size1 = pageSize * pagesCount1;
     auto size2 = pageSize * pagesCount2;
     auto size3 = pageSize * pagesCount3;
-    auto memory1 = test_alignedAlloc(pageSize, size1);
-    auto memory2 = test_alignedAlloc(pageSize, size2);
-    auto memory3 = test_alignedAlloc(pageSize, size3);
+    auto memory1 = test::alignedAlloc(pageSize, size1);
+    auto memory2 = test::alignedAlloc(pageSize, size2);
+    auto memory3 = test::alignedAlloc(pageSize, size3);
 
     // clang-format off
     Region regions[] = {
@@ -1369,7 +1369,7 @@ TEST_CASE("Integration tests (long-term)", "[page_allocator][integration][.]")
 
     std::array<Page*, allocationsCount> pages{};
 
-    for (auto start = test_currentTime(); !test_timeElapsed(start, testDuration);) {
+    for (auto start = test::currentTime(); !test::timeElapsed(start, testDuration);) {
         pages.fill(nullptr);
 
         // Allocate pages.

@@ -55,7 +55,7 @@ void Zone::init(Page* page, std::size_t pageSize, std::size_t chunkSize)
     m_freeChunksCount = m_chunksCount;
 
     auto* chunk = reinterpret_cast<Chunk*>(page->address());
-    for (std::size_t i = 0; i < m_chunksCount; ++i, chunk = utils_movePtr(chunk, m_chunkSize)) {
+    for (std::size_t i = 0; i < m_chunksCount; ++i, chunk = utils::movePtr(chunk, m_chunkSize)) {
         chunk->initListNode();
         chunk->addToList(&m_freeChunks);
     }
@@ -113,7 +113,7 @@ void Zone::giveChunk(Chunk* chunk)
 bool Zone::isValidChunk(Chunk* chunk)
 {
     auto* it = reinterpret_cast<Chunk*>(m_page->address());
-    for (std::size_t i = 0; i < m_chunksCount; ++i, it = utils_movePtr(it, m_chunkSize)) {
+    for (std::size_t i = 0; i < m_chunksCount; ++i, it = utils::movePtr(it, m_chunkSize)) {
         if (it == chunk)
             return true;
     }

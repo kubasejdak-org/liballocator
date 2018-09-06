@@ -34,7 +34,6 @@
 #define ZONE_ALLOCATOR_H
 
 #include "zone.h"
-#include "utils.h"
 
 #include <array>
 #include <cstddef>

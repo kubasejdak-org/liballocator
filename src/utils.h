@@ -35,12 +35,12 @@
 
 #include <cstddef>
 
-namespace Memory {
+namespace Memory::utils {
 
 /// @brief Returns the given value, that is rounded up to the closest power of 2.
 /// @param[in] value        Value to be rounded.
 /// @return Value rounded up to the closest power of 2.
-inline std::size_t utils_roundPower2(std::size_t value)
+inline std::size_t roundPower2(std::size_t value)
 {
     auto result = value;
 
@@ -60,7 +60,7 @@ inline std::size_t utils_roundPower2(std::size_t value)
 /// @param[in] step         Number of bytes to move the pointer.
 /// @return Value of the moved pointer.
 template <typename T>
-T* utils_movePtr(T* ptr, std::size_t step)
+T* movePtr(T* ptr, std::size_t step)
 {
     auto* tmp = reinterpret_cast<char*>(ptr);
     tmp += step;
@@ -68,6 +68,6 @@ T* utils_movePtr(T* ptr, std::size_t step)
     return reinterpret_cast<T*>(tmp);
 }
 
-} // namespace Memory
+} // namespace Memory::utils
 
 #endif

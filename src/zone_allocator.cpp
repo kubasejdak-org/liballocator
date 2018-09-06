@@ -33,6 +33,7 @@
 #include "zone_allocator.h"
 
 #include "page_allocator.h"
+#include "utils.h"
 
 #include <cassert>
 #include <cmath>
@@ -129,7 +130,7 @@ bool ZoneAllocator::deallocateChunk(T* chunk)
 std::size_t ZoneAllocator::chunkSize(std::size_t size)
 {
     std::size_t chunkSize = (size < MINIMAL_ALLOC_SIZE) ? MINIMAL_ALLOC_SIZE : size;
-    return utils_roundPower2(chunkSize);
+    return utils::roundPower2(chunkSize);
 }
 
 std::size_t ZoneAllocator::zoneIdx(std::size_t chunkSize)
