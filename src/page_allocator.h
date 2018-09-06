@@ -117,7 +117,7 @@ private:
     /// @return Index in the groups array.
     std::size_t groupIdx(std::size_t pageCount);
 
-    /// @brief Intilizes given group.
+    /// @brief Initializes given group.
     /// @param[in,out] group        Group to be initialized.
     /// @param[in] groupSize        Size of the initialized group.
     void initGroup(Page* group, std::size_t groupSize);
