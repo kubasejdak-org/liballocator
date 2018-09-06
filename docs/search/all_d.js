@@ -1,13 +1,14 @@
 var searchData=
 [
-  ['region',['Region',['../struct_memory_1_1_region.html',1,'Memory']]],
+  ['region',['Region',['../structmemory_1_1_region.html',1,'memory']]],
   ['region_2eh',['region.h',['../region_8h.html',1,'']]],
   ['region_5finfo_2ecpp',['region_info.cpp',['../region__info_8cpp.html',1,'']]],
   ['region_5finfo_2eh',['region_info.h',['../region__info_8h.html',1,'']]],
-  ['regioninfo',['RegionInfo',['../struct_memory_1_1_region_info.html',1,'Memory']]],
-  ['release',['release',['../class_memory_1_1_page_allocator.html#a121e97cecfc2f5b26943c45329dd55b7',1,'Memory::PageAllocator::release()'],['../class_memory_1_1_zone_allocator.html#ad59fa2a88d8efd9993002c944cc62bd3',1,'Memory::ZoneAllocator::release()'],['../allocator_8h.html#a50f5f567dfb2bdedd626068b4fc9215d',1,'Memory::Allocator::release()']]],
-  ['removefromlist',['removeFromList',['../class_memory_1_1_list_node.html#afb3661a13094048cdec99e02d9168972',1,'Memory::ListNode']]],
-  ['removegroup',['removeGroup',['../class_memory_1_1_page_allocator.html#ab06c9e3ed413ac62a01566e79ac76b30',1,'Memory::PageAllocator']]],
-  ['removezone',['removeZone',['../class_memory_1_1_zone_allocator.html#a0bca8eb45251fc479137a6b73bb4931d',1,'Memory::ZoneAllocator']]],
-  ['reservedescpages',['reserveDescPages',['../class_memory_1_1_page_allocator.html#ad25f37f94b8e1fddf83e7d4291d5d61f',1,'Memory::PageAllocator']]]
+  ['regioninfo',['RegionInfo',['../structmemory_1_1_region_info.html',1,'memory']]],
+  ['release',['release',['../classmemory_1_1_page_allocator.html#a2c883a3d9abd14c6131ca454d70ff3a8',1,'memory::PageAllocator::release()'],['../classmemory_1_1_zone_allocator.html#a5097e7bd40f3b9fdaf548f906567946d',1,'memory::ZoneAllocator::release()'],['../allocator_8h.html#a64e5292888c08b312c6dc34aa64aa0b1',1,'memory::allocator::release()']]],
+  ['removefromlist',['removeFromList',['../classmemory_1_1_list_node.html#aa430314f24a8af4dedd5c8b3e2e3269e',1,'memory::ListNode']]],
+  ['removegroup',['removeGroup',['../classmemory_1_1_page_allocator.html#a3befc38e828daf7816c78ff813559464',1,'memory::PageAllocator']]],
+  ['removezone',['removeZone',['../classmemory_1_1_zone_allocator.html#a3ba877bf74f5ccc8d074bfdffbb04c75',1,'memory::ZoneAllocator']]],
+  ['reservedescpages',['reserveDescPages',['../classmemory_1_1_page_allocator.html#a199f9ed9629431a43ec8141a3fad8b10',1,'memory::PageAllocator']]],
+  ['roundpower2',['roundPower2',['../utils_8h.html#a2a91cbe48392f654e948f368fb57fa0d',1,'memory::utils']]]
 ];

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['findzone',['findZone',['../class_memory_1_1_zone_allocator.html#a6fc352fc2bd966470457ededed960f7f',1,'Memory::ZoneAllocator']]],
-  ['freechunkscount',['freeChunksCount',['../class_memory_1_1_zone.html#a805fa132f98643192e9371623776f565',1,'Memory::Zone']]]
+  ['findzone',['findZone',['../classmemory_1_1_zone_allocator.html#a489c04eb42fea73155b59100334f3130',1,'memory::ZoneAllocator']]],
+  ['freechunkscount',['freeChunksCount',['../classmemory_1_1_zone.html#ae648f6a79e5287635375b96ed688f7f0',1,'memory::Zone']]]
 ];

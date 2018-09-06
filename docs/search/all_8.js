@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['joingroup',['joinGroup',['../class_memory_1_1_page_allocator.html#a0b4dd5d13fc692301044c54d5058aa40',1,'Memory::PageAllocator']]]
+  ['joingroup',['joinGroup',['../classmemory_1_1_page_allocator.html#af8a5b9fdd77cb4e5eb6eaeeaa3c56cfe',1,'memory::PageAllocator']]]
 ];

@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['release',['release',['../class_memory_1_1_page_allocator.html#a121e97cecfc2f5b26943c45329dd55b7',1,'Memory::PageAllocator::release()'],['../class_memory_1_1_zone_allocator.html#ad59fa2a88d8efd9993002c944cc62bd3',1,'Memory::ZoneAllocator::release()'],['../allocator_8h.html#a50f5f567dfb2bdedd626068b4fc9215d',1,'Memory::Allocator::release()']]],
-  ['removefromlist',['removeFromList',['../class_memory_1_1_list_node.html#afb3661a13094048cdec99e02d9168972',1,'Memory::ListNode']]],
-  ['removegroup',['removeGroup',['../class_memory_1_1_page_allocator.html#ab06c9e3ed413ac62a01566e79ac76b30',1,'Memory::PageAllocator']]],
-  ['removezone',['removeZone',['../class_memory_1_1_zone_allocator.html#a0bca8eb45251fc479137a6b73bb4931d',1,'Memory::ZoneAllocator']]],
-  ['reservedescpages',['reserveDescPages',['../class_memory_1_1_page_allocator.html#ad25f37f94b8e1fddf83e7d4291d5d61f',1,'Memory::PageAllocator']]]
+  ['page',['Page',['../classmemory_1_1_page.html#aee76082ec5adaec903c0ce3ec7095b9d',1,'memory::Page::Page()=delete'],['../classmemory_1_1_page.html#a51e0b59643365a1e495daebbc0494d3a',1,'memory::Page::Page(const Page &amp;other)=delete'],['../classmemory_1_1_page.html#ad5068285584383fcf3126e75d684d917',1,'memory::Page::Page(Page &amp;&amp;other)=delete'],['../classmemory_1_1_zone.html#a8c668015054dfcc988b5762c23845161',1,'memory::Zone::page()']]],
+  ['pageallocator',['PageAllocator',['../classmemory_1_1_page_allocator.html#a00688e0805940d732ee4ef76f487d307',1,'memory::PageAllocator']]],
+  ['prevsibling',['prevSibling',['../classmemory_1_1_page.html#af4c328ff263ed5177ccdd38615b94d6d',1,'memory::Page']]]
 ];

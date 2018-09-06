@@ -1,0 +1,5 @@
+<map id="memory::PageAllocator" name="memory::PageAllocator">
+<area shape="rect" id="node2" href="$classmemory_1_1_page.html" title="Represents a physical memory page. " alt="" coords="159,92,267,117"/>
+<area shape="rect" id="node3" href="$classmemory_1_1_list_node.html" title="memory::ListNode\&lt; Page \&gt;" alt="" coords="189,192,373,217"/>
+<area shape="rect" id="node4" href="$unionmemory_1_1_page_1_1_flags.html" title="Represents a packed set of flags used internally by pages. " alt="" coords="139,5,287,31"/>
+</map>

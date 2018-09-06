@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['takechunk',['takeChunk',['../class_memory_1_1_zone.html#a2cf4ac06980c2de5f5d4157c3acd660b',1,'Memory::Zone']]]
+  ['takechunk',['takeChunk',['../classmemory_1_1_zone.html#a1cee6f77cd4138d60c4abbd724cafa63',1,'memory::Zone']]]
 ];

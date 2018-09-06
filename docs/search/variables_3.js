@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['firstpage',['firstPage',['../struct_memory_1_1_region_info.html#a171e6a77c79ddbb195581c24621ed804',1,'Memory::RegionInfo']]],
-  ['freechunkscount',['freeChunksCount',['../struct_memory_1_1_zone_allocator_1_1_zone_info.html#a1c03bb6c23fc427cdefa76f257ce00c6',1,'Memory::ZoneAllocator::ZoneInfo']]],
-  ['freepagescount',['freePagesCount',['../struct_memory_1_1_page_allocator_1_1_stats.html#ad9a9fd1957f099f472addd4dbf809521',1,'Memory::PageAllocator::Stats']]]
+  ['firstpage',['firstPage',['../structmemory_1_1_region_info.html#a4d6cf3e29b7d5f43e3ad13d28f5f0901',1,'memory::RegionInfo']]],
+  ['freechunkscount',['freeChunksCount',['../structmemory_1_1_zone_allocator_1_1_zone_info.html#a2de67de687c1b8f4096d22ff2b5c45cd',1,'memory::ZoneAllocator::ZoneInfo']]],
+  ['freepagescount',['freePagesCount',['../structmemory_1_1_page_allocator_1_1_stats.html#af18b2d9f37037fcc90c88177198e7490',1,'memory::PageAllocator::Stats']]]
 ];

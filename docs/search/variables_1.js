@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['descpagescount',['descPagesCount',['../struct_memory_1_1_page_allocator_1_1_stats.html#a666c870f5e454613baa1d33684302075',1,'Memory::PageAllocator::Stats']]],
-  ['descregionidx',['descRegionIdx',['../struct_memory_1_1_page_allocator_1_1_stats.html#a857072434500b9c5d41f2b122023c45f',1,'Memory::PageAllocator::Stats']]]
+  ['descpagescount',['descPagesCount',['../structmemory_1_1_page_allocator_1_1_stats.html#a8f90b80f85ceeb0e6edfff2cf4c459d9',1,'memory::PageAllocator::Stats']]],
+  ['descregionidx',['descRegionIdx',['../structmemory_1_1_page_allocator_1_1_stats.html#ae3c4478e111e80b2a9d08c92f7a9eacc',1,'memory::PageAllocator::Stats']]]
 ];

@@ -1,13 +1,13 @@
 var searchData=
 [
-  ['page',['Page',['../class_memory_1_1_page.html',1,'Memory::Page'],['../class_memory_1_1_page.html#a76e249d2cec20a0447c8bc4e3daa1369',1,'Memory::Page::Page()=delete'],['../class_memory_1_1_page.html#acb3e01804404c46b7acbc5fc3726e40d',1,'Memory::Page::Page(const Page &amp;other)=delete'],['../class_memory_1_1_page.html#a33e61eab1151b14078400408ff413d32',1,'Memory::Page::Page(Page &amp;&amp;other)=delete'],['../class_memory_1_1_zone.html#a14659707e6650aa02a2c97d462d7418b',1,'Memory::Zone::page()']]],
+  ['page',['Page',['../classmemory_1_1_page.html',1,'memory::Page'],['../classmemory_1_1_page.html#aee76082ec5adaec903c0ce3ec7095b9d',1,'memory::Page::Page()=delete'],['../classmemory_1_1_page.html#a51e0b59643365a1e495daebbc0494d3a',1,'memory::Page::Page(const Page &amp;other)=delete'],['../classmemory_1_1_page.html#ad5068285584383fcf3126e75d684d917',1,'memory::Page::Page(Page &amp;&amp;other)=delete'],['../classmemory_1_1_zone.html#a8c668015054dfcc988b5762c23845161',1,'memory::Zone::page()']]],
   ['page_2ecpp',['page.cpp',['../page_8cpp.html',1,'']]],
   ['page_2eh',['page.h',['../page_8h.html',1,'']]],
   ['page_5fallocator_2ecpp',['page_allocator.cpp',['../page__allocator_8cpp.html',1,'']]],
   ['page_5fallocator_2eh',['page_allocator.h',['../page__allocator_8h.html',1,'']]],
-  ['pageallocator',['PageAllocator',['../class_memory_1_1_page_allocator.html',1,'Memory::PageAllocator'],['../class_memory_1_1_page_allocator.html#a478aa6915a91aeca8401780b8aa85497',1,'Memory::PageAllocator::PageAllocator()']]],
-  ['pagecount',['pageCount',['../struct_memory_1_1_region_info.html#a73b4c6660ec47f84600d6c672864a717',1,'Memory::RegionInfo']]],
-  ['pagescount',['pagesCount',['../struct_memory_1_1_page_allocator_1_1_stats.html#ad6c2ddda7cc8b9eba0cf84ee3c109759',1,'Memory::PageAllocator::Stats']]],
-  ['pagesize',['pageSize',['../struct_memory_1_1_page_allocator_1_1_stats.html#ae0a425e4b32eb80780a821b28196d72b',1,'Memory::PageAllocator::Stats']]],
-  ['prevsibling',['prevSibling',['../class_memory_1_1_page.html#a84cd3db3f31c7c686fd8ecf905af890e',1,'Memory::Page']]]
+  ['pageallocator',['PageAllocator',['../classmemory_1_1_page_allocator.html',1,'memory::PageAllocator'],['../classmemory_1_1_page_allocator.html#a00688e0805940d732ee4ef76f487d307',1,'memory::PageAllocator::PageAllocator()']]],
+  ['pagecount',['pageCount',['../structmemory_1_1_region_info.html#a4beeef4469190b391d768fe13e052f79',1,'memory::RegionInfo']]],
+  ['pagescount',['pagesCount',['../structmemory_1_1_page_allocator_1_1_stats.html#af43b5f41afe2d004daace700b8050401',1,'memory::PageAllocator::Stats']]],
+  ['pagesize',['pageSize',['../structmemory_1_1_page_allocator_1_1_stats.html#a73af2f82742bb7c8e015739470d8852d',1,'memory::PageAllocator::Stats']]],
+  ['prevsibling',['prevSibling',['../classmemory_1_1_page.html#af4c328ff263ed5177ccdd38615b94d6d',1,'memory::Page']]]
 ];

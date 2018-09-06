@@ -1,8 +1,0 @@
-<map id="Memory::Zone" name="Memory::Zone">
-<area shape="rect" id="node2" href="$class_memory_1_1_list_node.html" title="Memory::ListNode\&lt; Zone \&gt;" alt="" coords="192,292,375,317"/>
-<area shape="rect" id="node3" href="$class_memory_1_1_chunk.html" title="Represents a memory chunk. Chunks are part of the zone. " alt="" coords="91,92,207,117"/>
-<area shape="rect" id="node4" href="$class_memory_1_1_list_node.html" title="Memory::ListNode\&lt; Chunk \&gt;" alt="" coords="5,192,196,217"/>
-<area shape="rect" id="node5" href="$class_memory_1_1_page.html" title="Represents a physical memory page. " alt="" coords="343,92,451,117"/>
-<area shape="rect" id="node6" href="$class_memory_1_1_list_node.html" title="Memory::ListNode\&lt; Page \&gt;" alt="" coords="368,192,551,217"/>
-<area shape="rect" id="node7" href="$union_memory_1_1_page_1_1_flags.html" title="Represents a packed set of flags used internally by pages. " alt="" coords="323,5,471,31"/>
-</map>

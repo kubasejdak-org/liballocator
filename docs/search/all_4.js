@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['findzone',['findZone',['../class_memory_1_1_zone_allocator.html#a6fc352fc2bd966470457ededed960f7f',1,'Memory::ZoneAllocator']]],
-  ['firstpage',['firstPage',['../struct_memory_1_1_region_info.html#a171e6a77c79ddbb195581c24621ed804',1,'Memory::RegionInfo']]],
-  ['flags',['Flags',['../union_memory_1_1_page_1_1_flags.html',1,'Memory::Page']]],
-  ['freechunkscount',['freeChunksCount',['../struct_memory_1_1_zone_allocator_1_1_zone_info.html#a1c03bb6c23fc427cdefa76f257ce00c6',1,'Memory::ZoneAllocator::ZoneInfo::freeChunksCount()'],['../class_memory_1_1_zone.html#a805fa132f98643192e9371623776f565',1,'Memory::Zone::freeChunksCount()']]],
-  ['freepagescount',['freePagesCount',['../struct_memory_1_1_page_allocator_1_1_stats.html#ad9a9fd1957f099f472addd4dbf809521',1,'Memory::PageAllocator::Stats']]]
+  ['findzone',['findZone',['../classmemory_1_1_zone_allocator.html#a489c04eb42fea73155b59100334f3130',1,'memory::ZoneAllocator']]],
+  ['firstpage',['firstPage',['../structmemory_1_1_region_info.html#a4d6cf3e29b7d5f43e3ad13d28f5f0901',1,'memory::RegionInfo']]],
+  ['flags',['Flags',['../unionmemory_1_1_page_1_1_flags.html',1,'memory::Page']]],
+  ['freechunkscount',['freeChunksCount',['../structmemory_1_1_zone_allocator_1_1_zone_info.html#a2de67de687c1b8f4096d22ff2b5c45cd',1,'memory::ZoneAllocator::ZoneInfo::freeChunksCount()'],['../classmemory_1_1_zone.html#ae648f6a79e5287635375b96ed688f7f0',1,'memory::Zone::freeChunksCount()']]],
+  ['freepagescount',['freePagesCount',['../structmemory_1_1_page_allocator_1_1_stats.html#af18b2d9f37037fcc90c88177198e7490',1,'memory::PageAllocator::Stats']]]
 ];

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['utils_5fmoveptr',['utils_movePtr',['../utils_8h.html#a1d7d483127248dba4b2d7221a6f1a6cb',1,'Memory']]],
-  ['utils_5froundpower2',['utils_roundPower2',['../utils_8h.html#a1c9cb5f9da734b05f5251f10a3b19d42',1,'Memory']]]
+  ['takechunk',['takeChunk',['../classmemory_1_1_zone.html#a1cee6f77cd4138d60c4abbd724cafa63',1,'memory::Zone']]]
 ];
