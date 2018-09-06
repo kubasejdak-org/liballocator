@@ -47,7 +47,7 @@ class PageAllocator;
 class ZoneAllocator {
 public:
     /// @brief Default constructor.
-    ZoneAllocator();
+    ZoneAllocator() noexcept;
 
     /// @brief Initializes the ZoneAllocator with the given PageAllocator and page size.
     /// @param[in] pageAllocator        PageAllocator to be used in ZoneAllocator.

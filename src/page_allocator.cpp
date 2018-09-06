@@ -37,7 +37,7 @@
 
 namespace memory {
 
-PageAllocator::PageAllocator()
+PageAllocator::PageAllocator() noexcept
 {
     clear();
 }

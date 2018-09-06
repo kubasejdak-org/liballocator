@@ -40,7 +40,7 @@
 
 namespace memory {
 
-ZoneAllocator::ZoneAllocator()
+ZoneAllocator::ZoneAllocator() noexcept
 {
     clear();
 }

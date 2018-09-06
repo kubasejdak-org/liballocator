@@ -60,8 +60,7 @@ public:
     };
 
     /// @brief Default constructor.
-    PageAllocator();
-
+    PageAllocator() noexcept;
     /// @brief Initializes the page allocator with the given memory model.
     /// @param[in] regions          Array of memory regions to be used by page allocator. Last entry should be zeroed.
     /// @param[in] pageSize         Size of the page on the current platform.
