@@ -42,7 +42,7 @@ using namespace memory;
 
 TEST_CASE("RegionInfo structure is properly cleared", "[region_info]")
 {
-    RegionInfo regionInfo;
+    RegionInfo regionInfo{};
     std::memset(&regionInfo, 0x5a, sizeof(RegionInfo));
 
     clearRegionInfo(regionInfo);
@@ -63,7 +63,7 @@ TEST_CASE("Aligned start address is properly computed", "[region_info]")
 
     SECTION("Already start-aligned region")
     {
-        alignas(pageSize) std::array<std::byte, pageSize> memory;
+        alignas(pageSize) std::array<std::byte, pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory)), .size = memory.size()};
 
         auto start = detail::alignedStart(region, pageSize);
@@ -74,7 +74,7 @@ TEST_CASE("Aligned start address is properly computed", "[region_info]")
     SECTION("Not start-aligned region and aligned start is within region boundaries")
     {
         constexpr std::size_t offset = 15;
-        alignas(pageSize) std::array<std::byte, 2 * pageSize> memory;
+        alignas(pageSize) std::array<std::byte, 2 * pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory) + offset), .size = memory.size() - offset};
 
         auto start = detail::alignedStart(region, pageSize);
@@ -85,7 +85,7 @@ TEST_CASE("Aligned start address is properly computed", "[region_info]")
     SECTION("Not start-aligned region and aligned start is outside region boundaries")
     {
         constexpr std::size_t offset = 15;
-        alignas(pageSize) std::array<std::byte, pageSize> memory;
+        alignas(pageSize) std::array<std::byte, pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory) + offset), .size = memory.size() - 2 * offset};
 
         auto start = detail::alignedStart(region, pageSize);
@@ -99,7 +99,7 @@ TEST_CASE("Aligned end address is properly computed", "[region_info]")
 
     SECTION("Already end-aligned region")
     {
-        alignas(pageSize) std::array<std::byte, pageSize> memory;
+        alignas(pageSize) std::array<std::byte, pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory)), .size = memory.size()};
 
         auto end = detail::alignedEnd(region, pageSize);
@@ -110,7 +110,7 @@ TEST_CASE("Aligned end address is properly computed", "[region_info]")
     SECTION("Not end-aligned region and aligned end is within region boundaries")
     {
         constexpr std::size_t offset = 15;
-        alignas(pageSize) std::array<std::byte, 2 * pageSize> memory;
+        alignas(pageSize) std::array<std::byte, 2 * pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory)), .size = memory.size() - offset};
 
         auto end = detail::alignedEnd(region, pageSize);
@@ -118,10 +118,10 @@ TEST_CASE("Aligned end address is properly computed", "[region_info]")
         REQUIRE(*end == std::uintptr_t(std::begin(memory) + pageSize));
     }
 
-    SECTION("Not end-aligned region and aligned end is outsude region boundaries")
+    SECTION("Not end-aligned region and aligned end is outside region boundaries")
     {
         constexpr std::size_t offset = 15;
-        alignas(pageSize) std::array<std::byte, pageSize> memory;
+        alignas(pageSize) std::array<std::byte, pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory)) + offset, .size = memory.size() - 2 * offset};
 
         auto end = detail::alignedEnd(region, pageSize);
@@ -132,12 +132,12 @@ TEST_CASE("Aligned end address is properly computed", "[region_info]")
 TEST_CASE("RegionInfo is properly initialized", "[region_info]")
 {
     constexpr std::size_t pageSize = 4096;
-    RegionInfo regionInfo;
+    RegionInfo regionInfo{};
     clearRegionInfo(regionInfo);
 
     SECTION("Region smaller than one page")
     {
-        alignas(pageSize) std::array<std::byte, pageSize - 1> memory;
+        alignas(pageSize) std::array<std::byte, pageSize - 1> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory)), .size = memory.size()};
 
         bool result = initRegionInfo(regionInfo, region, pageSize);
@@ -147,7 +147,7 @@ TEST_CASE("RegionInfo is properly initialized", "[region_info]")
     SECTION("Fully aligned region, lays on 1 page")
     {
         constexpr std::size_t pageCount = 1;
-        alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory;
+        alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory)), .size = memory.size()};
 
         bool result = initRegionInfo(regionInfo, region, pageSize);
@@ -166,7 +166,7 @@ TEST_CASE("RegionInfo is properly initialized", "[region_info]")
     SECTION("Fully aligned region, lays on 5 pages")
     {
         constexpr std::size_t pageCount = 5;
-        alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory;
+        alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory)), .size = memory.size()};
 
         bool result = initRegionInfo(regionInfo, region, pageSize);
@@ -186,7 +186,7 @@ TEST_CASE("RegionInfo is properly initialized", "[region_info]")
     {
         constexpr std::size_t pageCount = 1;
         std::size_t offset = 15;
-        alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory;
+        alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory)), .size = memory.size() - offset};
 
         bool result = initRegionInfo(regionInfo, region, pageSize);
@@ -197,7 +197,7 @@ TEST_CASE("RegionInfo is properly initialized", "[region_info]")
     {
         constexpr std::size_t pageCount = 2;
         std::size_t offset = 15;
-        alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory;
+        alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory)), .size = memory.size() - offset};
 
         bool result = initRegionInfo(regionInfo, region, pageSize);
@@ -217,7 +217,7 @@ TEST_CASE("RegionInfo is properly initialized", "[region_info]")
     {
         constexpr std::size_t pageCount = 5;
         std::size_t offset = 15;
-        alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory;
+        alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory)), .size = memory.size() - offset};
 
         bool result = initRegionInfo(regionInfo, region, pageSize);
@@ -237,7 +237,7 @@ TEST_CASE("RegionInfo is properly initialized", "[region_info]")
     {
         constexpr std::size_t pageCount = 1;
         std::size_t offset = 15;
-        alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory;
+        alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory) + offset), .size = memory.size() - offset};
 
         bool result = initRegionInfo(regionInfo, region, pageSize);
@@ -248,7 +248,7 @@ TEST_CASE("RegionInfo is properly initialized", "[region_info]")
     {
         constexpr std::size_t pageCount = 2;
         std::size_t offset = 15;
-        alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory;
+        alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory) + offset), .size = memory.size() - offset};
 
         bool result = initRegionInfo(regionInfo, region, pageSize);
@@ -268,7 +268,7 @@ TEST_CASE("RegionInfo is properly initialized", "[region_info]")
     {
         constexpr std::size_t pageCount = 5;
         std::size_t offset = 15;
-        alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory;
+        alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory) + offset), .size = memory.size() - offset};
 
         bool result = initRegionInfo(regionInfo, region, pageSize);
@@ -288,7 +288,7 @@ TEST_CASE("RegionInfo is properly initialized", "[region_info]")
     {
         constexpr std::size_t pageCount = 1;
         std::size_t offset = 15;
-        alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory;
+        alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory) + offset), .size = memory.size() - 2 * offset};
 
         bool result = initRegionInfo(regionInfo, region, pageSize);
@@ -299,7 +299,7 @@ TEST_CASE("RegionInfo is properly initialized", "[region_info]")
     {
         constexpr std::size_t pageCount = 2;
         std::size_t offset = 15;
-        alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory;
+        alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory) + offset), .size = memory.size() - 2 * offset};
 
         bool result = initRegionInfo(regionInfo, region, pageSize);
@@ -310,7 +310,7 @@ TEST_CASE("RegionInfo is properly initialized", "[region_info]")
     {
         constexpr std::size_t pageCount = 5;
         std::size_t offset = 15;
-        alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory;
+        alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory) + offset), .size = memory.size() - 2 * offset};
 
         bool result = initRegionInfo(regionInfo, region, pageSize);
