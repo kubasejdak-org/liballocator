@@ -156,6 +156,70 @@ TEST_CASE("Pages are correctly counted", "[page_allocator]")
         REQUIRE(pageAllocator.init(regions, pageSize));
         REQUIRE(pageAllocator.m_pagesCount == (pagesCount * 8));
     }
+
+    SECTION("All regions have 5 pages")
+    {
+        auto size = pageSize / 2;
+        auto memory1 = test::alignedAlloc(pageSize, size);
+        auto memory2 = test::alignedAlloc(pageSize, size);
+        auto memory3 = test::alignedAlloc(pageSize, size);
+        auto memory4 = test::alignedAlloc(pageSize, size);
+        auto memory5 = test::alignedAlloc(pageSize, size);
+        auto memory6 = test::alignedAlloc(pageSize, size);
+        auto memory7 = test::alignedAlloc(pageSize, size);
+        auto memory8 = test::alignedAlloc(pageSize, size);
+
+        // clang-format off
+        Region regions[] = {
+            {std::uintptr_t(memory1.get()), size},
+            {std::uintptr_t(memory2.get()), size},
+            {std::uintptr_t(memory3.get()), size},
+            {std::uintptr_t(memory4.get()), size},
+            {std::uintptr_t(memory5.get()), size},
+            {std::uintptr_t(memory6.get()), size},
+            {std::uintptr_t(memory7.get()), size},
+            {std::uintptr_t(memory8.get()), size},
+            {0,                             0}
+        };
+        // clang-format on
+
+        REQUIRE(!pageAllocator.init(regions, pageSize));
+        REQUIRE(pageAllocator.m_pagesCount == 0);
+    }
+
+    SECTION("Too many regions are passed to the allocator")
+    {
+        std::size_t pagesCount = 5;
+        auto size = pageSize * pagesCount;
+        auto memory1 = test::alignedAlloc(pageSize, size);
+        auto memory2 = test::alignedAlloc(pageSize, size);
+        auto memory3 = test::alignedAlloc(pageSize, size);
+        auto memory4 = test::alignedAlloc(pageSize, size);
+        auto memory5 = test::alignedAlloc(pageSize, size);
+        auto memory6 = test::alignedAlloc(pageSize, size);
+        auto memory7 = test::alignedAlloc(pageSize, size);
+        auto memory8 = test::alignedAlloc(pageSize, size);
+        auto memory9 = test::alignedAlloc(pageSize, size);
+        auto memory10 = test::alignedAlloc(pageSize, size);
+
+        // clang-format off
+        Region regions[] = {
+            {std::uintptr_t(memory1.get()),  size},
+            {std::uintptr_t(memory2.get()),  size},
+            {std::uintptr_t(memory3.get()),  size},
+            {std::uintptr_t(memory4.get()),  size},
+            {std::uintptr_t(memory5.get()),  size},
+            {std::uintptr_t(memory6.get()),  size},
+            {std::uintptr_t(memory7.get()),  size},
+            {std::uintptr_t(memory8.get()),  size},
+            {std::uintptr_t(memory9.get()),  size},
+            {std::uintptr_t(memory10.get()), size},
+            {0,                              0}
+        };
+        // clang-format on
+
+        REQUIRE(!pageAllocator.init(regions, pageSize));
+    }
 }
 
 TEST_CASE("Region where page descriptors are stored is properly selected", "[page_allocator]")
