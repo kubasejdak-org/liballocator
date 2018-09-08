@@ -30,8 +30,8 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef TEST_UTILS_H
+#define TEST_UTILS_H
 
 #include <chrono>
 #include <cstddef>
@@ -40,7 +40,7 @@
 
 namespace test {
 
-std::unique_ptr<std::byte, decltype(&std::free)> alignedAlloc(std::size_t alignment, std::size_t size)
+inline std::unique_ptr<std::byte, decltype(&std::free)> alignedAlloc(std::size_t alignment, std::size_t size)
 {
     void* ptr = nullptr;
 
@@ -51,13 +51,13 @@ std::unique_ptr<std::byte, decltype(&std::free)> alignedAlloc(std::size_t alignm
     return std::unique_ptr<std::byte, decltype(&std::free)>(reinterpret_cast<std::byte*>(ptr), &std::free);
 }
 
-std::chrono::time_point<std::chrono::system_clock> currentTime()
+inline std::chrono::time_point<std::chrono::system_clock> currentTime()
 {
     return std::chrono::system_clock::now();
 }
 
 template <typename T>
-bool timeElapsed(std::chrono::time_point<std::chrono::system_clock>& start, const T& duration)
+inline bool timeElapsed(std::chrono::time_point<std::chrono::system_clock>& start, const T& duration)
 {
     auto elapsedSeconds = currentTime() - start;
     return (elapsedSeconds >= duration);

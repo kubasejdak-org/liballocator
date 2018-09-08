@@ -32,11 +32,103 @@
 
 #include <catch2/catch.hpp>
 
+#include "test_utils.h"
+
 // Make access to private members for testing.
 // clang-format off
 #define private     public
 // clang-format on
 
+#include <page.h>
 #include <zone.h>
 
+#include <array>
+#include <cstddef>
+
 using namespace memory;
+
+TEST_CASE("Zone structure is naturally aligned", "[zone]")
+{
+    REQUIRE(Zone::isNaturallyAligned());
+}
+
+TEST_CASE("Zone is properly initialized", "[zone]")
+{
+    std::size_t pageSize = 256;
+    auto memory = test::alignedAlloc(pageSize, pageSize);
+
+    std::byte buffer[sizeof(Page)];
+    auto* page = reinterpret_cast<Page*>(buffer);
+    page->setAddress(std::uintptr_t(memory.get()));
+
+    Zone zone;
+    std::size_t chunkSize = 64;
+
+    zone.init(page, pageSize, chunkSize);
+    REQUIRE(zone.m_next == nullptr);
+    REQUIRE(zone.m_prev == nullptr);
+    REQUIRE(zone.m_page == page);
+    REQUIRE(zone.m_chunkSize == chunkSize);
+    REQUIRE(zone.m_chunksCount == (pageSize / chunkSize));
+    REQUIRE(zone.m_freeChunksCount == (pageSize / chunkSize));
+    std::uintptr_t lastChunkAddr = page->address() + pageSize - chunkSize;
+    REQUIRE(zone.m_freeChunks == reinterpret_cast<Chunk*>(lastChunkAddr));
+
+    REQUIRE(zone.page() == page);
+    REQUIRE(zone.chunkSize() == chunkSize);
+    REQUIRE(zone.chunksCount() == (pageSize / chunkSize));
+    REQUIRE(zone.freeChunksCount() == (pageSize / chunkSize));
+
+    auto* chunk = reinterpret_cast<Chunk*>(zone.page()->address());
+    for (std::size_t i = 0; i < zone.chunksCount(); ++i) {
+        REQUIRE(std::uintptr_t(chunk) == zone.page()->address() + i * chunkSize);
+        chunk = chunk->m_prev;
+    }
+
+}
+
+TEST_CASE("Zone is properly cleared", "[zone]")
+{
+    Zone zone;
+    zone.clear();
+
+    REQUIRE(zone.m_next == nullptr);
+    REQUIRE(zone.m_prev == nullptr);
+    REQUIRE(zone.m_page == nullptr);
+    REQUIRE(zone.m_chunkSize == 0);
+    REQUIRE(zone.m_chunksCount == 0);
+    REQUIRE(zone.m_freeChunksCount == 0);
+    REQUIRE(zone.m_freeChunks == nullptr);
+
+    REQUIRE(zone.page() == nullptr);
+    REQUIRE(zone.chunkSize() == 0);
+    REQUIRE(zone.chunksCount() == 0);
+    REQUIRE(zone.freeChunksCount() == 0);
+}
+
+TEST_CASE("Zone properly allocates chunks", "[zone]")
+{
+    std::size_t pageSize = 256;
+    auto memory = test::alignedAlloc(pageSize, pageSize);
+
+    std::byte buffer[sizeof(Page)];
+    auto* page = reinterpret_cast<Page*>(buffer);
+    page->setAddress(std::uintptr_t(memory.get()));
+
+    Zone zone;
+    std::size_t chunkSize = 64;
+    zone.init(page, pageSize, chunkSize);
+
+    std::size_t chunksCount = zone.chunksCount();
+    std::size_t freeChunksCount = zone.chunksCount();
+    for (std::size_t i = 0; i < zone.chunksCount(); ++i) {
+        --freeChunksCount;
+        auto* chunk = zone.takeChunk();
+        REQUIRE(chunk);
+        REQUIRE(std::uintptr_t(chunk) == zone.page()->address() + pageSize - chunkSize * (1 + i));
+        REQUIRE(zone.chunksCount() == chunksCount);
+        REQUIRE(zone.freeChunksCount() == freeChunksCount);
+    }
+
+    REQUIRE(zone.freeChunksCount() == 0);
+}
