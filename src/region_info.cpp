@@ -32,6 +32,7 @@
 
 #include "region_info.h"
 
+#include <cassert>
 #include <optional>
 
 namespace memory {
@@ -59,13 +60,11 @@ bool initRegionInfo(RegionInfo& regionInfo, const Region& region, std::size_t pa
     regionInfo.start = region.address;
     regionInfo.end = region.address + region.size;
     auto start = detail::alignedStart(region, pageSize);
-    if (!start)
-        return false;
+    assert(start);
 
     regionInfo.alignedStart = *start;
     auto end = detail::alignedEnd(region, pageSize);
-    if (!end)
-        return false;
+    assert(end);
 
     regionInfo.alignedEnd = *end;
     regionInfo.pageCount = (regionInfo.alignedEnd - regionInfo.alignedStart) / pageSize;
