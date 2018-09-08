@@ -132,3 +132,45 @@ TEST_CASE("Zone properly allocates chunks", "[zone]")
 
     REQUIRE(zone.freeChunksCount() == 0);
 }
+
+TEST_CASE("Zone properly deallocates chunks", "[zone]")
+{
+    constexpr std::size_t pageSize = 256;
+    auto memory = test::alignedAlloc(pageSize, pageSize);
+
+    std::byte buffer[sizeof(Page)];
+    auto* page = reinterpret_cast<Page*>(buffer);
+    page->setAddress(std::uintptr_t(memory.get()));
+
+    Zone zone;
+    constexpr std::size_t chunkSize = 64;
+    zone.init(page, pageSize, chunkSize);
+
+    std::array<Chunk*, (pageSize / chunkSize)> chunks{};
+
+    for (std::size_t i = 0; i < zone.chunksCount(); ++i)
+        chunks[i] = zone.takeChunk();
+
+    SECTION("Release in order")
+    {
+        for (std::size_t i = 0; i < zone.chunksCount(); ++i)
+            zone.giveChunk(chunks[i]);
+    }
+
+    SECTION("Release in reverse order")
+    {
+        for (std::size_t i = 0; i < zone.chunksCount(); ++i)
+            zone.giveChunk(chunks[zone.chunksCount() - 1 - i]);
+    }
+
+    SECTION("Release in custom order")
+    {
+        zone.giveChunk(chunks[2]);
+        zone.giveChunk(chunks[0]);
+        zone.giveChunk(chunks[3]);
+        zone.giveChunk(chunks[1]);
+    }
+
+    REQUIRE(zone.chunksCount() == (pageSize / chunkSize));
+    REQUIRE(zone.freeChunksCount() == (pageSize / chunkSize));
+}
