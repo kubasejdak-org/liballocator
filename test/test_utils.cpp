@@ -38,5 +38,57 @@
 // clang-format on
 
 #include <utils.h>
+#include <zone.h>
+
+#include <array>
+#include <cmath>
+#include <cstddef>
 
 using namespace memory;
+
+TEST_CASE("Values are correctly rounded to the closest power of 2", "[utils]")
+{
+    double idx = 0.0;
+
+    for (std::size_t i = 1; i < 1000000; ++i) {
+        double requiredValue = std::pow(2.0, idx);
+        auto value = utils::roundPower2(i);
+        REQUIRE(value == requiredValue);
+
+        if (std::log2(double(i)) == idx)
+            ++idx;
+    }
+}
+
+TEST_CASE("Pointers are correctly moved", "[utils]")
+{
+    SECTION("Pointer has the type 'char'")
+    {
+        std::array<std::byte, 64> memory{};
+
+        for (std::size_t i = 0; i < memory.size(); ++i) {
+            auto* ptr = reinterpret_cast<char*>(&memory[0]);
+            REQUIRE(utils::movePtr(ptr, i) == reinterpret_cast<char*>(&memory[i]));
+        }
+    }
+
+    SECTION("Pointer has the type 'long double'")
+    {
+        std::array<std::byte, 64> memory{};
+
+        for (std::size_t i = 0; i < memory.size(); ++i) {
+            auto* ptr = reinterpret_cast<long double*>(&memory[0]);
+            REQUIRE(utils::movePtr(ptr, i) == reinterpret_cast<long double*>(&memory[i]));
+        }
+    }
+
+    SECTION("Pointer has the type 'Chunk'")
+    {
+        std::array<std::byte, 64> memory{};
+
+        for (std::size_t i = 0; i < memory.size(); ++i) {
+            auto* ptr = reinterpret_cast<Chunk*>(&memory[0]);
+            REQUIRE(utils::movePtr(ptr, i) == reinterpret_cast<Chunk*>(&memory[i]));
+        }
+    }
+}
