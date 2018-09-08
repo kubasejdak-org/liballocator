@@ -259,7 +259,7 @@ Page* PageAllocator::getPage(std::uintptr_t addr)
             return page;
     }
 
-    return nullptr;
+    assert(false);
 }
 
 PageAllocator::Stats PageAllocator::getStats()
