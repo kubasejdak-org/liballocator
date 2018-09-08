@@ -254,12 +254,15 @@ Page* PageAllocator::getPage(std::uintptr_t addr)
     if (!pageRegion)
         return nullptr;
 
+    Page* result = nullptr;
     for (auto* page = pageRegion->firstPage; page <= pageRegion->lastPage; page = page->nextSibling()) {
-        if (page->address() == alignedAddr)
-            return page;
+        if (page->address() == alignedAddr) {
+            result = page;
+            break;
+        }
     }
 
-    assert(false);
+    return result;
 }
 
 PageAllocator::Stats PageAllocator::getStats()
