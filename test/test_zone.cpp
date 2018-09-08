@@ -174,3 +174,62 @@ TEST_CASE("Zone properly deallocates chunks", "[zone]")
     REQUIRE(zone.chunksCount() == (pageSize / chunkSize));
     REQUIRE(zone.freeChunksCount() == (pageSize / chunkSize));
 }
+
+TEST_CASE("Zone properly checks if given zone is valid", "[zone]")
+{
+    constexpr std::size_t pageSize = 256;
+    auto memory = test::alignedAlloc(pageSize, pageSize);
+
+    std::byte buffer[sizeof(Page)];
+    auto* page = reinterpret_cast<Page*>(buffer);
+    page->setAddress(std::uintptr_t(memory.get()));
+
+    Zone zone;
+    constexpr std::size_t chunkSize = 64;
+    zone.init(page, pageSize, chunkSize);
+
+    std::array<Chunk*, (pageSize / chunkSize)> chunks{};
+
+    for (std::size_t i = 0; i < zone.chunksCount(); ++i)
+        chunks[i] = zone.takeChunk();
+
+    SECTION("Check all valid chunks")
+    {
+        for (std::size_t i = 0; i < zone.chunksCount(); ++i)
+            REQUIRE(zone.isValidChunk(chunks[i]));
+    }
+
+    SECTION("Check address from the middle of the valid chunk")
+    {
+        std::uintptr_t addr = std::uintptr_t(chunks[0]) + chunkSize / 2;
+        REQUIRE(!zone.isValidChunk(reinterpret_cast<Chunk*>(addr)));
+    }
+
+    SECTION("Check address of the last byte in the valid chunk")
+    {
+        std::uintptr_t addr = std::uintptr_t(chunks[1]) - 1;
+        REQUIRE(!zone.isValidChunk(reinterpret_cast<Chunk*>(addr)));
+    }
+
+    SECTION("Check address lower than the zone start")
+    {
+        std::uintptr_t addr = zone.page()->address() - 1;
+        REQUIRE(!zone.isValidChunk(reinterpret_cast<Chunk*>(addr)));
+    }
+
+    SECTION("Check address higher than the zone end")
+    {
+        std::uintptr_t addr = zone.page()->address() + pageSize + 1;
+        REQUIRE(!zone.isValidChunk(reinterpret_cast<Chunk*>(addr)));
+    }
+
+    SECTION("Check nullptr")
+    {
+        REQUIRE(!zone.isValidChunk(nullptr));
+    }
+
+    SECTION("Check invalid address")
+    {
+        REQUIRE(!zone.isValidChunk(reinterpret_cast<Chunk*>(0xdeadbeef)));
+    }
+}
