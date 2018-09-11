@@ -84,7 +84,6 @@ TEST_CASE("Zone is properly initialized", "[zone]")
         REQUIRE(std::uintptr_t(chunk) == zone.page()->address() + i * chunkSize);
         chunk = chunk->m_prev;
     }
-
 }
 
 TEST_CASE("Zone is properly cleared", "[zone]")

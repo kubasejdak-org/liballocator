@@ -60,6 +60,7 @@ void ZoneAllocator::clear()
 {
     m_pageAllocator = nullptr;
     m_pageSize = 0;
+    m_zoneDescChunkSize = 0;
     m_zoneDescIdx = 0;
     m_initialZone.clear();
     m_zones.fill({});

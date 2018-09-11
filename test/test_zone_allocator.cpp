@@ -32,11 +32,84 @@
 
 #include <catch2/catch.hpp>
 
+#include "test_utils.h"
+
 // Make access to private members for testing.
 // clang-format off
 #define private     public
 // clang-format on
 
+#include <page_allocator.h>
 #include <zone_allocator.h>
 
+#include <cstring>
+
 using namespace memory;
+
+TEST_CASE("ZoneAllocator is properly cleared", "[zone_allocator]")
+{
+    ZoneAllocator zoneAllocator;
+    std::memset(reinterpret_cast<void*>(&zoneAllocator), 0x5a, sizeof(ZoneAllocator));
+
+    zoneAllocator.clear();
+    REQUIRE(zoneAllocator.m_pageAllocator == nullptr);
+    REQUIRE(zoneAllocator.m_pageSize == 0);
+    REQUIRE(zoneAllocator.m_zoneDescChunkSize == 0);
+    REQUIRE(zoneAllocator.m_zoneDescIdx == 0);
+    REQUIRE(zoneAllocator.m_initialZone.m_next == nullptr);
+    REQUIRE(zoneAllocator.m_initialZone.m_prev == nullptr);
+    REQUIRE(zoneAllocator.m_initialZone.m_page == nullptr);
+    REQUIRE(zoneAllocator.m_initialZone.m_chunkSize == 0);
+    REQUIRE(zoneAllocator.m_initialZone.m_chunksCount == 0);
+    REQUIRE(zoneAllocator.m_initialZone.m_freeChunksCount == 0);
+    REQUIRE(zoneAllocator.m_initialZone.m_freeChunks == nullptr);
+    for (const auto& zone : zoneAllocator.m_zones) {
+        REQUIRE(zone.head == nullptr);
+        REQUIRE(zone.freeChunksCount == 0);
+    }
+}
+
+TEST_CASE("ZoneAllocator is properly initialized", "[zone_allocator]")
+{
+    std::size_t pageSize = 256;
+    std::size_t pagesCount = 256;
+    PageAllocator pageAllocator;
+
+    auto size = pageSize * pagesCount;
+    auto memory = test::alignedAlloc(pageSize, size);
+
+    // clang-format off
+    Region regions[] = {
+        {std::uintptr_t(memory.get()), size},
+        {0,                            0}
+    };
+    // clang-format on
+
+    REQUIRE(pageAllocator.init(regions, pageSize));
+
+    ZoneAllocator zoneAllocator;
+    REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
+    REQUIRE(zoneAllocator.m_pageAllocator == &pageAllocator);
+    REQUIRE(zoneAllocator.m_pageSize == pageSize);
+    REQUIRE(zoneAllocator.m_zoneDescChunkSize == 64);
+    REQUIRE(zoneAllocator.m_zoneDescIdx == 2);
+
+    REQUIRE(zoneAllocator.m_initialZone.m_next == nullptr);
+    REQUIRE(zoneAllocator.m_initialZone.m_prev == nullptr);
+    REQUIRE(zoneAllocator.m_initialZone.m_chunkSize == zoneAllocator.m_zoneDescChunkSize);
+    REQUIRE(zoneAllocator.m_initialZone.m_chunksCount == (pageSize / zoneAllocator.m_zoneDescChunkSize));
+    REQUIRE(zoneAllocator.m_initialZone.m_freeChunksCount == (pageSize / zoneAllocator.m_zoneDescChunkSize));
+    std::uintptr_t lastChunkAddr = zoneAllocator.m_initialZone.page()->address() + pageSize - zoneAllocator.m_zoneDescChunkSize;
+    REQUIRE(zoneAllocator.m_initialZone.m_freeChunks == reinterpret_cast<Chunk*>(lastChunkAddr));
+
+    auto* chunk = reinterpret_cast<Chunk*>(zoneAllocator.m_initialZone.page()->address());
+    for (std::size_t i = 0; i < zoneAllocator.m_initialZone.chunksCount(); ++i) {
+        REQUIRE(std::uintptr_t(chunk) == zoneAllocator.m_initialZone.page()->address() + i * zoneAllocator.m_zoneDescChunkSize);
+        chunk = chunk->m_prev;
+    }
+
+    for (const auto& zone : zoneAllocator.m_zones) {
+        REQUIRE(zone.head == nullptr);
+        REQUIRE(zone.freeChunksCount == 0);
+    }
+}
