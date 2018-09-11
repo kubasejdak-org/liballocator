@@ -134,7 +134,7 @@ private:
 
 private:
     static constexpr std::size_t MINIMAL_ALLOC_SIZE = 16;   ///< Minimal size of chunk, that can be allocated.
-    static constexpr std::size_t MAX_ZONE_IDX = 8;          ///< Maximal supported index of the zone.
+    static constexpr std::size_t MAX_ZONE_IDX = 8;          ///< Maximal supported entries in the zone array.
 
 private:
     /// @class ZoneInfo
