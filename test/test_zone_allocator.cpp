@@ -90,34 +90,44 @@ TEST_CASE("ZoneAllocator is properly initialized", "[zone_allocator]")
     REQUIRE(pageAllocator.init(regions, pageSize));
 
     ZoneAllocator zoneAllocator;
-    REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
-    REQUIRE(zoneAllocator.m_pageAllocator == &pageAllocator);
-    REQUIRE(zoneAllocator.m_pageSize == pageSize);
-    REQUIRE(zoneAllocator.m_zoneDescChunkSize == 64);
-    REQUIRE(zoneAllocator.m_zoneDescIdx == 2);
 
-    REQUIRE(zoneAllocator.m_initialZone.m_next == nullptr);
-    REQUIRE(zoneAllocator.m_initialZone.m_prev == nullptr);
-    REQUIRE(zoneAllocator.m_initialZone.m_chunkSize == zoneAllocator.m_zoneDescChunkSize);
-    REQUIRE(zoneAllocator.m_initialZone.m_chunksCount == (pageSize / zoneAllocator.m_zoneDescChunkSize));
-    REQUIRE(zoneAllocator.m_initialZone.m_freeChunksCount == (pageSize / zoneAllocator.m_zoneDescChunkSize));
-    std::uintptr_t lastChunkAddr = zoneAllocator.m_initialZone.page()->address() + pageSize - zoneAllocator.m_zoneDescChunkSize;
-    REQUIRE(zoneAllocator.m_initialZone.m_freeChunks == reinterpret_cast<Chunk*>(lastChunkAddr));
+    SECTION("Free pages are available")
+    {
+        REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
+        REQUIRE(zoneAllocator.m_pageAllocator == &pageAllocator);
+        REQUIRE(zoneAllocator.m_pageSize == pageSize);
+        REQUIRE(zoneAllocator.m_zoneDescChunkSize == 64);
+        REQUIRE(zoneAllocator.m_zoneDescIdx == 2);
 
-    auto* chunk = reinterpret_cast<Chunk*>(zoneAllocator.m_initialZone.page()->address());
-    for (std::size_t i = 0; i < zoneAllocator.m_initialZone.chunksCount(); ++i) {
-        REQUIRE(std::uintptr_t(chunk) == zoneAllocator.m_initialZone.page()->address() + i * zoneAllocator.m_zoneDescChunkSize);
-        chunk = chunk->m_prev;
-    }
+        REQUIRE(zoneAllocator.m_initialZone.m_next == nullptr);
+        REQUIRE(zoneAllocator.m_initialZone.m_prev == nullptr);
+        REQUIRE(zoneAllocator.m_initialZone.m_chunkSize == zoneAllocator.m_zoneDescChunkSize);
+        REQUIRE(zoneAllocator.m_initialZone.m_chunksCount == (pageSize / zoneAllocator.m_zoneDescChunkSize));
+        REQUIRE(zoneAllocator.m_initialZone.m_freeChunksCount == (pageSize / zoneAllocator.m_zoneDescChunkSize));
+        std::uintptr_t lastChunkAddr = zoneAllocator.m_initialZone.page()->address() + pageSize - zoneAllocator.m_zoneDescChunkSize;
+        REQUIRE(zoneAllocator.m_initialZone.m_freeChunks == reinterpret_cast<Chunk *>(lastChunkAddr));
 
-    for (const auto& zone : zoneAllocator.m_zones) {
-        if (zone.head == &zoneAllocator.m_initialZone) {
-            REQUIRE(zone.freeChunksCount == (pageSize / zoneAllocator.m_zoneDescChunkSize));
-            continue;
+        auto *chunk = reinterpret_cast<Chunk *>(zoneAllocator.m_initialZone.page()->address());
+        for (std::size_t i = 0; i < zoneAllocator.m_initialZone.chunksCount(); ++i) {
+            REQUIRE(std::uintptr_t(chunk) == zoneAllocator.m_initialZone.page()->address() + i * zoneAllocator.m_zoneDescChunkSize);
+            chunk = chunk->m_prev;
         }
 
-        REQUIRE(zone.head == nullptr);
-        REQUIRE(zone.freeChunksCount == 0);
+        for (const auto &zone : zoneAllocator.m_zones) {
+            if (zone.head == &zoneAllocator.m_initialZone) {
+                REQUIRE(zone.freeChunksCount == (pageSize / zoneAllocator.m_zoneDescChunkSize));
+                continue;
+            }
+
+            REQUIRE(zone.head == nullptr);
+            REQUIRE(zone.freeChunksCount == 0);
+        }
+    }
+
+    SECTION("Free pages are unavailable")
+    {
+        REQUIRE(pageAllocator.allocate(pageAllocator.m_freePagesCount));
+        REQUIRE(!zoneAllocator.init(&pageAllocator, pageSize));
     }
 }
 
@@ -416,8 +426,8 @@ TEST_CASE("Zone allocator properly checks if a zone should be allocated", "[zone
     SECTION("Allocating from zoneDescIdx index, trigger satisfied")
     {
         idx = zoneAllocator.m_zoneDescIdx;
-        std::size_t removeCount = zoneAllocator.m_zones[idx].freeChunksCount - 1;
-        for (std::size_t i = 0; i < removeCount; ++i) {
+        std::size_t takeCount = zoneAllocator.m_zones[idx].freeChunksCount - 1;
+        for (std::size_t i = 0; i < takeCount; ++i) {
             zoneAllocator.m_zones[idx].head->takeChunk();
             --zoneAllocator.m_zones[idx].freeChunksCount;
         }
@@ -448,8 +458,8 @@ TEST_CASE("Zone allocator properly checks if a zone should be allocated", "[zone
         zoneAllocator.addZone(&zone);
 
         idx = zoneAllocator.zoneIdx(chunkSize);
-        std::size_t removeCount = zoneAllocator.m_zones[idx].freeChunksCount;
-        for (std::size_t i = 0; i < removeCount; ++i) {
+        std::size_t takeCount = zoneAllocator.m_zones[idx].freeChunksCount;
+        for (std::size_t i = 0; i < takeCount; ++i) {
             zoneAllocator.m_zones[idx].head->takeChunk();
             --zoneAllocator.m_zones[idx].freeChunksCount;
         }
@@ -458,10 +468,116 @@ TEST_CASE("Zone allocator properly checks if a zone should be allocated", "[zone
     }
 }
 
+TEST_CASE("Zone allocator properly finds free zones", "[zone_allocator]")
+{
+    std::size_t pageSize = 256;
+    std::size_t pagesCount = 256;
+    PageAllocator pageAllocator;
+
+    auto size = pageSize * pagesCount;
+    auto memory = test::alignedAlloc(pageSize, size);
+
+    // clang-format off
+    Region regions[] = {
+        {std::uintptr_t(memory.get()), size},
+        {0,                            0}
+    };
+    // clang-format on
+
+    REQUIRE(pageAllocator.init(regions, pageSize));
+
+    ZoneAllocator zoneAllocator;
+    REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
+
+    std::size_t idx = 0;
+
+    SECTION("No free zones are available at all")
+    {
+        idx = zoneAllocator.m_zoneDescIdx;
+        std::size_t takeCount = zoneAllocator.m_zones[idx].freeChunksCount;
+        for (std::size_t i = 0; i < takeCount; ++i) {
+            zoneAllocator.m_zones[idx].head->takeChunk();
+            --zoneAllocator.m_zones[idx].freeChunksCount;
+        }
+
+        REQUIRE(zoneAllocator.m_zones[idx].freeChunksCount == 0);
+        REQUIRE(!zoneAllocator.getFreeZone(idx));
+    }
+
+    SECTION("One free zone is available with, but with different index")
+    {
+        idx = zoneAllocator.m_zoneDescIdx + 1;
+        REQUIRE(!zoneAllocator.getFreeZone(idx));
+    }
+
+    SECTION("One free zone with demanded index is available")
+    {
+        idx = zoneAllocator.m_zoneDescIdx;
+        REQUIRE(zoneAllocator.getFreeZone(idx) == &zoneAllocator.m_initialZone);
+    }
+
+    SECTION("Two zones with the same index available, only second has free chunks")
+    {
+        Zone zone;
+        zone.clear();
+        std::size_t chunkSize = zoneAllocator.m_zoneDescChunkSize;
+        zoneAllocator.initZone(&zone, chunkSize);
+        zoneAllocator.addZone(&zone);
+
+        idx = zoneAllocator.m_zoneDescIdx;
+        std::size_t takeCount = zone.m_freeChunksCount;
+        for (std::size_t i = 0; i < takeCount; ++i) {
+            zoneAllocator.m_zones[idx].head->takeChunk();
+            --zoneAllocator.m_zones[idx].freeChunksCount;
+        }
+
+        REQUIRE(zoneAllocator.getFreeZone(idx) == &zoneAllocator.m_initialZone);
+    }
+}
+
+TEST_CASE("Zone allocator properly allocates chunks", "[zone_allocator]")
+{
+    SECTION("Allocate chunk from zone with index 0")
+    {
+    }
+
+    SECTION("Allocate chunk from zone with index 3")
+    {
+    }
+}
+
+TEST_CASE("Zone allocator properly deallocates chunks", "[zone_allocator]")
+{
+    SECTION("Deallocate chunk from zone with index 0")
+    {
+    }
+
+    SECTION("Deallocate chunk from zone with index 3")
+    {
+    }
+
+    SECTION("Deallocate address from the middle of the valid chunk")
+    {
+    }
+
+    SECTION("Deallocate invalid chunk")
+    {
+    }
+
+    SECTION("Deallocate last chunk from zone with index 0")
+    {
+    }
+
+    SECTION("Deallocate last chunk from zone with index m_zoneDescIdx, but not from initial zone")
+    {
+    }
+
+    SECTION("Deallocate last chunk from initial zone")
+    {
+    }
+}
+
 // TODO: Tests for:
-// - getFreeZone(),
-// - allocateChunk(),
-// - deallocateChunk(),
 // - allocateZone(),
 // - allocate(),
 // - release().
