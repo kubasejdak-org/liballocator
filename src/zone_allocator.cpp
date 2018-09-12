@@ -53,7 +53,11 @@ bool ZoneAllocator::init(PageAllocator* pageAllocator, std::size_t pageSize)
     m_pageSize = pageSize;
     m_zoneDescChunkSize = chunkSize(sizeof(Zone));
     m_zoneDescIdx = zoneIdx(m_zoneDescChunkSize);
-    return initZone(&m_initialZone, m_zoneDescChunkSize);
+    if (!initZone(&m_initialZone, m_zoneDescChunkSize))
+        return false;
+
+    addZone(&m_initialZone);
+    return true;
 }
 
 void ZoneAllocator::clear()

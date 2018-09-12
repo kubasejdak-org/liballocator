@@ -111,6 +111,11 @@ TEST_CASE("ZoneAllocator is properly initialized", "[zone_allocator]")
     }
 
     for (const auto& zone : zoneAllocator.m_zones) {
+        if (zone.head == &zoneAllocator.m_initialZone) {
+            REQUIRE(zone.freeChunksCount == (pageSize / zoneAllocator.m_zoneDescChunkSize));
+            continue;
+        }
+
         REQUIRE(zone.head == nullptr);
         REQUIRE(zone.freeChunksCount == 0);
     }
@@ -378,8 +383,82 @@ TEST_CASE("Zone allocator properly finds the zones", "[zone_allocator]")
     }
 }
 
+TEST_CASE("Zone allocator properly checks if a zone should be allocated", "[zone_allocator]")
+{
+    std::size_t pageSize = 256;
+    std::size_t pagesCount = 256;
+    PageAllocator pageAllocator;
+
+    auto size = pageSize * pagesCount;
+    auto memory = test::alignedAlloc(pageSize, size);
+
+    // clang-format off
+    Region regions[] = {
+        {std::uintptr_t(memory.get()), size},
+        {0,                            0}
+    };
+    // clang-format on
+
+    REQUIRE(pageAllocator.init(regions, pageSize));
+
+    ZoneAllocator zoneAllocator;
+    REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
+
+    std::size_t idx = 0;
+
+    SECTION("Allocating from zoneDescIdx index, trigger not satisfied")
+    {
+        idx = zoneAllocator.m_zoneDescIdx;
+        REQUIRE(zoneAllocator.m_zones[idx].freeChunksCount == 4);
+        REQUIRE(!zoneAllocator.shouldAllocateZone(idx));
+    }
+
+    SECTION("Allocating from zoneDescIdx index, trigger satisfied")
+    {
+        idx = zoneAllocator.m_zoneDescIdx;
+        std::size_t removeCount = zoneAllocator.m_zones[idx].freeChunksCount - 1;
+        for (std::size_t i = 0; i < removeCount; ++i) {
+            zoneAllocator.m_zones[idx].head->takeChunk();
+            --zoneAllocator.m_zones[idx].freeChunksCount;
+        }
+
+        REQUIRE(zoneAllocator.m_zones[idx].freeChunksCount == 1);
+        REQUIRE(zoneAllocator.shouldAllocateZone(idx));
+    }
+
+    SECTION("Allocating from other index than zoneDescIdx, trigger not satisfied")
+    {
+        Zone zone;
+        zone.clear();
+        std::size_t chunkSize = 16;
+        zoneAllocator.initZone(&zone, chunkSize);
+        zoneAllocator.addZone(&zone);
+
+        idx = zoneAllocator.zoneIdx(chunkSize);
+        REQUIRE(zoneAllocator.m_zones[idx].freeChunksCount == (pageSize / chunkSize));
+        REQUIRE(!zoneAllocator.shouldAllocateZone(idx));
+    }
+
+    SECTION("Allocating from other index than zoneDescIdx, trigger satisfied")
+    {
+        Zone zone;
+        zone.clear();
+        std::size_t chunkSize = 16;
+        zoneAllocator.initZone(&zone, chunkSize);
+        zoneAllocator.addZone(&zone);
+
+        idx = zoneAllocator.zoneIdx(chunkSize);
+        std::size_t removeCount = zoneAllocator.m_zones[idx].freeChunksCount;
+        for (std::size_t i = 0; i < removeCount; ++i) {
+            zoneAllocator.m_zones[idx].head->takeChunk();
+            --zoneAllocator.m_zones[idx].freeChunksCount;
+        }
+        REQUIRE(zoneAllocator.m_zones[idx].freeChunksCount == 0);
+        REQUIRE(zoneAllocator.shouldAllocateZone(idx));
+    }
+}
+
 // TODO: Tests for:
-// - shouldAllocateZone(),
 // - getFreeZone(),
 // - allocateChunk(),
 // - deallocateChunk(),
