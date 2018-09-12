@@ -74,15 +74,40 @@ private:
     /// @return Allocated memory chunk.
     /// @note Template parameter is used here to cast the returned value the given type.
     template <typename T>
-    T* allocateChunk(Zone* zone);
-
+    T* allocateChunk(Zone* zone)
+    {
+        std::size_t idx = zoneIdx(zone->chunkSize());
+        m_zones[idx].freeChunksCount--;
+        return reinterpret_cast<T*>(zone->takeChunk());
+    }
     
     /// @brief Deallocates memory chunk to the given zone.
     /// @param[in] chunk                Chunk to be deallocated.
     /// @return True on success, false otherwise.
     /// @note Template parameter is used here to accept any input without casting.
     template <typename T>
-    bool deallocateChunk(T* chunk);
+    bool deallocateChunk(T* chunk)
+    {
+        auto* zoneChunk = reinterpret_cast<Chunk*>(chunk);
+        auto* zone = findZone(zoneChunk);
+        if (!zone)
+            return false;
+
+        if (!zone->isValidChunk(zoneChunk))
+            return false;
+
+        std::size_t idx = zoneIdx(zone->chunkSize());
+        m_zones[idx].freeChunksCount++;
+        zone->giveChunk(zoneChunk);
+
+        if (zone->chunksCount() == zone->freeChunksCount()) {
+            removeZone(zone);
+            clearZone(zone);
+            return deallocateChunk(zone);
+        }
+
+        return true;
+    }
 
     /// @brief Returns size rounded up to the closest chunk size.
     /// @param[in] size                 Size to be rounded up.

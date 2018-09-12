@@ -537,12 +537,61 @@ TEST_CASE("Zone allocator properly finds free zones", "[zone_allocator]")
 
 TEST_CASE("Zone allocator properly allocates chunks", "[zone_allocator]")
 {
+    std::size_t pageSize = 256;
+    std::size_t pagesCount = 256;
+    PageAllocator pageAllocator;
+
+    auto size = pageSize * pagesCount;
+    auto memory = test::alignedAlloc(pageSize, size);
+
+    // clang-format off
+    Region regions[] = {
+        {std::uintptr_t(memory.get()), size},
+        {0,                            0}
+    };
+    // clang-format on
+
+    REQUIRE(pageAllocator.init(regions, pageSize));
+
+    ZoneAllocator zoneAllocator;
+    REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
+
+    std::size_t idx = 0;
+
     SECTION("Allocate chunk from zone with index 0")
     {
+        Zone zone;
+        zone.clear();
+        std::size_t chunkSize = 16;
+        zoneAllocator.initZone(&zone, chunkSize);
+        zoneAllocator.addZone(&zone);
+
+        idx = zoneAllocator.zoneIdx(chunkSize);
+        std::size_t freeChunksCount = zoneAllocator.m_zones[idx].freeChunksCount;
+
+        auto* chunk = zoneAllocator.allocateChunk<Chunk>(&zone);
+        REQUIRE(chunk);
+        REQUIRE(zone.isValidChunk(chunk));
+        REQUIRE(zone.m_freeChunksCount == zone.m_chunksCount - 1);
+        REQUIRE(zoneAllocator.m_zones[idx].freeChunksCount == freeChunksCount - 1);
     }
 
     SECTION("Allocate chunk from zone with index 3")
     {
+        Zone zone;
+        zone.clear();
+        std::size_t chunkSize = 128;
+        zoneAllocator.initZone(&zone, chunkSize);
+        zoneAllocator.addZone(&zone);
+
+        idx = zoneAllocator.zoneIdx(chunkSize);
+        std::size_t freeChunksCount = zoneAllocator.m_zones[idx].freeChunksCount;
+
+        auto* chunk = zoneAllocator.allocateChunk<Chunk>(&zone);
+        REQUIRE(chunk);
+        REQUIRE(zone.isValidChunk(chunk));
+        REQUIRE(zone.m_freeChunksCount == zone.m_chunksCount - 1);
+        REQUIRE(zoneAllocator.m_zones[idx].freeChunksCount == freeChunksCount - 1);
     }
 }
 

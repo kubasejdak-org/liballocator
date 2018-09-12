@@ -100,38 +100,6 @@ void ZoneAllocator::release(void* ptr)
     m_pageAllocator->release(pages);
 }
 
-template <typename T>
-T* ZoneAllocator::allocateChunk(Zone* zone)
-{
-    std::size_t idx = zoneIdx(zone->chunkSize());
-    m_zones[idx].freeChunksCount--;
-    return reinterpret_cast<T*>(zone->takeChunk());
-}
-
-template <typename T>
-bool ZoneAllocator::deallocateChunk(T* chunk)
-{
-    auto* zoneChunk = reinterpret_cast<Chunk*>(chunk);
-    auto* zone = findZone(zoneChunk);
-    if (!zone)
-        return false;
-
-    if (!zone->isValidChunk(zoneChunk))
-        return false;
-
-    std::size_t idx = zoneIdx(zone->chunkSize());
-    m_zones[idx].freeChunksCount++;
-    zone->giveChunk(zoneChunk);
-
-    if (zone->chunksCount() == zone->freeChunksCount()) {
-        removeZone(zone);
-        clearZone(zone);
-        return deallocateChunk(zone);
-    }
-
-    return true;
-}
-
 std::size_t ZoneAllocator::chunkSize(std::size_t size)
 {
     std::size_t chunkSize = (size < MINIMAL_ALLOC_SIZE) ? MINIMAL_ALLOC_SIZE : size;
