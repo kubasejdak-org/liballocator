@@ -328,8 +328,57 @@ TEST_CASE("Zone is properly removed", "[zone_allocator]")
     REQUIRE(!found);
 }
 
+TEST_CASE("Zone allocator properly finds the zones", "[zone_allocator]")
+{
+    std::size_t pageSize = 256;
+    std::size_t pagesCount = 256;
+    PageAllocator pageAllocator;
+
+    auto size = pageSize * pagesCount;
+    auto memory = test::alignedAlloc(pageSize, size);
+
+    // clang-format off
+    Region regions[] = {
+        {std::uintptr_t(memory.get()), size},
+        {0,                            0}
+    };
+    // clang-format on
+
+    REQUIRE(pageAllocator.init(regions, pageSize));
+
+    ZoneAllocator zoneAllocator;
+    REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
+
+    Zone zone;
+    zone.clear();
+
+    Page* page = pageAllocator.allocate(1);
+    Chunk* chunk = nullptr;
+
+    SECTION("Existing chunk from index 0")
+    {
+        zoneAllocator.initZone(&zone, 16);
+        zoneAllocator.addZone(&zone);
+        chunk = zone.takeChunk();
+        REQUIRE(zoneAllocator.findZone(chunk) == &zone);
+    }
+
+    SECTION("Existing chunk from index 3")
+    {
+        zoneAllocator.initZone(&zone, 128);
+        zoneAllocator.addZone(&zone);
+        chunk = zone.takeChunk();
+        REQUIRE(zoneAllocator.findZone(chunk) == &zone);
+    }
+
+    SECTION("Non-existing chunk")
+    {
+        chunk = reinterpret_cast<Chunk*>(page->address());
+        REQUIRE(!zoneAllocator.findZone(chunk));
+    }
+}
+
 // TODO: Tests for:
-// - findZone(),
 // - shouldAllocateZone(),
 // - getFreeZone(),
 // - allocateChunk(),
