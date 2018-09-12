@@ -215,11 +215,11 @@ Zone* ZoneAllocator::findZone(Chunk* chunk)
     assert(chunk);
 
     auto chunkAddr = reinterpret_cast<std::uintptr_t>(chunk);
-    auto* page = reinterpret_cast<Page*>(chunkAddr & ~(m_pageSize - 1));
+    auto pageAddr = chunkAddr & ~(m_pageSize - 1);
 
     for (auto& zoneInfo : m_zones) {
         for (auto* zone = zoneInfo.head; zone != nullptr; zone = zone->next()) {
-            if (zone->page() == page)
+            if (zone->page()->address() == pageAddr)
                 return zone;
         }
     }
