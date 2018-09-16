@@ -80,6 +80,11 @@ public:
     /// @param[in] pages            List of pages to be released.
     void release(Page* pages);
 
+    /// @brief Returns the Page, which contains the given address.
+    /// @param[in] addr             Address for which Page should be found.
+    /// @return Pointer to Page containing given address if found, nullptr otherwise.
+    Page* getPage(std::uintptr_t addr);
+
 private:
     /// @brief Returns the total number of pages from all known regions.
     /// @return Number of all pages from all known regions.
@@ -102,11 +107,6 @@ private:
     /// @param[in] addr             Address for which RegionInfo should be found.
     /// @return Pointer to RegionInfo containing given address if found, nullptr otherwise.
     RegionInfo* getRegion(std::uintptr_t addr);
-
-    /// @brief Returns the Page, which contains the given address.
-    /// @param[in] addr             Address for which Page should be found.
-    /// @return Pointer to Page containing given address if found, nullptr otherwise.
-    Page* getPage(std::uintptr_t addr);
 
     /// @brief Returns the current statistics of PageAllocator.
     /// @return PageAllocator statistics.

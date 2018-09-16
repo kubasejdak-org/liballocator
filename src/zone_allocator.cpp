@@ -96,8 +96,8 @@ void ZoneAllocator::release(void* ptr)
     if (deallocateChunk(ptr))
         return;
 
-    auto* pages = reinterpret_cast<Page*>(ptr);
-    m_pageAllocator->release(pages);
+    if (auto* pages = m_pageAllocator->getPage(std::uintptr_t(ptr)))
+        m_pageAllocator->release(pages);
 }
 
 std::size_t ZoneAllocator::chunkSize(std::size_t size)

@@ -184,6 +184,25 @@ void PageAllocator::release(Page* pages)
     addGroup(joinedGroup);
 }
 
+Page* PageAllocator::getPage(std::uintptr_t addr)
+{
+    auto alignedAddr = addr & ~(m_pageSize - 1);
+
+    RegionInfo* pageRegion = getRegion(alignedAddr);
+    if (!pageRegion)
+        return nullptr;
+
+    Page* result = nullptr;
+    for (auto* page = pageRegion->firstPage; page <= pageRegion->lastPage; page = page->nextSibling()) {
+        if (page->address() == alignedAddr) {
+            result = page;
+            break;
+        }
+    }
+
+    return result;
+}
+
 std::size_t PageAllocator::countPages()
 {
     std::size_t pagesCount = 0;
@@ -244,25 +263,6 @@ RegionInfo* PageAllocator::getRegion(std::uintptr_t addr)
     }
 
     return nullptr;
-}
-
-Page* PageAllocator::getPage(std::uintptr_t addr)
-{
-    auto alignedAddr = addr & ~(m_pageSize - 1);
-
-    RegionInfo* pageRegion = getRegion(alignedAddr);
-    if (!pageRegion)
-        return nullptr;
-
-    Page* result = nullptr;
-    for (auto* page = pageRegion->firstPage; page <= pageRegion->lastPage; page = page->nextSibling()) {
-        if (page->address() == alignedAddr) {
-            result = page;
-            break;
-        }
-    }
-
-    return result;
 }
 
 PageAllocator::Stats PageAllocator::getStats()

@@ -43,6 +43,7 @@
 #include <utils.h>
 #include <zone_allocator.h>
 
+#include <array>
 #include <cmath>
 #include <cstring>
 #include <map>
@@ -867,55 +868,276 @@ TEST_CASE("Zone allocator properly allocates zones", "[zone_allocator]")
 
 TEST_CASE("Zone allocator properly allocates user memory", "[zone_allocator]")
 {
+    std::size_t pageSize = 256;
+    std::size_t pagesCount = 256;
+    PageAllocator pageAllocator;
+
+    auto size = pageSize * pagesCount;
+    auto memory = test::alignedAlloc(pageSize, size);
+
+    // clang-format off
+    Region regions[] = {
+        {std::uintptr_t(memory.get()), size},
+        {0,                            0}
+    };
+    // clang-format on
+
+    REQUIRE(pageAllocator.init(regions, pageSize));
+
+    ZoneAllocator zoneAllocator;
+    REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
+
     SECTION("Allocate 0 bytes")
     {
+        std::size_t freePagesCount = pageAllocator.m_freePagesCount;
+        REQUIRE(!zoneAllocator.allocate(0));
+        REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
     }
 
     SECTION("Allocate size equal to 3 pages")
     {
+        std::size_t allocPagesCount = 3;
+        std::size_t allocSize = allocPagesCount * pageSize;
+        std::size_t freePagesCount = pageAllocator.m_freePagesCount;
+        REQUIRE(zoneAllocator.allocate(allocSize));
+        REQUIRE(pageAllocator.m_freePagesCount == freePagesCount - allocPagesCount);
     }
 
     SECTION("Allocate 6 bytes")
     {
+        std::size_t allocSize = 6;
+        std::size_t idx = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize));
+        std::size_t freePagesCount = pageAllocator.m_freePagesCount;
+        std::size_t freeChunksCount = zoneAllocator.m_zones[idx].freeChunksCount;
+        auto* ptr = zoneAllocator.allocate(allocSize);
+        REQUIRE(ptr);
+        REQUIRE(pageAllocator.m_freePagesCount == freePagesCount - 1);
+        std::size_t chunkSize = zoneAllocator.m_zones[idx].head->chunkSize();
+        REQUIRE(zoneAllocator.m_zones[idx].freeChunksCount == freeChunksCount + chunkSize - 1);
+
+        bool valid = false;
+        for (auto* zone = zoneAllocator.m_zones[idx].head; zone != nullptr; zone = zone->next()) {
+            if (zone->isValidChunk(reinterpret_cast<Chunk*>(ptr))) {
+                valid = true;
+                break;
+            }
+        }
+        REQUIRE(valid);
     }
 
     SECTION("Allocate 16 bytes")
     {
+        std::size_t allocSize = 16;
+        std::size_t idx = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize));
+        std::size_t freePagesCount = pageAllocator.m_freePagesCount;
+        std::size_t freeChunksCount = zoneAllocator.m_zones[idx].freeChunksCount;
+        auto* ptr = zoneAllocator.allocate(allocSize);
+        REQUIRE(ptr);
+        REQUIRE(pageAllocator.m_freePagesCount == freePagesCount - 1);
+        std::size_t chunkSize = zoneAllocator.m_zones[idx].head->chunkSize();
+        REQUIRE(zoneAllocator.m_zones[idx].freeChunksCount == freeChunksCount + chunkSize - 1);
+
+        bool valid = false;
+        for (auto* zone = zoneAllocator.m_zones[idx].head; zone != nullptr; zone = zone->next()) {
+            if (zone->isValidChunk(reinterpret_cast<Chunk*>(ptr))) {
+                valid = true;
+                break;
+            }
+        }
+        REQUIRE(valid);
     }
 
     SECTION("Allocate 64 bytes")
     {
+        std::size_t allocSize = 64;
+        std::size_t idx = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize));
+        std::size_t freePagesCount = pageAllocator.m_freePagesCount;
+        std::size_t freeChunksCount = zoneAllocator.m_zones[idx].freeChunksCount;
+        auto* ptr = zoneAllocator.allocate(allocSize);
+        REQUIRE(ptr);
+        REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
+        REQUIRE(zoneAllocator.m_zones[idx].freeChunksCount == freeChunksCount - 1);
+
+        bool valid = false;
+        for (auto* zone = zoneAllocator.m_zones[idx].head; zone != nullptr; zone = zone->next()) {
+            if (zone->isValidChunk(reinterpret_cast<Chunk*>(ptr))) {
+                valid = true;
+                break;
+            }
+        }
+        REQUIRE(valid);
     }
 
-    SECTION("Allocate 157 bytes 4 times")
+    SECTION("Allocate 64 bytes 6 times")
     {
+        std::size_t allocSize = 64;
+        std::size_t idx = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize));
+        std::size_t freePagesCount = pageAllocator.m_freePagesCount;
+
+        std::array<void*, 6> ptrs{};
+        for (void*& ptr : ptrs) {
+            ptr = zoneAllocator.allocate(allocSize);
+            REQUIRE(ptr);
+        }
+
+        REQUIRE(pageAllocator.m_freePagesCount == freePagesCount - 1);
+        REQUIRE(zoneAllocator.m_zones[idx].freeChunksCount == 1);
+
+        for (void* ptr : ptrs) {
+            bool valid = false;
+            for (auto* zone = zoneAllocator.m_zones[idx].head; zone != nullptr; zone = zone->next()) {
+                if (zone->isValidChunk(reinterpret_cast<Chunk*>(ptr))) {
+                    valid = true;
+                    break;
+                }
+            }
+            REQUIRE(valid);
+        }
+    }
+
+    SECTION("Allocate 115 bytes 4 times")
+    {
+        std::size_t allocSize = 115;
+        std::size_t idx = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize));
+        std::size_t freePagesCount = pageAllocator.m_freePagesCount;
+
+        std::array<void*, 4> ptrs{};
+        for (void*& ptr : ptrs) {
+            ptr = zoneAllocator.allocate(allocSize);
+            REQUIRE(ptr);
+        }
+
+        REQUIRE(pageAllocator.m_freePagesCount == freePagesCount - 2);
+        REQUIRE(zoneAllocator.m_zones[idx].freeChunksCount == 0);
+
+        for (void* ptr : ptrs) {
+            bool valid = false;
+            for (auto* zone = zoneAllocator.m_zones[idx].head; zone != nullptr; zone = zone->next()) {
+                if (zone->isValidChunk(reinterpret_cast<Chunk*>(ptr))) {
+                    valid = true;
+                    break;
+                }
+            }
+            REQUIRE(valid);
+        }
     }
 }
 
 TEST_CASE("Zone allocator properly releases user memory", "[zone_allocator]")
 {
+    std::size_t pageSize = 256;
+    std::size_t pagesCount = 256;
+    PageAllocator pageAllocator;
+
+    auto size = pageSize * pagesCount;
+    auto memory = test::alignedAlloc(pageSize, size);
+
+    // clang-format off
+    Region regions[] = {
+        {std::uintptr_t(memory.get()), size},
+        {0,                            0}
+    };
+    // clang-format on
+
+    REQUIRE(pageAllocator.init(regions, pageSize));
+
+    ZoneAllocator zoneAllocator;
+    REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
+
     SECTION("Release nullptr")
     {
+        std::size_t freePagesCount = pageAllocator.m_freePagesCount;
+        zoneAllocator.release(nullptr);
+        REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
+    }
+
+    SECTION("Release invalid pointer")
+    {
+        std::size_t freePagesCount = pageAllocator.m_freePagesCount;
+        zoneAllocator.release(reinterpret_cast<void*>(0xdeadbeef));
+        REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
     }
 
     SECTION("Release memory with size equal to 3 pages")
     {
+        std::size_t allocPagesCount = 3;
+        std::size_t allocSize = allocPagesCount * pageSize;
+        std::size_t freePagesCount = pageAllocator.m_freePagesCount;
+        auto* ptr = zoneAllocator.allocate(allocSize);
+        zoneAllocator.release(ptr);
+        REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
     }
 
     SECTION("Release 6 bytes")
     {
+        std::size_t allocSize = 6;
+        std::size_t idx = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize));
+        std::size_t freePagesCount = pageAllocator.m_freePagesCount;
+        std::size_t freeChunksCount = zoneAllocator.m_zones[idx].freeChunksCount;
+        auto* ptr = zoneAllocator.allocate(allocSize);
+        zoneAllocator.release(ptr);
+        REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
+        REQUIRE(zoneAllocator.m_zones[idx].freeChunksCount == freeChunksCount);
     }
 
     SECTION("Release 16 bytes")
     {
+        std::size_t allocSize = 16;
+        std::size_t idx = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize));
+        std::size_t freePagesCount = pageAllocator.m_freePagesCount;
+        std::size_t freeChunksCount = zoneAllocator.m_zones[idx].freeChunksCount;
+        auto* ptr = zoneAllocator.allocate(allocSize);
+        zoneAllocator.release(ptr);
+        REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
+        REQUIRE(zoneAllocator.m_zones[idx].freeChunksCount == freeChunksCount);
     }
 
     SECTION("Release 64 bytes")
     {
+        std::size_t allocSize = 64;
+        std::size_t idx = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize));
+        std::size_t freePagesCount = pageAllocator.m_freePagesCount;
+        std::size_t freeChunksCount = zoneAllocator.m_zones[idx].freeChunksCount;
+        auto* ptr = zoneAllocator.allocate(allocSize);
+        zoneAllocator.release(ptr);
+        REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
+        REQUIRE(zoneAllocator.m_zones[idx].freeChunksCount == freeChunksCount);
     }
 
-    SECTION("Release 157 bytes 4 times")
+    SECTION("Release 64 bytes 6 times")
     {
+        std::size_t allocSize = 64;
+        std::size_t idx = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize));
+        std::size_t freePagesCount = pageAllocator.m_freePagesCount;
+        std::size_t freeChunksCount = zoneAllocator.m_zones[idx].freeChunksCount;
+
+        std::array<void*, 6> ptrs{};
+        for (void*& ptr : ptrs)
+            ptr = zoneAllocator.allocate(allocSize);
+
+        for (void* ptr : ptrs)
+            zoneAllocator.release(ptr);
+
+        REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
+        REQUIRE(zoneAllocator.m_zones[idx].freeChunksCount == freeChunksCount);
+    }
+
+    SECTION("Release 115 bytes 4 times")
+    {
+        std::size_t allocSize = 115;
+        std::size_t idx = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize));
+        std::size_t freePagesCount = pageAllocator.m_freePagesCount;
+        std::size_t freeChunksCount = zoneAllocator.m_zones[idx].freeChunksCount;
+
+        std::array<void*, 4> ptrs{};
+        for (void*& ptr : ptrs)
+            ptr = zoneAllocator.allocate(allocSize);
+
+        for (void* ptr : ptrs)
+            zoneAllocator.release(ptr);
+
+        REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
+        REQUIRE(zoneAllocator.m_zones[idx].freeChunksCount == freeChunksCount);
     }
 }
 
