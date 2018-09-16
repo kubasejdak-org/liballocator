@@ -100,7 +100,7 @@ private:
         m_zones[idx].freeChunksCount++;
         zone->giveChunk(zoneChunk);
 
-        if (zone->chunksCount() == zone->freeChunksCount()) {
+        if (zone->chunksCount() == zone->freeChunksCount() && zone != &m_initialZone) {
             removeZone(zone);
             clearZone(zone);
             return deallocateChunk(zone);
