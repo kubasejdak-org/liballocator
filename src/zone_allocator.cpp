@@ -77,14 +77,19 @@ void* ZoneAllocator::allocate(std::size_t size)
 
     if (size >= m_pageSize) {
         auto pageCount = static_cast<std::size_t>(std::ceil(double(size) / double(m_pageSize)));
-        auto* page = m_pageAllocator->allocate(pageCount);
-        return reinterpret_cast<void*>(page->address());
+        if (auto* page = m_pageAllocator->allocate(pageCount))
+            return reinterpret_cast<void*>(page->address());
+
+        return nullptr;
     }
 
     std::size_t allocSize = chunkSize(size);
     std::size_t idx = zoneIdx(allocSize);
 
     Zone* zone = shouldAllocateZone(idx) ? allocateZone(allocSize) : getFreeZone(idx);
+    if (!zone)
+        return nullptr;
+
     return allocateChunk<void>(zone);
 }
 
