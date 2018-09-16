@@ -757,7 +757,168 @@ TEST_CASE("Zone allocator properly deallocates chunks", "[zone_allocator]")
     }
 }
 
-// TODO: Tests for:
-// - allocateZone(),
-// - allocate(),
-// - release().
+TEST_CASE("Zone allocator properly allocates zones", "[zone_allocator]")
+{
+    std::size_t pageSize = 256;
+    std::size_t pagesCount = 256;
+    PageAllocator pageAllocator;
+
+    auto size = pageSize * pagesCount;
+    auto memory = test::alignedAlloc(pageSize, size);
+
+    // clang-format off
+    Region regions[] = {
+        {std::uintptr_t(memory.get()), size},
+        {0,                            0}
+    };
+    // clang-format on
+
+    REQUIRE(pageAllocator.init(regions, pageSize));
+
+    ZoneAllocator zoneAllocator;
+    REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
+
+    SECTION("Allocate zone with index 0, no need to preallocate a zone for zone descriptors")
+    {
+        std::size_t chunkSize = 16;
+        std::size_t idx = zoneAllocator.zoneIdx(chunkSize);
+
+        auto* zone = zoneAllocator.allocateZone(chunkSize);
+        REQUIRE(zone);
+        REQUIRE(zone->chunkSize() == chunkSize);
+
+        bool found = false;
+        for (auto* it = zoneAllocator.m_zones[idx].head; it != nullptr; it = it->next()) {
+            if (it == zone) {
+                found = true;
+                break;
+            }
+        }
+        REQUIRE(found);
+    }
+
+    SECTION("Allocate zone with index 0, need to preallocate a zone for zone descriptors")
+    {
+        std::size_t chunkSize = 16;
+        std::size_t idx = zoneAllocator.zoneIdx(chunkSize);
+
+        zoneAllocator.allocateChunk<Chunk>(&zoneAllocator.m_initialZone);
+        zoneAllocator.allocateChunk<Chunk>(&zoneAllocator.m_initialZone);
+        zoneAllocator.allocateChunk<Chunk>(&zoneAllocator.m_initialZone);
+        auto* zone = zoneAllocator.allocateZone(chunkSize);
+        REQUIRE(zone);
+        REQUIRE(zone->chunkSize() == chunkSize);
+
+        bool found = false;
+        for (auto* it = zoneAllocator.m_zones[idx].head; it != nullptr; it = it->next()) {
+            if (it == zone) {
+                found = true;
+                break;
+            }
+        }
+        REQUIRE(found);
+    }
+
+    SECTION("Allocate zone with index 3, no need to preallocate a zone for zone descriptors")
+    {
+        std::size_t chunkSize = 128;
+        std::size_t idx = zoneAllocator.zoneIdx(chunkSize);
+
+        auto* zone = zoneAllocator.allocateZone(chunkSize);
+        REQUIRE(zone);
+        REQUIRE(zone->chunkSize() == chunkSize);
+
+        bool found = false;
+        for (auto* it = zoneAllocator.m_zones[idx].head; it != nullptr; it = it->next()) {
+            if (it == zone) {
+                found = true;
+                break;
+            }
+        }
+        REQUIRE(found);
+    }
+
+    SECTION("Allocate zone with index m_zoneDescIdx, no need to preallocate a zone for zone descriptors")
+    {
+        std::size_t chunkSize = 64;
+        std::size_t idx = zoneAllocator.zoneIdx(chunkSize);
+
+        auto* zone = zoneAllocator.allocateZone(chunkSize);
+        REQUIRE(zone);
+        REQUIRE(zone->chunkSize() == chunkSize);
+
+        bool found = false;
+        for (auto* it = zoneAllocator.m_zones[idx].head; it != nullptr; it = it->next()) {
+            if (it == zone) {
+                found = true;
+                break;
+            }
+        }
+        REQUIRE(found);
+    }
+
+    SECTION("No pages left to initialize the new zone")
+    {
+        std::size_t chunkSize = 16;
+        REQUIRE(pageAllocator.allocate(pageAllocator.m_freePagesCount));
+        REQUIRE(!zoneAllocator.allocateZone(chunkSize));
+    }
+}
+
+TEST_CASE("Zone allocator properly allocates user memory", "[zone_allocator]")
+{
+    SECTION("Allocate 0 bytes")
+    {
+    }
+
+    SECTION("Allocate size equal to 3 pages")
+    {
+    }
+
+    SECTION("Allocate 6 bytes")
+    {
+    }
+
+    SECTION("Allocate 16 bytes")
+    {
+    }
+
+    SECTION("Allocate 64 bytes")
+    {
+    }
+
+    SECTION("Allocate 157 bytes 4 times")
+    {
+    }
+}
+
+TEST_CASE("Zone allocator properly releases user memory", "[zone_allocator]")
+{
+    SECTION("Release nullptr")
+    {
+    }
+
+    SECTION("Release memory with size equal to 3 pages")
+    {
+    }
+
+    SECTION("Release 6 bytes")
+    {
+    }
+
+    SECTION("Release 16 bytes")
+    {
+    }
+
+    SECTION("Release 64 bytes")
+    {
+    }
+
+    SECTION("Release 157 bytes 4 times")
+    {
+    }
+}
+
+TEST_CASE("ZoneAllocator integration tests (long-term)", "[zone_allocator][integration][.]")
+{
+}
