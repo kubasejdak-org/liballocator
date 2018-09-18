@@ -144,8 +144,7 @@ Zone* ZoneAllocator::allocateZone(std::size_t chunkSize)
     auto* zone = getFreeZone(m_zoneDescIdx);
     assert(zone);
     auto* newZone = allocateChunk<Zone>(zone);
-    if (!newZone)
-        return nullptr;
+    assert(newZone);
 
     if (!initZone(newZone, chunkSize)) {
         deallocateChunk(newZone);

@@ -860,6 +860,16 @@ TEST_CASE("Zone allocator properly allocates zones", "[zone_allocator]")
         REQUIRE(found);
     }
 
+    SECTION("Allocate zone with index 0, need to preallocate a zone for zone descriptors, no pages left")
+    {
+        std::size_t chunkSize = 16;
+        zoneAllocator.allocateChunk<Chunk>(&zoneAllocator.m_initialZone);
+        zoneAllocator.allocateChunk<Chunk>(&zoneAllocator.m_initialZone);
+        zoneAllocator.allocateChunk<Chunk>(&zoneAllocator.m_initialZone);
+        REQUIRE(pageAllocator.allocate(pageAllocator.m_freePagesCount));
+        REQUIRE(!zoneAllocator.allocateZone(chunkSize));
+    }
+
     SECTION("No pages left to initialize the new zone")
     {
         std::size_t chunkSize = 16;
@@ -1075,6 +1085,20 @@ TEST_CASE("Zone allocator properly allocates user memory", "[zone_allocator]")
 
         REQUIRE(pageAllocator.m_freePagesCount == freePagesCount2 - 3);
         REQUIRE(zoneAllocator.m_zones[zoneAllocator.m_zoneDescIdx].freeChunksCount == 2);
+    }
+
+    SECTION("Allocate 4 pages, no pages are available")
+    {
+        std::size_t allocSize = 4 * pageSize;
+        REQUIRE(pageAllocator.allocate(pageAllocator.m_freePagesCount));
+        REQUIRE(!zoneAllocator.allocate(allocSize));
+    }
+
+    SECTION("Allocate 128 bytes, no pages are available")
+    {
+        std::size_t allocSize = 128;
+        REQUIRE(pageAllocator.allocate(pageAllocator.m_freePagesCount));
+        REQUIRE(!zoneAllocator.allocate(allocSize));
     }
 }
 
