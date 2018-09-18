@@ -44,9 +44,11 @@
 #include <zone_allocator.h>
 
 #include <array>
+#include <chrono>
 #include <cmath>
 #include <cstring>
 #include <map>
+#include <random>
 
 using namespace memory;
 
@@ -109,7 +111,7 @@ TEST_CASE("ZoneAllocator is properly initialized", "[zone_allocator]")
         std::uintptr_t lastChunkAddr = zoneAllocator.m_initialZone.page()->address() + pageSize - zoneAllocator.m_zoneDescChunkSize;
         REQUIRE(zoneAllocator.m_initialZone.m_freeChunks == reinterpret_cast<Chunk *>(lastChunkAddr));
 
-        auto *chunk = reinterpret_cast<Chunk *>(zoneAllocator.m_initialZone.page()->address());
+        auto* chunk = reinterpret_cast<Chunk *>(zoneAllocator.m_initialZone.page()->address());
         for (std::size_t i = 0; i < zoneAllocator.m_initialZone.chunksCount(); ++i) {
             REQUIRE(std::uintptr_t(chunk) == zoneAllocator.m_initialZone.page()->address() + i * zoneAllocator.m_zoneDescChunkSize);
             chunk = chunk->m_prev;
@@ -1143,4 +1145,71 @@ TEST_CASE("Zone allocator properly releases user memory", "[zone_allocator]")
 
 TEST_CASE("ZoneAllocator integration tests (long-term)", "[zone_allocator][integration][.]")
 {
+    using namespace std::chrono_literals;
+    constexpr auto testDuration = 30min;
+    constexpr int allocationsCount = 100;
+
+    std::size_t pageSize = 256;
+    std::size_t pagesCount = 256;
+    PageAllocator pageAllocator;
+
+    auto size = pageSize * pagesCount;
+    auto memory = test::alignedAlloc(pageSize, size);
+
+    // clang-format off
+    Region regions[] = {
+        {std::uintptr_t(memory.get()), size},
+        {0,                            0}
+    };
+    // clang-format on
+
+    REQUIRE(pageAllocator.init(regions, pageSize));
+
+    ZoneAllocator zoneAllocator;
+    REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
+
+    auto freePagesCount = pageAllocator.m_freePagesCount;
+    auto maxAllocSize = (freePagesCount / 4) * pageSize;
+
+    // Initialize random number generator.
+    std::random_device randomDevice;
+    std::mt19937 randomGenerator(randomDevice());
+    std::uniform_int_distribution<std::size_t> distribution(0, maxAllocSize);
+
+    std::array<void*, allocationsCount> ptrs{};
+
+    for (auto start = test::currentTime(); !test::timeElapsed(start, testDuration);) {
+        ptrs.fill(nullptr);
+
+        // Allocate memory.
+        for (auto*& ptr : ptrs) {
+            auto allocSize = distribution(randomGenerator);
+            ptr = zoneAllocator.allocate(allocSize);
+        }
+
+        // Release memory.
+        for (auto* ptr : ptrs)
+            zoneAllocator.release(ptr);
+
+        REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
+
+        auto* chunk = zoneAllocator.m_initialZone.m_freeChunks;
+        std::size_t chunkCount = 0;
+        while (chunk) {
+            ++chunkCount;
+            chunk = chunk->next();
+        }
+        REQUIRE(chunkCount == zoneAllocator.m_initialZone.freeChunksCount());
+        REQUIRE(chunkCount == zoneAllocator.m_initialZone.chunksCount());
+
+        for (const auto &zone : zoneAllocator.m_zones) {
+            if (zone.head == &zoneAllocator.m_initialZone) {
+                REQUIRE(zone.freeChunksCount == (pageSize / zoneAllocator.m_zoneDescChunkSize));
+                continue;
+            }
+
+            REQUIRE(zone.head == nullptr);
+            REQUIRE(zone.freeChunksCount == 0);
+        }
+    }
 }
