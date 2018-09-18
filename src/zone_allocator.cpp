@@ -136,13 +136,21 @@ bool ZoneAllocator::shouldAllocateZone(std::size_t idx)
 
 Zone* ZoneAllocator::allocateZone(std::size_t chunkSize)
 {
-    if (chunkSize != m_zoneDescChunkSize && shouldAllocateZone(m_zoneDescIdx))
-        allocateZone(m_zoneDescChunkSize);
+    if (chunkSize != m_zoneDescChunkSize && shouldAllocateZone(m_zoneDescIdx)) {
+        if (!allocateZone(m_zoneDescChunkSize))
+            return nullptr;
+    }
 
     auto* zone = getFreeZone(m_zoneDescIdx);
+    assert(zone);
     auto* newZone = allocateChunk<Zone>(zone);
-    if (!initZone(newZone, chunkSize))
+    if (!newZone)
         return nullptr;
+
+    if (!initZone(newZone, chunkSize)) {
+        deallocateChunk(newZone);
+        return nullptr;
+    }
 
     addZone(newZone);
     return newZone;
