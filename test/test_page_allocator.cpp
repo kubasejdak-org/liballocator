@@ -1424,12 +1424,13 @@ TEST_CASE("PageAllocatr integration tests (long-term)", "[page_allocator][integr
     // clang-format on
 
     REQUIRE(pageAllocator.init(regions, pageSize));
-    auto freePages = pageAllocator.m_freePagesCount;
+    auto freePagesCount = pageAllocator.m_freePagesCount;
+    auto maxAllocSize = freePagesCount / 4;
 
     // Initialize random number generator.
     std::random_device randomDevice;
     std::mt19937 randomGenerator(randomDevice());
-    std::uniform_int_distribution<std::size_t> distribution(0, freePages / 4);
+    std::uniform_int_distribution<std::size_t> distribution(0, maxAllocSize);
 
     std::array<Page*, allocationsCount> pages{};
 
@@ -1446,7 +1447,7 @@ TEST_CASE("PageAllocatr integration tests (long-term)", "[page_allocator][integr
         for (auto* page : pages)
             pageAllocator.release(page);
 
-        REQUIRE(pageAllocator.m_freePagesCount == freePages);
+        REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
 
         std::size_t idx1Count = 0;
         for (Page* group = pageAllocator.m_freeGroupLists[1]; group != nullptr; group = group->next())
