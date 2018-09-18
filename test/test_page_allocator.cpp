@@ -1395,7 +1395,7 @@ TEST_CASE("Pages are correctly released", "[page_allocator]")
     REQUIRE(pageAllocator.m_freeGroupLists[8]->groupSize() == pagesCount1);
 }
 
-TEST_CASE("PageAllocatr integration tests (long-term)", "[page_allocator][integration][.]")
+TEST_CASE("PageAllocator integration tests (long-term)", "[page_allocator][integration][.]")
 {
     using namespace std::chrono_literals;
     constexpr auto testDuration = 30min;
