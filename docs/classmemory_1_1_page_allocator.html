@@ -119,6 +119,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a2c883a3d9abd14c6131ca454d70ff3a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_page_allocator.html#a2c883a3d9abd14c6131ca454d70ff3a8">release</a> (<a class="el" href="classmemory_1_1_page.html">Page</a> *pages)</td></tr>
 <tr class="memdesc:a2c883a3d9abd14c6131ca454d70ff3a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Releases the given set of pages.  <a href="#a2c883a3d9abd14c6131ca454d70ff3a8">More...</a><br /></td></tr>
 <tr class="separator:a2c883a3d9abd14c6131ca454d70ff3a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b6b3706f6f114d913a6a835cfc7e8ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmemory_1_1_page.html">Page</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_page_allocator.html#a3b6b3706f6f114d913a6a835cfc7e8ba">getPage</a> (std::uintptr_t addr)</td></tr>
+<tr class="memdesc:a3b6b3706f6f114d913a6a835cfc7e8ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <a class="el" href="classmemory_1_1_page.html" title="Represents a physical memory page. ">Page</a>, which contains the given address.  <a href="#a3b6b3706f6f114d913a6a835cfc7e8ba">More...</a><br /></td></tr>
+<tr class="separator:a3b6b3706f6f114d913a6a835cfc7e8ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -137,9 +140,6 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a88315b912cef3c5e497f2baa8da2a3ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmemory_1_1_region_info.html">RegionInfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_page_allocator.html#a88315b912cef3c5e497f2baa8da2a3ee">getRegion</a> (std::uintptr_t addr)</td></tr>
 <tr class="memdesc:a88315b912cef3c5e497f2baa8da2a3ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <a class="el" href="structmemory_1_1_region_info.html" title="Represents the meta data of the physical memory region. ">RegionInfo</a>, which contains the given address.  <a href="#a88315b912cef3c5e497f2baa8da2a3ee">More...</a><br /></td></tr>
 <tr class="separator:a88315b912cef3c5e497f2baa8da2a3ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b6b3706f6f114d913a6a835cfc7e8ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmemory_1_1_page.html">Page</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_page_allocator.html#a3b6b3706f6f114d913a6a835cfc7e8ba">getPage</a> (std::uintptr_t addr)</td></tr>
-<tr class="memdesc:a3b6b3706f6f114d913a6a835cfc7e8ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <a class="el" href="classmemory_1_1_page.html" title="Represents a physical memory page. ">Page</a>, which contains the given address.  <a href="#a3b6b3706f6f114d913a6a835cfc7e8ba">More...</a><br /></td></tr>
-<tr class="separator:a3b6b3706f6f114d913a6a835cfc7e8ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1bfd26b0d1dde3d7037d51b403f29cd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmemory_1_1_page_allocator_1_1_stats.html">Stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_page_allocator.html#ae1bfd26b0d1dde3d7037d51b403f29cd">getStats</a> ()</td></tr>
 <tr class="memdesc:ae1bfd26b0d1dde3d7037d51b403f29cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current statistics of <a class="el" href="classmemory_1_1_page_allocator.html" title="Represents an allocator of physical pages. ">PageAllocator</a>.  <a href="#ae1bfd26b0d1dde3d7037d51b403f29cd">More...</a><br /></td></tr>
 <tr class="separator:ae1bfd26b0d1dde3d7037d51b403f29cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -379,9 +379,6 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classmemory_1_1_page.html">Page</a> * memory::PageAllocator::getPage </td>
@@ -391,11 +388,6 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Returns the <a class="el" href="classmemory_1_1_page.html" title="Represents a physical memory page. ">Page</a>, which contains the given address. </p>
