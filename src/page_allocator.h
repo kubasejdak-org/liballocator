@@ -88,6 +88,10 @@ public:
     /// @return Pointer to Page containing given address if found, nullptr otherwise.
     Page* getPage(std::uintptr_t addr);
 
+    /// @brief Returns the current statistics of PageAllocator.
+    /// @return PageAllocator statistics.
+    Stats getStats();
+
 private:
     /// @brief Returns the total number of pages from all known regions.
     /// @return Number of all pages from all known regions.
@@ -110,10 +114,6 @@ private:
     /// @param[in] addr             Address for which RegionInfo should be found.
     /// @return Pointer to RegionInfo containing given address if found, nullptr otherwise.
     RegionInfo* getRegion(std::uintptr_t addr);
-
-    /// @brief Returns the current statistics of PageAllocator.
-    /// @return PageAllocator statistics.
-    Stats getStats();
 
     /// @brief Calculates index in the groups array, for which group with the given page count should be stored.
     /// @param[in] pageCount        Number of pages, for which index should be calculated.

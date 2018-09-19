@@ -204,6 +204,24 @@ Page* PageAllocator::getPage(std::uintptr_t addr)
     return result;
 }
 
+PageAllocator::Stats PageAllocator::getStats()
+{
+    auto start = std::begin(m_regionsInfo);
+    auto end = std::begin(m_regionsInfo) + m_validRegionsCount;
+
+    Stats stats{};
+    stats.totalMemorySize = std::accumulate(start, end, 0U, [](const size_t& sum, const RegionInfo& region) { return sum + region.size; });
+    stats.effectiveMemorySize = std::accumulate(start, end, 0U, [](const size_t& sum, const RegionInfo& region) { return sum + region.alignedSize; });
+    stats.userMemorySize = stats.effectiveMemorySize - (m_pageSize * m_descPagesCount);
+    stats.freeMemorySize = m_freePagesCount * m_pageSize;
+    stats.pageSize = m_pageSize;
+    stats.totalPagesCount = m_pagesCount;
+    stats.reservedPagesCount = m_descPagesCount;
+    stats.freePagesCount = m_freePagesCount;
+
+    return stats;
+}
+
 std::size_t PageAllocator::countPages()
 {
     std::size_t pagesCount = 0;
@@ -264,24 +282,6 @@ RegionInfo* PageAllocator::getRegion(std::uintptr_t addr)
     }
 
     return nullptr;
-}
-
-PageAllocator::Stats PageAllocator::getStats()
-{
-    auto start = std::begin(m_regionsInfo);
-    auto end = std::begin(m_regionsInfo) + m_validRegionsCount;
-
-    Stats stats{};
-    stats.totalMemorySize = std::accumulate(start, end, 0U, [](const size_t& sum, const RegionInfo& region) { return sum + region.size; });
-    stats.effectiveMemorySize = std::accumulate(start, end, 0U, [](const size_t& sum, const RegionInfo& region) { return sum + region.alignedSize; });
-    stats.userMemorySize = stats.effectiveMemorySize - (m_pageSize * m_descPagesCount);
-    stats.freeMemorySize = m_freePagesCount * m_pageSize;
-    stats.pageSize = m_pageSize;
-    stats.totalPagesCount = m_pagesCount;
-    stats.reservedPagesCount = m_descPagesCount;
-    stats.freePagesCount = m_freePagesCount;
-
-    return stats;
 }
 
 std::size_t PageAllocator::groupIdx(std::size_t pageCount)
