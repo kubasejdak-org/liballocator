@@ -55,6 +55,7 @@ public:
         std::size_t totalMemorySize;        ///< Total size of the memory passed during initialization.
         std::size_t effectiveMemorySize;    ///< Effective size of the memory, that can be used by the allocator.
         std::size_t userMemorySize;         ///< Total size of the memory available to the user.
+        std::size_t freeMemorySize;         ///< Size of the remaining user memory.
         std::size_t pageSize;               ///< Size of the page used by the allocator.
         std::size_t totalPagesCount;        ///< Total number of the pages known to the allocator.
         std::size_t reservedPagesCount;     ///< Number of pages reserved for the allocator.

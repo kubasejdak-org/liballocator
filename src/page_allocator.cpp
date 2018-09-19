@@ -275,6 +275,7 @@ PageAllocator::Stats PageAllocator::getStats()
     stats.totalMemorySize = std::accumulate(start, end, 0U, [](const size_t& sum, const RegionInfo& region) { return sum + region.size; });
     stats.effectiveMemorySize = std::accumulate(start, end, 0U, [](const size_t& sum, const RegionInfo& region) { return sum + region.alignedSize; });
     stats.userMemorySize = stats.effectiveMemorySize - (m_pageSize * m_descPagesCount);
+    stats.freeMemorySize = m_freePagesCount * m_pageSize;
     stats.pageSize = m_pageSize;
     stats.totalPagesCount = m_pagesCount;
     stats.reservedPagesCount = m_descPagesCount;

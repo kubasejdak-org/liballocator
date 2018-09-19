@@ -1117,6 +1117,7 @@ TEST_CASE("Stats are properly initialized", "[page_allocator]")
     REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
     REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
     REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
+    REQUIRE(stats.freeMemorySize == (pageSize * (stats.totalPagesCount - stats.reservedPagesCount)));
     REQUIRE(stats.pageSize == pageAllocator.m_pageSize);
     REQUIRE(stats.totalPagesCount == (pagesCount1 + pagesCount2 + pagesCount3));
     REQUIRE(stats.reservedPagesCount == 79);
