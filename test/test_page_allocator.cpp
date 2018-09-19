@@ -1114,11 +1114,13 @@ TEST_CASE("Stats are properly initialized", "[page_allocator]")
     REQUIRE(pageAllocator.init(regions, pageSize));
 
     auto stats = pageAllocator.getStats();
+    REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
+    REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
+    REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
     REQUIRE(stats.pageSize == pageAllocator.m_pageSize);
-    REQUIRE(stats.pagesCount == pageAllocator.m_pagesCount);
-    REQUIRE(stats.freePagesCount == pageAllocator.m_freePagesCount);
-    REQUIRE(stats.descRegionIdx == pageAllocator.m_descRegionIdx);
-    REQUIRE(stats.descPagesCount == pageAllocator.m_descPagesCount);
+    REQUIRE(stats.totalPagesCount == (pagesCount1 + pagesCount2 + pagesCount3));
+    REQUIRE(stats.reservedPagesCount == 79);
+    REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount));
 }
 
 TEST_CASE("Pages are correctly allocated", "[page_allocator]")

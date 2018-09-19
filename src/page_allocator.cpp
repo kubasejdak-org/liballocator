@@ -34,6 +34,7 @@
 
 #include <cassert>
 #include <cmath>
+#include <numeric>
 
 namespace memory {
 
@@ -267,12 +268,17 @@ RegionInfo* PageAllocator::getRegion(std::uintptr_t addr)
 
 PageAllocator::Stats PageAllocator::getStats()
 {
+    auto start = std::begin(m_regionsInfo);
+    auto end = std::begin(m_regionsInfo) + m_validRegionsCount;
+
     Stats stats{};
+    stats.totalMemorySize = std::accumulate(start, end, 0U, [](const size_t& sum, const RegionInfo& region) { return sum + region.size; });
+    stats.effectiveMemorySize = std::accumulate(start, end, 0U, [](const size_t& sum, const RegionInfo& region) { return sum + region.alignedSize; });
+    stats.userMemorySize = stats.effectiveMemorySize - (m_pageSize * m_descPagesCount);
     stats.pageSize = m_pageSize;
-    stats.pagesCount = m_pagesCount;
+    stats.totalPagesCount = m_pagesCount;
+    stats.reservedPagesCount = m_descPagesCount;
     stats.freePagesCount = m_freePagesCount;
-    stats.descRegionIdx = m_descRegionIdx;
-    stats.descPagesCount = m_descPagesCount;
 
     return stats;
 }

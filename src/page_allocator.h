@@ -52,11 +52,13 @@ public:
     /// @class Stats
     /// @brief Represents the statistical data of the page allocator.
     struct Stats {
-        std::size_t pageSize;           ///< Size of the page used by page allocator.
-        std::size_t pagesCount;         ///< Total number of pages, that are known to the page allocator.
-        std::size_t freePagesCount;     ///< Current number of the free pages in the page allocator.
-        std::size_t descRegionIdx;      ///< Index of the memory region, that is used to store the page descriptors.
-        std::size_t descPagesCount;     ///< Number of pages used to store the page descriptors.
+        std::size_t totalMemorySize;        ///< Total size of the memory passed during initialization.
+        std::size_t effectiveMemorySize;    ///< Effective size of the memory, that can be used by the allocator.
+        std::size_t userMemorySize;         ///< Total size of the memory available to the user.
+        std::size_t pageSize;               ///< Size of the page used by the allocator.
+        std::size_t totalPagesCount;        ///< Total number of the pages known to the allocator.
+        std::size_t reservedPagesCount;     ///< Number of pages reserved for the allocator.
+        std::size_t freePagesCount;         ///< Current number of the free pages.
     };
 
     /// @brief Default constructor.
