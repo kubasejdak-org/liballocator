@@ -105,6 +105,42 @@ TEST_CASE("Allocator is properly initialized", "[allocator]")
         REQUIRE(stats.allocatedMemorySize == 0);
         REQUIRE(stats.freeMemorySize == stats.userMemorySize);
     }
+
+    SECTION("Too small number of pages in each region")
+    {
+        auto size = pageSize / 2;
+        auto memory1 = test::alignedAlloc(pageSize, size);
+        auto memory2 = test::alignedAlloc(pageSize, size);
+        auto memory3 = test::alignedAlloc(pageSize, size);
+        auto memory4 = test::alignedAlloc(pageSize, size);
+        auto memory5 = test::alignedAlloc(pageSize, size);
+        auto memory6 = test::alignedAlloc(pageSize, size);
+        auto memory7 = test::alignedAlloc(pageSize, size);
+        auto memory8 = test::alignedAlloc(pageSize, size);
+
+        // clang-format off
+        Region regions[] = {
+            {std::uintptr_t(memory1.get()), size},
+            {std::uintptr_t(memory2.get()), size},
+            {std::uintptr_t(memory3.get()), size},
+            {std::uintptr_t(memory4.get()), size},
+            {std::uintptr_t(memory5.get()), size},
+            {std::uintptr_t(memory6.get()), size},
+            {std::uintptr_t(memory7.get()), size},
+            {std::uintptr_t(memory8.get()), size},
+            {0,                             0}
+        };
+        // clang-format on
+
+        REQUIRE(!allocator::init(regions, pageSize));
+
+        auto stats = allocator::getStats();
+        REQUIRE(stats.totalMemorySize == 0);
+        REQUIRE(stats.reservedMemorySize == 0);
+        REQUIRE(stats.userMemorySize == 0);
+        REQUIRE(stats.allocatedMemorySize == 0);
+        REQUIRE(stats.freeMemorySize == 0);
+    }
 }
 
 TEST_CASE("Allocator properly allocates user memory", "[allocator]")
