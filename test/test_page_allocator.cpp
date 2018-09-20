@@ -34,19 +34,19 @@
 
 #include "test_utils.h"
 
-// Make access to private members for testing.
-// clang-format off
-#define private     public
-// clang-format on
-
-#include <page_allocator.h>
-
 #include <chrono>
 #include <cstdlib>
 #include <cstring>
 #include <map>
 #include <random>
 #include <vector>
+
+// Make access to private members for testing.
+// clang-format off
+#define private     public
+// clang-format on
+
+#include <page_allocator.h>
 
 using namespace memory;
 

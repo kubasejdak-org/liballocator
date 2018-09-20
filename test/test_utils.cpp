@@ -32,6 +32,10 @@
 
 #include <catch2/catch.hpp>
 
+#include <array>
+#include <cmath>
+#include <cstddef>
+
 // Make access to private members for testing.
 // clang-format off
 #define private     public
@@ -39,10 +43,6 @@
 
 #include <utils.h>
 #include <zone.h>
-
-#include <array>
-#include <cmath>
-#include <cstddef>
 
 using namespace memory;
 

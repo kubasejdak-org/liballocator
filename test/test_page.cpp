@@ -32,14 +32,14 @@
 
 #include <catch2/catch.hpp>
 
+#include <cstddef>
+
 // Make access to private members for testing.
 // clang-format off
 #define private     public
 // clang-format on
 
 #include <page.h>
-
-#include <cstddef>
 
 using namespace memory;
 

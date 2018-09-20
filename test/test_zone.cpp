@@ -34,6 +34,9 @@
 
 #include "test_utils.h"
 
+#include <array>
+#include <cstddef>
+
 // Make access to private members for testing.
 // clang-format off
 #define private     public
@@ -41,9 +44,6 @@
 
 #include <page.h>
 #include <zone.h>
-
-#include <array>
-#include <cstddef>
 
 using namespace memory;
 

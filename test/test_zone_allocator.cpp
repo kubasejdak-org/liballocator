@@ -34,6 +34,13 @@
 
 #include "test_utils.h"
 
+#include <array>
+#include <chrono>
+#include <cmath>
+#include <cstring>
+#include <map>
+#include <random>
+
 // Make access to private members for testing.
 // clang-format off
 #define private     public
@@ -42,13 +49,6 @@
 #include <page_allocator.h>
 #include <utils.h>
 #include <zone_allocator.h>
-
-#include <array>
-#include <chrono>
-#include <cmath>
-#include <cstring>
-#include <map>
-#include <random>
 
 using namespace memory;
 
