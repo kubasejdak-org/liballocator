@@ -34,6 +34,9 @@
 
 #include "test_utils.h"
 
+#include <random>
+#include <regex>
+
 // Make access to private members for testing.
 // clang-format off
 #define private     public
@@ -45,7 +48,8 @@ using namespace memory;
 
 TEST_CASE("Allocator returns a valid version", "[allocator]")
 {
-    // TODO: implement.
+    std::regex regex("[0-9]+(\\.[0-9])+");
+    REQUIRE(std::regex_match(allocator::version(), regex));
 }
 
 TEST_CASE("Allocator is properly cleared", "[allocator]")
@@ -109,26 +113,26 @@ TEST_CASE("Allocator is properly initialized", "[allocator]")
     SECTION("Too small number of pages in each region")
     {
         auto size = pageSize / 2;
-        auto memory1 = test::alignedAlloc(pageSize, size);
-        auto memory2 = test::alignedAlloc(pageSize, size);
-        auto memory3 = test::alignedAlloc(pageSize, size);
         auto memory4 = test::alignedAlloc(pageSize, size);
         auto memory5 = test::alignedAlloc(pageSize, size);
         auto memory6 = test::alignedAlloc(pageSize, size);
         auto memory7 = test::alignedAlloc(pageSize, size);
         auto memory8 = test::alignedAlloc(pageSize, size);
+        auto memory9 = test::alignedAlloc(pageSize, size);
+        auto memory10 = test::alignedAlloc(pageSize, size);
+        auto memory11 = test::alignedAlloc(pageSize, size);
 
         // clang-format off
         Region regions[] = {
-            {std::uintptr_t(memory1.get()), size},
-            {std::uintptr_t(memory2.get()), size},
-            {std::uintptr_t(memory3.get()), size},
-            {std::uintptr_t(memory4.get()), size},
-            {std::uintptr_t(memory5.get()), size},
-            {std::uintptr_t(memory6.get()), size},
-            {std::uintptr_t(memory7.get()), size},
-            {std::uintptr_t(memory8.get()), size},
-            {0,                             0}
+            {std::uintptr_t(memory4.get()),  size},
+            {std::uintptr_t(memory5.get()),  size},
+            {std::uintptr_t(memory6.get()),  size},
+            {std::uintptr_t(memory7.get()),  size},
+            {std::uintptr_t(memory8.get()),  size},
+            {std::uintptr_t(memory9.get()),  size},
+            {std::uintptr_t(memory10.get()), size},
+            {std::uintptr_t(memory11.get()), size},
+            {0,                              0}
         };
         // clang-format on
 
@@ -143,10 +147,59 @@ TEST_CASE("Allocator is properly initialized", "[allocator]")
     }
 }
 
-TEST_CASE("Allocator properly allocates user memory", "[allocator]")
+TEST_CASE("Allocator properly allocates and releases user memory", "[allocator]")
 {
-}
+    std::size_t pageSize = 256;
+    std::size_t pagesCount1 = 535;
+    std::size_t pagesCount2 = 87;
+    std::size_t pagesCount3 = 4;
+    auto size1 = pageSize * pagesCount1;
+    auto size2 = pageSize * pagesCount2;
+    auto size3 = pageSize * pagesCount3;
+    auto memory1 = test::alignedAlloc(pageSize, size1);
+    auto memory2 = test::alignedAlloc(pageSize, size2);
+    auto memory3 = test::alignedAlloc(pageSize, size3);
 
-TEST_CASE("Allocator properly releases user memory", "[allocator]")
-{
+    // clang-format off
+    Region regions[] = {
+        {std::uintptr_t(memory1.get()), size1},
+        {std::uintptr_t(memory2.get()), size2},
+        {std::uintptr_t(memory3.get()), size3},
+        {0,                             0}
+    };
+    // clang-format on
+
+    REQUIRE(allocator::init(regions, pageSize));
+
+    constexpr int allocationsCount = 1000;
+    constexpr int iterationsCount = 1000;
+    auto maxAllocSize = 200 * pageSize;
+
+    // Initialize random number generator.
+    std::random_device randomDevice;
+    std::mt19937 randomGenerator(randomDevice());
+    std::uniform_int_distribution<std::size_t> distribution(0, maxAllocSize);
+
+    std::array<void*, allocationsCount> ptrs{};
+
+    for (int i = 0; i < iterationsCount; ++i) {
+        ptrs.fill(nullptr);
+
+        // Allocate memory.
+        for (auto *&ptr : ptrs) {
+            auto allocSize = distribution(randomGenerator);
+            ptr = allocator::allocate(allocSize);
+        }
+
+        // Release memory.
+        for (auto *ptr : ptrs)
+            allocator::release(ptr);
+
+        auto stats = allocator::getStats();
+        REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
+        REQUIRE(stats.reservedMemorySize == 79 * pageSize);
+        REQUIRE(stats.userMemorySize == (size1 + size2 + size3 - stats.reservedMemorySize));
+        REQUIRE(stats.allocatedMemorySize == 0);
+        REQUIRE(stats.freeMemorySize == stats.userMemorySize);
+    }
 }
