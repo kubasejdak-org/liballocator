@@ -95,6 +95,10 @@ $(function() {
 <li>allocateChunk()
 : <a class="el" href="classmemory_1_1_zone_allocator.html#ad40dce42f15b9fe8291937395bd4f6fa">memory::ZoneAllocator</a>
 </li>
+<li>allocatedMemorySize
+: <a class="el" href="structmemory_1_1allocator_1_1_stats.html#a7be37b6c96249e3c5d478edba9b9245e">memory::allocator::Stats</a>
+, <a class="el" href="structmemory_1_1_zone_allocator_1_1_stats.html#abf50bd7b927b4a566966fe7773720175">memory::ZoneAllocator::Stats</a>
+</li>
 <li>allocateZone()
 : <a class="el" href="classmemory_1_1_zone_allocator.html#a7da186826913a6bf31e63c8374b0f0d4">memory::ZoneAllocator</a>
 </li>
@@ -133,16 +137,13 @@ $(function() {
 <li>deallocateChunk()
 : <a class="el" href="classmemory_1_1_zone_allocator.html#a57e59aeea5e6614d5dae68a0e42fe6e9">memory::ZoneAllocator</a>
 </li>
-<li>descPagesCount
-: <a class="el" href="structmemory_1_1_page_allocator_1_1_stats.html#a8f90b80f85ceeb0e6edfff2cf4c459d9">memory::PageAllocator::Stats</a>
-</li>
-<li>descRegionIdx
-: <a class="el" href="structmemory_1_1_page_allocator_1_1_stats.html#ae3c4478e111e80b2a9d08c92f7a9eacc">memory::PageAllocator::Stats</a>
-</li>
 </ul>
 
 
 <h3><a id="index_e"></a>- e -</h3><ul>
+<li>effectiveMemorySize
+: <a class="el" href="structmemory_1_1_page_allocator_1_1_stats.html#ae3af775de4e8101cf6788cac61d67135">memory::PageAllocator::Stats</a>
+</li>
 <li>end
 : <a class="el" href="structmemory_1_1_region_info.html#a188c22f57717b2430d3166c392772134">memory::RegionInfo</a>
 </li>
@@ -159,6 +160,11 @@ $(function() {
 <li>freeChunksCount()
 : <a class="el" href="classmemory_1_1_zone.html#ae648f6a79e5287635375b96ed688f7f0">memory::Zone</a>
 , <a class="el" href="structmemory_1_1_zone_allocator_1_1_zone_info.html#a2de67de687c1b8f4096d22ff2b5c45cd">memory::ZoneAllocator::ZoneInfo</a>
+</li>
+<li>freeMemorySize
+: <a class="el" href="structmemory_1_1allocator_1_1_stats.html#ace1c0bf0c4935e38c0d65ca30cc2125a">memory::allocator::Stats</a>
+, <a class="el" href="structmemory_1_1_page_allocator_1_1_stats.html#a069c61d90a1815143ce501a8059ad635">memory::PageAllocator::Stats</a>
+, <a class="el" href="structmemory_1_1_zone_allocator_1_1_stats.html#a679600b8f08d518de6ad8121d3139d4c">memory::ZoneAllocator::Stats</a>
 </li>
 <li>freePagesCount
 : <a class="el" href="structmemory_1_1_page_allocator_1_1_stats.html#af18b2d9f37037fcc90c88177198e7490">memory::PageAllocator::Stats</a>
@@ -178,6 +184,7 @@ $(function() {
 </li>
 <li>getStats()
 : <a class="el" href="classmemory_1_1_page_allocator.html#ae1bfd26b0d1dde3d7037d51b403f29cd">memory::PageAllocator</a>
+, <a class="el" href="classmemory_1_1_zone_allocator.html#a18b55b7366b59377c9e609971bfa7383">memory::ZoneAllocator</a>
 </li>
 <li>giveChunk()
 : <a class="el" href="classmemory_1_1_zone.html#a96120828e1d24b5d8cbef827cb5ac0cb">memory::Zone</a>
@@ -360,9 +367,6 @@ $(function() {
 <li>pageCount
 : <a class="el" href="structmemory_1_1_region_info.html#a4beeef4469190b391d768fe13e052f79">memory::RegionInfo</a>
 </li>
-<li>pagesCount
-: <a class="el" href="structmemory_1_1_page_allocator_1_1_stats.html#af43b5f41afe2d004daace700b8050401">memory::PageAllocator::Stats</a>
-</li>
 <li>pageSize
 : <a class="el" href="structmemory_1_1_page_allocator_1_1_stats.html#a73af2f82742bb7c8e015739470d8852d">memory::PageAllocator::Stats</a>
 </li>
@@ -388,6 +392,13 @@ $(function() {
 </li>
 <li>reserveDescPages()
 : <a class="el" href="classmemory_1_1_page_allocator.html#a199f9ed9629431a43ec8141a3fad8b10">memory::PageAllocator</a>
+</li>
+<li>reservedMemorySize
+: <a class="el" href="structmemory_1_1allocator_1_1_stats.html#a68a1ecb20dfeabc7bab2efa8f37b4ce3">memory::allocator::Stats</a>
+, <a class="el" href="structmemory_1_1_zone_allocator_1_1_stats.html#a7b085a3cc7cc8ecf14c56d36e9df366c">memory::ZoneAllocator::Stats</a>
+</li>
+<li>reservedPagesCount
+: <a class="el" href="structmemory_1_1_page_allocator_1_1_stats.html#a020462b55cebac2ae0d8d6fab11f8ee6">memory::PageAllocator::Stats</a>
 </li>
 </ul>
 
@@ -422,12 +433,26 @@ $(function() {
 <li>takeChunk()
 : <a class="el" href="classmemory_1_1_zone.html#a1cee6f77cd4138d60c4abbd724cafa63">memory::Zone</a>
 </li>
+<li>totalMemorySize
+: <a class="el" href="structmemory_1_1allocator_1_1_stats.html#a4264dcdecfcda2ef0071999e04b26848">memory::allocator::Stats</a>
+, <a class="el" href="structmemory_1_1_page_allocator_1_1_stats.html#ab5b74e6d4bfbc8a98c601b1ebfc6ab81">memory::PageAllocator::Stats</a>
+</li>
+<li>totalPagesCount
+: <a class="el" href="structmemory_1_1_page_allocator_1_1_stats.html#a269efca2a0edfe1fb5231f956de8b18c">memory::PageAllocator::Stats</a>
+</li>
 </ul>
 
 
 <h3><a id="index_u"></a>- u -</h3><ul>
 <li>used
 : <a class="el" href="unionmemory_1_1_page_1_1_flags.html#ae9c9bee77ec78d21c1cc3156756b8b95">memory::Page::Flags</a>
+</li>
+<li>usedMemorySize
+: <a class="el" href="structmemory_1_1_zone_allocator_1_1_stats.html#a3480022d45437da79852a140579a71d9">memory::ZoneAllocator::Stats</a>
+</li>
+<li>userMemorySize
+: <a class="el" href="structmemory_1_1allocator_1_1_stats.html#ac302cf32039f7fedae9a65cccdebe122">memory::allocator::Stats</a>
+, <a class="el" href="structmemory_1_1_page_allocator_1_1_stats.html#ad709d77a47f4863df6f10b98163e805c">memory::PageAllocator::Stats</a>
 </li>
 </ul>
 

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['groupsize',['groupSize',['../unionmemory_1_1_page_1_1_flags.html#a8148e5c111d8c383eaf90c5d1009592d',1,'memory::Page::Flags']]]
+  ['head',['head',['../structmemory_1_1_zone_allocator_1_1_zone_info.html#acd3098f061bb431f36d5ac35619dca8f',1,'memory::ZoneAllocator::ZoneInfo']]]
 ];

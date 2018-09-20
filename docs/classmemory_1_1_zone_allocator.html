@@ -79,7 +79,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Represents the zone allocator.  
+<p>Represents the <a class="el" href="classmemory_1_1_zone_allocator.html" title="Represents the ZoneAllocator. ">ZoneAllocator</a>.  
  <a href="classmemory_1_1_zone_allocator.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="zone__allocator_8h_source.html">zone_allocator.h</a>&gt;</code></p>
@@ -101,6 +101,9 @@ Collaboration diagram for memory::ZoneAllocator:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmemory_1_1_zone_allocator_1_1_stats.html">Stats</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the statistical data of the <a class="el" href="classmemory_1_1_zone_allocator.html" title="Represents the ZoneAllocator. ">ZoneAllocator</a>.  <a href="structmemory_1_1_zone_allocator_1_1_stats.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmemory_1_1_zone_allocator_1_1_zone_info.html">ZoneInfo</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the meta-data of the zone.  <a href="structmemory_1_1_zone_allocator_1_1_zone_info.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -112,11 +115,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a05db40bde44d7d08fbd0d9fecf07c2a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
 <tr class="separator:a05db40bde44d7d08fbd0d9fecf07c2a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae275172bfc03940b83396ba93e1eae10"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#ae275172bfc03940b83396ba93e1eae10">init</a> (<a class="el" href="classmemory_1_1_page_allocator.html">PageAllocator</a> *pageAllocator, std::size_t pageSize)</td></tr>
-<tr class="memdesc:ae275172bfc03940b83396ba93e1eae10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the <a class="el" href="classmemory_1_1_zone_allocator.html" title="Represents the zone allocator. ">ZoneAllocator</a> with the given <a class="el" href="classmemory_1_1_page_allocator.html" title="Represents an allocator of physical pages. ">PageAllocator</a> and page size.  <a href="#ae275172bfc03940b83396ba93e1eae10">More...</a><br /></td></tr>
+<tr class="memdesc:ae275172bfc03940b83396ba93e1eae10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the <a class="el" href="classmemory_1_1_zone_allocator.html" title="Represents the ZoneAllocator. ">ZoneAllocator</a> with the given <a class="el" href="classmemory_1_1_page_allocator.html" title="Represents an allocator of physical pages. ">PageAllocator</a> and page size.  <a href="#ae275172bfc03940b83396ba93e1eae10">More...</a><br /></td></tr>
 <tr class="separator:ae275172bfc03940b83396ba93e1eae10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70c6b7f089670ec0a151c09004fa9033"><td class="memItemLeft" align="right" valign="top"><a id="a70c6b7f089670ec0a151c09004fa9033"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#a70c6b7f089670ec0a151c09004fa9033">clear</a> ()</td></tr>
-<tr class="memdesc:a70c6b7f089670ec0a151c09004fa9033"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the <a class="el" href="classmemory_1_1_zone_allocator.html" title="Represents the zone allocator. ">ZoneAllocator</a> internal state. <br /></td></tr>
+<tr class="memdesc:a70c6b7f089670ec0a151c09004fa9033"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the <a class="el" href="classmemory_1_1_zone_allocator.html" title="Represents the ZoneAllocator. ">ZoneAllocator</a> internal state. <br /></td></tr>
 <tr class="separator:a70c6b7f089670ec0a151c09004fa9033"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d689765314c9c6fcb8c1b62df0940ed"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#a1d689765314c9c6fcb8c1b62df0940ed">allocate</a> (std::size_t size)</td></tr>
 <tr class="memdesc:a1d689765314c9c6fcb8c1b62df0940ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates the memory chunk of at least given size.  <a href="#a1d689765314c9c6fcb8c1b62df0940ed">More...</a><br /></td></tr>
@@ -124,6 +127,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a5097e7bd40f3b9fdaf548f906567946d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#a5097e7bd40f3b9fdaf548f906567946d">release</a> (void *ptr)</td></tr>
 <tr class="memdesc:a5097e7bd40f3b9fdaf548f906567946d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Releases the given memory chunk.  <a href="#a5097e7bd40f3b9fdaf548f906567946d">More...</a><br /></td></tr>
 <tr class="separator:a5097e7bd40f3b9fdaf548f906567946d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18b55b7366b59377c9e609971bfa7383"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmemory_1_1_zone_allocator_1_1_stats.html">Stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#a18b55b7366b59377c9e609971bfa7383">getStats</a> ()</td></tr>
+<tr class="memdesc:a18b55b7366b59377c9e609971bfa7383"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current statistics of <a class="el" href="classmemory_1_1_zone_allocator.html" title="Represents the ZoneAllocator. ">ZoneAllocator</a>.  <a href="#a18b55b7366b59377c9e609971bfa7383">More...</a><br /></td></tr>
+<tr class="separator:a18b55b7366b59377c9e609971bfa7383"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -190,7 +196,7 @@ std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="separator:a047637fc7b8f1d6f1e5f5efd0fe60ef2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac117a7e39232032fb5ea9fea98aa216a"><td class="memItemLeft" align="right" valign="top"><a id="ac117a7e39232032fb5ea9fea98aa216a"></a>
 std::array&lt; <a class="el" href="structmemory_1_1_zone_allocator_1_1_zone_info.html">ZoneInfo</a>, <a class="el" href="classmemory_1_1_zone_allocator.html#add39253b095a46d4382ea0da121f6c9d">MAX_ZONE_IDX</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#ac117a7e39232032fb5ea9fea98aa216a">m_zones</a></td></tr>
-<tr class="memdesc:ac117a7e39232032fb5ea9fea98aa216a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array of all zones known in the <a class="el" href="classmemory_1_1_zone_allocator.html" title="Represents the zone allocator. ">ZoneAllocator</a>. <br /></td></tr>
+<tr class="memdesc:ac117a7e39232032fb5ea9fea98aa216a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array of all zones known in the <a class="el" href="classmemory_1_1_zone_allocator.html" title="Represents the ZoneAllocator. ">ZoneAllocator</a>. <br /></td></tr>
 <tr class="separator:ac117a7e39232032fb5ea9fea98aa216a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
@@ -205,7 +211,7 @@ static constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom">
 <tr class="separator:add39253b095a46d4382ea0da121f6c9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Represents the zone allocator. </p>
+<div class="textblock"><p>Represents the <a class="el" href="classmemory_1_1_zone_allocator.html" title="Represents the ZoneAllocator. ">ZoneAllocator</a>. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a6412c11b17e558cd3da8eba5fac295a4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6412c11b17e558cd3da8eba5fac295a4">&#9670;&nbsp;</a></span>addZone()</h2>
@@ -518,6 +524,26 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a18b55b7366b59377c9e609971bfa7383"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18b55b7366b59377c9e609971bfa7383">&#9670;&nbsp;</a></span>getStats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structmemory_1_1_zone_allocator_1_1_stats.html">ZoneAllocator::Stats</a> memory::ZoneAllocator::getStats </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the current statistics of <a class="el" href="classmemory_1_1_zone_allocator.html" title="Represents the ZoneAllocator. ">ZoneAllocator</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classmemory_1_1_zone_allocator.html" title="Represents the ZoneAllocator. ">ZoneAllocator</a> statistics. </dd></dl>
+
+</div>
+</div>
 <a id="ae275172bfc03940b83396ba93e1eae10"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae275172bfc03940b83396ba93e1eae10">&#9670;&nbsp;</a></span>init()</h2>
 
@@ -544,10 +570,10 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Initializes the <a class="el" href="classmemory_1_1_zone_allocator.html" title="Represents the zone allocator. ">ZoneAllocator</a> with the given <a class="el" href="classmemory_1_1_page_allocator.html" title="Represents an allocator of physical pages. ">PageAllocator</a> and page size. </p>
+<p>Initializes the <a class="el" href="classmemory_1_1_zone_allocator.html" title="Represents the ZoneAllocator. ">ZoneAllocator</a> with the given <a class="el" href="classmemory_1_1_page_allocator.html" title="Represents an allocator of physical pages. ">PageAllocator</a> and page size. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">pageAllocator</td><td><a class="el" href="classmemory_1_1_page_allocator.html" title="Represents an allocator of physical pages. ">PageAllocator</a> to be used in <a class="el" href="classmemory_1_1_zone_allocator.html" title="Represents the zone allocator. ">ZoneAllocator</a>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pageAllocator</td><td><a class="el" href="classmemory_1_1_page_allocator.html" title="Represents an allocator of physical pages. ">PageAllocator</a> to be used in <a class="el" href="classmemory_1_1_zone_allocator.html" title="Represents the ZoneAllocator. ">ZoneAllocator</a>. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pageSize</td><td>Size of the physical page. </td></tr>
   </table>
   </dd>

@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classmemory_1_1_list_node.html" title="Represents a node of the generic doubly&#45;linked list. " alt="" coords="5,5,166,31"/>
+<area shape="rect" id="node1" href="$classmemory_1_1_list_node.html" title="memory::ListNode\&lt; Page \&gt;" alt="" coords="5,5,189,31"/>
+<area shape="rect" id="node2" href="$classmemory_1_1_page.html" title="Represents a physical memory page. " alt="" coords="237,5,345,31"/>
 </map>

@@ -97,7 +97,7 @@ Collaboration diagram for memory::PageAllocator:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmemory_1_1_page_allocator_1_1_stats.html">Stats</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the statistical data of the page allocator.  <a href="structmemory_1_1_page_allocator_1_1_stats.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the statistical data of the <a class="el" href="classmemory_1_1_page_allocator.html" title="Represents an allocator of physical pages. ">PageAllocator</a>.  <a href="structmemory_1_1_page_allocator_1_1_stats.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -107,11 +107,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a00688e0805940d732ee4ef76f487d307"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
 <tr class="separator:a00688e0805940d732ee4ef76f487d307"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c7622df494d9bd261003637f59f6a20"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_page_allocator.html#a0c7622df494d9bd261003637f59f6a20">init</a> (<a class="el" href="structmemory_1_1_region.html">Region</a> *regions, std::size_t pageSize)</td></tr>
-<tr class="memdesc:a0c7622df494d9bd261003637f59f6a20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the page allocator with the given memory model.  <a href="#a0c7622df494d9bd261003637f59f6a20">More...</a><br /></td></tr>
+<tr class="memdesc:a0c7622df494d9bd261003637f59f6a20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the <a class="el" href="classmemory_1_1_page_allocator.html" title="Represents an allocator of physical pages. ">PageAllocator</a> with the given memory model.  <a href="#a0c7622df494d9bd261003637f59f6a20">More...</a><br /></td></tr>
 <tr class="separator:a0c7622df494d9bd261003637f59f6a20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2922379090c9990cb10319721f80c263"><td class="memItemLeft" align="right" valign="top"><a id="a2922379090c9990cb10319721f80c263"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_page_allocator.html#a2922379090c9990cb10319721f80c263">clear</a> ()</td></tr>
-<tr class="memdesc:a2922379090c9990cb10319721f80c263"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the internal state of the page allocator. <br /></td></tr>
+<tr class="memdesc:a2922379090c9990cb10319721f80c263"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the internal state of the <a class="el" href="classmemory_1_1_page_allocator.html" title="Represents an allocator of physical pages. ">PageAllocator</a>. <br /></td></tr>
 <tr class="separator:a2922379090c9990cb10319721f80c263"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8dab8839036a9afee80d04e0db6c3df3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmemory_1_1_page.html">Page</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_page_allocator.html#a8dab8839036a9afee80d04e0db6c3df3">allocate</a> (std::size_t count)</td></tr>
 <tr class="memdesc:a8dab8839036a9afee80d04e0db6c3df3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates the given number of physical pages.  <a href="#a8dab8839036a9afee80d04e0db6c3df3">More...</a><br /></td></tr>
@@ -122,6 +122,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a3b6b3706f6f114d913a6a835cfc7e8ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmemory_1_1_page.html">Page</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_page_allocator.html#a3b6b3706f6f114d913a6a835cfc7e8ba">getPage</a> (std::uintptr_t addr)</td></tr>
 <tr class="memdesc:a3b6b3706f6f114d913a6a835cfc7e8ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <a class="el" href="classmemory_1_1_page.html" title="Represents a physical memory page. ">Page</a>, which contains the given address.  <a href="#a3b6b3706f6f114d913a6a835cfc7e8ba">More...</a><br /></td></tr>
 <tr class="separator:a3b6b3706f6f114d913a6a835cfc7e8ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1bfd26b0d1dde3d7037d51b403f29cd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmemory_1_1_page_allocator_1_1_stats.html">Stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_page_allocator.html#ae1bfd26b0d1dde3d7037d51b403f29cd">getStats</a> ()</td></tr>
+<tr class="memdesc:ae1bfd26b0d1dde3d7037d51b403f29cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current statistics of <a class="el" href="classmemory_1_1_page_allocator.html" title="Represents an allocator of physical pages. ">PageAllocator</a>.  <a href="#ae1bfd26b0d1dde3d7037d51b403f29cd">More...</a><br /></td></tr>
+<tr class="separator:ae1bfd26b0d1dde3d7037d51b403f29cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -140,9 +143,6 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a88315b912cef3c5e497f2baa8da2a3ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmemory_1_1_region_info.html">RegionInfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_page_allocator.html#a88315b912cef3c5e497f2baa8da2a3ee">getRegion</a> (std::uintptr_t addr)</td></tr>
 <tr class="memdesc:a88315b912cef3c5e497f2baa8da2a3ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <a class="el" href="structmemory_1_1_region_info.html" title="Represents the meta data of the physical memory region. ">RegionInfo</a>, which contains the given address.  <a href="#a88315b912cef3c5e497f2baa8da2a3ee">More...</a><br /></td></tr>
 <tr class="separator:a88315b912cef3c5e497f2baa8da2a3ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1bfd26b0d1dde3d7037d51b403f29cd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmemory_1_1_page_allocator_1_1_stats.html">Stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_page_allocator.html#ae1bfd26b0d1dde3d7037d51b403f29cd">getStats</a> ()</td></tr>
-<tr class="memdesc:ae1bfd26b0d1dde3d7037d51b403f29cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current statistics of <a class="el" href="classmemory_1_1_page_allocator.html" title="Represents an allocator of physical pages. ">PageAllocator</a>.  <a href="#ae1bfd26b0d1dde3d7037d51b403f29cd">More...</a><br /></td></tr>
-<tr class="separator:ae1bfd26b0d1dde3d7037d51b403f29cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf14ed78e9c53040608fbbeb16cdd2db"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_page_allocator.html#adf14ed78e9c53040608fbbeb16cdd2db">groupIdx</a> (std::size_t pageCount)</td></tr>
 <tr class="memdesc:adf14ed78e9c53040608fbbeb16cdd2db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates index in the groups array, for which group with the given page count should be stored.  <a href="#adf14ed78e9c53040608fbbeb16cdd2db">More...</a><br /></td></tr>
 <tr class="separator:adf14ed78e9c53040608fbbeb16cdd2db"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -441,9 +441,6 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="structmemory_1_1_page_allocator_1_1_stats.html">PageAllocator::Stats</a> memory::PageAllocator::getStats </td>
@@ -452,11 +449,6 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Returns the current statistics of <a class="el" href="classmemory_1_1_page_allocator.html" title="Represents an allocator of physical pages. ">PageAllocator</a>. </p>
@@ -525,10 +517,10 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class
       </table>
 </div><div class="memdoc">
 
-<p>Initializes the page allocator with the given memory model. </p>
+<p>Initializes the <a class="el" href="classmemory_1_1_page_allocator.html" title="Represents an allocator of physical pages. ">PageAllocator</a> with the given memory model. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">regions</td><td>Array of memory regions to be used by page allocator. Last entry should be zeroed. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">regions</td><td>Array of memory regions to be used by <a class="el" href="classmemory_1_1_page_allocator.html" title="Represents an allocator of physical pages. ">PageAllocator</a>. Last entry should be zeroed. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pageSize</td><td>Size of the page on the current platform. </td></tr>
   </table>
   </dd>

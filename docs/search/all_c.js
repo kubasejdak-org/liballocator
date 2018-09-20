@@ -7,7 +7,6 @@ var searchData=
   ['page_5fallocator_2eh',['page_allocator.h',['../page__allocator_8h.html',1,'']]],
   ['pageallocator',['PageAllocator',['../classmemory_1_1_page_allocator.html',1,'memory::PageAllocator'],['../classmemory_1_1_page_allocator.html#a00688e0805940d732ee4ef76f487d307',1,'memory::PageAllocator::PageAllocator()']]],
   ['pagecount',['pageCount',['../structmemory_1_1_region_info.html#a4beeef4469190b391d768fe13e052f79',1,'memory::RegionInfo']]],
-  ['pagescount',['pagesCount',['../structmemory_1_1_page_allocator_1_1_stats.html#af43b5f41afe2d004daace700b8050401',1,'memory::PageAllocator::Stats']]],
   ['pagesize',['pageSize',['../structmemory_1_1_page_allocator_1_1_stats.html#a73af2f82742bb7c8e015739470d8852d',1,'memory::PageAllocator::Stats']]],
   ['prevsibling',['prevSibling',['../classmemory_1_1_page.html#af4c328ff263ed5177ccdd38615b94d6d',1,'memory::Page']]]
 ];

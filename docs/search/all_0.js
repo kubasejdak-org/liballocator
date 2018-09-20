@@ -9,6 +9,7 @@ var searchData=
   ['alignedstart',['alignedStart',['../structmemory_1_1_region_info.html#ab6048d5244747ee10d0dd48181a2393b',1,'memory::RegionInfo::alignedStart()'],['../region__info_8cpp.html#ac8a7e1049a7d3b0b5420d5454468a63f',1,'memory::detail::alignedStart()']]],
   ['allocate',['allocate',['../classmemory_1_1_page_allocator.html#a8dab8839036a9afee80d04e0db6c3df3',1,'memory::PageAllocator::allocate()'],['../classmemory_1_1_zone_allocator.html#a1d689765314c9c6fcb8c1b62df0940ed',1,'memory::ZoneAllocator::allocate()'],['../allocator_8h.html#a78cf83e542adaf0b3a522e9a2cf4e13c',1,'memory::allocator::allocate()']]],
   ['allocatechunk',['allocateChunk',['../classmemory_1_1_zone_allocator.html#ad40dce42f15b9fe8291937395bd4f6fa',1,'memory::ZoneAllocator']]],
+  ['allocatedmemorysize',['allocatedMemorySize',['../structmemory_1_1allocator_1_1_stats.html#a7be37b6c96249e3c5d478edba9b9245e',1,'memory::allocator::Stats::allocatedMemorySize()'],['../structmemory_1_1_zone_allocator_1_1_stats.html#abf50bd7b927b4a566966fe7773720175',1,'memory::ZoneAllocator::Stats::allocatedMemorySize()']]],
   ['allocatezone',['allocateZone',['../classmemory_1_1_zone_allocator.html#a7da186826913a6bf31e63c8374b0f0d4',1,'memory::ZoneAllocator']]],
   ['allocator_2ecpp',['allocator.cpp',['../allocator_8cpp.html',1,'']]],
   ['allocator_2eh',['allocator.h',['../allocator_8h.html',1,'']]],
