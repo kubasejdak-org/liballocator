@@ -34,6 +34,7 @@
 
 #include "test_utils.h"
 
+#include <array>
 #include <random>
 #include <regex>
 
