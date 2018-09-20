@@ -43,13 +43,13 @@ namespace memory {
 class PageAllocator;
 
 /// @class ZoneAllocator
-/// @brief Represents the zone allocator.
+/// @brief Represents the ZoneAllocator.
 class ZoneAllocator {
 public:
     /// @class Stats
     /// @brief Represents the statistical data of the ZoneAllocator.
     struct Stats {
-        std::size_t usedMemorySize;             ///< Size of the memory that is under the control of the zone allocator
+        std::size_t usedMemorySize;             ///< Size of the memory that is under the control of the ZoneAllocator
         std::size_t reservedMemorySize;         ///< Size of the memory reserved for the ZoneAllocator within allocated zones.
         std::size_t freeMemorySize;             ///< Size of the free memory within allocated zones.
         std::size_t allocatedMemorySize;        ///< Size of the memory allocated by the user within allocated zones.
