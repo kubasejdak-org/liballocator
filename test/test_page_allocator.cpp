@@ -1087,7 +1087,7 @@ TEST_CASE("Pages are correctly resolved from address", "[page_allocator]")
     }
 }
 
-TEST_CASE("Stats are properly initialized", "[page_allocator]")
+TEST_CASE("PageAllocator stats are properly initialized", "[page_allocator]")
 {
     std::size_t pageSize = 256;
     PageAllocator pageAllocator;
