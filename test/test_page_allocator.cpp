@@ -252,7 +252,6 @@ TEST_CASE("Region where page descriptors are stored is properly selected", "[pag
 
         REQUIRE(pageAllocator.init(regions, pageSize));
         REQUIRE(pageAllocator.m_descRegionIdx == 0);
-
     }
 
     SECTION("Regions: 1(535), 2(87), 3(4)")
@@ -353,7 +352,6 @@ TEST_CASE("Pages with page descriptors are properly reserved", "[page_allocator]
 
         REQUIRE(pageAllocator.init(regions, pageSize));
         REQUIRE(pageAllocator.m_descPagesCount == 1);
-
     }
 
     SECTION("Regions: 1(535), 2(87), 3(4)")
@@ -457,8 +455,7 @@ TEST_CASE("Group index is properly computed", "[page_allocator]")
         {16, {131072, 262143}},
         {17, {262144, 524287}},
         {18, {524288, 1048575}},
-        {19, {1048576, 2097151}}
-    };
+        {19, {1048576, 2097151}}};
 
     for (std::size_t i = 0; i < 0x200000; ++i) {
         auto idx = pageAllocator.groupIdx(i);
@@ -1283,7 +1280,6 @@ TEST_CASE("Pages are correctly allocated", "[page_allocator]")
         REQUIRE(stats.reservedPagesCount == 79);
         REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount - pagesCount1));
     }
-
 
     SECTION("Allocate 1 page 4 times")
     {

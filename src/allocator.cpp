@@ -95,12 +95,12 @@ Stats getStats()
 
     Stats stats{};
     stats.totalMemorySize = pageStats.totalMemorySize;
-    stats.reservedMemorySize = pageStats.totalMemorySize - pageStats.effectiveMemorySize                        // Lost due to the alignment.
-                             + pageStats.reservedPagesCount * pageStats.pageSize                                // Reserved by the PageAllocator.
-                             + zoneStats.reservedMemorySize;                                                    // Reserved by the ZoneAllocator.
+    stats.reservedMemorySize = pageStats.totalMemorySize - pageStats.effectiveMemorySize // Lost due to the alignment.
+                               + pageStats.reservedPagesCount * pageStats.pageSize       // Reserved by the PageAllocator.
+                               + zoneStats.reservedMemorySize;                           // Reserved by the ZoneAllocator.
     stats.userMemorySize = stats.totalMemorySize - stats.reservedMemorySize;
-    stats.allocatedMemorySize = pageStats.userMemorySize - pageStats.freeMemorySize - zoneStats.usedMemorySize  // Allocated from PageAllocator by user.
-                              + zoneStats.allocatedMemorySize;                                                  // Allocated from ZoneAllocator by user.
+    stats.allocatedMemorySize = pageStats.userMemorySize - pageStats.freeMemorySize - zoneStats.usedMemorySize // Allocated from PageAllocator by user.
+                                + zoneStats.allocatedMemorySize;                                               // Allocated from ZoneAllocator by user.
     stats.freeMemorySize = stats.userMemorySize - stats.allocatedMemorySize;
 
     return stats;

@@ -99,8 +99,8 @@ public:
     }
 
 private:
-    T* m_next;    ///< Next node in the list.
-    T* m_prev;    ///< Previous node in the list.
+    T* m_next; ///< Next node in the list.
+    T* m_prev; ///< Previous node in the list.
 };
 
 } // namespace memory

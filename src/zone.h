@@ -109,20 +109,20 @@ public:
     static constexpr bool isNaturallyAligned()
     {
         constexpr std::size_t requiredSize = sizeof(ListNode<Zone>) // Inherited fields
-                                           + sizeof(Page*)          // m_page
-                                           + sizeof(std::size_t)    // m_chunkSize
-                                           + sizeof(std::size_t)    // m_chunksCount
-                                           + sizeof(std::size_t)    // m_freeChunksCount
-                                           + sizeof(Chunk*);        // m_freeChunks
+                                             + sizeof(Page*)        // m_page
+                                             + sizeof(std::size_t)  // m_chunkSize
+                                             + sizeof(std::size_t)  // m_chunksCount
+                                             + sizeof(std::size_t)  // m_freeChunksCount
+                                             + sizeof(Chunk*);      // m_freeChunks
         return (requiredSize == sizeof(Zone));
     }
 
 private:
-    Page* m_page;                       ///< Page, that is associated with this zone.
-    std::size_t m_chunkSize;            ///< Size of the chunks, that are part of this zone.
-    std::size_t m_chunksCount;          ///< Number of chunks in this zone.
-    std::size_t m_freeChunksCount;      ///< Number of free chunks in this zone.
-    Chunk* m_freeChunks;                ///< List of free chunks in this zone.
+    Page* m_page;                  ///< Page, that is associated with this zone.
+    std::size_t m_chunkSize;       ///< Size of the chunks, that are part of this zone.
+    std::size_t m_chunksCount;     ///< Number of chunks in this zone.
+    std::size_t m_freeChunksCount; ///< Number of free chunks in this zone.
+    Chunk* m_freeChunks;           ///< List of free chunks in this zone.
 };
 
 } // namespace memory

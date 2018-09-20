@@ -41,8 +41,8 @@ namespace memory {
 /// @class Region
 /// @brief Represents a continuous block of physical memory.
 struct Region {
-    std::uintptr_t address;     ///< Physical address of the memory block.
-    std::size_t size;           ///< Size of the memory block in bytes.
+    std::uintptr_t address; ///< Physical address of the memory block.
+    std::size_t size;       ///< Size of the memory block in bytes.
 };
 
 } // namespace memory

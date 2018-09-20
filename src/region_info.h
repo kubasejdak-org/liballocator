@@ -46,15 +46,15 @@ namespace memory {
 /// @class RegionInfo
 /// @brief Represents the meta data of the physical memory region.
 struct RegionInfo {
-    std::uintptr_t start;           ///< Physical address of the region start.
-    std::uintptr_t end;             ///< Physical address of the region end.
-    std::uintptr_t alignedStart;    ///< Aligned physical address of the region start.
-    std::uintptr_t alignedEnd;      ///< Aligned physical address of the region end.
-    std::size_t pageCount;          ///< Number of pages, that this region contains.
-    std::size_t size;               ///< Size of the region.
-    std::size_t alignedSize;        ///< Size of the aligned part of the region.
-    Page* firstPage;                ///< Pointer to the first page in the region.
-    Page* lastPage;                 ///< Pointer to the last page in the region.
+    std::uintptr_t start;        ///< Physical address of the region start.
+    std::uintptr_t end;          ///< Physical address of the region end.
+    std::uintptr_t alignedStart; ///< Aligned physical address of the region start.
+    std::uintptr_t alignedEnd;   ///< Aligned physical address of the region end.
+    std::size_t pageCount;       ///< Number of pages, that this region contains.
+    std::size_t size;            ///< Size of the region.
+    std::size_t alignedSize;     ///< Size of the aligned part of the region.
+    Page* firstPage;             ///< Pointer to the first page in the region.
+    Page* lastPage;              ///< Pointer to the last page in the region.
 };
 
 /// @brief Clears the contents of the region info.

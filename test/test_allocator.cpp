@@ -187,13 +187,13 @@ TEST_CASE("Allocator properly allocates and releases user memory", "[allocator]"
         ptrs.fill(nullptr);
 
         // Allocate memory.
-        for (auto *&ptr : ptrs) {
+        for (auto*& ptr : ptrs) {
             auto allocSize = distribution(randomGenerator);
             ptr = allocator::allocate(allocSize);
         }
 
         // Release memory.
-        for (auto *ptr : ptrs)
+        for (auto* ptr : ptrs)
             allocator::release(ptr);
 
         auto stats = allocator::getStats();

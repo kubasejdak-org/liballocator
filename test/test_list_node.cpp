@@ -43,10 +43,12 @@
 
 using namespace memory;
 
-struct TestNode : public ListNode<TestNode>
-{
+struct TestNode : public ListNode<TestNode> {
 public:
-    TestNode() : ListNode(), value(0) {}
+    TestNode()
+        : ListNode()
+        , value(0)
+    {}
     int value;
 };
 
@@ -101,7 +103,7 @@ TEST_CASE("Adding to non-empty list", "[list_node]")
     SECTION("All nodes are in correct order")
     {
         int idx = nodeCount - 1;
-        for (auto *it = list; it != nullptr; it = it->next(), --idx)
+        for (auto* it = list; it != nullptr; it = it->next(), --idx)
             REQUIRE(it->value == node[idx].value);
     }
 }
@@ -127,7 +129,7 @@ TEST_CASE("Removing from list with 5 nodes", "[list_node]")
         REQUIRE(node[idx].m_prev == nullptr);
 
         int i = nodeCount - 1;
-        for (auto *it = list; it != nullptr; it = it->next(), --i) {
+        for (auto* it = list; it != nullptr; it = it->next(), --i) {
             if (i == idx)
                 --i;
 
@@ -144,7 +146,7 @@ TEST_CASE("Removing from list with 5 nodes", "[list_node]")
         REQUIRE(node[idx].m_prev == nullptr);
 
         int i = nodeCount - 1;
-        for (auto *it = list; it != nullptr; it = it->next(), --i) {
+        for (auto* it = list; it != nullptr; it = it->next(), --i) {
             if (i == idx)
                 --i;
 
@@ -161,7 +163,7 @@ TEST_CASE("Removing from list with 5 nodes", "[list_node]")
         REQUIRE(node[idx].m_prev == nullptr);
 
         int i = nodeCount - 1;
-        for (auto *it = list; it != nullptr; it = it->next(), --i) {
+        for (auto* it = list; it != nullptr; it = it->next(), --i) {
             if (i == idx)
                 --i;
 

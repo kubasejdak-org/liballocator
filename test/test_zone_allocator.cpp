@@ -115,15 +115,15 @@ TEST_CASE("ZoneAllocator is properly initialized", "[zone_allocator]")
         REQUIRE(zoneAllocator.m_initialZone.m_chunksCount == (pageSize / zoneAllocator.m_zoneDescChunkSize));
         REQUIRE(zoneAllocator.m_initialZone.m_freeChunksCount == (pageSize / zoneAllocator.m_zoneDescChunkSize));
         std::uintptr_t lastChunkAddr = zoneAllocator.m_initialZone.page()->address() + pageSize - zoneAllocator.m_zoneDescChunkSize;
-        REQUIRE(zoneAllocator.m_initialZone.m_freeChunks == reinterpret_cast<Chunk *>(lastChunkAddr));
+        REQUIRE(zoneAllocator.m_initialZone.m_freeChunks == reinterpret_cast<Chunk*>(lastChunkAddr));
 
-        auto* chunk = reinterpret_cast<Chunk *>(zoneAllocator.m_initialZone.page()->address());
+        auto* chunk = reinterpret_cast<Chunk*>(zoneAllocator.m_initialZone.page()->address());
         for (std::size_t i = 0; i < zoneAllocator.m_initialZone.chunksCount(); ++i) {
             REQUIRE(std::uintptr_t(chunk) == zoneAllocator.m_initialZone.page()->address() + i * zoneAllocator.m_zoneDescChunkSize);
             chunk = chunk->m_prev;
         }
 
-        for (const auto &zone : zoneAllocator.m_zones) {
+        for (const auto& zone : zoneAllocator.m_zones) {
             if (zone.head == &zoneAllocator.m_initialZone) {
                 REQUIRE(zone.freeChunksCount == (pageSize / zoneAllocator.m_zoneDescChunkSize));
                 continue;
@@ -223,8 +223,7 @@ TEST_CASE("Zone index is properly calculated", "[zone_allocator]")
         {4, {256, 511}},
         {5, {512, 1023}},
         {6, {1024, 2047}},
-        {7, {2048, 4095}}
-    };
+        {7, {2048, 4095}}};
 
     for (std::size_t i = idxRange[0].first; i < idxRange[7].second; ++i) {
         auto idx = zoneAllocator.zoneIdx(i);
@@ -1117,7 +1116,7 @@ TEST_CASE("Zone allocator properly allocates user memory", "[zone_allocator]")
 
         auto stats = zoneAllocator.getStats();
         REQUIRE(stats.usedMemorySize == 3 * pageSize);
-        REQUIRE(stats.reservedMemorySize ==  2* zoneAllocator.m_zoneDescChunkSize);
+        REQUIRE(stats.reservedMemorySize == 2 * zoneAllocator.m_zoneDescChunkSize);
         REQUIRE(stats.freeMemorySize == (3 * pageSize - stats.reservedMemorySize - 4 * zoneAllocator.chunkSize(allocSize)));
         REQUIRE(stats.allocatedMemorySize == 4 * zoneAllocator.chunkSize(allocSize));
     }
@@ -1425,7 +1424,7 @@ TEST_CASE("ZoneAllocator integration tests (long-term)", "[zone_allocator][integ
         REQUIRE(chunkCount == zoneAllocator.m_initialZone.chunksCount());
         REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
 
-        for (const auto &zone : zoneAllocator.m_zones) {
+        for (const auto& zone : zoneAllocator.m_zones) {
             if (zone.head == &zoneAllocator.m_initialZone) {
                 REQUIRE(zone.freeChunksCount == (pageSize / zoneAllocator.m_zoneDescChunkSize));
                 continue;
