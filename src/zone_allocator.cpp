@@ -119,7 +119,7 @@ ZoneAllocator::Stats ZoneAllocator::getStats()
 
     Stats stats{};
     stats.usedMemorySize = usedZonesCount * m_pageSize;
-    stats.reservedMemorySize = (usedZonesCount - 1) * m_zoneDescChunkSize;
+    stats.reservedMemorySize = usedZonesCount ? (usedZonesCount - 1) * m_zoneDescChunkSize : 0;
     stats.freeMemorySize = std::accumulate(start, end, 0U, [](const size_t& sum, const ZoneInfo& zoneInfo) {
         if (!zoneInfo.head)
             return sum;

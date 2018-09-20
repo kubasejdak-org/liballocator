@@ -73,6 +73,12 @@ TEST_CASE("ZoneAllocator is properly cleared", "[zone_allocator]")
         REQUIRE(zone.head == nullptr);
         REQUIRE(zone.freeChunksCount == 0);
     }
+
+    auto stats = zoneAllocator.getStats();
+    REQUIRE(stats.usedMemorySize == 0);
+    REQUIRE(stats.reservedMemorySize == 0);
+    REQUIRE(stats.freeMemorySize == 0);
+    REQUIRE(stats.allocatedMemorySize == 0);
 }
 
 TEST_CASE("ZoneAllocator is properly initialized", "[zone_allocator]")
@@ -126,12 +132,24 @@ TEST_CASE("ZoneAllocator is properly initialized", "[zone_allocator]")
             REQUIRE(zone.head == nullptr);
             REQUIRE(zone.freeChunksCount == 0);
         }
+
+        auto stats = zoneAllocator.getStats();
+        REQUIRE(stats.usedMemorySize == pageSize);
+        REQUIRE(stats.reservedMemorySize == 0);
+        REQUIRE(stats.freeMemorySize == pageSize);
+        REQUIRE(stats.allocatedMemorySize == 0);
     }
 
     SECTION("Free pages are unavailable")
     {
         REQUIRE(pageAllocator.allocate(pageAllocator.m_freePagesCount));
         REQUIRE(!zoneAllocator.init(&pageAllocator, pageSize));
+
+        auto stats = zoneAllocator.getStats();
+        REQUIRE(stats.usedMemorySize == 0);
+        REQUIRE(stats.reservedMemorySize == 0);
+        REQUIRE(stats.freeMemorySize == 0);
+        REQUIRE(stats.allocatedMemorySize == 0);
     }
 }
 
