@@ -32,6 +32,8 @@
 
 #include <catch2/catch.hpp>
 
+#include "test_utils.h"
+
 // Make access to private members for testing.
 // clang-format off
 #define private     public
@@ -40,3 +42,75 @@
 #include <allocator/allocator.h>
 
 using namespace memory;
+
+TEST_CASE("Allocator returns a valid version", "[allocator]")
+{
+    // TODO: implement.
+}
+
+TEST_CASE("Allocator is properly cleared", "[allocator]")
+{
+    allocator::clear();
+
+    auto stats = allocator::getStats();
+    REQUIRE(stats.totalMemorySize == 0);
+    REQUIRE(stats.reservedMemorySize == 0);
+    REQUIRE(stats.userMemorySize == 0);
+    REQUIRE(stats.allocatedMemorySize == 0);
+    REQUIRE(stats.freeMemorySize == 0);
+}
+
+TEST_CASE("Allocator is properly initialized", "[allocator]")
+{
+    std::size_t pageSize = 256;
+    std::size_t pagesCount1 = 535;
+    std::size_t pagesCount2 = 87;
+    std::size_t pagesCount3 = 4;
+    auto size1 = pageSize * pagesCount1;
+    auto size2 = pageSize * pagesCount2;
+    auto size3 = pageSize * pagesCount3;
+    auto memory1 = test::alignedAlloc(pageSize, size1);
+    auto memory2 = test::alignedAlloc(pageSize, size2);
+    auto memory3 = test::alignedAlloc(pageSize, size3);
+
+    SECTION("Initialize with multiple memory regions")
+    {
+        // clang-format off
+        Region regions[] = {
+            {std::uintptr_t(memory1.get()), size1},
+            {std::uintptr_t(memory2.get()), size2},
+            {std::uintptr_t(memory3.get()), size3},
+            {0,                             0}
+        };
+        // clang-format on
+
+        REQUIRE(allocator::init(regions, pageSize));
+
+        auto stats = allocator::getStats();
+        REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
+        REQUIRE(stats.reservedMemorySize == 79 * pageSize);
+        REQUIRE(stats.userMemorySize == (size1 + size2 + size3 - stats.reservedMemorySize));
+        REQUIRE(stats.allocatedMemorySize == 0);
+        REQUIRE(stats.freeMemorySize == stats.userMemorySize);
+    }
+
+    SECTION("Initialize with single memory region")
+    {
+        REQUIRE(allocator::init(std::uintptr_t(memory1.get()), std::uintptr_t(memory1.get() + size1), pageSize));
+
+        auto stats = allocator::getStats();
+        REQUIRE(stats.totalMemorySize == size1);
+        REQUIRE(stats.reservedMemorySize == 67 * pageSize);
+        REQUIRE(stats.userMemorySize == (size1 - stats.reservedMemorySize));
+        REQUIRE(stats.allocatedMemorySize == 0);
+        REQUIRE(stats.freeMemorySize == stats.userMemorySize);
+    }
+}
+
+TEST_CASE("Allocator properly allocates user memory", "[allocator]")
+{
+}
+
+TEST_CASE("Allocator properly releases user memory", "[allocator]")
+{
+}

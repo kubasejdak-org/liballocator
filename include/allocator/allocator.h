@@ -40,6 +40,16 @@
 
 namespace memory::allocator {
 
+/// @class Stats
+/// @brief Represents the statistical data of the allocator.
+struct Stats {
+    std::size_t totalMemorySize;        ///< Total size of the memory passed during initialization.
+    std::size_t reservedMemorySize;     ///< Size of the memory reserved for the liballocator or ignored due to the alignment.
+    std::size_t userMemorySize;         ///< Size of the memory available to the user.
+    std::size_t allocatedMemorySize;    ///< Size of the memory allocated by the user.
+    std::size_t freeMemorySize;         ///< Size of the free user memory.
+};
+
 /// @brief Returns version of liballocator.
 /// @return Version of liballocator.
 const char* version();
@@ -48,7 +58,7 @@ const char* version();
 /// @param[in] regions      Array of memory regions to be used by liballocator. Last entry should be zeroed.
 /// @param[in] pageSize     Size of the page on the current platform.
 /// @return True on success, false otherwise.
-bool init(Region* regions, std::size_t pageSize);
+[[nodiscard]] bool init(Region* regions, std::size_t pageSize);
 
 /// @brief Initializes liballocator with the given array of memory boundaries and page size.
 /// @param[in] start        Start address of a memory region to be used by liballocator.
@@ -56,7 +66,7 @@ bool init(Region* regions, std::size_t pageSize);
 /// @param[in] pageSize     Size of the page on the current platform.
 /// @return True on success, false otherwise.
 /// @note This overload is equivalent to the above version of init() with only one memory region entry.
-bool init(std::uintptr_t start, std::uintptr_t end, std::size_t pageSize);
+[[nodiscard]] bool init(std::uintptr_t start, std::uintptr_t end, std::size_t pageSize);
 
 /// @brief Clears the internal state of liballocator.
 void clear();
@@ -64,12 +74,16 @@ void clear();
 /// @brief Allocates memory block with the given size.
 /// @param[in] size         Demanded size of the allocated memory block.
 /// @return Pointer to the allocated memory block on success, nullptr otherwise.
-void* allocate(std::size_t size);
+[[nodiscard]] void* allocate(std::size_t size);
 
 /// @brief Releases the memory block pointed by given pointer.
 /// @param[in] ptr          Pointer to the memory block, that should be released.
 /// @note If the given pointer is nullptr, then function exists without an error.
 void release(void* ptr);
+
+/// @brief Returns the current statistics of the allocator.
+/// @return liballocator statistics.
+Stats getStats();
 
 } // namespace memory::allocator
 
