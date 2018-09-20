@@ -50,27 +50,27 @@ namespace memory {
 class PageAllocator {
 public:
     /// @class Stats
-    /// @brief Represents the statistical data of the page allocator.
+    /// @brief Represents the statistical data of the PageAllocator.
     struct Stats {
         std::size_t totalMemorySize;        ///< Total size of the memory passed during initialization.
-        std::size_t effectiveMemorySize;    ///< Effective size of the memory, that can be used by the allocator.
+        std::size_t effectiveMemorySize;    ///< Effective size of the memory, that can be used by the PageAllocator.
         std::size_t userMemorySize;         ///< Total size of the memory available to the user.
         std::size_t freeMemorySize;         ///< Size of the remaining user memory.
-        std::size_t pageSize;               ///< Size of the page used by the allocator.
-        std::size_t totalPagesCount;        ///< Total number of the pages known to the allocator.
-        std::size_t reservedPagesCount;     ///< Number of pages reserved for the allocator.
+        std::size_t pageSize;               ///< Size of the page used by the PageAllocator.
+        std::size_t totalPagesCount;        ///< Total number of the pages known to the PageAllocator.
+        std::size_t reservedPagesCount;     ///< Number of pages reserved for the PageAllocator.
         std::size_t freePagesCount;         ///< Current number of the free pages.
     };
 
     /// @brief Default constructor.
     PageAllocator() noexcept;
-    /// @brief Initializes the page allocator with the given memory model.
-    /// @param[in] regions          Array of memory regions to be used by page allocator. Last entry should be zeroed.
+    /// @brief Initializes the PageAllocator with the given memory model.
+    /// @param[in] regions          Array of memory regions to be used by PageAllocator. Last entry should be zeroed.
     /// @param[in] pageSize         Size of the page on the current platform.
     /// @return True on success, false otherwise.
     [[nodiscard]] bool init(Region* regions, std::size_t pageSize);
 
-    /// @brief Clears the internal state of the page allocator.
+    /// @brief Clears the internal state of the PageAllocator.
     void clear();
 
     /// @brief Allocates the given number of physical pages.
