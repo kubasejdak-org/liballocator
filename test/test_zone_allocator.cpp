@@ -135,6 +135,34 @@ TEST_CASE("ZoneAllocator is properly initialized", "[zone_allocator]")
     }
 }
 
+TEST_CASE("ZoneAllocator stats are properly initialized", "[zone_allocator]")
+{
+    std::size_t pageSize = 256;
+    std::size_t pagesCount = 256;
+    PageAllocator pageAllocator;
+
+    auto size = pageSize * pagesCount;
+    auto memory = test::alignedAlloc(pageSize, size);
+
+    // clang-format off
+    Region regions[] = {
+        {std::uintptr_t(memory.get()), size},
+        {0,                            0}
+    };
+    // clang-format on
+
+    REQUIRE(pageAllocator.init(regions, pageSize));
+
+    ZoneAllocator zoneAllocator;
+    REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
+
+    auto stats = zoneAllocator.getStats();
+    REQUIRE(stats.usedMemorySize == pageSize);
+    REQUIRE(stats.reservedMemorySize == 0);
+    REQUIRE(stats.freeMemorySize == pageSize);
+    REQUIRE(stats.allocatedMemorySize == 0);
+}
+
 TEST_CASE("Chunk size is properly calculated", "[zone_allocator]")
 {
     ZoneAllocator zoneAllocator;
@@ -904,6 +932,12 @@ TEST_CASE("Zone allocator properly allocates user memory", "[zone_allocator]")
         std::size_t freePagesCount = pageAllocator.m_freePagesCount;
         REQUIRE(!zoneAllocator.allocate(0));
         REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
+
+        auto stats = zoneAllocator.getStats();
+        REQUIRE(stats.usedMemorySize == pageSize);
+        REQUIRE(stats.reservedMemorySize == 0);
+        REQUIRE(stats.freeMemorySize == pageSize);
+        REQUIRE(stats.allocatedMemorySize == 0);
     }
 
     SECTION("Allocate size equal to 3 pages")
@@ -913,6 +947,12 @@ TEST_CASE("Zone allocator properly allocates user memory", "[zone_allocator]")
         std::size_t freePagesCount = pageAllocator.m_freePagesCount;
         REQUIRE(zoneAllocator.allocate(allocSize));
         REQUIRE(pageAllocator.m_freePagesCount == freePagesCount - allocPagesCount);
+
+        auto stats = zoneAllocator.getStats();
+        REQUIRE(stats.usedMemorySize == pageSize);
+        REQUIRE(stats.reservedMemorySize == 0);
+        REQUIRE(stats.freeMemorySize == pageSize);
+        REQUIRE(stats.allocatedMemorySize == 0);
     }
 
     SECTION("Allocate 6 bytes")
@@ -935,6 +975,12 @@ TEST_CASE("Zone allocator properly allocates user memory", "[zone_allocator]")
             }
         }
         REQUIRE(valid);
+
+        auto stats = zoneAllocator.getStats();
+        REQUIRE(stats.usedMemorySize == 2 * pageSize);
+        REQUIRE(stats.reservedMemorySize == zoneAllocator.m_zoneDescChunkSize);
+        REQUIRE(stats.freeMemorySize == (2 * pageSize - stats.reservedMemorySize - zoneAllocator.chunkSize(allocSize)));
+        REQUIRE(stats.allocatedMemorySize == zoneAllocator.chunkSize(allocSize));
     }
 
     SECTION("Allocate 16 bytes")
@@ -957,6 +1003,12 @@ TEST_CASE("Zone allocator properly allocates user memory", "[zone_allocator]")
             }
         }
         REQUIRE(valid);
+
+        auto stats = zoneAllocator.getStats();
+        REQUIRE(stats.usedMemorySize == 2 * pageSize);
+        REQUIRE(stats.reservedMemorySize == zoneAllocator.m_zoneDescChunkSize);
+        REQUIRE(stats.freeMemorySize == (2 * pageSize - stats.reservedMemorySize - zoneAllocator.chunkSize(allocSize)));
+        REQUIRE(stats.allocatedMemorySize == zoneAllocator.chunkSize(allocSize));
     }
 
     SECTION("Allocate 64 bytes")
@@ -978,6 +1030,12 @@ TEST_CASE("Zone allocator properly allocates user memory", "[zone_allocator]")
             }
         }
         REQUIRE(valid);
+
+        auto stats = zoneAllocator.getStats();
+        REQUIRE(stats.usedMemorySize == pageSize);
+        REQUIRE(stats.reservedMemorySize == 0);
+        REQUIRE(stats.freeMemorySize == (pageSize - stats.reservedMemorySize - zoneAllocator.chunkSize(allocSize)));
+        REQUIRE(stats.allocatedMemorySize == zoneAllocator.chunkSize(allocSize));
     }
 
     SECTION("Allocate 64 bytes 6 times")
@@ -1005,6 +1063,12 @@ TEST_CASE("Zone allocator properly allocates user memory", "[zone_allocator]")
             }
             REQUIRE(valid);
         }
+
+        auto stats = zoneAllocator.getStats();
+        REQUIRE(stats.usedMemorySize == 2 * pageSize);
+        REQUIRE(stats.reservedMemorySize == zoneAllocator.m_zoneDescChunkSize);
+        REQUIRE(stats.freeMemorySize == (2 * pageSize - stats.reservedMemorySize - 6 * zoneAllocator.chunkSize(allocSize)));
+        REQUIRE(stats.allocatedMemorySize == 6 * zoneAllocator.chunkSize(allocSize));
     }
 
     SECTION("Allocate 115 bytes 4 times")
@@ -1032,6 +1096,12 @@ TEST_CASE("Zone allocator properly allocates user memory", "[zone_allocator]")
             }
             REQUIRE(valid);
         }
+
+        auto stats = zoneAllocator.getStats();
+        REQUIRE(stats.usedMemorySize == 3 * pageSize);
+        REQUIRE(stats.reservedMemorySize ==  2* zoneAllocator.m_zoneDescChunkSize);
+        REQUIRE(stats.freeMemorySize == (3 * pageSize - stats.reservedMemorySize - 4 * zoneAllocator.chunkSize(allocSize)));
+        REQUIRE(stats.allocatedMemorySize == 4 * zoneAllocator.chunkSize(allocSize));
     }
 
     SECTION("Allocate 64 bytes 3 times, then 128 bytes 3 times")
@@ -1085,6 +1155,12 @@ TEST_CASE("Zone allocator properly allocates user memory", "[zone_allocator]")
 
         REQUIRE(pageAllocator.m_freePagesCount == freePagesCount2 - 3);
         REQUIRE(zoneAllocator.m_zones[zoneAllocator.m_zoneDescIdx].freeChunksCount == 2);
+
+        auto stats = zoneAllocator.getStats();
+        REQUIRE(stats.usedMemorySize == 4 * pageSize);
+        REQUIRE(stats.reservedMemorySize == 3 * zoneAllocator.m_zoneDescChunkSize);
+        REQUIRE(stats.freeMemorySize == (4 * pageSize - stats.reservedMemorySize - 3 * (zoneAllocator.chunkSize(allocSize1) + zoneAllocator.chunkSize(allocSize2))));
+        REQUIRE(stats.allocatedMemorySize == 3 * (zoneAllocator.chunkSize(allocSize1) + zoneAllocator.chunkSize(allocSize2)));
     }
 
     SECTION("Allocate 4 pages, no pages are available")
@@ -1092,6 +1168,12 @@ TEST_CASE("Zone allocator properly allocates user memory", "[zone_allocator]")
         std::size_t allocSize = 4 * pageSize;
         REQUIRE(pageAllocator.allocate(pageAllocator.m_freePagesCount));
         REQUIRE(!zoneAllocator.allocate(allocSize));
+
+        auto stats = zoneAllocator.getStats();
+        REQUIRE(stats.usedMemorySize == pageSize);
+        REQUIRE(stats.reservedMemorySize == 0);
+        REQUIRE(stats.freeMemorySize == pageSize);
+        REQUIRE(stats.allocatedMemorySize == 0);
     }
 
     SECTION("Allocate 128 bytes, no pages are available")
@@ -1099,6 +1181,12 @@ TEST_CASE("Zone allocator properly allocates user memory", "[zone_allocator]")
         std::size_t allocSize = 128;
         REQUIRE(pageAllocator.allocate(pageAllocator.m_freePagesCount));
         REQUIRE(!zoneAllocator.allocate(allocSize));
+
+        auto stats = zoneAllocator.getStats();
+        REQUIRE(stats.usedMemorySize == pageSize);
+        REQUIRE(stats.reservedMemorySize == 0);
+        REQUIRE(stats.freeMemorySize == pageSize);
+        REQUIRE(stats.allocatedMemorySize == 0);
     }
 }
 
@@ -1128,6 +1216,12 @@ TEST_CASE("Zone allocator properly releases user memory", "[zone_allocator]")
         std::size_t freePagesCount = pageAllocator.m_freePagesCount;
         zoneAllocator.release(nullptr);
         REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
+
+        auto stats = zoneAllocator.getStats();
+        REQUIRE(stats.usedMemorySize == pageSize);
+        REQUIRE(stats.reservedMemorySize == 0);
+        REQUIRE(stats.freeMemorySize == pageSize);
+        REQUIRE(stats.allocatedMemorySize == 0);
     }
 
     SECTION("Release invalid pointer")
@@ -1135,6 +1229,12 @@ TEST_CASE("Zone allocator properly releases user memory", "[zone_allocator]")
         std::size_t freePagesCount = pageAllocator.m_freePagesCount;
         zoneAllocator.release(reinterpret_cast<void*>(0xdeadbeef));
         REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
+
+        auto stats = zoneAllocator.getStats();
+        REQUIRE(stats.usedMemorySize == pageSize);
+        REQUIRE(stats.reservedMemorySize == 0);
+        REQUIRE(stats.freeMemorySize == pageSize);
+        REQUIRE(stats.allocatedMemorySize == 0);
     }
 
     SECTION("Release memory with size equal to 3 pages")
@@ -1145,6 +1245,12 @@ TEST_CASE("Zone allocator properly releases user memory", "[zone_allocator]")
         auto* ptr = zoneAllocator.allocate(allocSize);
         zoneAllocator.release(ptr);
         REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
+
+        auto stats = zoneAllocator.getStats();
+        REQUIRE(stats.usedMemorySize == pageSize);
+        REQUIRE(stats.reservedMemorySize == 0);
+        REQUIRE(stats.freeMemorySize == pageSize);
+        REQUIRE(stats.allocatedMemorySize == 0);
     }
 
     SECTION("Release 6 bytes")
@@ -1157,6 +1263,12 @@ TEST_CASE("Zone allocator properly releases user memory", "[zone_allocator]")
         zoneAllocator.release(ptr);
         REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
         REQUIRE(zoneAllocator.m_zones[idx].freeChunksCount == freeChunksCount);
+
+        auto stats = zoneAllocator.getStats();
+        REQUIRE(stats.usedMemorySize == pageSize);
+        REQUIRE(stats.reservedMemorySize == 0);
+        REQUIRE(stats.freeMemorySize == pageSize);
+        REQUIRE(stats.allocatedMemorySize == 0);
     }
 
     SECTION("Release 16 bytes")
@@ -1169,6 +1281,12 @@ TEST_CASE("Zone allocator properly releases user memory", "[zone_allocator]")
         zoneAllocator.release(ptr);
         REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
         REQUIRE(zoneAllocator.m_zones[idx].freeChunksCount == freeChunksCount);
+
+        auto stats = zoneAllocator.getStats();
+        REQUIRE(stats.usedMemorySize == pageSize);
+        REQUIRE(stats.reservedMemorySize == 0);
+        REQUIRE(stats.freeMemorySize == pageSize);
+        REQUIRE(stats.allocatedMemorySize == 0);
     }
 
     SECTION("Release 64 bytes")
@@ -1181,6 +1299,12 @@ TEST_CASE("Zone allocator properly releases user memory", "[zone_allocator]")
         zoneAllocator.release(ptr);
         REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
         REQUIRE(zoneAllocator.m_zones[idx].freeChunksCount == freeChunksCount);
+
+        auto stats = zoneAllocator.getStats();
+        REQUIRE(stats.usedMemorySize == pageSize);
+        REQUIRE(stats.reservedMemorySize == 0);
+        REQUIRE(stats.freeMemorySize == pageSize);
+        REQUIRE(stats.allocatedMemorySize == 0);
     }
 
     SECTION("Release 64 bytes 6 times")
@@ -1199,6 +1323,12 @@ TEST_CASE("Zone allocator properly releases user memory", "[zone_allocator]")
 
         REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
         REQUIRE(zoneAllocator.m_zones[idx].freeChunksCount == freeChunksCount);
+
+        auto stats = zoneAllocator.getStats();
+        REQUIRE(stats.usedMemorySize == pageSize);
+        REQUIRE(stats.reservedMemorySize == 0);
+        REQUIRE(stats.freeMemorySize == pageSize);
+        REQUIRE(stats.allocatedMemorySize == 0);
     }
 
     SECTION("Release 115 bytes 4 times")
@@ -1217,6 +1347,12 @@ TEST_CASE("Zone allocator properly releases user memory", "[zone_allocator]")
 
         REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
         REQUIRE(zoneAllocator.m_zones[idx].freeChunksCount == freeChunksCount);
+
+        auto stats = zoneAllocator.getStats();
+        REQUIRE(stats.usedMemorySize == pageSize);
+        REQUIRE(stats.reservedMemorySize == 0);
+        REQUIRE(stats.freeMemorySize == pageSize);
+        REQUIRE(stats.allocatedMemorySize == 0);
     }
 
     SECTION("Release 64 bytes 3 times, then 128 bytes 3 times")
@@ -1252,6 +1388,12 @@ TEST_CASE("Zone allocator properly releases user memory", "[zone_allocator]")
         REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
         REQUIRE(zoneAllocator.m_zones[idx1].freeChunksCount == freeChunksCount1);
         REQUIRE(zoneAllocator.m_zones[idx2].freeChunksCount == freeChunksCount2);
+
+        auto stats = zoneAllocator.getStats();
+        REQUIRE(stats.usedMemorySize == pageSize);
+        REQUIRE(stats.reservedMemorySize == 0);
+        REQUIRE(stats.freeMemorySize == pageSize);
+        REQUIRE(stats.allocatedMemorySize == 0);
     }
 }
 
@@ -1322,5 +1464,11 @@ TEST_CASE("ZoneAllocator integration tests (long-term)", "[zone_allocator][integ
             REQUIRE(zone.head == nullptr);
             REQUIRE(zone.freeChunksCount == 0);
         }
+
+        auto stats = zoneAllocator.getStats();
+        REQUIRE(stats.usedMemorySize == pageSize);
+        REQUIRE(stats.reservedMemorySize == 0);
+        REQUIRE(stats.freeMemorySize == pageSize);
+        REQUIRE(stats.allocatedMemorySize == 0);
     }
 }

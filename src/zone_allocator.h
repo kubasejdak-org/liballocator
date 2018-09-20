@@ -46,6 +46,15 @@ class PageAllocator;
 /// @brief Represents the zone allocator.
 class ZoneAllocator {
 public:
+    /// @class Stats
+    /// @brief Represents the statistical data of the ZoneAllocator.
+    struct Stats {
+        std::size_t usedMemorySize;             ///< Size of the memory that is under the control of the zone allocator
+        std::size_t reservedMemorySize;         ///< Size of the memory reserved for the ZoneAllocator within allocated zones.
+        std::size_t freeMemorySize;             ///< Size of the free memory within allocated zones.
+        std::size_t allocatedMemorySize;        ///< Size of the memory allocated by the user within allocated zones.
+    };
+
     /// @brief Default constructor.
     ZoneAllocator() noexcept;
 
@@ -67,6 +76,10 @@ public:
     /// @param[in] ptr                  Pointer to the memory chunk to be released.
     /// @note This function accepts nullptr input.
     void release(void* ptr);
+
+    /// @brief Returns the current statistics of ZoneAllocator.
+    /// @return ZoneAllocator statistics.
+    Stats getStats();
 
 private:
     /// @brief Allocates memory chunk from the given zone.
