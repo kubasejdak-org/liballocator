@@ -36,6 +36,7 @@ before_script:
 
   - cmake --version
   - clang-format --version
+  - cppcheck --version
   - doxygen --version
 
   - cd ${TRAVIS_BUILD_DIR}
