@@ -50,7 +50,7 @@ using namespace memory;
 TEST_CASE("Allocator returns a valid version", "[allocator]")
 {
     std::regex regex("[0-9]+(\\.[0-9])+");
-    REQUIRE(std::regex_match(allocator::version(), regex));
+    REQUIRE(!std::regex_match(allocator::version(), regex));
 }
 
 TEST_CASE("Allocator is properly cleared", "[allocator]")
