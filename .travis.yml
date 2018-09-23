@@ -8,29 +8,30 @@ git:
 env:
   global:
     - CMAKE_VER=3.12.2
+    - CODECOV=false
 
 matrix:
   include:
     - os: linux
-      env: _CC=gcc CC_VER=7 CODECOV=false
+      env: _CC=gcc CC_VER=7
     - os: linux
-      env: _CC=gcc CC_VER=8 CODECOV=false
+      env: _CC=gcc CC_VER=8
     - os: linux
-      env: _CC=clang CC_VER=6.0.1 CODECOV=false
-    - os: linux
-      env: _CC=clang CC_VER=7.0.0 CODECOV=false
+      env: _CC=clang CC_VER=6.0.1
+    #- os: linux
+    #  env: _CC=clang CC_VER=7.0.0
     - os: osx
       osx_image: xcode10
-      env: _CC=gcc CC_VER=7 CODECOV=false
+      env: _CC=gcc CC_VER=7
     - os: osx
       osx_image: xcode10
-      env: _CC=gcc CC_VER=8 CODECOV=false
+      env: _CC=gcc CC_VER=8
     - os: osx
       osx_image: xcode10
       env: _CC=clang CC_VER=6.0.1 CODECOV=true
     - os: osx
       osx_image: xcode10
-      env: _CC=clang CC_VER=7.0.0 CODECOV=false
+      env: _CC=clang CC_VER=7.0.0
 
 before_install:
   - export PATH=${TRAVIS_BUILD_DIR}/tools/ci:${PATH}
