@@ -61,4 +61,3 @@ after_script:
   - check-format.sh .
   - check-cppcheck.sh include/ src/
   - check-doxygen.sh docs/doxygen.warn build/docs/doxygen.warn
-  - echo ${TEST_KUBA}
