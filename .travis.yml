@@ -28,10 +28,10 @@ matrix:
       env: _CC=gcc CC_VER=8
     - os: osx
       osx_image: xcode10
-      env: _CC=clang CC_VER=6.0.1 CODECOV=true
+      env: _CC=clang CC_VER=6.0.1
     - os: osx
       osx_image: xcode10
-      env: _CC=clang CC_VER=7.0.0
+      env: _CC=clang CC_VER=7.0.0 CODECOV=true
 
 before_install:
   - export PATH=${TRAVIS_BUILD_DIR}/tools/ci:${PATH}
