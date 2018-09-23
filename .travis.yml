@@ -58,5 +58,5 @@ script:
   - cd -
 
   - check-format.sh .
-  - check-cppcheck.sh include/ src/
+  - check-cppcheck.sh include/ src/ .config/cppcheck.warn
   - check-doxygen.sh docs/doxygen.warn build/docs/doxygen.warn
