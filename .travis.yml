@@ -8,25 +8,27 @@ git:
 matrix:
   include:
     - os: linux
-      env: CC_=gcc CC_VER=8 CMAKE_VER=3.12.2 CODECOV=false
+      env: _CC=gcc CC_VER=7 CMAKE_VER=3.12.2 CODECOV=false
     - os: linux
-      env: CC_=clang CC_VER=6.0.1 CMAKE_VER=3.12.2 CODECOV=false
+      env: _CC=gcc CC_VER=8 CMAKE_VER=3.12.2 CODECOV=false
+    - os: linux
+      env: _CC=clang CC_VER=6.0.1 CMAKE_VER=3.12.2 CODECOV=false
     - os: osx
       osx_image: xcode10
-      env: CC_=gcc CC_VER=7 CMAKE_VER=3.12.2 CODECOV=false
+      env: _CC=gcc CC_VER=7 CMAKE_VER=3.12.2 CODECOV=false
     - os: osx
       osx_image: xcode10
-      env: CC_=gcc CC_VER=8 CMAKE_VER=3.12.2 CODECOV=false
+      env: _CC=gcc CC_VER=8 CMAKE_VER=3.12.2 CODECOV=false
     - os: osx
       osx_image: xcode10
-      env: CC_=clang CC_VER=6.0.1 CMAKE_VER=3.12.2 CODECOV=true
+      env: _CC=clang CC_VER=6.0.1 CMAKE_VER=3.12.2 CODECOV=true
 
 before_install:
   - export PATH=${TRAVIS_BUILD_DIR}/tools/ci:${PATH}
   - mkdir -p deps && cd $_
 
 install:
-  - install-${CC_}.sh ${CC_VER} ${TRAVIS_OS_NAME}
+  - install-${_CC}.sh ${CC_VER} ${TRAVIS_OS_NAME}
   - install-cmake.sh ${CMAKE_VER} ${TRAVIS_OS_NAME}
   - install-clang.sh 6.0.1 ${TRAVIS_OS_NAME} false
   - install-cppcheck.sh ${TRAVIS_OS_NAME}
