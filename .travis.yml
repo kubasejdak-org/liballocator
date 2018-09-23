@@ -5,26 +5,30 @@ group: travis_latest
 git:
   depth: false
 
+env:
+  global:
+    - CMAKE_VER=3.12.2
+
 matrix:
   include:
     - os: linux
-      env: _CC=gcc CC_VER=7 CMAKE_VER=3.12.2 CODECOV=false
+      env: _CC=gcc CC_VER=7 CODECOV=false
     - os: linux
-      env: _CC=gcc CC_VER=8 CMAKE_VER=3.12.2 CODECOV=false
+      env: _CC=gcc CC_VER=8 CODECOV=false
     - os: linux
-      env: _CC=clang CC_VER=6.0.1 CMAKE_VER=3.12.2 CODECOV=false
+      env: _CC=clang CC_VER=6.0.1 CODECOV=false
     - os: osx
       osx_image: xcode10
-      env: _CC=gcc CC_VER=7 CMAKE_VER=3.12.2 CODECOV=false
+      env: _CC=gcc CC_VER=7 CODECOV=false
     - os: osx
       osx_image: xcode10
-      env: _CC=gcc CC_VER=8 CMAKE_VER=3.12.2 CODECOV=false
+      env: _CC=gcc CC_VER=8 CODECOV=false
     - os: osx
       osx_image: xcode10
-      env: _CC=clang CC_VER=6.0.1 CMAKE_VER=3.12.2 CODECOV=true
+      env: _CC=clang CC_VER=6.0.1 CODECOV=true
     - os: osx
       osx_image: xcode10
-      env: _CC=clang CC_VER=7.0.0 CMAKE_VER=3.12.2 CODECOV=false
+      env: _CC=clang CC_VER=7.0.0 CODECOV=false
 
 before_install:
   - export PATH=${TRAVIS_BUILD_DIR}/tools/ci:${PATH}
