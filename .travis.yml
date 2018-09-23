@@ -33,7 +33,7 @@ before_install:
 install:
   - install-${_CC}.sh ${CC_VER} ${TRAVIS_OS_NAME}
   - install-cmake.sh ${CMAKE_VER} ${TRAVIS_OS_NAME}
-  - if [[ ${_CC} == "gcc" ]]; then install-clang.sh 6.0.1 ${TRAVIS_OS_NAME} false fi;
+  - if [[ ${_CC} == "gcc" ]]; then install-clang.sh 6.0.1 ${TRAVIS_OS_NAME} false; fi
   - install-cppcheck.sh ${TRAVIS_OS_NAME}
   - install-doxygen.sh ${TRAVIS_OS_NAME}
   - if [[ ${CODECOV} == true ]]; then install-lcov.sh ${TRAVIS_OS_NAME}; fi
