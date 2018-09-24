@@ -75,6 +75,6 @@ script:
   - cd -
 
   - check-format.sh .
-  - check-clang-tidy build/
+  - check-clang-tidy.sh build/
   - check-cppcheck.sh include/ src/ .config/cppcheck.warn
   - check-doxygen.sh build/docs/doxygen.warn .config/doxygen.warn
