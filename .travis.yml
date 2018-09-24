@@ -51,6 +51,7 @@ before_script:
 
   - cmake --version
   - clang-format --version
+  - python --version
   - cppcheck --version
   - doxygen --version
 
@@ -58,7 +59,7 @@ before_script:
   - mkdir build && cd $_
 
 script:
-  - cmake -DLIBALLOCATOR_TESTS=ON -DLIBALLOCATOR_DOCS=ON -DLIBALLOCATOR_COVERAGE=${CODECOV} ..
+  - cmake -DLIBALLOCATOR_TESTS=ON -DLIBALLOCATOR_DOCS=ON -DLIBALLOCATOR_COVERAGE=${CODECOV} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
   - make
   - make doxygen
 
