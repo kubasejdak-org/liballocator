@@ -1,7 +1,6 @@
 ---
 Checks:          'clang-diagnostic-*,clang-analyzer-*,*,
                   -cppcoreguidelines-pro-type-union-access,
-                  -cppcoreguidelines-pro-type-member-init,
                   -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
                   -cppcoreguidelines-pro-bounds-constant-array-index,
                   -cppcoreguidelines-pro-type-reinterpret-cast,
@@ -9,9 +8,7 @@ Checks:          'clang-diagnostic-*,clang-analyzer-*,*,
                   -google-readability-braces-around-statements,
                   -hicpp-braces-around-statements,
                   -hicpp-no-array-decay,
-                  -hicpp-member-init,
                   -readability-braces-around-statements,
-                  -readability-redundant-member-init,
                   -fuchsia-default-arguments'
 WarningsAsErrors: '*'
 HeaderFilterRegex: ''

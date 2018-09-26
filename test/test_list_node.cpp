@@ -46,9 +46,7 @@ using namespace memory;
 
 struct TestNode : public ListNode<TestNode> {
 public:
-    TestNode()
-        : ListNode()
-    {}
+    TestNode() = default;
     int value{0};
 };
 

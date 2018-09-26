@@ -182,12 +182,12 @@ private:
         std::size_t freeChunksCount = 0; ///< Total number of free chunks in zones with the given index.
     };
 
-    PageAllocator* m_pageAllocator;             ///< PageAllocator to be used as the source of the new pages.
-    std::size_t m_pageSize;                     ///< Size of the page on this platform.
-    std::size_t m_zoneDescChunkSize;            ///< Size of the chunks that are used to store zone descriptors.
-    std::size_t m_zoneDescIdx;                  ///< Index of the zones, from which zone descriptors are allocated.
-    Zone m_initialZone;                         ///< Initial static zone.
-    std::array<ZoneInfo, MAX_ZONE_IDX> m_zones; ///< Array of all zones known in the ZoneAllocator.
+    PageAllocator* m_pageAllocator{};             ///< PageAllocator to be used as the source of the new pages.
+    std::size_t m_pageSize{};                     ///< Size of the page on this platform.
+    std::size_t m_zoneDescChunkSize{};            ///< Size of the chunks that are used to store zone descriptors.
+    std::size_t m_zoneDescIdx{};                  ///< Index of the zones, from which zone descriptors are allocated.
+    Zone m_initialZone{};                         ///< Initial static zone.
+    std::array<ZoneInfo, MAX_ZONE_IDX> m_zones{}; ///< Array of all zones known in the ZoneAllocator.
 };
 
 } // namespace memory
