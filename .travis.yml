@@ -76,7 +76,7 @@ script:
 
   - |
     if [[ ${CLANG_CHECKS} == true ]]; then
-      check-format.sh .
+      check-clang-format.sh .
       check-clang-tidy.sh build/
     fi
   - check-cppcheck.sh include/ src/ .config/cppcheck.warn
