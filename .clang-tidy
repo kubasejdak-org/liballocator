@@ -7,7 +7,6 @@ Checks:          'clang-diagnostic-*,clang-analyzer-*,*,
                   -cppcoreguidelines-pro-type-reinterpret-cast,
                   -cppcoreguidelines-pro-bounds-pointer-arithmetic,
                   -google-readability-braces-around-statements,
-                  -google-readability-function-size,
                   -hicpp-braces-around-statements,
                   -hicpp-no-array-decay,
                   -hicpp-member-init,
@@ -15,7 +14,6 @@ Checks:          'clang-diagnostic-*,clang-analyzer-*,*,
                   -readability-implicit-bool-conversion,
                   -readability-braces-around-statements,
                   -readability-redundant-member-init,
-                  -readability-function-size,
                   -modernize-use-default-member-init,
                   -fuchsia-statically-constructed-objects,
                   -fuchsia-default-arguments'
@@ -124,7 +122,7 @@ CheckOptions:
   - key:             google-readability-function-size.ParameterThreshold
     value:           '4294967295'
   - key:             google-readability-function-size.StatementThreshold
-    value:           '800'
+    value:           '850'
   - key:             google-readability-function-size.VariableThreshold
     value:           '4294967295'
   - key:             google-readability-namespace-comments.ShortNamespaceLines
@@ -300,7 +298,7 @@ CheckOptions:
   - key:             readability-function-size.ParameterThreshold
     value:           '4294967295'
   - key:             readability-function-size.StatementThreshold
-    value:           '800'
+    value:           '850'
   - key:             readability-function-size.VariableThreshold
     value:           '4294967295'
   - key:             readability-identifier-naming.IgnoreFailedSplit
