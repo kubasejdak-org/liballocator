@@ -68,7 +68,7 @@ bool initRegionInfo(RegionInfo& regionInfo, const Region& region, std::size_t pa
 
     regionInfo.alignedEnd = *end;
     regionInfo.pageCount = (regionInfo.alignedEnd - regionInfo.alignedStart) / pageSize;
-    if (!regionInfo.pageCount)
+    if (regionInfo.pageCount == 0)
         return false;
 
     regionInfo.size = region.size;

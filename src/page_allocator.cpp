@@ -58,7 +58,7 @@ bool PageAllocator::init(Region* regions, std::size_t pageSize)
             m_regionsInfo[m_validRegionsCount++] = regionInfo;
     }
 
-    if (!(m_pagesCount = countPages()))
+    if ((m_pagesCount = countPages()) == 0)
         return false;
 
     m_pageSize = pageSize;
@@ -87,7 +87,7 @@ bool PageAllocator::init(Region* regions, std::size_t pageSize)
             std::tie(std::ignore, group) = splitGroup(group, m_descPagesCount);
         }
 
-        if (group)
+        if (group != nullptr)
             addGroup(group);
     }
 
@@ -127,7 +127,7 @@ Page* PageAllocator::allocate(std::size_t count)
             Page* remainingGroup = nullptr;
             std::tie(allocatedGroup, remainingGroup) = splitGroup(group, count);
 
-            if (remainingGroup)
+            if (remainingGroup != nullptr)
                 addGroup(remainingGroup);
 
             return allocatedGroup;
@@ -139,7 +139,7 @@ Page* PageAllocator::allocate(std::size_t count)
 
 void PageAllocator::release(Page* pages)
 {
-    if (!pages)
+    if (pages == nullptr)
         return;
 
     // clang-format off
@@ -190,7 +190,7 @@ Page* PageAllocator::getPage(std::uintptr_t addr)
     auto alignedAddr = addr & ~(m_pageSize - 1);
 
     RegionInfo* pageRegion = getRegion(alignedAddr);
-    if (!pageRegion)
+    if (pageRegion == nullptr)
         return nullptr;
 
     Page* result = nullptr;

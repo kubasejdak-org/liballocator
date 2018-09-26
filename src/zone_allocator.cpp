@@ -73,7 +73,7 @@ void ZoneAllocator::clear()
 
 void* ZoneAllocator::allocate(std::size_t size)
 {
-    if (!size)
+    if (size == 0)
         return nullptr;
 
     if (size >= m_pageSize) {
@@ -88,7 +88,7 @@ void* ZoneAllocator::allocate(std::size_t size)
     std::size_t idx = zoneIdx(allocSize);
 
     Zone* zone = shouldAllocateZone(idx) ? allocateZone(allocSize) : getFreeZone(idx);
-    if (!zone)
+    if (zone == nullptr)
         return nullptr;
 
     return allocateChunk<void>(zone);
@@ -96,7 +96,7 @@ void* ZoneAllocator::allocate(std::size_t size)
 
 void ZoneAllocator::release(void* ptr)
 {
-    if (!ptr)
+    if (ptr == nullptr)
         return;
 
     if (deallocateChunk(ptr))
@@ -121,9 +121,9 @@ ZoneAllocator::Stats ZoneAllocator::getStats()
 
     Stats stats{};
     stats.usedMemorySize = usedZonesCount * m_pageSize;
-    stats.reservedMemorySize = usedZonesCount ? (usedZonesCount - 1) * m_zoneDescChunkSize : 0;
+    stats.reservedMemorySize = (usedZonesCount > 0) ? (usedZonesCount - 1) * m_zoneDescChunkSize : 0;
     stats.freeMemorySize = std::accumulate(start, end, 0U, [](const size_t& sum, const ZoneInfo& zoneInfo) {
-        if (!zoneInfo.head)
+        if (zoneInfo.head == nullptr)
             return sum;
 
         return sum + (zoneInfo.head->chunkSize() * zoneInfo.freeChunksCount);
@@ -147,7 +147,7 @@ std::size_t ZoneAllocator::zoneIdx(std::size_t chunkSize)
 Zone* ZoneAllocator::getFreeZone(std::size_t idx)
 {
     for (auto* zone = m_zones[idx].head; zone != nullptr; zone = zone->next()) {
-        if (!zone->freeChunksCount())
+        if (zone->freeChunksCount() == 0)
             continue;
 
         return zone;
@@ -165,7 +165,7 @@ bool ZoneAllocator::shouldAllocateZone(std::size_t idx)
 Zone* ZoneAllocator::allocateZone(std::size_t chunkSize)
 {
     if (chunkSize != m_zoneDescChunkSize && shouldAllocateZone(m_zoneDescIdx)) {
-        if (!allocateZone(m_zoneDescChunkSize))
+        if (allocateZone(m_zoneDescChunkSize) == nullptr)
             return nullptr;
     }
 

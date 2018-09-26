@@ -1417,7 +1417,7 @@ TEST_CASE("ZoneAllocator integration tests (long-term)", "[zone_allocator][integ
 
         auto* chunk = zoneAllocator.m_initialZone.m_freeChunks;
         std::size_t chunkCount = 0;
-        while (chunk) {
+        while (chunk != nullptr) {
             ++chunkCount;
             chunk = chunk->next();
         }
