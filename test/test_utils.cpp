@@ -44,6 +44,7 @@
 #include <utils.h>
 #include <zone.h>
 
+// NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;
 
 TEST_CASE("Values are correctly rounded to the closest power of 2", "[utils]")

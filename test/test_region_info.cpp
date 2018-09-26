@@ -38,6 +38,7 @@
 #include <cstddef>
 #include <cstring>
 
+// NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;
 
 TEST_CASE("RegionInfo structure is properly cleared", "[region_info]")

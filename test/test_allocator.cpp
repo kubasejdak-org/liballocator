@@ -45,6 +45,7 @@
 
 #include <allocator/allocator.h>
 
+// NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;
 
 TEST_CASE("Allocator returns a valid version", "[allocator]")

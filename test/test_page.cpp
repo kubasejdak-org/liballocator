@@ -41,6 +41,7 @@
 
 #include <page.h>
 
+// NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;
 
 TEST_CASE("Page structure is naturally aligned", "[page]")

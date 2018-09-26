@@ -50,6 +50,7 @@
 #include <utils.h>
 #include <zone_allocator.h>
 
+// NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;
 
 TEST_CASE("ZoneAllocator is properly cleared", "[zone_allocator]")

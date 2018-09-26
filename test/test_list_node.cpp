@@ -41,6 +41,7 @@
 
 #include <list_node.h>
 
+// NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;
 
 struct TestNode : public ListNode<TestNode> {

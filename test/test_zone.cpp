@@ -45,6 +45,7 @@
 #include <page.h>
 #include <zone.h>
 
+// NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;
 
 TEST_CASE("Zone structure is naturally aligned", "[zone]")

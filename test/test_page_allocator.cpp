@@ -48,6 +48,7 @@
 
 #include <page_allocator.h>
 
+// NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;
 
 TEST_CASE("Page allocator is properly cleared", "[page_allocator]")
