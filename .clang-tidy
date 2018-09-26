@@ -10,7 +10,6 @@ Checks:          'clang-diagnostic-*,clang-analyzer-*,*,
                   -hicpp-braces-around-statements,
                   -hicpp-no-array-decay,
                   -hicpp-member-init,
-                  -hicpp-function-size,
                   -readability-implicit-bool-conversion,
                   -readability-braces-around-statements,
                   -readability-redundant-member-init,
@@ -148,7 +147,7 @@ CheckOptions:
   - key:             hicpp-function-size.ParameterThreshold
     value:           '4294967295'
   - key:             hicpp-function-size.StatementThreshold
-    value:           '800'
+    value:           '850'
   - key:             hicpp-function-size.VariableThreshold
     value:           '4294967295'
   - key:             hicpp-member-init.IgnoreArrays
