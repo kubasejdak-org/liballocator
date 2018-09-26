@@ -38,8 +38,8 @@
 
 namespace {
 
-memory::PageAllocator pageAllocator;
-memory::ZoneAllocator zoneAllocator;
+memory::PageAllocator pageAllocator; // NOLINT(fuchsia-statically-constructed-objects)
+memory::ZoneAllocator zoneAllocator; // NOLINT(fuchsia-statically-constructed-objects)
 
 } // namespace
 

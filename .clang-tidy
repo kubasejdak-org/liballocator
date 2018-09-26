@@ -14,7 +14,6 @@ Checks:          'clang-diagnostic-*,clang-analyzer-*,*,
                   -readability-braces-around-statements,
                   -readability-redundant-member-init,
                   -modernize-use-default-member-init,
-                  -fuchsia-statically-constructed-objects,
                   -fuchsia-default-arguments'
 WarningsAsErrors: '*'
 HeaderFilterRegex: ''
