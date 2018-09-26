@@ -48,9 +48,8 @@ struct TestNode : public ListNode<TestNode> {
 public:
     TestNode()
         : ListNode()
-        , value(0)
     {}
-    int value;
+    int value{0};
 };
 
 TEST_CASE("List node is properly initialized", "[list_node]")

@@ -12,7 +12,6 @@ Checks:          'clang-diagnostic-*,clang-analyzer-*,*,
                   -hicpp-member-init,
                   -readability-braces-around-statements,
                   -readability-redundant-member-init,
-                  -modernize-use-default-member-init,
                   -fuchsia-default-arguments'
 WarningsAsErrors: '*'
 HeaderFilterRegex: ''
