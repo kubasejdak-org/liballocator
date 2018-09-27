@@ -59,6 +59,7 @@ TEST_CASE("Page is properly initialized", "[page]")
     REQUIRE(page->m_next == nullptr);
     REQUIRE(page->m_prev == nullptr);
     REQUIRE(page->m_addr == 0);
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
     REQUIRE(page->m_flags.value == 0);
 }
 

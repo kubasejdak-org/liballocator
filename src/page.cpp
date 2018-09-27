@@ -42,6 +42,7 @@ void Page::init()
 {
     initListNode();
     m_addr = 0;
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
     m_flags.value = 0;
 }
 
@@ -52,11 +53,13 @@ void Page::setAddress(std::uintptr_t addr)
 
 void Page::setGroupSize(std::size_t groupSize)
 {
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
     m_flags.groupSize = groupSize;
 }
 
 void Page::setUsed(bool value)
 {
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
     m_flags.used = value;
 }
 
@@ -77,11 +80,13 @@ std::uintptr_t Page::address()
 
 std::size_t Page::groupSize()
 {
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
     return m_flags.groupSize;
 }
 
 bool Page::isUsed()
 {
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
     return m_flags.used;
 }
 
