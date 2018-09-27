@@ -48,13 +48,13 @@
 // NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;
 
-TEST_CASE("Allocator returns a valid version", "[allocator]")
+TEST_CASE("Allocator returns a valid version", "[unit][allocator]")
 {
     std::regex regex("[0-9]+(\\.[0-9])+");
     REQUIRE(std::regex_match(allocator::version(), regex));
 }
 
-TEST_CASE("Allocator is properly cleared", "[allocator]")
+TEST_CASE("Allocator is properly cleared", "[unit][allocator]")
 {
     allocator::clear();
 
@@ -66,7 +66,7 @@ TEST_CASE("Allocator is properly cleared", "[allocator]")
     REQUIRE(stats.freeMemorySize == 0);
 }
 
-TEST_CASE("Allocator is properly initialized", "[allocator]")
+TEST_CASE("Allocator is properly initialized", "[unit][allocator]")
 {
     std::size_t pageSize = 256;
     std::size_t pagesCount1 = 535;
@@ -149,7 +149,7 @@ TEST_CASE("Allocator is properly initialized", "[allocator]")
     }
 }
 
-TEST_CASE("Allocator properly allocates and releases user memory", "[allocator]")
+TEST_CASE("Allocator properly allocates and releases user memory", "[unit][allocator]")
 {
     std::size_t pageSize = 256;
     std::size_t pagesCount1 = 535;

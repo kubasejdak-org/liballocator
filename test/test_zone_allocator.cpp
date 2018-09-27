@@ -53,7 +53,7 @@
 // NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;
 
-TEST_CASE("ZoneAllocator is properly cleared", "[zone_allocator]")
+TEST_CASE("ZoneAllocator is properly cleared", "[unit][zone_allocator]")
 {
     ZoneAllocator zoneAllocator;
     std::memset(reinterpret_cast<void*>(&zoneAllocator), 0x5a, sizeof(ZoneAllocator));
@@ -82,7 +82,7 @@ TEST_CASE("ZoneAllocator is properly cleared", "[zone_allocator]")
     REQUIRE(stats.allocatedMemorySize == 0);
 }
 
-TEST_CASE("ZoneAllocator is properly initialized", "[zone_allocator]")
+TEST_CASE("ZoneAllocator is properly initialized", "[unit][zone_allocator]")
 {
     std::size_t pageSize = 256;
     std::size_t pagesCount = 256;
@@ -154,7 +154,7 @@ TEST_CASE("ZoneAllocator is properly initialized", "[zone_allocator]")
     }
 }
 
-TEST_CASE("ZoneAllocator stats are properly initialized", "[zone_allocator]")
+TEST_CASE("ZoneAllocator stats are properly initialized", "[unit][zone_allocator]")
 {
     std::size_t pageSize = 256;
     std::size_t pagesCount = 256;
@@ -182,7 +182,7 @@ TEST_CASE("ZoneAllocator stats are properly initialized", "[zone_allocator]")
     REQUIRE(stats.allocatedMemorySize == 0);
 }
 
-TEST_CASE("Chunk size is properly calculated", "[zone_allocator]")
+TEST_CASE("Chunk size is properly calculated", "[unit][zone_allocator]")
 {
     ZoneAllocator zoneAllocator;
     std::size_t size = 0;
@@ -213,7 +213,7 @@ TEST_CASE("Chunk size is properly calculated", "[zone_allocator]")
     REQUIRE(std::pow(2.0, std::log2(double(roundedSize))) == double(roundedSize));
 }
 
-TEST_CASE("Zone index is properly calculated", "[zone_allocator]")
+TEST_CASE("Zone index is properly calculated", "[unit][zone_allocator]")
 {
     ZoneAllocator zoneAllocator;
     std::map<std::size_t, std::pair<std::size_t, size_t>> idxRange = {
@@ -233,7 +233,7 @@ TEST_CASE("Zone index is properly calculated", "[zone_allocator]")
     }
 }
 
-TEST_CASE("Zone is properly initialized by the zone allocator", "[zone_allocator]")
+TEST_CASE("Zone is properly initialized by the zone allocator", "[unit][zone_allocator]")
 {
     std::size_t pageSize = 256;
     std::size_t pagesCount = 256;
@@ -279,7 +279,7 @@ TEST_CASE("Zone is properly initialized by the zone allocator", "[zone_allocator
     }
 }
 
-TEST_CASE("Zone is properly cleared by the zone allocator", "[zone_allocator]")
+TEST_CASE("Zone is properly cleared by the zone allocator", "[unit][zone_allocator]")
 {
     std::size_t pageSize = 256;
     std::size_t pagesCount = 256;
@@ -310,7 +310,7 @@ TEST_CASE("Zone is properly cleared by the zone allocator", "[zone_allocator]")
     REQUIRE(pageAllocator.m_freePagesCount == freePagesCount + 1);
 }
 
-TEST_CASE("Zone is properly added", "[zone_allocator]")
+TEST_CASE("Zone is properly added", "[unit][zone_allocator]")
 {
     ZoneAllocator zoneAllocator;
     zoneAllocator.clear();
@@ -351,7 +351,7 @@ TEST_CASE("Zone is properly added", "[zone_allocator]")
     REQUIRE(found);
 }
 
-TEST_CASE("Zone is properly removed", "[zone_allocator]")
+TEST_CASE("Zone is properly removed", "[unit][zone_allocator]")
 {
     ZoneAllocator zoneAllocator;
     zoneAllocator.clear();
@@ -393,7 +393,7 @@ TEST_CASE("Zone is properly removed", "[zone_allocator]")
     REQUIRE(!found);
 }
 
-TEST_CASE("Zone allocator properly finds the zones", "[zone_allocator]")
+TEST_CASE("Zone allocator properly finds the zones", "[unit][zone_allocator]")
 {
     std::size_t pageSize = 256;
     std::size_t pagesCount = 256;
@@ -442,7 +442,7 @@ TEST_CASE("Zone allocator properly finds the zones", "[zone_allocator]")
     }
 }
 
-TEST_CASE("Zone allocator properly checks if a zone should be allocated", "[zone_allocator]")
+TEST_CASE("Zone allocator properly checks if a zone should be allocated", "[unit][zone_allocator]")
 {
     std::size_t pageSize = 256;
     std::size_t pagesCount = 256;
@@ -517,7 +517,7 @@ TEST_CASE("Zone allocator properly checks if a zone should be allocated", "[zone
     }
 }
 
-TEST_CASE("Zone allocator properly finds free zones", "[zone_allocator]")
+TEST_CASE("Zone allocator properly finds free zones", "[unit][zone_allocator]")
 {
     std::size_t pageSize = 256;
     std::size_t pagesCount = 256;
@@ -582,7 +582,7 @@ TEST_CASE("Zone allocator properly finds free zones", "[zone_allocator]")
     }
 }
 
-TEST_CASE("Zone allocator properly allocates chunks", "[zone_allocator]")
+TEST_CASE("Zone allocator properly allocates chunks", "[unit][zone_allocator]")
 {
     std::size_t pageSize = 256;
     std::size_t pagesCount = 256;
@@ -650,7 +650,7 @@ TEST_CASE("Zone allocator properly allocates chunks", "[zone_allocator]")
     }
 }
 
-TEST_CASE("Zone allocator properly deallocates chunks", "[zone_allocator]")
+TEST_CASE("Zone allocator properly deallocates chunks", "[unit][zone_allocator]")
 {
     constexpr std::size_t pageSize = 256;
     std::size_t pagesCount = 256;
@@ -806,7 +806,7 @@ TEST_CASE("Zone allocator properly deallocates chunks", "[zone_allocator]")
     }
 }
 
-TEST_CASE("Zone allocator properly allocates zones", "[zone_allocator]")
+TEST_CASE("Zone allocator properly allocates zones", "[unit][zone_allocator]")
 {
     std::size_t pageSize = 256;
     std::size_t pagesCount = 256;
@@ -924,7 +924,7 @@ TEST_CASE("Zone allocator properly allocates zones", "[zone_allocator]")
     }
 }
 
-TEST_CASE("Zone allocator properly allocates user memory", "[zone_allocator]")
+TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocator]")
 {
     std::size_t pageSize = 256;
     std::size_t pagesCount = 256;
@@ -1208,7 +1208,7 @@ TEST_CASE("Zone allocator properly allocates user memory", "[zone_allocator]")
     }
 }
 
-TEST_CASE("Zone allocator properly releases user memory", "[zone_allocator]")
+TEST_CASE("Zone allocator properly releases user memory", "[unit][zone_allocator]")
 {
     std::size_t pageSize = 256;
     std::size_t pagesCount = 256;
@@ -1367,7 +1367,7 @@ TEST_CASE("Zone allocator properly releases user memory", "[zone_allocator]")
     REQUIRE(stats.allocatedMemorySize == 0);
 }
 
-TEST_CASE("ZoneAllocator integration tests (long-term)", "[zone_allocator][integration][.]")
+TEST_CASE("ZoneAllocator integration tests (long-term)", "[integration][zone_allocator]")
 {
     using namespace std::chrono_literals;
     constexpr auto testDuration = 30min;

@@ -41,7 +41,7 @@
 // NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;
 
-TEST_CASE("RegionInfo structure is properly cleared", "[region_info]")
+TEST_CASE("RegionInfo structure is properly cleared", "[unit][region_info]")
 {
     RegionInfo regionInfo{};
     std::memset(&regionInfo, 0x5a, sizeof(RegionInfo));
@@ -58,7 +58,7 @@ TEST_CASE("RegionInfo structure is properly cleared", "[region_info]")
     REQUIRE(regionInfo.lastPage == nullptr);
 }
 
-TEST_CASE("Aligned start address is properly computed", "[region_info]")
+TEST_CASE("Aligned start address is properly computed", "[unit][region_info]")
 {
     constexpr std::size_t pageSize = 4096;
 
@@ -94,7 +94,7 @@ TEST_CASE("Aligned start address is properly computed", "[region_info]")
     }
 }
 
-TEST_CASE("Aligned end address is properly computed", "[region_info]")
+TEST_CASE("Aligned end address is properly computed", "[unit][region_info]")
 {
     constexpr std::size_t pageSize = 4096;
 
@@ -130,7 +130,7 @@ TEST_CASE("Aligned end address is properly computed", "[region_info]")
     }
 }
 
-TEST_CASE("RegionInfo is properly initialized", "[region_info]")
+TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
 {
     constexpr std::size_t pageSize = 4096;
     RegionInfo regionInfo{};

@@ -51,7 +51,7 @@
 // NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;
 
-TEST_CASE("Page allocator is properly cleared", "[page_allocator]")
+TEST_CASE("Page allocator is properly cleared", "[unit][page_allocator]")
 {
     PageAllocator pageAllocator;
     std::memset(reinterpret_cast<void*>(&pageAllocator), 0x5a, sizeof(PageAllocator));
@@ -90,7 +90,7 @@ TEST_CASE("Page allocator is properly cleared", "[page_allocator]")
     REQUIRE(stats.freePagesCount == 0);
 }
 
-TEST_CASE("Pages are correctly counted", "[page_allocator]")
+TEST_CASE("Pages are correctly counted", "[unit][page_allocator]")
 {
     std::size_t pageSize = 256;
     PageAllocator pageAllocator;
@@ -233,7 +233,7 @@ TEST_CASE("Pages are correctly counted", "[page_allocator]")
     }
 }
 
-TEST_CASE("Region where page descriptors are stored is properly selected", "[page_allocator]")
+TEST_CASE("Region where page descriptors are stored is properly selected", "[unit][page_allocator]")
 {
     std::size_t pageSize = 256;
     PageAllocator pageAllocator;
@@ -333,7 +333,7 @@ TEST_CASE("Region where page descriptors are stored is properly selected", "[pag
     }
 }
 
-TEST_CASE("Pages with page descriptors are properly reserved", "[page_allocator]")
+TEST_CASE("Pages with page descriptors are properly reserved", "[unit][page_allocator]")
 {
     std::size_t pageSize = 256;
     PageAllocator pageAllocator;
@@ -433,7 +433,7 @@ TEST_CASE("Pages with page descriptors are properly reserved", "[page_allocator]
     }
 }
 
-TEST_CASE("Group index is properly computed", "[page_allocator]")
+TEST_CASE("Group index is properly computed", "[unit][page_allocator]")
 {
     PageAllocator pageAllocator;
     std::map<std::size_t, std::pair<std::size_t, size_t>> idxRange = {
@@ -465,7 +465,7 @@ TEST_CASE("Group index is properly computed", "[page_allocator]")
     }
 }
 
-TEST_CASE("Group is properly initialized", "[page_allocator]")
+TEST_CASE("Group is properly initialized", "[unit][page_allocator]")
 {
     PageAllocator pageAllocator;
 
@@ -493,7 +493,7 @@ TEST_CASE("Group is properly initialized", "[page_allocator]")
     }
 }
 
-TEST_CASE("Group is properly cleared", "[page_allocator]")
+TEST_CASE("Group is properly cleared", "[unit][page_allocator]")
 {
     PageAllocator pageAllocator;
 
@@ -523,7 +523,7 @@ TEST_CASE("Group is properly cleared", "[page_allocator]")
     }
 }
 
-TEST_CASE("Group is properly added to list", "[page_allocator]")
+TEST_CASE("Group is properly added to list", "[unit][page_allocator]")
 {
     PageAllocator pageAllocator;
     std::size_t groupCount = 0;
@@ -621,7 +621,7 @@ TEST_CASE("Group is properly added to list", "[page_allocator]")
     }
 }
 
-TEST_CASE("Group is properly removed from list at index 0", "[page_allocator]")
+TEST_CASE("Group is properly removed from list at index 0", "[unit][page_allocator]")
 {
     PageAllocator pageAllocator;
     constexpr std::size_t groupSize = 3;
@@ -705,7 +705,7 @@ TEST_CASE("Group is properly removed from list at index 0", "[page_allocator]")
     REQUIRE(pagesCount == 2);
 }
 
-TEST_CASE("Group is properly removed from list at index 4", "[page_allocator]")
+TEST_CASE("Group is properly removed from list at index 4", "[unit][page_allocator]")
 {
     PageAllocator pageAllocator;
     constexpr std::size_t groupSize = 34;
@@ -789,7 +789,7 @@ TEST_CASE("Group is properly removed from list at index 4", "[page_allocator]")
     REQUIRE(pagesCount == 2);
 }
 
-TEST_CASE("Group is properly splitted", "[page_allocator]")
+TEST_CASE("Group is properly splitted", "[unit][page_allocator]")
 {
     constexpr std::size_t groupSize = 10;
     std::array<std::byte, sizeof(Page) * groupSize> memory{};
@@ -843,7 +843,7 @@ TEST_CASE("Group is properly splitted", "[page_allocator]")
     }
 }
 
-TEST_CASE("Group is properly joined", "[page_allocator]")
+TEST_CASE("Group is properly joined", "[unit][page_allocator]")
 {
     constexpr std::size_t groupSize = 10;
     std::array<std::byte, sizeof(Page) * groupSize> memory{};
@@ -878,7 +878,7 @@ TEST_CASE("Group is properly joined", "[page_allocator]")
     REQUIRE(joinedGroup->groupSize() == groupSize);
 }
 
-TEST_CASE("Page is properly verified as valid", "[page_allocator]")
+TEST_CASE("Page is properly verified as valid", "[unit][page_allocator]")
 {
     std::size_t pageSize = 256;
     PageAllocator pageAllocator;
@@ -935,7 +935,7 @@ TEST_CASE("Page is properly verified as valid", "[page_allocator]")
     }
 }
 
-TEST_CASE("Region is properly resolved from address", "[page_allocator]")
+TEST_CASE("Region is properly resolved from address", "[unit][page_allocator]")
 {
     std::size_t pageSize = 256;
     PageAllocator pageAllocator;
@@ -1004,7 +1004,7 @@ TEST_CASE("Region is properly resolved from address", "[page_allocator]")
     }
 }
 
-TEST_CASE("Pages are correctly resolved from address", "[page_allocator]")
+TEST_CASE("Pages are correctly resolved from address", "[unit][page_allocator]")
 {
     std::size_t pageSize = 256;
     PageAllocator pageAllocator;
@@ -1095,7 +1095,7 @@ TEST_CASE("Pages are correctly resolved from address", "[page_allocator]")
     }
 }
 
-TEST_CASE("PageAllocator stats are properly initialized", "[page_allocator]")
+TEST_CASE("PageAllocator stats are properly initialized", "[unit][page_allocator]")
 {
     std::size_t pageSize = 256;
     PageAllocator pageAllocator;
@@ -1132,7 +1132,7 @@ TEST_CASE("PageAllocator stats are properly initialized", "[page_allocator]")
     REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount));
 }
 
-TEST_CASE("Pages are correctly allocated", "[page_allocator]")
+TEST_CASE("Pages are correctly allocated", "[unit][page_allocator]")
 {
     std::size_t pageSize = 256;
     PageAllocator pageAllocator;
@@ -1364,7 +1364,7 @@ TEST_CASE("Pages are correctly allocated", "[page_allocator]")
     }
 }
 
-TEST_CASE("Pages are correctly released", "[page_allocator]")
+TEST_CASE("Pages are correctly released", "[unit][page_allocator]")
 {
     std::size_t pageSize = 256;
     PageAllocator pageAllocator;
@@ -1505,7 +1505,7 @@ TEST_CASE("Pages are correctly released", "[page_allocator]")
     REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount));
 }
 
-TEST_CASE("PageAllocator integration tests (long-term)", "[page_allocator][integration][.]")
+TEST_CASE("PageAllocator integration tests (long-term)", "[integration][page_allocator]")
 {
     using namespace std::chrono_literals;
     constexpr auto testDuration = 30min;

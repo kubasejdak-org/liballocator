@@ -25,5 +25,6 @@ utils_setOutputPath(liballocator_tests ${CMAKE_SOURCE_DIR}/bin)
 
 # Test definitions.
 get_target_property(RUNTIME_OUTPUT liballocator_tests RUNTIME_OUTPUT_DIRECTORY)
-add_test(UnitTests ${RUNTIME_OUTPUT}/liballocator_tests -r xml -d yes --order lex "")
-add_test(IntegrationTests ${RUNTIME_OUTPUT}/liballocator_tests [.][integration] -r xml -d yes --order lex "")
+add_test(UnitTests ${RUNTIME_OUTPUT}/liballocator_tests [unit] -r xml -d yes --order lex "")
+add_test(IntegrationTests ${RUNTIME_OUTPUT}/liballocator_tests [integration] -r xml -d yes --order lex "")
+add_test(PerformanceTests ${RUNTIME_OUTPUT}/liballocator_tests [perf] -r xml -d yes --order lex "")

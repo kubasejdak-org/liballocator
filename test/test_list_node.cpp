@@ -51,7 +51,7 @@ public:
     int value{0};
 };
 
-TEST_CASE("List node is properly initialized", "[list_node]")
+TEST_CASE("List node is properly initialized", "[unit][list_node]")
 {
     TestNode node;
     node.initListNode();
@@ -59,7 +59,7 @@ TEST_CASE("List node is properly initialized", "[list_node]")
     REQUIRE(node.m_prev == nullptr);
 }
 
-TEST_CASE("Adding to empty list", "[list_node]")
+TEST_CASE("Adding to empty list", "[unit][list_node]")
 {
     TestNode node;
     node.initListNode();
@@ -73,7 +73,7 @@ TEST_CASE("Adding to empty list", "[list_node]")
     REQUIRE(node.m_prev == nullptr);
 }
 
-TEST_CASE("Adding to non-empty list", "[list_node]")
+TEST_CASE("Adding to non-empty list", "[unit][list_node]")
 {
     constexpr int nodeCount = 5;
     std::array<TestNode, nodeCount> node{};
@@ -107,7 +107,7 @@ TEST_CASE("Adding to non-empty list", "[list_node]")
     }
 }
 
-TEST_CASE("Removing from list with 5 nodes", "[list_node]")
+TEST_CASE("Removing from list with 5 nodes", "[unit][list_node]")
 {
     constexpr int nodeCount = 5;
     std::array<TestNode, nodeCount> node{};
@@ -195,7 +195,7 @@ TEST_CASE("Removing from list with 5 nodes", "[list_node]")
     }
 }
 
-TEST_CASE("Removing from list with 1 node", "[list_node]")
+TEST_CASE("Removing from list with 1 node", "[unit][list_node]")
 {
     TestNode node;
     node.initListNode();

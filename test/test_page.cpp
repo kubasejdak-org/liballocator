@@ -45,12 +45,12 @@
 // NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;
 
-TEST_CASE("Page structure is naturally aligned", "[page]")
+TEST_CASE("Page structure is naturally aligned", "[unit][page]")
 {
     REQUIRE(Page::isNaturallyAligned());
 }
 
-TEST_CASE("Page is properly initialized", "[page]")
+TEST_CASE("Page is properly initialized", "[unit][page]")
 {
     std::byte buffer[sizeof(Page)];
     auto* page = reinterpret_cast<Page*>(buffer);
@@ -63,7 +63,7 @@ TEST_CASE("Page is properly initialized", "[page]")
     REQUIRE(page->m_flags.value == 0);
 }
 
-TEST_CASE("Accessing siblings works as expected", "[page]")
+TEST_CASE("Accessing siblings works as expected", "[unit][page]")
 {
     constexpr int pageCount = 3;
     std::byte buffer[pageCount * sizeof(Page)];

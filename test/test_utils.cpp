@@ -47,7 +47,7 @@
 // NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;
 
-TEST_CASE("Values are correctly rounded to the closest power of 2", "[utils]")
+TEST_CASE("Values are correctly rounded to the closest power of 2", "[unit][utils]")
 {
     double idx = 0.0;
 
@@ -61,7 +61,7 @@ TEST_CASE("Values are correctly rounded to the closest power of 2", "[utils]")
     }
 }
 
-TEST_CASE("Pointers are correctly moved", "[utils]")
+TEST_CASE("Pointers are correctly moved", "[unit][utils]")
 {
     SECTION("Pointer has the type 'char'")
     {

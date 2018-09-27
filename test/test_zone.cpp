@@ -48,12 +48,12 @@
 // NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;
 
-TEST_CASE("Zone structure is naturally aligned", "[zone]")
+TEST_CASE("Zone structure is naturally aligned", "[unit][zone]")
 {
     REQUIRE(Zone::isNaturallyAligned());
 }
 
-TEST_CASE("Zone is properly initialized", "[zone]")
+TEST_CASE("Zone is properly initialized", "[unit][zone]")
 {
     std::size_t pageSize = 256;
     auto memory = test::alignedAlloc(pageSize, pageSize);
@@ -87,7 +87,7 @@ TEST_CASE("Zone is properly initialized", "[zone]")
     }
 }
 
-TEST_CASE("Zone is properly cleared", "[zone]")
+TEST_CASE("Zone is properly cleared", "[unit][zone]")
 {
     Zone zone;
     zone.clear();
@@ -106,7 +106,7 @@ TEST_CASE("Zone is properly cleared", "[zone]")
     REQUIRE(zone.freeChunksCount() == 0);
 }
 
-TEST_CASE("Zone properly allocates chunks", "[zone]")
+TEST_CASE("Zone properly allocates chunks", "[unit][zone]")
 {
     std::size_t pageSize = 256;
     auto memory = test::alignedAlloc(pageSize, pageSize);
@@ -133,7 +133,7 @@ TEST_CASE("Zone properly allocates chunks", "[zone]")
     REQUIRE(zone.freeChunksCount() == 0);
 }
 
-TEST_CASE("Zone properly deallocates chunks", "[zone]")
+TEST_CASE("Zone properly deallocates chunks", "[unit][zone]")
 {
     constexpr std::size_t pageSize = 256;
     auto memory = test::alignedAlloc(pageSize, pageSize);
@@ -175,7 +175,7 @@ TEST_CASE("Zone properly deallocates chunks", "[zone]")
     REQUIRE(zone.freeChunksCount() == (pageSize / chunkSize));
 }
 
-TEST_CASE("Zone properly checks if given zone is valid", "[zone]")
+TEST_CASE("Zone properly checks if given zone is valid", "[unit][zone]")
 {
     constexpr std::size_t pageSize = 256;
     auto memory = test::alignedAlloc(pageSize, pageSize);
