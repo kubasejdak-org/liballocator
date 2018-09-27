@@ -32,7 +32,7 @@
 
 #include <catch2/catch.hpp>
 
-#include "test_utils.h"
+#include <test_utils.h>
 
 #include <array>
 #include <random>

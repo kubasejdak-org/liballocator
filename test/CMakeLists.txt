@@ -1,16 +1,19 @@
 add_executable(liballocator_tests
     main.cpp
-    test_allocator.cpp
-    test_list_node.cpp
-    test_page.cpp
-    test_page_allocator.cpp
-    test_region_info.cpp
-    test_utils.cpp
-    test_zone.cpp
-    test_zone_allocator.cpp
+    integration/integration_page_allocator.cpp
+    integration/integration_zone_allocator.cpp
+    unit/unit_allocator.cpp
+    unit/unit_list_node.cpp
+    unit/unit_page.cpp
+    unit/unit_page_allocator.cpp
+    unit/unit_region_info.cpp
+    unit/unit_utils.cpp
+    unit/unit_zone.cpp
+    unit/unit_zone_allocator.cpp
 )
 
 target_compile_features(liballocator_tests PRIVATE cxx_std_17)
+target_include_directories(liballocator_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Link with library private implementation for testing.
 get_target_property(ALLOCATOR_INCLUDES allocator INCLUDE_DIRECTORIES)
