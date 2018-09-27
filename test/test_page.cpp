@@ -32,6 +32,7 @@
 
 #include <catch2/catch.hpp>
 
+#include <array>
 #include <cstddef>
 
 // Make access to private members for testing.
@@ -65,12 +66,12 @@ TEST_CASE("Accessing siblings works as expected", "[page]")
 {
     constexpr int pageCount = 3;
     std::byte buffer[pageCount * sizeof(Page)];
-    Page* page[pageCount];
+    std::array<Page*, pageCount> page{};
 
     for (int i = 0; i < pageCount; ++i) {
-        page[i] = reinterpret_cast<Page*>(buffer) + i;
-        page[i]->init();
-        page[i]->setAddress(std::uintptr_t(i));
+        page.at(i) = reinterpret_cast<Page*>(buffer) + i;
+        page.at(i)->init();
+        page.at(i)->setAddress(std::uintptr_t(i));
     }
 
     SECTION("Previous sibling")

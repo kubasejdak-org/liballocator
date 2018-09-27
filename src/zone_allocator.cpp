@@ -146,7 +146,7 @@ std::size_t ZoneAllocator::zoneIdx(std::size_t chunkSize)
 
 Zone* ZoneAllocator::getFreeZone(std::size_t idx)
 {
-    for (auto* zone = m_zones[idx].head; zone != nullptr; zone = zone->next()) {
+    for (auto* zone = m_zones.at(idx).head; zone != nullptr; zone = zone->next()) {
         if (zone->freeChunksCount() == 0)
             continue;
 
@@ -159,7 +159,7 @@ Zone* ZoneAllocator::getFreeZone(std::size_t idx)
 bool ZoneAllocator::shouldAllocateZone(std::size_t idx)
 {
     std::size_t triggerCount = (idx == m_zoneDescIdx) ? 1 : 0;
-    return (m_zones[idx].freeChunksCount == triggerCount);
+    return (m_zones.at(idx).freeChunksCount == triggerCount);
 }
 
 Zone* ZoneAllocator::allocateZone(std::size_t chunkSize)
@@ -208,8 +208,8 @@ void ZoneAllocator::addZone(Zone* zone)
     assert(zone);
 
     auto idx = zoneIdx(zone->chunkSize());
-    zone->addToList(&m_zones[idx].head);
-    m_zones[idx].freeChunksCount += zone->freeChunksCount();
+    zone->addToList(&m_zones.at(idx).head);
+    m_zones.at(idx).freeChunksCount += zone->freeChunksCount();
 }
 
 void ZoneAllocator::removeZone(Zone* zone)
@@ -218,8 +218,8 @@ void ZoneAllocator::removeZone(Zone* zone)
     assert(zone != &m_initialZone);
 
     auto idx = zoneIdx(zone->chunkSize());
-    zone->removeFromList(&m_zones[idx].head);
-    m_zones[idx].freeChunksCount -= zone->freeChunksCount();
+    zone->removeFromList(&m_zones.at(idx).head);
+    m_zones.at(idx).freeChunksCount -= zone->freeChunksCount();
 }
 
 Zone* ZoneAllocator::findZone(Chunk* chunk)

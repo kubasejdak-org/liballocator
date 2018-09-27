@@ -1346,7 +1346,7 @@ TEST_CASE("Pages are correctly allocated", "[page_allocator]")
 
         for (std::size_t i = 0; i < PageAllocator::MAX_GROUP_IDX; ++i) {
             std::size_t idxCount = 0;
-            for (Page* group = pageAllocator.m_freeGroupLists[i]; group != nullptr; group = group->next())
+            for (Page* group = pageAllocator.m_freeGroupLists.at(i); group != nullptr; group = group->next())
                 ++idxCount;
 
             REQUIRE(idxCount == 0);

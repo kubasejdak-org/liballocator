@@ -55,7 +55,7 @@ bool PageAllocator::init(Region* regions, std::size_t pageSize)
 
         RegionInfo regionInfo{};
         if (initRegionInfo(regionInfo, regions[i], pageSize))
-            m_regionsInfo[m_validRegionsCount++] = regionInfo;
+            m_regionsInfo.at(m_validRegionsCount++) = regionInfo;
     }
 
     if ((m_pagesCount = countPages()) == 0)
@@ -63,12 +63,12 @@ bool PageAllocator::init(Region* regions, std::size_t pageSize)
 
     m_pageSize = pageSize;
     m_descRegionIdx = chooseDescRegion();
-    m_pagesHead = reinterpret_cast<Page*>(m_regionsInfo[m_descRegionIdx].alignedStart);
+    m_pagesHead = reinterpret_cast<Page*>(m_regionsInfo.at(m_descRegionIdx).alignedStart);
     m_pagesTail = m_pagesHead + m_pagesCount - 1;
 
     auto* page = m_pagesHead;
     for (std::size_t i = 0; i < m_validRegionsCount; ++i) {
-        auto& region = m_regionsInfo[i];
+        auto& region = m_regionsInfo.at(i);
 
         region.firstPage = page;
         region.lastPage = page + region.pageCount - 1;
@@ -117,7 +117,7 @@ Page* PageAllocator::allocate(std::size_t count)
 
     std::size_t idx = groupIdx(count);
     for (auto i = idx; i < m_freeGroupLists.size(); ++i) {
-        for (Page* group = m_freeGroupLists[i]; group != nullptr; group = group->next()) {
+        for (Page* group = m_freeGroupLists.at(i); group != nullptr; group = group->next()) {
             if (group->groupSize() < count)
                 continue;
 
@@ -237,10 +237,10 @@ std::size_t PageAllocator::chooseDescRegion()
 
     std::size_t selectedIdx = 0;
     for (std::size_t i = 0; i < m_validRegionsCount; ++i) {
-        if (m_regionsInfo[i].alignedSize < descAreaSize)
+        if (m_regionsInfo.at(i).alignedSize < descAreaSize)
             continue;
 
-        if (m_regionsInfo[i].alignedSize < m_regionsInfo[selectedIdx].alignedSize)
+        if (m_regionsInfo.at(i).alignedSize < m_regionsInfo.at(selectedIdx).alignedSize)
             selectedIdx = i;
     }
 
@@ -250,7 +250,7 @@ std::size_t PageAllocator::chooseDescRegion()
 std::size_t PageAllocator::reserveDescPages()
 {
     std::size_t reservedCount = 0;
-    auto& descRegion = m_regionsInfo[m_descRegionIdx];
+    auto& descRegion = m_regionsInfo.at(m_descRegionIdx);
     for (auto* page = descRegion.firstPage; page <= m_pagesTail; page = page->nextSibling()) {
         if (page->address() >= reinterpret_cast<uintptr_t>(m_pagesTail->nextSibling()))
             break;
@@ -275,7 +275,7 @@ RegionInfo* PageAllocator::getRegion(std::uintptr_t addr)
     auto alignedAddr = addr & ~(m_pageSize - 1);
 
     for (std::size_t i = 0; i < m_validRegionsCount; ++i) {
-        auto& region = m_regionsInfo[i];
+        auto& region = m_regionsInfo.at(i);
 
         if (region.alignedStart <= alignedAddr && region.alignedEnd >= alignedAddr)
             return &region;
@@ -317,7 +317,7 @@ void PageAllocator::addGroup(Page* group)
     assert(group);
 
     std::size_t idx = groupIdx(group->groupSize());
-    group->addToList(&m_freeGroupLists[idx]);
+    group->addToList(&m_freeGroupLists.at(idx));
     m_freePagesCount += group->groupSize();
 
     for (std::size_t i = 0; i < group->groupSize(); ++i) {
@@ -331,7 +331,7 @@ void PageAllocator::removeGroup(Page* group)
     assert(group);
 
     std::size_t idx = groupIdx(group->groupSize());
-    group->removeFromList(&m_freeGroupLists[idx]);
+    group->removeFromList(&m_freeGroupLists.at(idx));
     m_freePagesCount -= group->groupSize();
 
     for (std::size_t i = 0; i < group->groupSize(); ++i) {

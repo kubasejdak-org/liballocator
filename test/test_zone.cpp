@@ -149,18 +149,18 @@ TEST_CASE("Zone properly deallocates chunks", "[zone]")
     std::array<Chunk*, (pageSize / chunkSize)> chunks{};
 
     for (std::size_t i = 0; i < zone.chunksCount(); ++i)
-        chunks[i] = zone.takeChunk();
+        chunks.at(i) = zone.takeChunk();
 
     SECTION("Release in order")
     {
         for (std::size_t i = 0; i < zone.chunksCount(); ++i)
-            zone.giveChunk(chunks[i]);
+            zone.giveChunk(chunks.at(i));
     }
 
     SECTION("Release in reverse order")
     {
         for (std::size_t i = 0; i < zone.chunksCount(); ++i)
-            zone.giveChunk(chunks[zone.chunksCount() - 1 - i]);
+            zone.giveChunk(chunks.at(zone.chunksCount() - 1 - i));
     }
 
     SECTION("Release in custom order")
@@ -191,12 +191,12 @@ TEST_CASE("Zone properly checks if given zone is valid", "[zone]")
     std::array<Chunk*, (pageSize / chunkSize)> chunks{};
 
     for (std::size_t i = 0; i < zone.chunksCount(); ++i)
-        chunks[i] = zone.takeChunk();
+        chunks.at(i) = zone.takeChunk();
 
     SECTION("Check all valid chunks")
     {
         for (std::size_t i = 0; i < zone.chunksCount(); ++i)
-            REQUIRE(zone.isValidChunk(chunks[i]));
+            REQUIRE(zone.isValidChunk(chunks.at(i)));
     }
 
     SECTION("Check address from the middle of the valid chunk")

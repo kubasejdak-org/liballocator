@@ -32,6 +32,7 @@
 
 #include <catch2/catch.hpp>
 
+#include <array>
 #include <cstddef>
 
 // Make access to private members for testing.
@@ -75,23 +76,23 @@ TEST_CASE("Adding to empty list", "[list_node]")
 TEST_CASE("Adding to non-empty list", "[list_node]")
 {
     constexpr int nodeCount = 5;
-    TestNode node[nodeCount];
+    std::array<TestNode, nodeCount> node{};
 
     TestNode* list = nullptr;
     for (int i = 0; i < nodeCount; ++i) {
-        node[i].initListNode();
-        node[i].value = i;
-        node[i].addToList(&list);
+        node.at(i).initListNode();
+        node.at(i).value = i;
+        node.at(i).addToList(&list);
     }
 
     SECTION("All nodes are in the list")
     {
-        bool nodePresent[nodeCount] = {};
+        std::array<bool, nodeCount> nodePresent{};
 
         for (auto* it = list; it != nullptr; it = it->next()) {
             auto idx = it->value;
             REQUIRE(idx < nodeCount);
-            nodePresent[idx] = true;
+            nodePresent.at(idx) = true;
         }
 
         for (auto& present : nodePresent)
@@ -102,80 +103,80 @@ TEST_CASE("Adding to non-empty list", "[list_node]")
     {
         int idx = nodeCount - 1;
         for (auto* it = list; it != nullptr; it = it->next(), --idx)
-            REQUIRE(it->value == node[idx].value);
+            REQUIRE(it->value == node.at(idx).value);
     }
 }
 
 TEST_CASE("Removing from list with 5 nodes", "[list_node]")
 {
     constexpr int nodeCount = 5;
-    TestNode node[nodeCount];
+    std::array<TestNode, nodeCount> node{};
 
     TestNode* list = nullptr;
     for (int i = 0; i < nodeCount; ++i) {
-        node[i].initListNode();
-        node[i].value = i;
-        node[i].addToList(&list);
+        node.at(i).initListNode();
+        node.at(i).value = i;
+        node.at(i).addToList(&list);
     }
 
     SECTION("Removing first node from list")
     {
         int idx = 4;
-        node[idx].removeFromList(&list);
-        REQUIRE(node[idx].value == idx);
-        REQUIRE(node[idx].m_next == nullptr);
-        REQUIRE(node[idx].m_prev == nullptr);
+        node.at(idx).removeFromList(&list);
+        REQUIRE(node.at(idx).value == idx);
+        REQUIRE(node.at(idx).m_next == nullptr);
+        REQUIRE(node.at(idx).m_prev == nullptr);
 
         int i = nodeCount - 1;
         for (auto* it = list; it != nullptr; it = it->next(), --i) {
             if (i == idx)
                 --i;
 
-            REQUIRE(it->value == node[i].value);
+            REQUIRE(it->value == node.at(i).value);
         }
     }
 
     SECTION("Removing middle node from list")
     {
         int idx = 2;
-        node[idx].removeFromList(&list);
-        REQUIRE(node[idx].value == idx);
-        REQUIRE(node[idx].m_next == nullptr);
-        REQUIRE(node[idx].m_prev == nullptr);
+        node.at(idx).removeFromList(&list);
+        REQUIRE(node.at(idx).value == idx);
+        REQUIRE(node.at(idx).m_next == nullptr);
+        REQUIRE(node.at(idx).m_prev == nullptr);
 
         int i = nodeCount - 1;
         for (auto* it = list; it != nullptr; it = it->next(), --i) {
             if (i == idx)
                 --i;
 
-            REQUIRE(it->value == node[i].value);
+            REQUIRE(it->value == node.at(i).value);
         }
     }
 
     SECTION("Removing last node from list")
     {
         int idx = 0;
-        node[idx].removeFromList(&list);
-        REQUIRE(node[idx].value == idx);
-        REQUIRE(node[idx].m_next == nullptr);
-        REQUIRE(node[idx].m_prev == nullptr);
+        node.at(idx).removeFromList(&list);
+        REQUIRE(node.at(idx).value == idx);
+        REQUIRE(node.at(idx).m_next == nullptr);
+        REQUIRE(node.at(idx).m_prev == nullptr);
 
         int i = nodeCount - 1;
         for (auto* it = list; it != nullptr; it = it->next(), --i) {
             if (i == idx)
                 --i;
 
-            REQUIRE(it->value == node[i].value);
+            REQUIRE(it->value == node.at(i).value);
         }
     }
 
     SECTION("Removing all nodes starting from first")
     {
         for (int i = nodeCount - 1; i >= 0; --i) {
-            node[i].removeFromList(&list);
-            REQUIRE(node[i].value == i);
-            REQUIRE(node[i].m_next == nullptr);
-            REQUIRE(node[i].m_prev == nullptr);
+            node.at(i).removeFromList(&list);
+            REQUIRE(node.at(i).value == i);
+            REQUIRE(node.at(i).m_next == nullptr);
+            REQUIRE(node.at(i).m_prev == nullptr);
         }
 
         REQUIRE(list == nullptr);
@@ -184,10 +185,10 @@ TEST_CASE("Removing from list with 5 nodes", "[list_node]")
     SECTION("Removing all nodes starting from last")
     {
         for (int i = 0; i < nodeCount; ++i) {
-            node[i].removeFromList(&list);
-            REQUIRE(node[i].value == i);
-            REQUIRE(node[i].m_next == nullptr);
-            REQUIRE(node[i].m_prev == nullptr);
+            node.at(i).removeFromList(&list);
+            REQUIRE(node.at(i).value == i);
+            REQUIRE(node.at(i).m_next == nullptr);
+            REQUIRE(node.at(i).m_prev == nullptr);
         }
 
         REQUIRE(list == nullptr);
