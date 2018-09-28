@@ -8,6 +8,7 @@ git:
 env:
   global:
     - CMAKE_VER=3.12.2
+    - TESTS=true
     - CLANG_CHECKS=false
     - CODECOV=false
 
@@ -22,7 +23,7 @@ matrix:
     #- os: linux
     #  env: _CC=clang CC_VER=7.0.0
     - os: linux
-      env: _CC=arm-none-eabi-gcc CC_VER=7
+      env: _CC=arm-none-eabi-gcc CC_VER=7 TESTS=false
     - os: osx
       osx_image: xcode10
       env: _CC=gcc CC_VER=7
@@ -37,7 +38,7 @@ matrix:
       env: _CC=clang CC_VER=7.0.0 CLANG_CHECKS=true CODECOV=true
     - os: osx
       osx_image: xcode10
-      env: _CC=arm-none-eabi-gcc CC_VER=7
+      env: _CC=arm-none-eabi-gcc CC_VER=7 TESTS=false
 
 before_install:
   - export PATH=${TRAVIS_BUILD_DIR}/tools/ci:${PATH}
@@ -65,12 +66,12 @@ before_script:
   - mkdir build && cd $_
 
 script:
-  - cmake -DLIBALLOCATOR_TESTS=ON -DLIBALLOCATOR_DOCS=ON -DLIBALLOCATOR_COVERAGE=${CODECOV} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
+  - cmake -DLIBALLOCATOR_TESTS=${TESTS} -DLIBALLOCATOR_DOCS=ON -DLIBALLOCATOR_COVERAGE=${CODECOV} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
   - make
   - make doxygen
 
   - |
-    if [[ ${_CC} != "arm-none-eabi-gcc" ]]; then
+    if [[ ${TESTS} == true ]]; then
       ctest -R UnitTests
       ctest -R PerformanceTests
     fi
