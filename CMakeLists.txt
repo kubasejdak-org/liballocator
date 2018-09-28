@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 include(tools/cmake/all.cmake)
 
 utils_getVersion(VERSION)
-project(liballocator VERSION ${VERSION} DESCRIPTION "A C++ memory allocator for embedded systems" LANGUAGES CXX)
+project(liballocator VERSION ${VERSION} DESCRIPTION "C++ memory allocator for embedded systems" LANGUAGES CXX)
 
 # Project options.
 option(LIBALLOCATOR_COVERAGE "Generate coverage report" OFF)
