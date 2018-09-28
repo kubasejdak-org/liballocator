@@ -60,13 +60,13 @@ struct PerfStats {
 static void perf_showStats(const PerfStats& stats, const char* name, bool showFirst = false)
 {
     if (showFirst)
-        std::printf("+--------------------------------+-------------+-------------+\n");
-    std::printf("| %-30s |  allocate   |   release   |\n", name);
-    std::printf("+--------------------------------+-------------+-------------+\n");
-    std::printf("| %30s | %8.4f us | %8.4f us |\n", "liballocator", stats.liballocatorAlloc, stats.liballocatorRelease);
-    std::printf("| %30s | %8.4f us | %8.4f us |\n", "malloc", stats.mallocAlloc, stats.mallocRelease);
-    std::printf("| %30s | %8.4f us | %8.4f us |\n", "new", stats.newAlloc, stats.newRelease);
-    std::printf("+--------------------------------+-------------+-------------+\n");
+        std::printf("+--------------------------------+-------------+-------------+\n"); // NOLINT
+    std::printf("| %-30s |  allocate   |   release   |\n", name); // NOLINT
+    std::printf("+--------------------------------+-------------+-------------+\n"); // NOLINT
+    std::printf("| %30s | %8.4f us | %8.4f us |\n", "liballocator", stats.liballocatorAlloc, stats.liballocatorRelease); // NOLINT
+    std::printf("| %30s | %8.4f us | %8.4f us |\n", "malloc", stats.mallocAlloc, stats.mallocRelease); // NOLINT
+    std::printf("| %30s | %8.4f us | %8.4f us |\n", "new", stats.newAlloc, stats.newRelease); // NOLINT
+    std::printf("+--------------------------------+-------------+-------------+\n"); // NOLINT
 }
 
 TEST_CASE("1000000x 134 bytes", "[perf][allocator]")
@@ -99,11 +99,11 @@ TEST_CASE("1000000x 134 bytes", "[perf][allocator]")
 
         {
             auto startAlloc = test::currentTime();
-            auto *ptr = malloc(allocSize);
+            auto *ptr = malloc(allocSize); // NOLINT
             auto endAlloc = test::currentTime();
 
             auto startRelease = test::currentTime();
-            free(ptr);
+            free(ptr); // NOLINT
             auto endRelease = test::currentTime();
 
             stats.mallocAlloc += test::toMicroseconds(endAlloc - startAlloc);
@@ -112,11 +112,11 @@ TEST_CASE("1000000x 134 bytes", "[perf][allocator]")
 
         {
             auto startAlloc = test::currentTime();
-            auto *ptr = new char[allocSize];
+            auto *ptr = new char[allocSize]; // NOLINT
             auto endAlloc = test::currentTime();
 
             auto startRelease = test::currentTime();
-            delete[] ptr;
+            delete[] ptr; // NOLINT
             auto endRelease = test::currentTime();
 
             stats.newAlloc += test::toMicroseconds(endAlloc - startAlloc);
@@ -163,11 +163,11 @@ TEST_CASE("1000000x 4056 bytes", "[perf][allocator]")
 
         {
             auto startAlloc = test::currentTime();
-            auto *ptr = malloc(allocSize);
+            auto *ptr = malloc(allocSize); // NOLINT
             auto endAlloc = test::currentTime();
 
             auto startRelease = test::currentTime();
-            free(ptr);
+            free(ptr); // NOLINT
             auto endRelease = test::currentTime();
 
             stats.mallocAlloc += test::toMicroseconds(endAlloc - startAlloc);
@@ -176,11 +176,11 @@ TEST_CASE("1000000x 4056 bytes", "[perf][allocator]")
 
         {
             auto startAlloc = test::currentTime();
-            auto *ptr = new char[allocSize];
+            auto *ptr = new char[allocSize]; // NOLINT
             auto endAlloc = test::currentTime();
 
             auto startRelease = test::currentTime();
-            delete[] ptr;
+            delete[] ptr; // NOLINT
             auto endRelease = test::currentTime();
 
             stats.newAlloc += test::toMicroseconds(endAlloc - startAlloc);
@@ -240,7 +240,7 @@ TEST_CASE("2000x random number of bytes", "[perf][allocator]")
 
         {
             auto startAlloc = test::currentTime();
-            auto *ptr = malloc(allocSize);
+            auto *ptr = malloc(allocSize); // NOLINT
             auto endAlloc = test::currentTime();
 
             if (ptr == nullptr) {
@@ -256,7 +256,7 @@ TEST_CASE("2000x random number of bytes", "[perf][allocator]")
         {
             try {
                 auto startAlloc = test::currentTime();
-                auto *ptr = new char[allocSize];
+                auto *ptr = new char[allocSize]; // NOLINT
                 auto endAlloc = test::currentTime();
 
                 newMem.at(i) = ptr;
@@ -264,7 +264,7 @@ TEST_CASE("2000x random number of bytes", "[perf][allocator]")
             }
             catch (std::bad_alloc& exc) {
                 allocator::release(liballocatorMem.at(i));
-                free(mallocMem.at(i));
+                free(mallocMem.at(i)); // NOLINT
                 --i;
                 continue;
             }
@@ -282,7 +282,7 @@ TEST_CASE("2000x random number of bytes", "[perf][allocator]")
 
         {
             auto startRelease = test::currentTime();
-            free(mallocMem.at(i));
+            free(mallocMem.at(i)); // NOLINT
             auto endRelease = test::currentTime();
 
             stats.mallocRelease += test::toMicroseconds(endRelease - startRelease);
@@ -290,7 +290,7 @@ TEST_CASE("2000x random number of bytes", "[perf][allocator]")
 
         {
             auto startRelease = test::currentTime();
-            delete[] newMem.at(i);
+            delete[] newMem.at(i); // NOLINT
             auto endRelease = test::currentTime();
 
             stats.newRelease += test::toMicroseconds(endRelease - startRelease);
