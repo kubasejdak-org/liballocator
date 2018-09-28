@@ -24,7 +24,7 @@
    <div id="projectname">liballocator
    &#160;<span id="projectnumber">1.0.2</span>
    </div>
-   <div id="projectbrief">A C++ memory allocator for embedded systems</div>
+   <div id="projectbrief">C++ memory allocator for embedded systems</div>
   </td>
  </tr>
  </tbody>
@@ -175,27 +175,27 @@ Private Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:abef5b7f322985d254482826c0313bbe7"><td class="memItemLeft" align="right" valign="top"><a id="abef5b7f322985d254482826c0313bbe7"></a>
-<a class="el" href="classmemory_1_1_page_allocator.html">PageAllocator</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#abef5b7f322985d254482826c0313bbe7">m_pageAllocator</a></td></tr>
+<a class="el" href="classmemory_1_1_page_allocator.html">PageAllocator</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#abef5b7f322985d254482826c0313bbe7">m_pageAllocator</a> {}</td></tr>
 <tr class="memdesc:abef5b7f322985d254482826c0313bbe7"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmemory_1_1_page_allocator.html" title="Represents an allocator of physical pages. ">PageAllocator</a> to be used as the source of the new pages. <br /></td></tr>
 <tr class="separator:abef5b7f322985d254482826c0313bbe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd2cbbc06d7f65583ad8c5333467467e"><td class="memItemLeft" align="right" valign="top"><a id="acd2cbbc06d7f65583ad8c5333467467e"></a>
-std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#acd2cbbc06d7f65583ad8c5333467467e">m_pageSize</a></td></tr>
+std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#acd2cbbc06d7f65583ad8c5333467467e">m_pageSize</a> {}</td></tr>
 <tr class="memdesc:acd2cbbc06d7f65583ad8c5333467467e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of the page on this platform. <br /></td></tr>
 <tr class="separator:acd2cbbc06d7f65583ad8c5333467467e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38f7034e64db754f32315b19d2590e25"><td class="memItemLeft" align="right" valign="top"><a id="a38f7034e64db754f32315b19d2590e25"></a>
-std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#a38f7034e64db754f32315b19d2590e25">m_zoneDescChunkSize</a></td></tr>
+std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#a38f7034e64db754f32315b19d2590e25">m_zoneDescChunkSize</a> {}</td></tr>
 <tr class="memdesc:a38f7034e64db754f32315b19d2590e25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of the chunks that are used to store zone descriptors. <br /></td></tr>
 <tr class="separator:a38f7034e64db754f32315b19d2590e25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7d6e39b726221bbfc187bec5246be8c"><td class="memItemLeft" align="right" valign="top"><a id="af7d6e39b726221bbfc187bec5246be8c"></a>
-std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#af7d6e39b726221bbfc187bec5246be8c">m_zoneDescIdx</a></td></tr>
+std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#af7d6e39b726221bbfc187bec5246be8c">m_zoneDescIdx</a> {}</td></tr>
 <tr class="memdesc:af7d6e39b726221bbfc187bec5246be8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index of the zones, from which zone descriptors are allocated. <br /></td></tr>
 <tr class="separator:af7d6e39b726221bbfc187bec5246be8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a047637fc7b8f1d6f1e5f5efd0fe60ef2"><td class="memItemLeft" align="right" valign="top"><a id="a047637fc7b8f1d6f1e5f5efd0fe60ef2"></a>
-<a class="el" href="classmemory_1_1_zone.html">Zone</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#a047637fc7b8f1d6f1e5f5efd0fe60ef2">m_initialZone</a></td></tr>
+<a class="el" href="classmemory_1_1_zone.html">Zone</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#a047637fc7b8f1d6f1e5f5efd0fe60ef2">m_initialZone</a> {}</td></tr>
 <tr class="memdesc:a047637fc7b8f1d6f1e5f5efd0fe60ef2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initial static zone. <br /></td></tr>
 <tr class="separator:a047637fc7b8f1d6f1e5f5efd0fe60ef2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac117a7e39232032fb5ea9fea98aa216a"><td class="memItemLeft" align="right" valign="top"><a id="ac117a7e39232032fb5ea9fea98aa216a"></a>
-std::array&lt; <a class="el" href="structmemory_1_1_zone_allocator_1_1_zone_info.html">ZoneInfo</a>, <a class="el" href="classmemory_1_1_zone_allocator.html#add39253b095a46d4382ea0da121f6c9d">MAX_ZONE_IDX</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#ac117a7e39232032fb5ea9fea98aa216a">m_zones</a></td></tr>
+std::array&lt; <a class="el" href="structmemory_1_1_zone_allocator_1_1_zone_info.html">ZoneInfo</a>, <a class="el" href="classmemory_1_1_zone_allocator.html#add39253b095a46d4382ea0da121f6c9d">MAX_ZONE_IDX</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#ac117a7e39232032fb5ea9fea98aa216a">m_zones</a> {}</td></tr>
 <tr class="memdesc:ac117a7e39232032fb5ea9fea98aa216a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array of all zones known in the <a class="el" href="classmemory_1_1_zone_allocator.html" title="Represents the ZoneAllocator. ">ZoneAllocator</a>. <br /></td></tr>
 <tr class="separator:ac117a7e39232032fb5ea9fea98aa216a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">

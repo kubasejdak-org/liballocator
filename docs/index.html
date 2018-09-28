@@ -24,7 +24,7 @@
    <div id="projectname">liballocator
    &#160;<span id="projectnumber">1.0.2</span>
    </div>
-   <div id="projectbrief">A C++ memory allocator for embedded systems</div>
+   <div id="projectbrief">C++ memory allocator for embedded systems</div>
   </td>
  </tr>
  </tbody>
@@ -74,9 +74,9 @@ $(function() {
 <p>Embedded systems have very specific requirements regarding memory allocation. Here is the list of issues/features, that liballocator is trying to address:</p>
 <ul>
 <li>physical memory can be split into multiple continuous spaces,</li>
-<li>boundaries of physical memory space can be specified either by linker script or by programmer,</li>
+<li>boundaries of physical memory space can be specified either by linker script or by programmer in code,</li>
 <li>allocated memory chunks should be aligned to it's size,</li>
-<li>client should be able to overload operator new() to use zone-allocator,</li>
+<li>client should be able to overload operator new() to use liballocator,</li>
 <li>allocator should be usable in systems with MMU, MPU or without memory protection,</li>
 <li>there should be low bookkeeping overhead,</li>
 <li>memory shouldn't be subject to fragmentation.</li>
@@ -85,8 +85,43 @@ $(function() {
 <p>liballocator consists of two parts:</p>
 <ul>
 <li>page allocator,</li>
-<li>zone allocator. </li>
+<li>zone allocator.</li>
 </ul>
+<h2>Performance</h2>
+<p>Tests were performed on macOS Mojave 10.14, Macbook Pro (2,9 GHz Intel Core i5, 8 GB 2133 MHz LPDDR3).</p>
+<h5>Allocate 1000000x 134 bytes</h5>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadCenter">Allocator  </th><th class="markdownTableHeadCenter">Allocate (g++ 8.2.0)  </th><th class="markdownTableHeadCenter" colspan="3">Rel   </th></tr>
+<tr class="markdownTableBody" class="markdownTableRowOdd">
+<td class="markdownTableBodyCenter">liballocator  </td><td class="markdownTableBodyCenter">3.0761 us  </td><td class="markdownTableBodyCenter">3.1229 us  </td><td class="markdownTableBodyCenter">2.2062 us  </td><td class="markdownTableBodyCenter">2.2090 us   </td></tr>
+<tr class="markdownTableBody" class="markdownTableRowEven">
+<td class="markdownTableBodyCenter">malloc  </td><td class="markdownTableBodyCenter">0.0303 us  </td><td class="markdownTableBodyCenter">0.0296 us  </td><td class="markdownTableBodyCenter">0.0008 us  </td><td class="markdownTableBodyCenter">0.0010 us   </td></tr>
+<tr class="markdownTableBody" class="markdownTableRowOdd">
+<td class="markdownTableBodyCenter">new  </td><td class="markdownTableBodyCenter">0.0833 us  </td><td class="markdownTableBodyCenter">0.0733 us  </td><td class="markdownTableBodyCenter">0.0008 us  </td><td class="markdownTableBodyCenter">0.0009 us   </td></tr>
+</table>
+<h5>Allocate 1000000x 4056 bytes</h5>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadCenter">Allocator  </th><th class="markdownTableHeadCenter">Allocate (g++ 8.2.0)  </th><th class="markdownTableHeadCenter" colspan="3">Rel   </th></tr>
+<tr class="markdownTableBody" class="markdownTableRowOdd">
+<td class="markdownTableBodyCenter">liballocator  </td><td class="markdownTableBodyCenter">2.9269 us  </td><td class="markdownTableBodyCenter">3.0897 us  </td><td class="markdownTableBodyCenter">2.0906 us  </td><td class="markdownTableBodyCenter">2.1194 us   </td></tr>
+<tr class="markdownTableBody" class="markdownTableRowEven">
+<td class="markdownTableBodyCenter">malloc  </td><td class="markdownTableBodyCenter">0.0300 us  </td><td class="markdownTableBodyCenter">0.0297 us  </td><td class="markdownTableBodyCenter">0.0008 us  </td><td class="markdownTableBodyCenter">0.0006 us   </td></tr>
+<tr class="markdownTableBody" class="markdownTableRowOdd">
+<td class="markdownTableBodyCenter">new  </td><td class="markdownTableBodyCenter">0.0832 us  </td><td class="markdownTableBodyCenter">0.0781 us  </td><td class="markdownTableBodyCenter">0.0012 us  </td><td class="markdownTableBodyCenter">0.0008 us   </td></tr>
+</table>
+<h5>Allocate 2000x random number of bytes</h5>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadCenter">Allocator  </th><th class="markdownTableHeadCenter">Allocate (g++ 8.2.0)  </th><th class="markdownTableHeadCenter" colspan="3">Rel   </th></tr>
+<tr class="markdownTableBody" class="markdownTableRowOdd">
+<td class="markdownTableBodyCenter">liballocator  </td><td class="markdownTableBodyCenter">16.0200 us  </td><td class="markdownTableBodyCenter">10.8960 us  </td><td class="markdownTableBodyCenter">14.8775 us  </td><td class="markdownTableBodyCenter">9.9780 us   </td></tr>
+<tr class="markdownTableBody" class="markdownTableRowEven">
+<td class="markdownTableBodyCenter">malloc  </td><td class="markdownTableBodyCenter">0.1600 us  </td><td class="markdownTableBodyCenter">0.2660 us  </td><td class="markdownTableBodyCenter">0.0600 us  </td><td class="markdownTableBodyCenter">0.0850 us   </td></tr>
+<tr class="markdownTableBody" class="markdownTableRowOdd">
+<td class="markdownTableBodyCenter">new  </td><td class="markdownTableBodyCenter">0.0980 us  </td><td class="markdownTableBodyCenter">0.2055 us  </td><td class="markdownTableBodyCenter">0.0020 us  </td><td class="markdownTableBodyCenter">0.0680 us   </td></tr>
+</table>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
