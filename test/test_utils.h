@@ -51,16 +51,21 @@ inline std::unique_ptr<std::byte, decltype(&std::free)> alignedAlloc(std::size_t
     return std::unique_ptr<std::byte, decltype(&std::free)>(reinterpret_cast<std::byte*>(ptr), &std::free);
 }
 
-inline std::chrono::time_point<std::chrono::system_clock> currentTime()
+inline std::chrono::time_point<std::chrono::high_resolution_clock> currentTime()
 {
-    return std::chrono::system_clock::now();
+    return std::chrono::high_resolution_clock::now();
 }
 
 template <typename T>
-inline bool timeElapsed(std::chrono::time_point<std::chrono::system_clock>& start, const T& duration)
+inline bool timeElapsed(std::chrono::time_point<std::chrono::high_resolution_clock>& start, const T& duration)
 {
     auto elapsedSeconds = currentTime() - start;
     return (elapsedSeconds >= duration);
+}
+
+inline double toMicroseconds(const std::chrono::duration<double>& duration)
+{
+    return std::chrono::duration_cast<std::chrono::microseconds>(duration).count();
 }
 
 } // namespace test

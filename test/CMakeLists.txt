@@ -2,6 +2,7 @@ add_executable(liballocator_tests
     main.cpp
     integration/integration_page_allocator.cpp
     integration/integration_zone_allocator.cpp
+    perf/perf_allocator.cpp
     unit/unit_allocator.cpp
     unit/unit_list_node.cpp
     unit/unit_page.cpp
