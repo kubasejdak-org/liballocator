@@ -12,6 +12,5 @@ var searchData=
   ['allocatedmemorysize',['allocatedMemorySize',['../structmemory_1_1allocator_1_1_stats.html#a7be37b6c96249e3c5d478edba9b9245e',1,'memory::allocator::Stats::allocatedMemorySize()'],['../structmemory_1_1_zone_allocator_1_1_stats.html#abf50bd7b927b4a566966fe7773720175',1,'memory::ZoneAllocator::Stats::allocatedMemorySize()']]],
   ['allocatezone',['allocateZone',['../classmemory_1_1_zone_allocator.html#a7da186826913a6bf31e63c8374b0f0d4',1,'memory::ZoneAllocator']]],
   ['allocator_2ecpp',['allocator.cpp',['../allocator_8cpp.html',1,'']]],
-  ['allocator_2eh',['allocator.h',['../allocator_8h.html',1,'']]],
-  ['allocator_5fversion',['ALLOCATOR_VERSION',['../version_8h.html#a4c7abe294f1918d2aa4fd5417595dbda',1,'version.h']]]
+  ['allocator_2eh',['allocator.h',['../allocator_8h.html',1,'']]]
 ];
