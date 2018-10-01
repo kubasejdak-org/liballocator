@@ -25,7 +25,7 @@ target_link_libraries(liballocator_tests
     PRIVATE allocator
 )
 
-utils_setOutputPath(liballocator_tests ${CMAKE_SOURCE_DIR}/bin)
+toolchain_setTargetOutputPath(liballocator_tests ${CMAKE_SOURCE_DIR}/bin)
 
 # Test definitions.
 get_target_property(RUNTIME_OUTPUT liballocator_tests RUNTIME_OUTPUT_DIRECTORY)

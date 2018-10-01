@@ -15,7 +15,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 add_compile_options(-Wall -Wextra -Werror)
-utils_showToolchainConfig()
+toolchain_showConfig()
 
 if(LIBALLOCATOR_COVERAGE)
     utils_log("Building liballocator with coverage report")
