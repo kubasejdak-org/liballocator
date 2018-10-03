@@ -1,7 +1,7 @@
 utils_log("Configuring '${CMAKE_CURRENT_SOURCE_DIR}/version.h'")
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/version.h)
 
-add_library(allocator
+add_library(liballocator
     allocator.cpp
     page_allocator.cpp
     page.cpp
@@ -10,11 +10,11 @@ add_library(allocator
     zone_allocator.cpp
 )
 
-target_compile_features(allocator PUBLIC cxx_std_17)
+target_compile_features(liballocator PRIVATE cxx_std_17)
 
-target_include_directories(allocator PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(liballocator PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
-target_link_libraries(allocator PUBLIC liballocator_include)
+target_link_libraries(liballocator PUBLIC liballocator_include)
 
-toolchain_setTargetOutputPath(allocator ${PROJECT_SOURCE_DIR}/bin)
-toolchain_showTargetConfig(allocator)
+toolchain_setTargetOutputPath(liballocator ${PROJECT_SOURCE_DIR}/bin)
+toolchain_showTargetConfig(liballocator)

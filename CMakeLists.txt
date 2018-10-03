@@ -15,7 +15,6 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 add_compile_options(-Wall -Wextra -Werror)
-toolchain_showConfig()
 
 if(LIBALLOCATOR_COVERAGE)
     utils_log("Building liballocator with coverage report")
@@ -28,6 +27,7 @@ add_subdirectory(lib)
 add_subdirectory(src)
 
 if(LIBALLOCATOR_TESTS)
+    toolchain_showConfig()
     utils_log("Building liballocator with tests")
     enable_testing()
     add_subdirectory(test)

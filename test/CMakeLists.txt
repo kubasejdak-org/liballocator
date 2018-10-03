@@ -17,12 +17,12 @@ target_compile_features(liballocator_tests PRIVATE cxx_std_17)
 target_include_directories(liballocator_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Link with library private implementation for testing.
-get_target_property(ALLOCATOR_INCLUDES allocator INCLUDE_DIRECTORIES)
+get_target_property(ALLOCATOR_INCLUDES liballocator INCLUDE_DIRECTORIES)
 target_include_directories(liballocator_tests PRIVATE ${ALLOCATOR_INCLUDES})
 
 target_link_libraries(liballocator_tests
     PUBLIC catch2 liballocator_include
-    PRIVATE allocator
+    PRIVATE liballocator
 )
 
 toolchain_setTargetOutputPath(liballocator_tests ${CMAKE_SOURCE_DIR}/bin)
