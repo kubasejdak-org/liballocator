@@ -88,6 +88,54 @@ TEST_CASE("Page allocator is properly cleared", "[unit][page_allocator]")
     REQUIRE(stats.freePagesCount == 0);
 }
 
+TEST_CASE("Page size is correctly validated", "[unit][page_allocator]")
+{
+    PageAllocator pageAllocator;
+    std::size_t pageSize = 0;
+    bool isValidPageSize = false;
+
+    SECTION("Page size is smaller than the minimal value")
+    {
+        pageSize = PageAllocator::MIN_PAGE_SIZE - 3;
+        isValidPageSize = pageAllocator.isValidPageSize(pageSize);
+        REQUIRE(!isValidPageSize);
+    }
+
+    SECTION("Page size is equal to the minimal value")
+    {
+        pageSize = PageAllocator::MIN_PAGE_SIZE;
+        isValidPageSize = pageAllocator.isValidPageSize(pageSize);
+        REQUIRE(isValidPageSize);
+    }
+
+    SECTION("Page size is bigger than the minimal value, but not the power of 2")
+    {
+        pageSize = (2 * PageAllocator::MIN_PAGE_SIZE) + 1;
+        isValidPageSize = pageAllocator.isValidPageSize(pageSize);
+        REQUIRE(!isValidPageSize);
+    }
+
+    SECTION("Page size is bigger than the minimal value and a power of 2")
+    {
+        pageSize = 256;
+        isValidPageSize = pageAllocator.isValidPageSize(pageSize);
+        REQUIRE(isValidPageSize);
+    }
+
+    std::size_t pagesCount = 1;
+    auto size = pageSize * pagesCount;
+    auto memory = test::alignedAlloc(pageSize, size);
+
+    // clang-format off
+    Region regions[] = {
+        {std::uintptr_t(memory.get()), size},
+        {0,                            0}
+    };
+    // clang-format on
+
+    REQUIRE(pageAllocator.init(regions, pageSize) == isValidPageSize);
+}
+
 TEST_CASE("Pages are correctly counted", "[unit][page_allocator]")
 {
     std::size_t pageSize = 256;

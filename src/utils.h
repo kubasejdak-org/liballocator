@@ -37,10 +37,18 @@
 
 namespace memory::utils {
 
+/// @brief Checks if the given value is a power of 2.
+/// @param[in] value        Value to be checked.
+/// @return True if value is power of 2, false otherwise.
+inline bool isPowerOf2(std::size_t value)
+{
+    return (value > 0 && ((value & (value - 1)) == 0));
+}
+
 /// @brief Returns the given value, that is rounded up to the closest power of 2.
 /// @param[in] value        Value to be rounded.
 /// @return Value rounded up to the closest power of 2.
-inline std::size_t roundPower2(std::size_t value)
+inline std::size_t roundPowerOf2(std::size_t value)
 {
     auto result = value;
 

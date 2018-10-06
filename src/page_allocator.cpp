@@ -32,6 +32,8 @@
 
 #include "page_allocator.h"
 
+#include "utils.h"
+
 #include <cassert>
 #include <cmath>
 #include <numeric>
@@ -48,6 +50,9 @@ bool PageAllocator::init(Region* regions, std::size_t pageSize)
     assert(regions);
 
     clear();
+
+    if (!isValidPageSize(pageSize))
+        return false;
 
     for (std::size_t i = 0; regions[i].size != 0; ++i) {
         if (i == MAX_REGIONS_COUNT)
@@ -220,6 +225,11 @@ PageAllocator::Stats PageAllocator::getStats()
     stats.freePagesCount = m_freePagesCount;
 
     return stats;
+}
+
+bool PageAllocator::isValidPageSize(std::size_t pageSize)
+{
+    return (pageSize >= MIN_PAGE_SIZE && utils::isPowerOf2(pageSize));
 }
 
 std::size_t PageAllocator::countPages()

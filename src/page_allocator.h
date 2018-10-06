@@ -93,6 +93,12 @@ public:
     Stats getStats();
 
 private:
+    /// @brief Checks if the page size has a proper value.
+    /// @param[in] pageSize         Page size to be checked.
+    /// @return True if page size is valid, false otherwise.
+    /// @note This function checks if pageSize has the minimal size and if is a power of 2.
+    bool isValidPageSize(std::size_t pageSize);
+
     /// @brief Returns the total number of pages from all known regions.
     /// @return Number of all pages from all known regions.
     std::size_t countPages();
@@ -151,6 +157,7 @@ private:
     Page* joinGroup(Page* firstGroup, Page* secondGroup);
 
 private:
+    static constexpr int MIN_PAGE_SIZE = 128;   ///< Minimal supported size of the page.
     static constexpr int MAX_REGIONS_COUNT = 8; ///< Maximal supported number of memory regions.
     static constexpr int MAX_GROUP_IDX = 20;    ///< Maximal index of the group in the free array.
 

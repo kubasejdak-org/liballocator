@@ -47,13 +47,26 @@
 // NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;
 
+TEST_CASE("Values are correctly checked if they are a power of 2", "[unit][utils]")
+{
+    double idx = 0.0;
+
+    for (std::size_t i = 0; i < 1000000; ++i) {
+        bool isPowerOf2 = utils::isPowerOf2(i);
+        REQUIRE(isPowerOf2 == (std::log2(double(i)) == idx));
+
+        if (isPowerOf2)
+            ++idx;
+    }
+}
+
 TEST_CASE("Values are correctly rounded to the closest power of 2", "[unit][utils]")
 {
     double idx = 0.0;
 
     for (std::size_t i = 1; i < 1000000; ++i) {
         double requiredValue = std::pow(2.0, idx);
-        auto value = utils::roundPower2(i);
+        auto value = utils::roundPowerOf2(i);
         REQUIRE(value == requiredValue);
 
         if (std::log2(double(i)) == idx)
