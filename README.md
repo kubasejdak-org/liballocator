@@ -5,7 +5,9 @@
 
 # liballocator
 
-The purpose of this project is to provide a convenient and fairly robust memory allocator for the embedded environments in C++. It is based on FreeBSD's UMA (Universal Memory Allocator) called the zone allocator and some concepts taken from SLAB allocator.
+The purpose of this project is to provide a convenient and fairly robust memory allocator for the embedded environments in C++.
+It is based on the FreeBSD's [UMA (Universal Memory Allocator)](https://www.freebsd.org/cgi/man.cgi?query=uma&sektion=9&manpath=freebsd-release-ports)
+called the zone allocator and some concepts taken from [SLAB allocator](https://en.wikipedia.org/wiki/Slab_allocation).
 
 ## Requirements
 
@@ -23,12 +25,41 @@ Embedded systems have very specific requirements regarding memory allocation. He
 
 liballocator consists of two parts:
 
-* page allocator,
-* zone allocator.
+* page allocator - responsible for managing and allocation of the physical pages. This module is aware of the
+  number of continuous regions (SRAM, DDR RAM, etc).
+* zone allocator - responsible for allocation of the size-aligned memory chunks. This module makes us of the page allocator
+  to create the zones containing chunks of the same size.
+
+## Requirements
+
+* CMake v3.3+,
+* GCC/Clang with C++17 support,
+* Linux/macOS (not tested on Windows).
+
+## Usage
+
+To use liballocator in your CMake project all you need to do is:
+
+* Download this repository into your project (IMPORTANT: liballocator contains git submodules):
+```
+git clone --recurse-submodules git@github.com:kubasejdak/liballocator.git   # Since Git 2.13
+git clone --recursive git@github.com:kubasejdak/liballocator.git            # Before Git 2.13
+```
+
+* Add it to CMake with:
+```
+add_subdirectory(liballocator)
+```
+
+If you use concepts of "Modern CMake", then all necessary flags to build and use liballocator will be automatically propagated.
+Check out this example project with STM32F4DISCOVERY: [liballocator-demo](https://github.com/kubasejdak/liballocator-demo).
 
 ## Performance
 
 Tests were performed on macOS Mojave 10.14, Macbook Pro (2,9 GHz Intel Core i5, 8 GB 2133 MHz LPDDR3).
+
+NOTE: liballocator currently does not contain any optimizations, assembly or caches. Performance tests does not
+take into account the architecture goals of any used allocator. Results shown below are only for illustrative purposes.
 
 ##### Allocate 1000000x 134 bytes
 | Allocator | Allocate (g++ 8.2.0) | Release (g++ 8.2.0) | Allocate (clang++ 7.0.0) | Release (clang++ 7.0.0)
