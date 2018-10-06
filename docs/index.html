@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">liballocator
-   &#160;<span id="projectnumber">1.0.2</span>
+   &#160;<span id="projectnumber">1.0.3</span>
    </div>
    <div id="projectbrief">C++ memory allocator for embedded systems</div>
   </td>
@@ -69,7 +69,7 @@ $(function() {
 <div class="contents">
 <div class="textblock"><p><a href="https://github.com/kubasejdak/liballocator/releases"></a> <a href="https://travis-ci.org/kubasejdak/liballocator"></a> <a href="https://opensource.org/licenses/BSD-2-Clause"></a> <a href="http://codecov.io/github/kubasejdak/liballocator?branch=master"></a></p>
 <h1>liballocator</h1>
-<p>The purpose of this project is to provide a convenient and fairly robust memory allocator for the embedded environments in C++. It is based on FreeBSD's UMA (Universal Memory Allocator) called the zone allocator and some concepts taken from SLAB allocator.</p>
+<p>The purpose of this project is to provide a convenient and fairly robust memory allocator for the embedded environments in C++. It is based on the FreeBSD's <a href="https://www.freebsd.org/cgi/man.cgi?query=uma&amp;sektion=9&amp;manpath=freebsd-release-ports">UMA (Universal Memory Allocator)</a> called the zone allocator and some concepts taken from <a href="https://en.wikipedia.org/wiki/Slab_allocation">SLAB allocator</a>.</p>
 <h2>Requirements</h2>
 <p>Embedded systems have very specific requirements regarding memory allocation. Here is the list of issues/features, that liballocator is trying to address:</p>
 <ul>
@@ -84,11 +84,25 @@ $(function() {
 <h2>Overview</h2>
 <p>liballocator consists of two parts:</p>
 <ul>
-<li>page allocator,</li>
-<li>zone allocator.</li>
+<li>page allocator - responsible for managing and allocation of the physical pages. This module is aware of the number of continuous regions (SRAM, DDR RAM, etc).</li>
+<li>zone allocator - responsible for allocation of the size-aligned memory chunks. This module makes us of the page allocator to create the zones containing chunks of the same size.</li>
 </ul>
+<h2>Requirements</h2>
+<ul>
+<li>CMake v3.3+,</li>
+<li>GCC/Clang with C++17 support,</li>
+<li>Linux/macOS (not tested on Windows).</li>
+</ul>
+<h2>Usage</h2>
+<p>To use liballocator in your CMake project all you need to do is:</p>
+<ul>
+<li>Download this repository into your project (IMPORTANT: liballocator contains git submodules): <div class="fragment"><div class="line">git clone --recurse-submodules git@github.com:kubasejdak/liballocator.git   # Since Git 2.13</div><div class="line">git clone --recursive git@github.com:kubasejdak/liballocator.git            # Before Git 2.13</div></div><!-- fragment --></li>
+<li>Add it to CMake with: <div class="fragment"><div class="line">add_subdirectory(liballocator)</div></div><!-- fragment --></li>
+</ul>
+<p>If you use concepts of "Modern CMake", then all necessary flags to build and use liballocator will be automatically propagated. Check out this example project with STM32F4DISCOVERY: <a href="https://github.com/kubasejdak/liballocator-demo">liballocator-demo</a>.</p>
 <h2>Performance</h2>
 <p>Tests were performed on macOS Mojave 10.14, Macbook Pro (2,9 GHz Intel Core i5, 8 GB 2133 MHz LPDDR3).</p>
+<p>NOTE: liballocator currently does not contain any optimizations, assembly or caches. Performance tests does not take into account the architecture goals of any used allocator. Results shown below are only for illustrative purposes.</p>
 <h5>Allocate 1000000x 134 bytes</h5>
 <table class="markdownTable">
 <tr class="markdownTableHead">

@@ -27,6 +27,7 @@ var searchData=
   ['max_5fgroup_5fidx',['MAX_GROUP_IDX',['../classmemory_1_1_page_allocator.html#a4a49862010fa2751ef3f699887ca59d4',1,'memory::PageAllocator']]],
   ['max_5fregions_5fcount',['MAX_REGIONS_COUNT',['../classmemory_1_1_page_allocator.html#a0db4393c9ef607bb9a6a7290d6a42ce9',1,'memory::PageAllocator']]],
   ['max_5fzone_5fidx',['MAX_ZONE_IDX',['../classmemory_1_1_zone_allocator.html#add39253b095a46d4382ea0da121f6c9d',1,'memory::ZoneAllocator']]],
+  ['min_5fpage_5fsize',['MIN_PAGE_SIZE',['../classmemory_1_1_page_allocator.html#aaaf2aca63d51b314e78a1a41ba7d03a6',1,'memory::PageAllocator']]],
   ['minimal_5falloc_5fsize',['MINIMAL_ALLOC_SIZE',['../classmemory_1_1_zone_allocator.html#a5d2d4f06783b126bcb6b79fb128c9586',1,'memory::ZoneAllocator']]],
   ['moveptr',['movePtr',['../utils_8h.html#aaf0b427486df1f143c585b2f8236ca2f',1,'memory::utils']]]
 ];

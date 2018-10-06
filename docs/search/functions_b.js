@@ -5,5 +5,5 @@ var searchData=
   ['removegroup',['removeGroup',['../classmemory_1_1_page_allocator.html#a3befc38e828daf7816c78ff813559464',1,'memory::PageAllocator']]],
   ['removezone',['removeZone',['../classmemory_1_1_zone_allocator.html#a3ba877bf74f5ccc8d074bfdffbb04c75',1,'memory::ZoneAllocator']]],
   ['reservedescpages',['reserveDescPages',['../classmemory_1_1_page_allocator.html#a199f9ed9629431a43ec8141a3fad8b10',1,'memory::PageAllocator']]],
-  ['roundpower2',['roundPower2',['../utils_8h.html#a2a91cbe48392f654e948f368fb57fa0d',1,'memory::utils']]]
+  ['roundpowerof2',['roundPowerOf2',['../utils_8h.html#a9b798176b403fd85df9e7c7c9273f9d4',1,'memory::utils']]]
 ];

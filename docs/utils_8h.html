@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">liballocator
-   &#160;<span id="projectnumber">1.0.2</span>
+   &#160;<span id="projectnumber">1.0.3</span>
    </div>
    <div id="projectbrief">C++ memory allocator for embedded systems</div>
   </td>
@@ -78,14 +78,17 @@ $(function() {
 Include dependency graph for utils.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="utils_8h__incl.png" border="0" usemap="#src_2utils_8h" alt=""/></div>
+<map name="src_2utils_8h" id="src_2utils_8h">
+</map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="utils_8h__dep__incl.png" border="0" usemap="#src_2utils_8hdep" alt=""/></div>
 <map name="src_2utils_8hdep" id="src_2utils_8hdep">
-<area shape="rect" id="node2" href="zone_8cpp.html" title="src/zone.cpp" alt="" coords="5,79,102,104"/>
-<area shape="rect" id="node3" href="zone__allocator_8cpp.html" title="src/zone_allocator.cpp" alt="" coords="126,79,280,104"/>
+<area shape="rect" id="node2" href="page__allocator_8cpp.html" title="src/page_allocator.cpp" alt="" coords="5,79,160,104"/>
+<area shape="rect" id="node3" href="zone_8cpp.html" title="src/zone.cpp" alt="" coords="184,79,281,104"/>
+<area shape="rect" id="node4" href="zone__allocator_8cpp.html" title="src/zone_allocator.cpp" alt="" coords="304,79,458,104"/>
 </map>
 </div>
 </div>
@@ -93,9 +96,12 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a2a91cbe48392f654e948f368fb57fa0d"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8h.html#a2a91cbe48392f654e948f368fb57fa0d">memory::utils::roundPower2</a> (std::size_t value)</td></tr>
-<tr class="memdesc:a2a91cbe48392f654e948f368fb57fa0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the given value, that is rounded up to the closest power of 2.  <a href="utils_8h.html#a2a91cbe48392f654e948f368fb57fa0d">More...</a><br /></td></tr>
-<tr class="separator:a2a91cbe48392f654e948f368fb57fa0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bd704b1556121bc616bf43b43faf33a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8h.html#a9bd704b1556121bc616bf43b43faf33a">memory::utils::isPowerOf2</a> (std::size_t value)</td></tr>
+<tr class="memdesc:a9bd704b1556121bc616bf43b43faf33a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the given value is a power of 2.  <a href="utils_8h.html#a9bd704b1556121bc616bf43b43faf33a">More...</a><br /></td></tr>
+<tr class="separator:a9bd704b1556121bc616bf43b43faf33a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b798176b403fd85df9e7c7c9273f9d4"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8h.html#a9b798176b403fd85df9e7c7c9273f9d4">memory::utils::roundPowerOf2</a> (std::size_t value)</td></tr>
+<tr class="memdesc:a9b798176b403fd85df9e7c7c9273f9d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the given value, that is rounded up to the closest power of 2.  <a href="utils_8h.html#a9b798176b403fd85df9e7c7c9273f9d4">More...</a><br /></td></tr>
+<tr class="separator:a9b798176b403fd85df9e7c7c9273f9d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf0b427486df1f143c585b2f8236ca2f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aaf0b427486df1f143c585b2f8236ca2f"><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utils_8h.html#aaf0b427486df1f143c585b2f8236ca2f">memory::utils::movePtr</a> (T *ptr, std::size_t step)</td></tr>
 <tr class="memdesc:aaf0b427486df1f143c585b2f8236ca2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the given pointer moved by given number of bytes.  <a href="utils_8h.html#aaf0b427486df1f143c585b2f8236ca2f">More...</a><br /></td></tr>
@@ -112,6 +118,41 @@ Functions</h2></td></tr>
 </ol>
 <p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="file_a9bd704b1556121bc616bf43b43faf33a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_a9bd704b1556121bc616bf43b43faf33a">&#9670;&nbsp;</a></span>isPowerOf2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool memory::utils::isPowerOf2 </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if the given value is a power of 2. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>Value to be checked. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if value is power of 2, false otherwise. </dd></dl>
+
+</div>
+</div>
 <a id="file_aaf0b427486df1f143c585b2f8236ca2f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#file_aaf0b427486df1f143c585b2f8236ca2f">&#9670;&nbsp;</a></span>movePtr()</h2>
 
@@ -152,8 +193,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="file_a2a91cbe48392f654e948f368fb57fa0d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#file_a2a91cbe48392f654e948f368fb57fa0d">&#9670;&nbsp;</a></span>roundPower2()</h2>
+<a id="file_a9b798176b403fd85df9e7c7c9273f9d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_a9b798176b403fd85df9e7c7c9273f9d4">&#9670;&nbsp;</a></span>roundPowerOf2()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -162,7 +203,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::size_t memory::utils::roundPower2 </td>
+          <td class="memname">std::size_t memory::utils::roundPowerOf2 </td>
           <td>(</td>
           <td class="paramtype">std::size_t&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>

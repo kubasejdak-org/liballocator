@@ -1,7 +1,8 @@
 <map id="src/page_allocator.cpp" name="src/page_allocator.cpp">
-<area shape="rect" id="node2" href="$page__allocator_8h.html" title="page_allocator.h" alt="" coords="235,79,354,104"/>
-<area shape="rect" id="node3" href="$page_8h.html" title="page.h" alt="" coords="434,225,496,251"/>
-<area shape="rect" id="node8" href="$region__info_8h.html" title="region_info.h" alt="" coords="196,152,295,177"/>
-<area shape="rect" id="node9" href="$region_8h.html" title="allocator/region.h" alt="" coords="93,225,216,251"/>
-<area shape="rect" id="node4" href="$list__node_8h.html" title="list_node.h" alt="" coords="437,299,523,324"/>
+<area shape="rect" id="node2" href="$page__allocator_8h.html" title="page_allocator.h" alt="" coords="196,79,316,104"/>
+<area shape="rect" id="node13" href="$utils_8h.html" title="utils.h" alt="" coords="651,152,707,177"/>
+<area shape="rect" id="node3" href="$page_8h.html" title="page.h" alt="" coords="464,225,526,251"/>
+<area shape="rect" id="node8" href="$region__info_8h.html" title="region_info.h" alt="" coords="335,152,433,177"/>
+<area shape="rect" id="node9" href="$region_8h.html" title="allocator/region.h" alt="" coords="173,225,296,251"/>
+<area shape="rect" id="node4" href="$list__node_8h.html" title="list_node.h" alt="" coords="356,299,442,324"/>
 </map>

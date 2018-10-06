@@ -6,7 +6,9 @@ var searchData=
   ['initregioninfo',['initRegionInfo',['../region__info_8cpp.html#a3b5e3149df733116ed82d0b7e206efb6',1,'memory']]],
   ['initzone',['initZone',['../classmemory_1_1_zone_allocator.html#a133209879406d863e5a1833dab09b396',1,'memory::ZoneAllocator']]],
   ['isnaturallyaligned',['isNaturallyAligned',['../classmemory_1_1_page.html#ac5a3b5bba1365dfe1bcc047850d08242',1,'memory::Page::isNaturallyAligned()'],['../classmemory_1_1_zone.html#a9bbbe86c07de1756632de6eddb384470',1,'memory::Zone::isNaturallyAligned()']]],
+  ['ispowerof2',['isPowerOf2',['../utils_8h.html#a9bd704b1556121bc616bf43b43faf33a',1,'memory::utils']]],
   ['isused',['isUsed',['../classmemory_1_1_page.html#a042f8f51cf75210dee5e90b394a7d01a',1,'memory::Page']]],
   ['isvalidchunk',['isValidChunk',['../classmemory_1_1_zone.html#ac6eb2eab0de51de67889c537d794344f',1,'memory::Zone']]],
-  ['isvalidpage',['isValidPage',['../classmemory_1_1_page_allocator.html#a7613eeca0a0605851c487c73c0307b6d',1,'memory::PageAllocator']]]
+  ['isvalidpage',['isValidPage',['../classmemory_1_1_page_allocator.html#a7613eeca0a0605851c487c73c0307b6d',1,'memory::PageAllocator']]],
+  ['isvalidpagesize',['isValidPageSize',['../classmemory_1_1_page_allocator.html#a8dd3bca054300a48f4b646e10431a144',1,'memory::PageAllocator']]]
 ];
