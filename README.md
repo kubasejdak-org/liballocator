@@ -27,12 +27,12 @@ liballocator consists of two parts:
 
 * page allocator - responsible for managing and allocation of the physical pages. This module is aware of the
   number of continuous regions (SRAM, DDR RAM, etc).
-* zone allocator - responsible for allocation of the size-aligned memory chunks. This module makes us of the page allocator
+* zone allocator - responsible for allocation of the size-aligned memory chunks. This module makes use of the page allocator
   to create the zones containing chunks of the same size.
 
 ## Requirements
 
-* CMake v3.3+,
+* CMake v3.9+,
 * GCC/Clang with C++17 support,
 * Linux/macOS (not tested on Windows).
 

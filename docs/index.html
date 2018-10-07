@@ -22,9 +22,8 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">liballocator
-   &#160;<span id="projectnumber">1.0.3</span>
+   &#160;<span id="projectnumber">1.0.4</span>
    </div>
-   <div id="projectbrief">C++ memory allocator for embedded systems</div>
   </td>
  </tr>
  </tbody>
@@ -85,11 +84,11 @@ $(function() {
 <p>liballocator consists of two parts:</p>
 <ul>
 <li>page allocator - responsible for managing and allocation of the physical pages. This module is aware of the number of continuous regions (SRAM, DDR RAM, etc).</li>
-<li>zone allocator - responsible for allocation of the size-aligned memory chunks. This module makes us of the page allocator to create the zones containing chunks of the same size.</li>
+<li>zone allocator - responsible for allocation of the size-aligned memory chunks. This module makes use of the page allocator to create the zones containing chunks of the same size.</li>
 </ul>
 <h2>Requirements</h2>
 <ul>
-<li>CMake v3.3+,</li>
+<li>CMake v3.9+,</li>
 <li>GCC/Clang with C++17 support,</li>
 <li>Linux/macOS (not tested on Windows).</li>
 </ul>
