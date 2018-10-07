@@ -97,8 +97,9 @@ $(function() {
 <ul>
 <li>Download this repository into your project (IMPORTANT: liballocator contains git submodules): <div class="fragment"><div class="line">git clone --recurse-submodules git@github.com:kubasejdak/liballocator.git   # Since Git 2.13</div><div class="line">git clone --recursive git@github.com:kubasejdak/liballocator.git            # Before Git 2.13</div></div><!-- fragment --></li>
 <li>Add it to CMake with: <div class="fragment"><div class="line">add_subdirectory(liballocator)</div></div><!-- fragment --></li>
+<li>Link liballocator with your target: <div class="fragment"><div class="line">target_link_libraries(&lt;YOUR_TARGET&gt; PUBLIC liballocator)</div></div><!-- fragment --></li>
 </ul>
-<p>If you use concepts of "Modern CMake", then all necessary flags to build and use liballocator will be automatically propagated. Check out this example project with STM32F4DISCOVERY: <a href="https://github.com/kubasejdak/liballocator-demo">liballocator-demo</a>.</p>
+<p>If you use concepts of "Modern CMake", then all necessary flags and include paths to build and use liballocator will be automatically propagated. Check out this example project with STM32F4DISCOVERY: <a href="https://github.com/kubasejdak/liballocator-demo">liballocator-demo</a>.</p>
 <h2>Performance</h2>
 <p>Tests were performed on macOS Mojave 10.14, Macbook Pro (2,9 GHz Intel Core i5, 8 GB 2133 MHz LPDDR3).</p>
 <p>NOTE: liballocator currently does not contain any optimizations, assembly or caches. Performance tests does not take into account the architecture goals of any used allocator. Results shown below are only for illustrative purposes.</p>

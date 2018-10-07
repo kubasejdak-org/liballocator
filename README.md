@@ -51,7 +51,12 @@ git clone --recursive git@github.com:kubasejdak/liballocator.git            # Be
 add_subdirectory(liballocator)
 ```
 
-If you use concepts of "Modern CMake", then all necessary flags to build and use liballocator will be automatically propagated.
+* Link liballocator with your target:
+```
+target_link_libraries(<YOUR_TARGET> PUBLIC liballocator)
+```
+
+If you use concepts of "Modern CMake", then all necessary flags and include paths to build and use liballocator will be automatically propagated.
 Check out this example project with STM32F4DISCOVERY: [liballocator-demo](https://github.com/kubasejdak/liballocator-demo).
 
 ## Performance
