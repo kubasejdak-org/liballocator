@@ -63,8 +63,9 @@ Check out this example project with STM32F4DISCOVERY: [liballocator-demo](https:
 
 Tests were performed on macOS Mojave 10.14, Macbook Pro (2,9 GHz Intel Core i5, 8 GB 2133 MHz LPDDR3).
 
-NOTE: liballocator currently does not contain any optimizations, assembly or caches. Performance tests does not
-take into account the architecture goals of any used allocator. Results shown below are only for illustrative purposes.
+NOTE: liballocator currently does not contain any optimizations, assembly or caches. Performance tests do not
+take into account the design goals of any used allocator. Results shown below are only for illustrative purposes
+and should not be used as a reference of any kind.
 
 ##### Allocate 1000000x 134 bytes
 | Allocator | Allocate (g++ 8.2.0) | Release (g++ 8.2.0) | Allocate (clang++ 7.0.0) | Release (clang++ 7.0.0)
