@@ -7,7 +7,7 @@ git:
 
 env:
   global:
-    - CMAKE_VER=3.3.0
+    - CMAKE_VER=3.3.2
     - TESTS=true
     - CLANG_CHECKS=false
     - CODECOV=false
