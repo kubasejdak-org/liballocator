@@ -8,6 +8,8 @@ env:
   global:
     - CMAKE_VER=3.13.2
     - TESTS=true
+    #- DOCS=true
+    - DOCS=false
     - CLANG_CHECKS=false
     - CODECOV=false
     - CMAKE_OPTS=""
@@ -71,10 +73,9 @@ before_script:
   - mkdir build && cd $_
 
 script:
-  # - cmake -DLIBALLOCATOR_TESTS=${TESTS} -DLIBALLOCATOR_DOCS=ON -DLIBALLOCATOR_COVERAGE=${CODECOV} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ${CMAKE_OPTS} ..
-  - cmake -DLIBALLOCATOR_TESTS=${TESTS} -DLIBALLOCATOR_DOCS=OFF -DLIBALLOCATOR_COVERAGE=${CODECOV} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ${CMAKE_OPTS} ..
+  - cmake -DLIBALLOCATOR_TESTS=${TESTS} -DLIBALLOCATOR_DOCS=${DOCS} -DLIBALLOCATOR_COVERAGE=${CODECOV} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ${CMAKE_OPTS} ..
   - make
-  # - make doxygen
+  - if [[ ${DOCS} == true ]]; then make doxygen; fi
 
   - |
     if [[ ${TESTS} == true ]]; then
