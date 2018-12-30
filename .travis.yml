@@ -1,6 +1,6 @@
 language: cpp
 sudo: required
-group: travis_latest
+#group: travis_latest
 
 git:
   depth: false
@@ -16,14 +16,19 @@ env:
 matrix:
   include:
     - os: linux
+      dist: xenial
       env: _CC=gcc CC_VER=7
     - os: linux
+      dist: xenial
       env: _CC=gcc CC_VER=8
     - os: linux
+      dist: xenial
       env: _CC=clang CC_VER=6.0.1
     - os: linux
+      dist: xenial
       env: _CC=clang CC_VER=7.0.0
     - os: linux
+      dist: xenial
       env: _CC=arm-none-eabi-gcc CC_VER=7 TESTS=false CMAKE_OPTS=-DCMAKE_TOOLCHAIN_FILE=../tools/cmake/arm-none-eabi-gcc.cmake
     - os: osx
       osx_image: xcode10
@@ -70,7 +75,7 @@ script:
   # - cmake -DLIBALLOCATOR_TESTS=${TESTS} -DLIBALLOCATOR_DOCS=ON -DLIBALLOCATOR_COVERAGE=${CODECOV} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ${CMAKE_OPTS} ..
   - cmake -DLIBALLOCATOR_TESTS=${TESTS} -DLIBALLOCATOR_DOCS=OFF -DLIBALLOCATOR_COVERAGE=${CODECOV} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ${CMAKE_OPTS} ..
   - make
-  - make doxygen
+  # - make doxygen
 
   - |
     if [[ ${TESTS} == true ]]; then
