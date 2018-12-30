@@ -27,7 +27,7 @@ matrix:
       env: _CC=clang CC_VER=6.0.1
     - os: linux
       dist: xenial
-      env: _CC=clang CC_VER=7.0.1
+      env: _CC=clang CC_VER=7.0.0
     - os: linux
       dist: xenial
       env: _CC=arm-none-eabi-gcc CC_VER=7 TESTS=false CMAKE_OPTS=-DCMAKE_TOOLCHAIN_FILE=../tools/cmake/arm-none-eabi-gcc.cmake
@@ -45,7 +45,7 @@ matrix:
       env: _CC=clang CC_VER=6.0.1
     - os: osx
       osx_image: xcode10
-      env: _CC=clang CC_VER=7.0.1 CLANG_CHECKS=true CODECOV=true
+      env: _CC=clang CC_VER=7.0.0 CLANG_CHECKS=true CODECOV=true
     - os: osx
       osx_image: xcode10
       env: _CC=arm-none-eabi-gcc CC_VER=7 TESTS=false CMAKE_OPTS=-DCMAKE_TOOLCHAIN_FILE=../tools/cmake/arm-none-eabi-gcc.cmake
