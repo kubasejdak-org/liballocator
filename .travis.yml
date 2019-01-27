@@ -8,8 +8,7 @@ env:
   global:
     - CMAKE_VER=3.13.2
     - TESTS=true
-    #- DOCS=true
-    - DOCS=false
+    - DOCS=true
     - CLANG_CHECKS=false
     - CODECOV=false
     - CMAKE_OPTS=""
