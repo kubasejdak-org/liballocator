@@ -33,7 +33,7 @@
 #ifndef PAGE_H
 #define PAGE_H
 
-#include "list_node.h"
+#include "list_node.hpp"
 
 #include <cstddef>
 #include <cstdint>

@@ -33,7 +33,7 @@
 #ifndef ALLOCATOR_H
 #define ALLOCATOR_H
 
-#include "region.h"
+#include "region.hpp"
 
 #include <cstddef>
 #include <cstdint>

@@ -33,9 +33,9 @@
 #ifndef REGION_INFO_H
 #define REGION_INFO_H
 
-#include "page.h"
+#include "page.hpp"
 
-#include <allocator/region.h>
+#include <allocator/region.hpp>
 
 #include <cstddef>
 #include <cstdint>

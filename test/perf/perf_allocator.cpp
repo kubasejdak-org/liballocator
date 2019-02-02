@@ -32,7 +32,7 @@
 
 #include <catch2/catch.hpp>
 
-#include <test_utils.h>
+#include <test_utils.hpp>
 
 #include <array>
 #include <chrono>
@@ -43,7 +43,7 @@
 
 #include <iostream>
 
-#include <allocator/allocator.h>
+#include <allocator/allocator.hpp>
 
 // NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;

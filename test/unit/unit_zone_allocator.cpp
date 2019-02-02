@@ -32,7 +32,7 @@
 
 #include <catch2/catch.hpp>
 
-#include <test_utils.h>
+#include <test_utils.hpp>
 
 #include <array>
 #include <cmath>
@@ -44,9 +44,9 @@
 #define private     public
 // clang-format on
 
-#include <page_allocator.h>
-#include <utils.h>
-#include <zone_allocator.h>
+#include <page_allocator.hpp>
+#include <utils.hpp>
+#include <zone_allocator.hpp>
 
 // NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;

@@ -33,10 +33,10 @@
 #ifndef PAGE_ALLOCATOR_H
 #define PAGE_ALLOCATOR_H
 
-#include "page.h"
-#include "region_info.h"
+#include "page.hpp"
+#include "region_info.hpp"
 
-#include <allocator/region.h>
+#include <allocator/region.hpp>
 
 #include <array>
 #include <cstddef>

@@ -33,7 +33,7 @@
 #ifndef ZONE_ALLOCATOR_H
 #define ZONE_ALLOCATOR_H
 
-#include "zone.h"
+#include "zone.hpp"
 
 #include <array>
 #include <cstddef>

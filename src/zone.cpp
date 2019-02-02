@@ -30,10 +30,9 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include "zone.h"
-
-#include "page.h"
-#include "utils.h"
+#include "zone.hpp"
+#include "page.hpp"
+#include "utils.hpp"
 
 #include <cassert>
 

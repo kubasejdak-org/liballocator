@@ -32,7 +32,7 @@
 
 #include <catch2/catch.hpp>
 
-#include <region_info.h>
+#include <region_info.hpp>
 
 #include <array>
 #include <cstddef>

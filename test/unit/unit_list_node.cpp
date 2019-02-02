@@ -40,7 +40,7 @@
 #define private     public
 // clang-format on
 
-#include <list_node.h>
+#include <list_node.hpp>
 
 // NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;

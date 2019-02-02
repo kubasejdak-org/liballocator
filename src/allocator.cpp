@@ -30,11 +30,11 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include "page_allocator.h"
-#include "version.h"
-#include "zone_allocator.h"
+#include "page_allocator.hpp"
+#include "version.hpp"
+#include "zone_allocator.hpp"
 
-#include <allocator/allocator.h>
+#include <allocator/allocator.hpp>
 
 namespace {
 

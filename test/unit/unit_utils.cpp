@@ -41,8 +41,8 @@
 #define private     public
 // clang-format on
 
-#include <utils.h>
-#include <zone.h>
+#include <utils.hpp>
+#include <zone.hpp>
 
 // NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;

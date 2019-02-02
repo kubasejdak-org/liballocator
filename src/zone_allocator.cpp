@@ -30,10 +30,9 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include "zone_allocator.h"
-
-#include "page_allocator.h"
-#include "utils.h"
+#include "zone_allocator.hpp"
+#include "page_allocator.hpp"
+#include "utils.hpp"
 
 #include <cassert>
 #include <cmath>
