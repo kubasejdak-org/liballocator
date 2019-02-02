@@ -30,8 +30,7 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef LIST_NODE_H
-#define LIST_NODE_H
+#pragma once
 
 #include <cassert>
 
@@ -104,5 +103,3 @@ private:
 };
 
 } // namespace memory
-
-#endif

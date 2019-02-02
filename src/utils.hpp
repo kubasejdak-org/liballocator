@@ -30,8 +30,7 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef UTILS_H
-#define UTILS_H
+#pragma once
 
 #include <cstddef>
 
@@ -77,5 +76,3 @@ T* movePtr(T* ptr, std::size_t step)
 }
 
 } // namespace memory::utils
-
-#endif

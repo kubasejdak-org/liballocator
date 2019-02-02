@@ -30,8 +30,7 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef ZONE_H
-#define ZONE_H
+#pragma once
 
 #include "list_node.hpp"
 
@@ -126,5 +125,3 @@ private:
 };
 
 } // namespace memory
-
-#endif

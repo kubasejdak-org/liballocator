@@ -30,8 +30,7 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef PAGE_ALLOCATOR_H
-#define PAGE_ALLOCATOR_H
+#pragma once
 
 #include "page.hpp"
 #include "region_info.hpp"
@@ -175,5 +174,3 @@ private:
 };
 
 } // namespace memory
-
-#endif

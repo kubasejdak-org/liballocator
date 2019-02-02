@@ -30,8 +30,7 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef ALLOCATOR_H
-#define ALLOCATOR_H
+#pragma once
 
 #include "region.hpp"
 
@@ -86,5 +85,3 @@ void release(void* ptr);
 Stats getStats();
 
 } // namespace memory::allocator
-
-#endif

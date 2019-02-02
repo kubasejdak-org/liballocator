@@ -30,8 +30,7 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef REGION_H
-#define REGION_H
+#pragma once
 
 #include <cstddef>
 #include <cstdint>
@@ -46,5 +45,3 @@ struct Region {
 };
 
 } // namespace memory
-
-#endif

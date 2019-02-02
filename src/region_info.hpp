@@ -30,8 +30,7 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef REGION_INFO_H
-#define REGION_INFO_H
+#pragma once
 
 #include "page.hpp"
 
@@ -84,5 +83,3 @@ std::optional<std::uintptr_t> alignedEnd(const Region& region, std::size_t pageS
 
 } // namespace detail
 } // namespace memory
-
-#endif

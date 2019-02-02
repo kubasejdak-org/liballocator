@@ -30,8 +30,7 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef TEST_UTILS_H
-#define TEST_UTILS_H
+#pragma once
 
 #include <chrono>
 #include <cstddef>
@@ -69,5 +68,3 @@ inline double toMicroseconds(const std::chrono::duration<double>& duration)
 }
 
 } // namespace test
-
-#endif

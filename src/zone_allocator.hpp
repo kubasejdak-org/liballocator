@@ -30,8 +30,7 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef ZONE_ALLOCATOR_H
-#define ZONE_ALLOCATOR_H
+#pragma once
 
 #include "zone.hpp"
 
@@ -191,5 +190,3 @@ private:
 };
 
 } // namespace memory
-
-#endif
