@@ -32,7 +32,7 @@ liballocator consists of two parts:
 
 ## Requirements
 
-* CMake v3.13+,
+* CMake v3.13.4+,
 * GCC/Clang with C++17 support,
 * Linux/macOS (not tested on Windows).
 

@@ -6,7 +6,7 @@ git:
 
 env:
   global:
-    - CMAKE_VER=3.13.2
+    - CMAKE_VER=3.13.4
     - TESTS=true
     - DOCS=true
     - CLANG_CHECKS=false
