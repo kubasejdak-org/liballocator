@@ -6,7 +6,7 @@ git:
 
 env:
   global:
-    - CMAKE_VER=3.13.4
+    - CMAKE_VER=3.14.0
     - TESTS=true
     - DOCS=true
     - CLANG_CHECKS=false
@@ -29,6 +29,9 @@ matrix:
       env: _CC=clang CC_VER=7.0.0
     - os: linux
       dist: xenial
+      env: _CC=clang CC_VER=8.0.0
+    - os: linux
+      dist: xenial
       env: _CC=arm-none-eabi-gcc CC_VER=7 TESTS=false CMAKE_OPTS=-DCMAKE_TOOLCHAIN_FILE=../tools/cmake/arm-none-eabi-gcc.cmake
     - os: linux
       dist: xenial
@@ -44,7 +47,10 @@ matrix:
       env: _CC=clang CC_VER=6.0.1
     - os: osx
       osx_image: xcode10
-      env: _CC=clang CC_VER=7.0.0 CLANG_CHECKS=true CODECOV=true
+      env: _CC=clang CC_VER=7.0.0
+    - os: osx
+      osx_image: xcode10
+      env: _CC=clang CC_VER=8.0.0 CLANG_CHECKS=true CODECOV=true
     - os: osx
       osx_image: xcode10
       env: _CC=arm-none-eabi-gcc CC_VER=7 TESTS=false CMAKE_OPTS=-DCMAKE_TOOLCHAIN_FILE=../tools/cmake/arm-none-eabi-gcc.cmake
