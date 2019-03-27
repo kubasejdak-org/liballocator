@@ -40,10 +40,8 @@
 #include <random>
 
 // Make access to private members for testing.
-// clang-format off
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define private     public
-// clang-format on
+#define private public
 
 #include <page_allocator.hpp>
 
@@ -119,7 +117,7 @@ TEST_CASE("PageAllocator integration tests (long-term)", "[integration][page_all
         REQUIRE(pageAllocator.m_freeGroupLists[2]->groupSize() == pagesCount2 - pageAllocator.m_descPagesCount);
 
         std::size_t idx8Count = 0;
-        for (Page* group = pageAllocator.m_freeGroupLists[8]; group != nullptr; group = group->next())
+        for (Page* group = pageAllocator.m_freeGroupLists[8]; group != nullptr; group = group->next()) // NOLINT
             ++idx8Count;
 
         REQUIRE(idx8Count == 1);

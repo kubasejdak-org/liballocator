@@ -40,10 +40,8 @@
 #include <map>
 
 // Make access to private members for testing.
-// clang-format off
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define private     public
-// clang-format on
+#define private public
 
 #include <page_allocator.hpp>
 #include <utils.hpp>
@@ -55,7 +53,8 @@ using namespace memory;
 TEST_CASE("ZoneAllocator is properly cleared", "[unit][zone_allocator]")
 {
     ZoneAllocator zoneAllocator;
-    std::memset(reinterpret_cast<void*>(&zoneAllocator), 0x5a, sizeof(ZoneAllocator));
+    constexpr int pattern = 0x5a;
+    std::memset(reinterpret_cast<void*>(&zoneAllocator), pattern, sizeof(ZoneAllocator));
 
     zoneAllocator.clear();
     REQUIRE(zoneAllocator.m_pageAllocator == nullptr);
@@ -83,15 +82,16 @@ TEST_CASE("ZoneAllocator is properly cleared", "[unit][zone_allocator]")
 
 TEST_CASE("ZoneAllocator is properly initialized", "[unit][zone_allocator]")
 {
-    std::size_t pageSize = 256;
-    std::size_t pagesCount = 256;
+    constexpr std::size_t pageSize = 256;
+    constexpr std::size_t pagesCount = 256;
     PageAllocator pageAllocator;
 
     auto size = pageSize * pagesCount;
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    std::array<Region, 2> regions = {{
+    constexpr int regionsCount = 2;
+    std::array<Region, regionsCount> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
     }};
@@ -155,15 +155,16 @@ TEST_CASE("ZoneAllocator is properly initialized", "[unit][zone_allocator]")
 
 TEST_CASE("ZoneAllocator stats are properly initialized", "[unit][zone_allocator]")
 {
-    std::size_t pageSize = 256;
-    std::size_t pagesCount = 256;
+    constexpr std::size_t pageSize = 256;
+    constexpr std::size_t pagesCount = 256;
     PageAllocator pageAllocator;
 
     auto size = pageSize * pagesCount;
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    std::array<Region, 2> regions = {{
+    constexpr int regionsCount = 2;
+    std::array<Region, regionsCount> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
     }};
@@ -209,23 +210,23 @@ TEST_CASE("Chunk size is properly calculated", "[unit][zone_allocator]")
     }
 
     REQUIRE(roundedSize >= size);
-    REQUIRE(std::pow(2.0, std::log2(double(roundedSize))) == double(roundedSize));
+    REQUIRE(std::pow(2.0, std::log2(double(roundedSize))) == double(roundedSize)); // NOLINT
 }
 
 TEST_CASE("Zone index is properly calculated", "[unit][zone_allocator]")
 {
     ZoneAllocator zoneAllocator;
     std::map<std::size_t, std::pair<std::size_t, size_t>> idxRange = {
-        {0, {16, 31}},
-        {1, {32, 63}},
-        {2, {64, 127}},
-        {3, {128, 255}},
-        {4, {256, 511}},
-        {5, {512, 1023}},
-        {6, {1024, 2047}},
-        {7, {2048, 4095}}};
+        {0, {16, 31}},      // NOLINT
+        {1, {32, 63}},      // NOLINT
+        {2, {64, 127}},     // NOLINT
+        {3, {128, 255}},    // NOLINT
+        {4, {256, 511}},    // NOLINT
+        {5, {512, 1023}},   // NOLINT
+        {6, {1024, 2047}},  // NOLINT
+        {7, {2048, 4095}}}; // NOLINT
 
-    for (std::size_t i = idxRange[0].first; i < idxRange[7].second; ++i) {
+    for (std::size_t i = idxRange[0].first; i < idxRange[idxRange.size() - 1].second; ++i) {
         auto idx = zoneAllocator.zoneIdx(i);
         REQUIRE(i >= idxRange[idx].first);
         REQUIRE(i <= idxRange[idx].second);
@@ -234,15 +235,16 @@ TEST_CASE("Zone index is properly calculated", "[unit][zone_allocator]")
 
 TEST_CASE("Zone is properly initialized by the zone allocator", "[unit][zone_allocator]")
 {
-    std::size_t pageSize = 256;
-    std::size_t pagesCount = 256;
+    constexpr std::size_t pageSize = 256;
+    constexpr std::size_t pagesCount = 256;
     PageAllocator pageAllocator;
 
     auto size = pageSize * pagesCount;
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    std::array<Region, 2> regions = {{
+    constexpr int regionsCount = 2;
+    std::array<Region, regionsCount> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
     }};
@@ -253,7 +255,7 @@ TEST_CASE("Zone is properly initialized by the zone allocator", "[unit][zone_all
     ZoneAllocator zoneAllocator;
     REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
 
-    std::size_t chunkSize = 128;
+    constexpr std::size_t chunkSize = 128;
     Zone zone;
     zone.clear();
 
@@ -280,15 +282,16 @@ TEST_CASE("Zone is properly initialized by the zone allocator", "[unit][zone_all
 
 TEST_CASE("Zone is properly cleared by the zone allocator", "[unit][zone_allocator]")
 {
-    std::size_t pageSize = 256;
-    std::size_t pagesCount = 256;
+    constexpr std::size_t pageSize = 256;
+    constexpr std::size_t pagesCount = 256;
     PageAllocator pageAllocator;
 
     auto size = pageSize * pagesCount;
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    std::array<Region, 2> regions = {{
+    constexpr int regionsCount = 2;
+    std::array<Region, regionsCount> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
     }};
@@ -299,7 +302,7 @@ TEST_CASE("Zone is properly cleared by the zone allocator", "[unit][zone_allocat
     ZoneAllocator zoneAllocator;
     REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
 
-    std::size_t chunkSize = 128;
+    constexpr std::size_t chunkSize = 128;
     Zone zone;
     zone.clear();
     REQUIRE(zoneAllocator.initZone(&zone, chunkSize));
@@ -321,19 +324,19 @@ TEST_CASE("Zone is properly added", "[unit][zone_allocator]")
 
     SECTION("Zone is added at index 0")
     {
-        zone.m_chunkSize = 16;
+        zone.m_chunkSize = 16; // NOLINT
         idx = 0;
     }
 
     SECTION("Zone is added at index 1")
     {
-        zone.m_chunkSize = 32;
+        zone.m_chunkSize = 32; // NOLINT
         idx = 1;
     }
 
     SECTION("Zone is added at index 3")
     {
-        zone.m_chunkSize = 128;
+        zone.m_chunkSize = 128; // NOLINT
         idx = 3;
     }
 
@@ -362,19 +365,19 @@ TEST_CASE("Zone is properly removed", "[unit][zone_allocator]")
 
     SECTION("Zone is removed from index 0")
     {
-        zone.m_chunkSize = 16;
+        zone.m_chunkSize = 16; // NOLINT
         idx = 0;
     }
 
     SECTION("Zone is removed from index 1")
     {
-        zone.m_chunkSize = 32;
+        zone.m_chunkSize = 32; // NOLINT
         idx = 1;
     }
 
     SECTION("Zone is removed from index 3")
     {
-        zone.m_chunkSize = 128;
+        zone.m_chunkSize = 128; // NOLINT
         idx = 3;
     }
 
@@ -394,15 +397,16 @@ TEST_CASE("Zone is properly removed", "[unit][zone_allocator]")
 
 TEST_CASE("Zone allocator properly finds the zones", "[unit][zone_allocator]")
 {
-    std::size_t pageSize = 256;
-    std::size_t pagesCount = 256;
+    constexpr std::size_t pageSize = 256;
+    constexpr std::size_t pagesCount = 256;
     PageAllocator pageAllocator;
 
     auto size = pageSize * pagesCount;
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    std::array<Region, 2> regions = {{
+    constexpr int regionsCount = 2;
+    std::array<Region, regionsCount> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
     }};
@@ -417,7 +421,8 @@ TEST_CASE("Zone allocator properly finds the zones", "[unit][zone_allocator]")
     {
         Zone zone;
         zone.clear();
-        zoneAllocator.initZone(&zone, 16);
+        constexpr std::size_t chunkSize = 16;
+        zoneAllocator.initZone(&zone, chunkSize);
         zoneAllocator.addZone(&zone);
         auto* chunk = zone.takeChunk();
         REQUIRE(zoneAllocator.findZone(chunk) == &zone);
@@ -427,7 +432,8 @@ TEST_CASE("Zone allocator properly finds the zones", "[unit][zone_allocator]")
     {
         Zone zone;
         zone.clear();
-        zoneAllocator.initZone(&zone, 128);
+        constexpr std::size_t chunkSize = 128;
+        zoneAllocator.initZone(&zone, chunkSize);
         zoneAllocator.addZone(&zone);
         auto* chunk = zone.takeChunk();
         REQUIRE(zoneAllocator.findZone(chunk) == &zone);
@@ -443,15 +449,16 @@ TEST_CASE("Zone allocator properly finds the zones", "[unit][zone_allocator]")
 
 TEST_CASE("Zone allocator properly checks if a zone should be allocated", "[unit][zone_allocator]")
 {
-    std::size_t pageSize = 256;
-    std::size_t pagesCount = 256;
+    constexpr std::size_t pageSize = 256;
+    constexpr std::size_t pagesCount = 256;
     PageAllocator pageAllocator;
 
     auto size = pageSize * pagesCount;
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    std::array<Region, 2> regions = {{
+    constexpr int regionsCount = 2;
+    std::array<Region, regionsCount> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
     }};
@@ -484,7 +491,7 @@ TEST_CASE("Zone allocator properly checks if a zone should be allocated", "[unit
 
     SECTION("Allocating from other index than zoneDescIdx, trigger not satisfied")
     {
-        std::size_t chunkSize = 16;
+        constexpr std::size_t chunkSize = 16;
         std::size_t idx = zoneAllocator.zoneIdx(chunkSize);
 
         Zone zone;
@@ -498,7 +505,7 @@ TEST_CASE("Zone allocator properly checks if a zone should be allocated", "[unit
 
     SECTION("Allocating from other index than zoneDescIdx, trigger satisfied")
     {
-        std::size_t chunkSize = 16;
+        constexpr std::size_t chunkSize = 16;
         std::size_t idx = zoneAllocator.zoneIdx(chunkSize);
 
         Zone zone;
@@ -518,15 +525,16 @@ TEST_CASE("Zone allocator properly checks if a zone should be allocated", "[unit
 
 TEST_CASE("Zone allocator properly finds free zones", "[unit][zone_allocator]")
 {
-    std::size_t pageSize = 256;
-    std::size_t pagesCount = 256;
+    constexpr std::size_t pageSize = 256;
+    constexpr std::size_t pagesCount = 256;
     PageAllocator pageAllocator;
 
     auto size = pageSize * pagesCount;
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    std::array<Region, 2> regions = {{
+    constexpr int regionsCount = 2;
+    std::array<Region, regionsCount> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
     }};
@@ -583,15 +591,16 @@ TEST_CASE("Zone allocator properly finds free zones", "[unit][zone_allocator]")
 
 TEST_CASE("Zone allocator properly allocates chunks", "[unit][zone_allocator]")
 {
-    std::size_t pageSize = 256;
-    std::size_t pagesCount = 256;
+    constexpr std::size_t pageSize = 256;
+    constexpr std::size_t pagesCount = 256;
     PageAllocator pageAllocator;
 
     auto size = pageSize * pagesCount;
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    std::array<Region, 2> regions = {{
+    constexpr int regionsCount = 2;
+    std::array<Region, regionsCount> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
     }};
@@ -604,7 +613,7 @@ TEST_CASE("Zone allocator properly allocates chunks", "[unit][zone_allocator]")
 
     SECTION("Allocate chunk from zone with index 0")
     {
-        std::size_t chunkSize = 16;
+        constexpr std::size_t chunkSize = 16;
         std::size_t idx = zoneAllocator.zoneIdx(chunkSize);
 
         Zone zone;
@@ -627,7 +636,7 @@ TEST_CASE("Zone allocator properly allocates chunks", "[unit][zone_allocator]")
 
     SECTION("Allocate chunk from zone with index 3")
     {
-        std::size_t chunkSize = 128;
+        constexpr std::size_t chunkSize = 128;
         std::size_t idx = zoneAllocator.zoneIdx(chunkSize);
 
         Zone zone;
@@ -652,14 +661,15 @@ TEST_CASE("Zone allocator properly allocates chunks", "[unit][zone_allocator]")
 TEST_CASE("Zone allocator properly deallocates chunks", "[unit][zone_allocator]")
 {
     constexpr std::size_t pageSize = 256;
-    std::size_t pagesCount = 256;
+    constexpr std::size_t pagesCount = 256;
     PageAllocator pageAllocator;
 
     auto size = pageSize * pagesCount;
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    std::array<Region, 2> regions = {{
+    constexpr int regionsCount = 2;
+    std::array<Region, regionsCount> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
     }};
@@ -672,7 +682,7 @@ TEST_CASE("Zone allocator properly deallocates chunks", "[unit][zone_allocator]"
 
     SECTION("Deallocate chunk from zone with index 0")
     {
-        std::size_t chunkSize = 16;
+        constexpr std::size_t chunkSize = 16;
         std::size_t idx = zoneAllocator.zoneIdx(chunkSize);
         std::size_t freeChunksCount = zoneAllocator.m_zones.at(idx).freeChunksCount;
         std::size_t freePagesCount = pageAllocator.m_freePagesCount;
@@ -691,7 +701,7 @@ TEST_CASE("Zone allocator properly deallocates chunks", "[unit][zone_allocator]"
 
     SECTION("Deallocate chunk from zone with index 3")
     {
-        std::size_t chunkSize = 256;
+        constexpr std::size_t chunkSize = 256;
         std::size_t idx = zoneAllocator.zoneIdx(chunkSize);
         std::size_t freeChunksCount = zoneAllocator.m_zones.at(idx).freeChunksCount;
         std::size_t freePagesCount = pageAllocator.m_freePagesCount;
@@ -710,7 +720,7 @@ TEST_CASE("Zone allocator properly deallocates chunks", "[unit][zone_allocator]"
 
     SECTION("Deallocate address from the middle of the valid chunk")
     {
-        std::size_t chunkSize = 16;
+        constexpr std::size_t chunkSize = 16;
         std::size_t idx = zoneAllocator.zoneIdx(chunkSize);
 
         auto* zone = zoneAllocator.allocateChunk<Zone>(&zoneAllocator.m_initialZone);
@@ -739,7 +749,7 @@ TEST_CASE("Zone allocator properly deallocates chunks", "[unit][zone_allocator]"
 
     SECTION("Deallocate the penultimate chunk from zone with index 0")
     {
-        std::size_t chunkSize = 16;
+        constexpr std::size_t chunkSize = 16;
         std::size_t idx = zoneAllocator.zoneIdx(chunkSize);
 
         auto* zone = zoneAllocator.allocateChunk<Zone>(&zoneAllocator.m_initialZone);
@@ -782,7 +792,7 @@ TEST_CASE("Zone allocator properly deallocates chunks", "[unit][zone_allocator]"
 
     SECTION("Deallocate last chunk from zone with index m_zoneDescIdx, but not from initial zone")
     {
-        std::size_t chunkSize = 64;
+        constexpr std::size_t chunkSize = 64;
         std::size_t idx = zoneAllocator.zoneIdx(chunkSize);
         std::size_t freePagesCount = pageAllocator.m_freePagesCount;
         REQUIRE(idx == zoneAllocator.m_zoneDescIdx);
@@ -807,15 +817,16 @@ TEST_CASE("Zone allocator properly deallocates chunks", "[unit][zone_allocator]"
 
 TEST_CASE("Zone allocator properly allocates zones", "[unit][zone_allocator]")
 {
-    std::size_t pageSize = 256;
-    std::size_t pagesCount = 256;
+    constexpr std::size_t pageSize = 256;
+    constexpr std::size_t pagesCount = 256;
     PageAllocator pageAllocator;
 
     auto size = pageSize * pagesCount;
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    std::array<Region, 2> regions = {{
+    constexpr int regionsCount = 2;
+    std::array<Region, regionsCount> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
     }};
@@ -828,7 +839,7 @@ TEST_CASE("Zone allocator properly allocates zones", "[unit][zone_allocator]")
 
     SECTION("Allocate zone with index 0, no need to preallocate a zone for zone descriptors")
     {
-        std::size_t chunkSize = 16;
+        constexpr std::size_t chunkSize = 16;
         std::size_t idx = zoneAllocator.zoneIdx(chunkSize);
 
         auto* zone = zoneAllocator.allocateZone(chunkSize);
@@ -847,7 +858,7 @@ TEST_CASE("Zone allocator properly allocates zones", "[unit][zone_allocator]")
 
     SECTION("Allocate zone with index 0, need to preallocate a zone for zone descriptors")
     {
-        std::size_t chunkSize = 16;
+        constexpr std::size_t chunkSize = 16;
         std::size_t idx = zoneAllocator.zoneIdx(chunkSize);
 
         zoneAllocator.allocateChunk<Chunk>(&zoneAllocator.m_initialZone);
@@ -869,7 +880,7 @@ TEST_CASE("Zone allocator properly allocates zones", "[unit][zone_allocator]")
 
     SECTION("Allocate zone with index 3, no need to preallocate a zone for zone descriptors")
     {
-        std::size_t chunkSize = 128;
+        constexpr std::size_t chunkSize = 128;
         std::size_t idx = zoneAllocator.zoneIdx(chunkSize);
 
         auto* zone = zoneAllocator.allocateZone(chunkSize);
@@ -888,7 +899,7 @@ TEST_CASE("Zone allocator properly allocates zones", "[unit][zone_allocator]")
 
     SECTION("Allocate zone with index m_zoneDescIdx, no need to preallocate a zone for zone descriptors")
     {
-        std::size_t chunkSize = 64;
+        constexpr std::size_t chunkSize = 64;
         std::size_t idx = zoneAllocator.zoneIdx(chunkSize);
 
         auto* zone = zoneAllocator.allocateZone(chunkSize);
@@ -907,7 +918,7 @@ TEST_CASE("Zone allocator properly allocates zones", "[unit][zone_allocator]")
 
     SECTION("Allocate zone with index 0, need to preallocate a zone for zone descriptors, no pages left")
     {
-        std::size_t chunkSize = 16;
+        constexpr std::size_t chunkSize = 16;
         zoneAllocator.allocateChunk<Chunk>(&zoneAllocator.m_initialZone);
         zoneAllocator.allocateChunk<Chunk>(&zoneAllocator.m_initialZone);
         zoneAllocator.allocateChunk<Chunk>(&zoneAllocator.m_initialZone);
@@ -917,7 +928,7 @@ TEST_CASE("Zone allocator properly allocates zones", "[unit][zone_allocator]")
 
     SECTION("No pages left to initialize the new zone")
     {
-        std::size_t chunkSize = 16;
+        constexpr std::size_t chunkSize = 16;
         REQUIRE(pageAllocator.allocate(pageAllocator.m_freePagesCount));
         REQUIRE(!zoneAllocator.allocateZone(chunkSize));
     }
@@ -925,15 +936,16 @@ TEST_CASE("Zone allocator properly allocates zones", "[unit][zone_allocator]")
 
 TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocator]")
 {
-    std::size_t pageSize = 256;
-    std::size_t pagesCount = 256;
+    constexpr std::size_t pageSize = 256;
+    constexpr std::size_t pagesCount = 256;
     PageAllocator pageAllocator;
 
     auto size = pageSize * pagesCount;
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    std::array<Region, 2> regions = {{
+    constexpr int regionsCount = 2;
+    std::array<Region, regionsCount> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
     }};
@@ -959,7 +971,7 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
 
     SECTION("Allocate size equal to 3 pages")
     {
-        std::size_t allocPagesCount = 3;
+        constexpr std::size_t allocPagesCount = 3;
         std::size_t allocSize = allocPagesCount * pageSize;
         std::size_t freePagesCount = pageAllocator.m_freePagesCount;
         REQUIRE(zoneAllocator.allocate(allocSize));
@@ -974,7 +986,7 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
 
     SECTION("Allocate 6 bytes")
     {
-        std::size_t allocSize = 6;
+        constexpr std::size_t allocSize = 6;
         std::size_t idx = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize));
         std::size_t freePagesCount = pageAllocator.m_freePagesCount;
         std::size_t freeChunksCount = zoneAllocator.m_zones.at(idx).freeChunksCount;
@@ -1002,7 +1014,7 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
 
     SECTION("Allocate 16 bytes")
     {
-        std::size_t allocSize = 16;
+        constexpr std::size_t allocSize = 16;
         std::size_t idx = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize));
         std::size_t freePagesCount = pageAllocator.m_freePagesCount;
         std::size_t freeChunksCount = zoneAllocator.m_zones.at(idx).freeChunksCount;
@@ -1030,7 +1042,7 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
 
     SECTION("Allocate 64 bytes")
     {
-        std::size_t allocSize = 64;
+        constexpr std::size_t allocSize = 64;
         std::size_t idx = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize));
         std::size_t freePagesCount = pageAllocator.m_freePagesCount;
         std::size_t freeChunksCount = zoneAllocator.m_zones.at(idx).freeChunksCount;
@@ -1057,11 +1069,12 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
 
     SECTION("Allocate 64 bytes 6 times")
     {
-        std::size_t allocSize = 64;
+        constexpr std::size_t allocSize = 64;
         std::size_t idx = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize));
         std::size_t freePagesCount = pageAllocator.m_freePagesCount;
 
-        std::array<void*, 6> ptrs{};
+        constexpr int allocCount = 6;
+        std::array<void*, allocCount> ptrs{};
         for (void*& ptr : ptrs) {
             ptr = zoneAllocator.allocate(allocSize);
             REQUIRE(ptr);
@@ -1084,17 +1097,18 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
         auto stats = zoneAllocator.getStats();
         REQUIRE(stats.usedMemorySize == 2 * pageSize);
         REQUIRE(stats.reservedMemorySize == zoneAllocator.m_zoneDescChunkSize);
-        REQUIRE(stats.freeMemorySize == (2 * pageSize - stats.reservedMemorySize - 6 * zoneAllocator.chunkSize(allocSize)));
-        REQUIRE(stats.allocatedMemorySize == 6 * zoneAllocator.chunkSize(allocSize));
+        REQUIRE(stats.freeMemorySize == (2 * pageSize - stats.reservedMemorySize - allocCount * zoneAllocator.chunkSize(allocSize)));
+        REQUIRE(stats.allocatedMemorySize == allocCount * zoneAllocator.chunkSize(allocSize));
     }
 
     SECTION("Allocate 115 bytes 4 times")
     {
-        std::size_t allocSize = 115;
+        constexpr std::size_t allocSize = 115;
         std::size_t idx = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize));
         std::size_t freePagesCount = pageAllocator.m_freePagesCount;
 
-        std::array<void*, 4> ptrs{};
+        constexpr int allocCount = 4;
+        std::array<void*, allocCount> ptrs{};
         for (void*& ptr : ptrs) {
             ptr = zoneAllocator.allocate(allocSize);
             REQUIRE(ptr);
@@ -1117,18 +1131,19 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
         auto stats = zoneAllocator.getStats();
         REQUIRE(stats.usedMemorySize == 3 * pageSize);
         REQUIRE(stats.reservedMemorySize == 2 * zoneAllocator.m_zoneDescChunkSize);
-        REQUIRE(stats.freeMemorySize == (3 * pageSize - stats.reservedMemorySize - 4 * zoneAllocator.chunkSize(allocSize)));
-        REQUIRE(stats.allocatedMemorySize == 4 * zoneAllocator.chunkSize(allocSize));
+        REQUIRE(stats.freeMemorySize == (3 * pageSize - stats.reservedMemorySize - allocCount * zoneAllocator.chunkSize(allocSize)));
+        REQUIRE(stats.allocatedMemorySize == allocCount * zoneAllocator.chunkSize(allocSize));
     }
 
     SECTION("Allocate 64 bytes 3 times, then 128 bytes 3 times")
     {
         // Allocate 64 bytes 3 times.
-        std::size_t allocSize1 = 64;
+        constexpr std::size_t allocSize1 = 64;
         std::size_t idx1 = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize1));
         std::size_t freePagesCount1 = pageAllocator.m_freePagesCount;
 
-        std::array<void*, 3> ptrs1{};
+        constexpr int allocCount = 3;
+        std::array<void*, allocCount> ptrs1{};
         for (void*& ptr : ptrs1) {
             ptr = zoneAllocator.allocate(allocSize1);
             REQUIRE(ptr);
@@ -1149,11 +1164,11 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
         REQUIRE(zoneAllocator.m_zones.at(zoneAllocator.m_zoneDescIdx).freeChunksCount == 1);
 
         // Allocate 128 bytes 3 times.
-        std::size_t allocSize2 = 128;
+        constexpr std::size_t allocSize2 = 128;
         std::size_t idx2 = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize2));
         std::size_t freePagesCount2 = pageAllocator.m_freePagesCount;
 
-        std::array<void*, 3> ptrs2{};
+        std::array<void*, allocCount> ptrs2{};
         for (void*& ptr : ptrs2) {
             ptr = zoneAllocator.allocate(allocSize2);
             REQUIRE(ptr);
@@ -1170,14 +1185,14 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
             REQUIRE(valid);
         }
 
-        REQUIRE(pageAllocator.m_freePagesCount == freePagesCount2 - 3);
+        REQUIRE(pageAllocator.m_freePagesCount == freePagesCount2 - allocCount);
         REQUIRE(zoneAllocator.m_zones.at(zoneAllocator.m_zoneDescIdx).freeChunksCount == 2);
 
         auto stats = zoneAllocator.getStats();
         REQUIRE(stats.usedMemorySize == 4 * pageSize);
         REQUIRE(stats.reservedMemorySize == 3 * zoneAllocator.m_zoneDescChunkSize);
-        REQUIRE(stats.freeMemorySize == (4 * pageSize - stats.reservedMemorySize - 3 * (zoneAllocator.chunkSize(allocSize1) + zoneAllocator.chunkSize(allocSize2))));
-        REQUIRE(stats.allocatedMemorySize == 3 * (zoneAllocator.chunkSize(allocSize1) + zoneAllocator.chunkSize(allocSize2)));
+        REQUIRE(stats.freeMemorySize == (4 * pageSize - stats.reservedMemorySize - allocCount * (zoneAllocator.chunkSize(allocSize1) + zoneAllocator.chunkSize(allocSize2))));
+        REQUIRE(stats.allocatedMemorySize == allocCount * (zoneAllocator.chunkSize(allocSize1) + zoneAllocator.chunkSize(allocSize2)));
     }
 
     SECTION("Allocate 4 pages, no pages are available")
@@ -1195,7 +1210,7 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
 
     SECTION("Allocate 128 bytes, no pages are available")
     {
-        std::size_t allocSize = 128;
+        constexpr std::size_t allocSize = 128;
         REQUIRE(pageAllocator.allocate(pageAllocator.m_freePagesCount));
         REQUIRE(!zoneAllocator.allocate(allocSize));
 
@@ -1209,15 +1224,16 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
 
 TEST_CASE("Zone allocator properly releases user memory", "[unit][zone_allocator]")
 {
-    std::size_t pageSize = 256;
-    std::size_t pagesCount = 256;
+    constexpr std::size_t pageSize = 256;
+    constexpr std::size_t pagesCount = 256;
     PageAllocator pageAllocator;
 
     auto size = pageSize * pagesCount;
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    std::array<Region, 2> regions = {{
+    constexpr int regionsCount = 2;
+    std::array<Region, regionsCount> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
     }};
@@ -1238,13 +1254,14 @@ TEST_CASE("Zone allocator properly releases user memory", "[unit][zone_allocator
     SECTION("Release invalid pointer")
     {
         std::size_t freePagesCount = pageAllocator.m_freePagesCount;
-        zoneAllocator.release(reinterpret_cast<void*>(0xdeadbeef));
+        constexpr unsigned int pattern = 0xdeadbeef;
+        zoneAllocator.release(reinterpret_cast<void*>(pattern));
         REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
     }
 
     SECTION("Release memory with size equal to 3 pages")
     {
-        std::size_t allocPagesCount = 3;
+        constexpr std::size_t allocPagesCount = 3;
         std::size_t allocSize = allocPagesCount * pageSize;
         std::size_t freePagesCount = pageAllocator.m_freePagesCount;
         auto* ptr = zoneAllocator.allocate(allocSize);
@@ -1254,7 +1271,7 @@ TEST_CASE("Zone allocator properly releases user memory", "[unit][zone_allocator
 
     SECTION("Release 6 bytes")
     {
-        std::size_t allocSize = 6;
+        constexpr std::size_t allocSize = 6;
         std::size_t idx = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize));
         std::size_t freePagesCount = pageAllocator.m_freePagesCount;
         std::size_t freeChunksCount = zoneAllocator.m_zones.at(idx).freeChunksCount;
@@ -1266,7 +1283,7 @@ TEST_CASE("Zone allocator properly releases user memory", "[unit][zone_allocator
 
     SECTION("Release 16 bytes")
     {
-        std::size_t allocSize = 16;
+        constexpr std::size_t allocSize = 16;
         std::size_t idx = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize));
         std::size_t freePagesCount = pageAllocator.m_freePagesCount;
         std::size_t freeChunksCount = zoneAllocator.m_zones.at(idx).freeChunksCount;
@@ -1278,7 +1295,7 @@ TEST_CASE("Zone allocator properly releases user memory", "[unit][zone_allocator
 
     SECTION("Release 64 bytes")
     {
-        std::size_t allocSize = 64;
+        constexpr std::size_t allocSize = 64;
         std::size_t idx = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize));
         std::size_t freePagesCount = pageAllocator.m_freePagesCount;
         std::size_t freeChunksCount = zoneAllocator.m_zones.at(idx).freeChunksCount;
@@ -1290,12 +1307,13 @@ TEST_CASE("Zone allocator properly releases user memory", "[unit][zone_allocator
 
     SECTION("Release 64 bytes 6 times")
     {
-        std::size_t allocSize = 64;
+        constexpr std::size_t allocSize = 64;
         std::size_t idx = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize));
         std::size_t freePagesCount = pageAllocator.m_freePagesCount;
         std::size_t freeChunksCount = zoneAllocator.m_zones.at(idx).freeChunksCount;
 
-        std::array<void*, 6> ptrs{};
+        constexpr int allocCount = 6;
+        std::array<void*, allocCount> ptrs{};
         for (void*& ptr : ptrs)
             ptr = zoneAllocator.allocate(allocSize);
 
@@ -1308,12 +1326,13 @@ TEST_CASE("Zone allocator properly releases user memory", "[unit][zone_allocator
 
     SECTION("Release 115 bytes 4 times")
     {
-        std::size_t allocSize = 115;
+        constexpr std::size_t allocSize = 115;
         std::size_t idx = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize));
         std::size_t freePagesCount = pageAllocator.m_freePagesCount;
         std::size_t freeChunksCount = zoneAllocator.m_zones.at(idx).freeChunksCount;
 
-        std::array<void*, 4> ptrs{};
+        constexpr int allocCount = 4;
+        std::array<void*, allocCount> ptrs{};
         for (void*& ptr : ptrs)
             ptr = zoneAllocator.allocate(allocSize);
 
@@ -1329,20 +1348,21 @@ TEST_CASE("Zone allocator properly releases user memory", "[unit][zone_allocator
         std::size_t freePagesCount = pageAllocator.m_freePagesCount;
 
         // Allocate 64 bytes 3 times.
-        std::size_t allocSize1 = 64;
+        constexpr std::size_t allocSize1 = 64;
         std::size_t idx1 = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize1));
         std::size_t freeChunksCount1 = zoneAllocator.m_zones.at(idx1).freeChunksCount;
 
-        std::array<void*, 3> ptrs1{};
+        constexpr int allocCount = 4;
+        std::array<void*, allocCount> ptrs1{};
         for (void*& ptr : ptrs1)
             ptr = zoneAllocator.allocate(allocSize1);
 
         // Allocate 128 bytes 3 times.
-        std::size_t allocSize2 = 128;
+        constexpr std::size_t allocSize2 = 128;
         std::size_t idx2 = zoneAllocator.zoneIdx(zoneAllocator.chunkSize(allocSize2));
         std::size_t freeChunksCount2 = zoneAllocator.m_zones.at(idx2).freeChunksCount;
 
-        std::array<void*, 3> ptrs2{};
+        std::array<void*, allocCount> ptrs2{};
         for (void*& ptr : ptrs2)
             ptr = zoneAllocator.allocate(allocSize2);
 

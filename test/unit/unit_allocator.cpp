@@ -39,10 +39,8 @@
 #include <regex>
 
 // Make access to private members for testing.
-// clang-format off
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define private     public
-// clang-format on
+#define private public
 
 #include <allocator/allocator.hpp>
 
@@ -69,10 +67,10 @@ TEST_CASE("Allocator is properly cleared", "[unit][allocator]")
 
 TEST_CASE("Allocator is properly initialized", "[unit][allocator]")
 {
-    std::size_t pageSize = 256;
-    std::size_t pagesCount1 = 535;
-    std::size_t pagesCount2 = 87;
-    std::size_t pagesCount3 = 4;
+    constexpr std::size_t pageSize = 256;
+    constexpr std::size_t pagesCount1 = 535;
+    constexpr std::size_t pagesCount2 = 87;
+    constexpr std::size_t pagesCount3 = 4;
     auto size1 = pageSize * pagesCount1;
     auto size2 = pageSize * pagesCount2;
     auto size3 = pageSize * pagesCount3;
@@ -126,7 +124,8 @@ TEST_CASE("Allocator is properly initialized", "[unit][allocator]")
         auto memory11 = test::alignedAlloc(pageSize, size);
 
         // clang-format off
-        std::array<Region, 9> regions = {{
+        constexpr int regionsCount = 9;
+        std::array<Region, regionsCount> regions = {{
             {std::uintptr_t(memory4.get()),  size},
             {std::uintptr_t(memory5.get()),  size},
             {std::uintptr_t(memory6.get()),  size},
@@ -152,10 +151,10 @@ TEST_CASE("Allocator is properly initialized", "[unit][allocator]")
 
 TEST_CASE("Allocator properly allocates and releases user memory", "[unit][allocator]")
 {
-    std::size_t pageSize = 256;
-    std::size_t pagesCount1 = 535;
-    std::size_t pagesCount2 = 87;
-    std::size_t pagesCount3 = 4;
+    constexpr std::size_t pageSize = 256;
+    constexpr std::size_t pagesCount1 = 535;
+    constexpr std::size_t pagesCount2 = 87;
+    constexpr std::size_t pagesCount3 = 4;
     auto size1 = pageSize * pagesCount1;
     auto size2 = pageSize * pagesCount2;
     auto size3 = pageSize * pagesCount3;
@@ -164,7 +163,8 @@ TEST_CASE("Allocator properly allocates and releases user memory", "[unit][alloc
     auto memory3 = test::alignedAlloc(pageSize, size3);
 
     // clang-format off
-    std::array<Region, 4> regions = {{
+    constexpr int regionsCount = 4;
+    std::array<Region, regionsCount> regions = {{
         {std::uintptr_t(memory1.get()), size1},
         {std::uintptr_t(memory2.get()), size2},
         {std::uintptr_t(memory3.get()), size3},
@@ -176,7 +176,8 @@ TEST_CASE("Allocator properly allocates and releases user memory", "[unit][alloc
 
     constexpr int allocationsCount = 1000;
     constexpr int iterationsCount = 1000;
-    auto maxAllocSize = 200 * pageSize;
+    constexpr int maxAllocPagesCount = 200;
+    auto maxAllocSize = maxAllocPagesCount * pageSize;
 
     // Initialize random number generator.
     std::random_device randomDevice;

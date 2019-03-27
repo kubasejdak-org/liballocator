@@ -44,7 +44,8 @@ using namespace memory;
 TEST_CASE("RegionInfo structure is properly cleared", "[unit][region_info]")
 {
     RegionInfo regionInfo{};
-    std::memset(&regionInfo, 0x5a, sizeof(RegionInfo));
+    constexpr int pattern = 0x5a;
+    std::memset(&regionInfo, pattern, sizeof(RegionInfo));
 
     clearRegionInfo(regionInfo);
     REQUIRE(regionInfo.start == 0);
@@ -186,7 +187,7 @@ TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
     SECTION("Start-aligned region, lays on 1 page")
     {
         constexpr std::size_t pageCount = 1;
-        std::size_t offset = 15;
+        constexpr std::size_t offset = 15;
         alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory)), .size = memory.size() - offset};
 
@@ -197,7 +198,7 @@ TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
     SECTION("Start-aligned region, lays on 2 pages")
     {
         constexpr std::size_t pageCount = 2;
-        std::size_t offset = 15;
+        constexpr std::size_t offset = 15;
         alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory)), .size = memory.size() - offset};
 
@@ -217,7 +218,7 @@ TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
     SECTION("Start-aligned region, lays on 5 pages")
     {
         constexpr std::size_t pageCount = 5;
-        std::size_t offset = 15;
+        constexpr std::size_t offset = 15;
         alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory)), .size = memory.size() - offset};
 
@@ -237,7 +238,7 @@ TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
     SECTION("End-aligned region, lays on 1 page")
     {
         constexpr std::size_t pageCount = 1;
-        std::size_t offset = 15;
+        constexpr std::size_t offset = 15;
         alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory) + offset), .size = memory.size() - offset};
 
@@ -248,7 +249,7 @@ TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
     SECTION("End-aligned region, lays on 2 pages")
     {
         constexpr std::size_t pageCount = 2;
-        std::size_t offset = 15;
+        constexpr std::size_t offset = 15;
         alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory) + offset), .size = memory.size() - offset};
 
@@ -268,7 +269,7 @@ TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
     SECTION("End-aligned region, lays on 5 pages")
     {
         constexpr std::size_t pageCount = 5;
-        std::size_t offset = 15;
+        constexpr std::size_t offset = 15;
         alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory) + offset), .size = memory.size() - offset};
 
@@ -288,7 +289,7 @@ TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
     SECTION("Fully unaligned region, lays on 1 page")
     {
         constexpr std::size_t pageCount = 1;
-        std::size_t offset = 15;
+        constexpr std::size_t offset = 15;
         alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory) + offset), .size = memory.size() - 2 * offset};
 
@@ -299,7 +300,7 @@ TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
     SECTION("Fully unaligned region, lays on 2 pages")
     {
         constexpr std::size_t pageCount = 2;
-        std::size_t offset = 15;
+        constexpr std::size_t offset = 15;
         alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory) + offset), .size = memory.size() - 2 * offset};
 
@@ -310,7 +311,7 @@ TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
     SECTION("Fully unaligned region, lays on 5 pages")
     {
         constexpr std::size_t pageCount = 5;
-        std::size_t offset = 15;
+        constexpr std::size_t offset = 15;
         alignas(pageSize) std::array<std::byte, pageCount * pageSize> memory{};
         Region region = {.address = std::uintptr_t(std::begin(memory) + offset), .size = memory.size() - 2 * offset};
 

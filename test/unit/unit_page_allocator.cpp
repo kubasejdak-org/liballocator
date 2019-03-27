@@ -41,10 +41,8 @@
 #include <vector>
 
 // Make access to private members for testing.
-// clang-format off
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define private     public
-// clang-format on
+#define private public
 
 #include <page_allocator.hpp>
 
@@ -54,7 +52,8 @@ using namespace memory;
 TEST_CASE("Page allocator is properly cleared", "[unit][page_allocator]")
 {
     PageAllocator pageAllocator;
-    std::memset(reinterpret_cast<void*>(&pageAllocator), 0x5a, sizeof(PageAllocator));
+    constexpr int pattern = 0x5a;
+    std::memset(reinterpret_cast<void*>(&pageAllocator), pattern, sizeof(PageAllocator));
 
     pageAllocator.clear();
     for (const auto& region : pageAllocator.m_regionsInfo) {
@@ -119,7 +118,7 @@ TEST_CASE("Page size is correctly validated", "[unit][page_allocator]")
 
     SECTION("Page size is bigger than the minimal value and a power of 2")
     {
-        pageSize = 256;
+        pageSize = 256; // NOLINT
         isValidPageSize = pageAllocator.isValidPageSize(pageSize);
         REQUIRE(isValidPageSize);
     }
@@ -129,7 +128,8 @@ TEST_CASE("Page size is correctly validated", "[unit][page_allocator]")
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    std::array<Region, 2> regions = {{
+    constexpr int regionsCount = 2;
+    std::array<Region, regionsCount> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
     }};
@@ -145,12 +145,13 @@ TEST_CASE("Pages are correctly counted", "[unit][page_allocator]")
 
     SECTION("Regions: 1(1)")
     {
-        std::size_t pagesCount = 1;
+        constexpr std::size_t pagesCount = 1;
         auto size = pageSize * pagesCount;
         auto memory = test::alignedAlloc(pageSize, size);
 
         // clang-format off
-        std::array<Region, 2> regions = {{
+        constexpr int regionsCount = 2;
+        std::array<Region, regionsCount> regions = {{
             {std::uintptr_t(memory.get()), size},
             {0,                            0}
         }};
@@ -162,9 +163,9 @@ TEST_CASE("Pages are correctly counted", "[unit][page_allocator]")
 
     SECTION("Regions: 1(535), 2(87), 3(4)")
     {
-        std::size_t pagesCount1 = 535;
-        std::size_t pagesCount2 = 87;
-        std::size_t pagesCount3 = 4;
+        constexpr std::size_t pagesCount1 = 535;
+        constexpr std::size_t pagesCount2 = 87;
+        constexpr std::size_t pagesCount3 = 4;
         auto size1 = pageSize * pagesCount1;
         auto size2 = pageSize * pagesCount2;
         auto size3 = pageSize * pagesCount3;
@@ -173,7 +174,8 @@ TEST_CASE("Pages are correctly counted", "[unit][page_allocator]")
         auto memory3 = test::alignedAlloc(pageSize, size3);
 
         // clang-format off
-        std::array<Region, 4> regions = {{
+        constexpr int regionsCount = 4;
+        std::array<Region, regionsCount> regions = {{
             {std::uintptr_t(memory1.get()), size1},
             {std::uintptr_t(memory2.get()), size2},
             {std::uintptr_t(memory3.get()), size3},
@@ -187,7 +189,7 @@ TEST_CASE("Pages are correctly counted", "[unit][page_allocator]")
 
     SECTION("All regions have 5 pages")
     {
-        std::size_t pagesCount = 5;
+        constexpr std::size_t pagesCount = 5;
         auto size = pageSize * pagesCount;
         auto memory1 = test::alignedAlloc(pageSize, size);
         auto memory2 = test::alignedAlloc(pageSize, size);
@@ -199,7 +201,8 @@ TEST_CASE("Pages are correctly counted", "[unit][page_allocator]")
         auto memory8 = test::alignedAlloc(pageSize, size);
 
         // clang-format off
-        std::array<Region, 9> regions = {{
+        constexpr int regionsCount = 9;
+        std::array<Region, regionsCount> regions = {{
             {std::uintptr_t(memory1.get()), size},
             {std::uintptr_t(memory2.get()), size},
             {std::uintptr_t(memory3.get()), size},
@@ -229,7 +232,8 @@ TEST_CASE("Pages are correctly counted", "[unit][page_allocator]")
         auto memory8 = test::alignedAlloc(pageSize, size);
 
         // clang-format off
-        std::array<Region, 9> regions = {{
+        constexpr int regionsCount = 9;
+        std::array<Region, regionsCount> regions = {{
             {std::uintptr_t(memory1.get()), size},
             {std::uintptr_t(memory2.get()), size},
             {std::uintptr_t(memory3.get()), size},
@@ -248,7 +252,7 @@ TEST_CASE("Pages are correctly counted", "[unit][page_allocator]")
 
     SECTION("Too many regions are passed to the allocator")
     {
-        std::size_t pagesCount = 5;
+        constexpr std::size_t pagesCount = 5;
         auto size = pageSize * pagesCount;
         auto memory1 = test::alignedAlloc(pageSize, size);
         auto memory2 = test::alignedAlloc(pageSize, size);
@@ -262,7 +266,8 @@ TEST_CASE("Pages are correctly counted", "[unit][page_allocator]")
         auto memory10 = test::alignedAlloc(pageSize, size);
 
         // clang-format off
-        std::array<Region, 11> regions = {{
+        constexpr int regionsCount = 11;
+        std::array<Region, regionsCount> regions = {{
             {std::uintptr_t(memory1.get()),  size},
             {std::uintptr_t(memory2.get()),  size},
             {std::uintptr_t(memory3.get()),  size},
@@ -283,7 +288,7 @@ TEST_CASE("Pages are correctly counted", "[unit][page_allocator]")
 
 TEST_CASE("Region where page descriptors are stored is properly selected", "[unit][page_allocator]")
 {
-    std::size_t pageSize = 256;
+    constexpr std::size_t pageSize = 256;
     PageAllocator pageAllocator;
 
     SECTION("Regions: 1(1)")
@@ -293,7 +298,8 @@ TEST_CASE("Region where page descriptors are stored is properly selected", "[uni
         auto memory = test::alignedAlloc(pageSize, size);
 
         // clang-format off
-        std::array<Region, 2> regions = {{
+        constexpr int regionsCount = 2;
+        std::array<Region, regionsCount> regions = {{
             {std::uintptr_t(memory.get()), size},
             {0,                            0}
         }};
@@ -305,9 +311,9 @@ TEST_CASE("Region where page descriptors are stored is properly selected", "[uni
 
     SECTION("Regions: 1(535), 2(87), 3(4)")
     {
-        std::size_t pagesCount1 = 535;
-        std::size_t pagesCount2 = 87;
-        std::size_t pagesCount3 = 4;
+        constexpr std::size_t pagesCount1 = 535;
+        constexpr std::size_t pagesCount2 = 87;
+        constexpr std::size_t pagesCount3 = 4;
         auto size1 = pageSize * pagesCount1;
         auto size2 = pageSize * pagesCount2;
         auto size3 = pageSize * pagesCount3;
@@ -316,7 +322,8 @@ TEST_CASE("Region where page descriptors are stored is properly selected", "[uni
         auto memory3 = test::alignedAlloc(pageSize, size3);
 
         // clang-format off
-        std::array<Region, 4> regions = {{
+        constexpr int regionsCount = 4;
+        std::array<Region, regionsCount> regions = {{
             {std::uintptr_t(memory1.get()), size1},
             {std::uintptr_t(memory2.get()), size2},
             {std::uintptr_t(memory3.get()), size3},
@@ -330,7 +337,7 @@ TEST_CASE("Region where page descriptors are stored is properly selected", "[uni
 
     SECTION("All regions have 5 pages")
     {
-        std::size_t pagesCount = 5;
+        constexpr std::size_t pagesCount = 5;
         auto size = pageSize * pagesCount;
         auto memory1 = test::alignedAlloc(pageSize, size);
         auto memory2 = test::alignedAlloc(pageSize, size);
@@ -342,7 +349,8 @@ TEST_CASE("Region where page descriptors are stored is properly selected", "[uni
         auto memory8 = test::alignedAlloc(pageSize, size);
 
         // clang-format off
-        std::array<Region, 9> regions = {{
+        constexpr int regionsCount = 9;
+        std::array<Region, regionsCount> regions = {{
             {std::uintptr_t(memory1.get()), size},
             {std::uintptr_t(memory2.get()), size},
             {std::uintptr_t(memory3.get()), size},
@@ -361,15 +369,16 @@ TEST_CASE("Region where page descriptors are stored is properly selected", "[uni
 
     SECTION("Selected region is completely filled")
     {
-        std::size_t pagesCount1 = 1;
-        std::size_t pagesCount2 = 7;
+        constexpr std::size_t pagesCount1 = 1;
+        constexpr std::size_t pagesCount2 = 7;
         auto size1 = pageSize * pagesCount1;
         auto size2 = pageSize * pagesCount2;
         auto memory1 = test::alignedAlloc(pageSize, size1);
         auto memory2 = test::alignedAlloc(pageSize, size2);
 
         // clang-format off
-        std::array<Region, 3> regions = {{
+        constexpr int regionsCount = 3;
+        std::array<Region, regionsCount> regions = {{
             {std::uintptr_t(memory1.get()), size1},
             {std::uintptr_t(memory2.get()), size2},
             {0,                             0}
@@ -383,7 +392,7 @@ TEST_CASE("Region where page descriptors are stored is properly selected", "[uni
 
 TEST_CASE("Pages with page descriptors are properly reserved", "[unit][page_allocator]")
 {
-    std::size_t pageSize = 256;
+    constexpr std::size_t pageSize = 256;
     PageAllocator pageAllocator;
 
     SECTION("Regions: 1(1)")
@@ -393,7 +402,8 @@ TEST_CASE("Pages with page descriptors are properly reserved", "[unit][page_allo
         auto memory = test::alignedAlloc(pageSize, size);
 
         // clang-format off
-        std::array<Region, 2> regions = {{
+        constexpr int regionsCount = 2;
+        std::array<Region, regionsCount> regions = {{
             {std::uintptr_t(memory.get()), size},
             {0,                            0}
         }};
@@ -405,9 +415,9 @@ TEST_CASE("Pages with page descriptors are properly reserved", "[unit][page_allo
 
     SECTION("Regions: 1(535), 2(87), 3(4)")
     {
-        std::size_t pagesCount1 = 535;
-        std::size_t pagesCount2 = 87;
-        std::size_t pagesCount3 = 4;
+        constexpr std::size_t pagesCount1 = 535;
+        constexpr std::size_t pagesCount2 = 87;
+        constexpr std::size_t pagesCount3 = 4;
         auto size1 = pageSize * pagesCount1;
         auto size2 = pageSize * pagesCount2;
         auto size3 = pageSize * pagesCount3;
@@ -416,7 +426,8 @@ TEST_CASE("Pages with page descriptors are properly reserved", "[unit][page_allo
         auto memory3 = test::alignedAlloc(pageSize, size3);
 
         // clang-format off
-        std::array<Region, 4> regions = {{
+        constexpr int regionsCount = 4;
+        std::array<Region, regionsCount> regions = {{
             {std::uintptr_t(memory1.get()), size1},
             {std::uintptr_t(memory2.get()), size2},
             {std::uintptr_t(memory3.get()), size3},
@@ -430,7 +441,7 @@ TEST_CASE("Pages with page descriptors are properly reserved", "[unit][page_allo
 
     SECTION("All regions have 5 pages")
     {
-        std::size_t pagesCount = 5;
+        constexpr std::size_t pagesCount = 5;
         auto size = pageSize * pagesCount;
         auto memory1 = test::alignedAlloc(pageSize, size);
         auto memory2 = test::alignedAlloc(pageSize, size);
@@ -442,7 +453,8 @@ TEST_CASE("Pages with page descriptors are properly reserved", "[unit][page_allo
         auto memory8 = test::alignedAlloc(pageSize, size);
 
         // clang-format off
-        std::array<Region, 9> regions = {{
+        constexpr int regionsCount = 9;
+        std::array<Region, regionsCount> regions = {{
             {std::uintptr_t(memory1.get()), size},
             {std::uintptr_t(memory2.get()), size},
             {std::uintptr_t(memory3.get()), size},
@@ -461,15 +473,16 @@ TEST_CASE("Pages with page descriptors are properly reserved", "[unit][page_allo
 
     SECTION("Selected region is completely filled")
     {
-        std::size_t pagesCount1 = 1;
-        std::size_t pagesCount2 = 7;
+        constexpr std::size_t pagesCount1 = 1;
+        constexpr std::size_t pagesCount2 = 7;
         auto size1 = pageSize * pagesCount1;
         auto size2 = pageSize * pagesCount2;
         auto memory1 = test::alignedAlloc(pageSize, size1);
         auto memory2 = test::alignedAlloc(pageSize, size2);
 
         // clang-format off
-        std::array<Region, 3> regions = {{
+        constexpr int regionsCount = 3;
+        std::array<Region, regionsCount> regions = {{
             {std::uintptr_t(memory1.get()), size1},
             {std::uintptr_t(memory2.get()), size2},
             {0,                             0}
@@ -485,28 +498,29 @@ TEST_CASE("Group index is properly computed", "[unit][page_allocator]")
 {
     PageAllocator pageAllocator;
     std::map<std::size_t, std::pair<std::size_t, size_t>> idxRange = {
-        {0, {0, 3}},
-        {1, {4, 7}},
-        {2, {8, 15}},
-        {3, {16, 31}},
-        {4, {32, 63}},
-        {5, {64, 127}},
-        {6, {128, 255}},
-        {7, {256, 511}},
-        {8, {512, 1023}},
-        {9, {1024, 2047}},
-        {10, {2048, 4095}},
-        {11, {4096, 8191}},
-        {12, {8192, 16383}},
-        {13, {16384, 32767}},
-        {14, {32768, 65535}},
-        {15, {65536, 131071}},
-        {16, {131072, 262143}},
-        {17, {262144, 524287}},
-        {18, {524288, 1048575}},
-        {19, {1048576, 2097151}}};
+        {0, {0, 3}},               // NOLINT
+        {1, {4, 7}},               // NOLINT
+        {2, {8, 15}},              // NOLINT
+        {3, {16, 31}},             // NOLINT
+        {4, {32, 63}},             // NOLINT
+        {5, {64, 127}},            // NOLINT
+        {6, {128, 255}},           // NOLINT
+        {7, {256, 511}},           // NOLINT
+        {8, {512, 1023}},          // NOLINT
+        {9, {1024, 2047}},         // NOLINT
+        {10, {2048, 4095}},        // NOLINT
+        {11, {4096, 8191}},        // NOLINT
+        {12, {8192, 16383}},       // NOLINT
+        {13, {16384, 32767}},      // NOLINT
+        {14, {32768, 65535}},      // NOLINT
+        {15, {65536, 131071}},     // NOLINT
+        {16, {131072, 262143}},    // NOLINT
+        {17, {262144, 524287}},    // NOLINT
+        {18, {524288, 1048575}},   // NOLINT
+        {19, {1048576, 2097151}}}; // NOLINT
 
-    for (std::size_t i = 0; i < 0x200000; ++i) {
+    constexpr std::size_t iterations = 0x200000;
+    for (std::size_t i = 0; i < iterations; ++i) {
         auto idx = pageAllocator.groupIdx(i);
         REQUIRE(i >= idxRange[idx].first);
         REQUIRE(i <= idxRange[idx].second);
@@ -882,7 +896,7 @@ TEST_CASE("Group is properly splitted", "[unit][page_allocator]")
 
     SECTION("First group should have 5 pages")
     {
-        splitSize = 5;
+        splitSize = 5; // NOLINT
         std::tie(firstGroup, secondGroup) = pageAllocator.splitGroup(group, splitSize);
         REQUIRE(firstGroup);
         REQUIRE(secondGroup);
@@ -915,7 +929,7 @@ TEST_CASE("Group is properly joined", "[unit][page_allocator]")
 
     SECTION("First group should have 5 pages")
     {
-        splitSize = 5;
+        splitSize = 5; // NOLINT
     }
 
     Page* firstGroup = nullptr;
@@ -928,12 +942,12 @@ TEST_CASE("Group is properly joined", "[unit][page_allocator]")
 
 TEST_CASE("Page is properly verified as valid", "[unit][page_allocator]")
 {
-    std::size_t pageSize = 256;
+    constexpr std::size_t pageSize = 256;
     PageAllocator pageAllocator;
 
-    std::size_t pagesCount1 = 535;
-    std::size_t pagesCount2 = 87;
-    std::size_t pagesCount3 = 4;
+    constexpr std::size_t pagesCount1 = 535;
+    constexpr std::size_t pagesCount2 = 87;
+    constexpr std::size_t pagesCount3 = 4;
     auto size1 = pageSize * pagesCount1;
     auto size2 = pageSize * pagesCount2;
     auto size3 = pageSize * pagesCount3;
@@ -942,7 +956,8 @@ TEST_CASE("Page is properly verified as valid", "[unit][page_allocator]")
     auto memory3 = test::alignedAlloc(pageSize, size3);
 
     // clang-format off
-    std::array<Region, 4> regions = {{
+    constexpr int regionsCount = 4;
+    std::array<Region, regionsCount> regions = {{
         {std::uintptr_t(memory1.get()), size1},
         {std::uintptr_t(memory2.get()), size2},
         {std::uintptr_t(memory3.get()), size3},
@@ -985,12 +1000,12 @@ TEST_CASE("Page is properly verified as valid", "[unit][page_allocator]")
 
 TEST_CASE("Region is properly resolved from address", "[unit][page_allocator]")
 {
-    std::size_t pageSize = 256;
+    constexpr std::size_t pageSize = 256;
     PageAllocator pageAllocator;
 
-    std::size_t pagesCount1 = 535;
-    std::size_t pagesCount2 = 87;
-    std::size_t pagesCount3 = 4;
+    constexpr std::size_t pagesCount1 = 535;
+    constexpr std::size_t pagesCount2 = 87;
+    constexpr std::size_t pagesCount3 = 4;
     auto size1 = pageSize * pagesCount1;
     auto size2 = pageSize * pagesCount2;
     auto size3 = pageSize * pagesCount3;
@@ -999,7 +1014,8 @@ TEST_CASE("Region is properly resolved from address", "[unit][page_allocator]")
     auto memory3 = test::alignedAlloc(pageSize, size3);
 
     // clang-format off
-    std::array<Region, 4> regions = {{
+    constexpr int regionsCount = 4;
+    std::array<Region, regionsCount> regions = {{
         {std::uintptr_t(memory1.get()), size1},
         {std::uintptr_t(memory2.get()), size2},
         {std::uintptr_t(memory3.get()), size3},
@@ -1054,12 +1070,12 @@ TEST_CASE("Region is properly resolved from address", "[unit][page_allocator]")
 
 TEST_CASE("Pages are correctly resolved from address", "[unit][page_allocator]")
 {
-    std::size_t pageSize = 256;
+    constexpr std::size_t pageSize = 256;
     PageAllocator pageAllocator;
 
-    std::size_t pagesCount1 = 535;
-    std::size_t pagesCount2 = 87;
-    std::size_t pagesCount3 = 4;
+    constexpr std::size_t pagesCount1 = 535;
+    constexpr std::size_t pagesCount2 = 87;
+    constexpr std::size_t pagesCount3 = 4;
     auto size1 = pageSize * pagesCount1;
     auto size2 = pageSize * pagesCount2;
     auto size3 = pageSize * pagesCount3;
@@ -1068,7 +1084,8 @@ TEST_CASE("Pages are correctly resolved from address", "[unit][page_allocator]")
     auto memory3 = test::alignedAlloc(pageSize, size3);
 
     // clang-format off
-    std::array<Region, 4> regions = {{
+    constexpr int regionsCount = 4;
+    std::array<Region, regionsCount> regions = {{
         {std::uintptr_t(memory1.get()), size1},
         {std::uintptr_t(memory2.get()), size2},
         {std::uintptr_t(memory3.get()), size3},
@@ -1116,16 +1133,18 @@ TEST_CASE("Pages are correctly resolved from address", "[unit][page_allocator]")
 
     SECTION("Address points to the 16th page in the first region")
     {
-        page = pageAllocator.getPage(std::uintptr_t(memory1.get()) + 16 * pageSize);
+        constexpr int pageNum = 16;
+        page = pageAllocator.getPage(std::uintptr_t(memory1.get()) + pageNum * pageSize);
         REQUIRE(page);
-        REQUIRE(page->address() == (std::uintptr_t(memory1.get()) + 16 * pageSize));
+        REQUIRE(page->address() == (std::uintptr_t(memory1.get()) + pageNum * pageSize));
     }
 
     SECTION("Address points to the 7th page in the second region")
     {
-        page = pageAllocator.getPage(std::uintptr_t(memory2.get()) + 7 * pageSize);
+        constexpr int pageNum = 16;
+        page = pageAllocator.getPage(std::uintptr_t(memory2.get()) + pageNum * pageSize);
         REQUIRE(page);
-        REQUIRE(page->address() == (std::uintptr_t(memory2.get()) + 7 * pageSize));
+        REQUIRE(page->address() == (std::uintptr_t(memory2.get()) + pageNum * pageSize));
     }
 
     SECTION("Address points to in the middle of the second page in the first region")
@@ -1145,12 +1164,12 @@ TEST_CASE("Pages are correctly resolved from address", "[unit][page_allocator]")
 
 TEST_CASE("PageAllocator stats are properly initialized", "[unit][page_allocator]")
 {
-    std::size_t pageSize = 256;
+    constexpr std::size_t pageSize = 256;
     PageAllocator pageAllocator;
 
-    std::size_t pagesCount1 = 535;
-    std::size_t pagesCount2 = 87;
-    std::size_t pagesCount3 = 4;
+    constexpr std::size_t pagesCount1 = 535;
+    constexpr std::size_t pagesCount2 = 87;
+    constexpr std::size_t pagesCount3 = 4;
     auto size1 = pageSize * pagesCount1;
     auto size2 = pageSize * pagesCount2;
     auto size3 = pageSize * pagesCount3;
@@ -1159,7 +1178,8 @@ TEST_CASE("PageAllocator stats are properly initialized", "[unit][page_allocator
     auto memory3 = test::alignedAlloc(pageSize, size3);
 
     // clang-format off
-    std::array<Region, 4> regions = {{
+    constexpr int regionsCount = 4;
+    std::array<Region, regionsCount> regions = {{
         {std::uintptr_t(memory1.get()), size1},
         {std::uintptr_t(memory2.get()), size2},
         {std::uintptr_t(memory3.get()), size3},
@@ -1182,12 +1202,12 @@ TEST_CASE("PageAllocator stats are properly initialized", "[unit][page_allocator
 
 TEST_CASE("Pages are correctly allocated", "[unit][page_allocator]")
 {
-    std::size_t pageSize = 256;
+    constexpr std::size_t pageSize = 256;
     PageAllocator pageAllocator;
 
-    std::size_t pagesCount1 = 535;
-    std::size_t pagesCount2 = 87;
-    std::size_t pagesCount3 = 4;
+    constexpr std::size_t pagesCount1 = 535;
+    constexpr std::size_t pagesCount2 = 87;
+    constexpr std::size_t pagesCount3 = 4;
     auto size1 = pageSize * pagesCount1;
     auto size2 = pageSize * pagesCount2;
     auto size3 = pageSize * pagesCount3;
@@ -1196,7 +1216,8 @@ TEST_CASE("Pages are correctly allocated", "[unit][page_allocator]")
     auto memory3 = test::alignedAlloc(pageSize, size3);
 
     // clang-format off
-    std::array<Region, 4> regions = {{
+    constexpr int regionsCount = 4;
+    std::array<Region, regionsCount> regions = {{
         {std::uintptr_t(memory1.get()), size1},
         {std::uintptr_t(memory2.get()), size2},
         {std::uintptr_t(memory3.get()), size3},
@@ -1289,27 +1310,28 @@ TEST_CASE("Pages are correctly allocated", "[unit][page_allocator]")
 
     SECTION("Allocating 17 pages")
     {
-        pages.push_back(pageAllocator.allocate(17));
+        constexpr int allocSize = 17;
+        pages.push_back(pageAllocator.allocate(allocSize));
         REQUIRE(pages.back());
         REQUIRE(pages.back()->address() == std::uintptr_t(memory1.get()));
-        REQUIRE(pageAllocator.m_freePagesCount == freePages - 17);
+        REQUIRE(pageAllocator.m_freePagesCount == freePages - allocSize);
 
         std::size_t idx8Count = 0;
-        for (Page* group = pageAllocator.m_freeGroupLists[8]; group != nullptr; group = group->next())
+        for (Page* group = pageAllocator.m_freeGroupLists[8]; group != nullptr; group = group->next()) // NOLINT
             ++idx8Count;
 
         REQUIRE(idx8Count == 1);
-        REQUIRE(pageAllocator.m_freeGroupLists[8]->groupSize() == pagesCount1 - 17);
+        REQUIRE(pageAllocator.m_freeGroupLists[8]->groupSize() == pagesCount1 - allocSize);
 
         auto stats = pageAllocator.getStats();
         REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
         REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
         REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
-        REQUIRE(stats.freeMemorySize == (pageSize * (stats.totalPagesCount - stats.reservedPagesCount) - 17 * pageSize));
+        REQUIRE(stats.freeMemorySize == (pageSize * (stats.totalPagesCount - stats.reservedPagesCount) - allocSize * pageSize));
         REQUIRE(stats.pageSize == pageAllocator.m_pageSize);
         REQUIRE(stats.totalPagesCount == (pagesCount1 + pagesCount2 + pagesCount3));
         REQUIRE(stats.reservedPagesCount == 79);
-        REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount - 17));
+        REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount - allocSize));
     }
 
     SECTION("Allocating whole region")
@@ -1414,12 +1436,12 @@ TEST_CASE("Pages are correctly allocated", "[unit][page_allocator]")
 
 TEST_CASE("Pages are correctly released", "[unit][page_allocator]")
 {
-    std::size_t pageSize = 256;
+    constexpr std::size_t pageSize = 256;
     PageAllocator pageAllocator;
 
-    std::size_t pagesCount1 = 535;
-    std::size_t pagesCount2 = 87;
-    std::size_t pagesCount3 = 4;
+    constexpr std::size_t pagesCount1 = 535;
+    constexpr std::size_t pagesCount2 = 87;
+    constexpr std::size_t pagesCount3 = 4;
     auto size1 = pageSize * pagesCount1;
     auto size2 = pageSize * pagesCount2;
     auto size3 = pageSize * pagesCount3;
@@ -1428,7 +1450,8 @@ TEST_CASE("Pages are correctly released", "[unit][page_allocator]")
     auto memory3 = test::alignedAlloc(pageSize, size3);
 
     // clang-format off
-    std::array<Region, 4> regions = {{
+    constexpr int regionsCount = 4;
+    std::array<Region, regionsCount> regions = {{
         {std::uintptr_t(memory1.get()), size1},
         {std::uintptr_t(memory2.get()), size2},
         {std::uintptr_t(memory3.get()), size3},
@@ -1453,7 +1476,8 @@ TEST_CASE("Pages are correctly released", "[unit][page_allocator]")
 
     SECTION("Releasing 17 pages")
     {
-        pages.push_back(pageAllocator.allocate(17));
+        constexpr int allocSize = 17;
+        pages.push_back(pageAllocator.allocate(allocSize));
         pageAllocator.release(pages.back());
     }
 
@@ -1536,11 +1560,11 @@ TEST_CASE("Pages are correctly released", "[unit][page_allocator]")
     REQUIRE(pageAllocator.m_freeGroupLists[2]->groupSize() == pagesCount2 - pageAllocator.m_descPagesCount);
 
     std::size_t idx8Count = 0;
-    for (Page* group = pageAllocator.m_freeGroupLists[8]; group != nullptr; group = group->next())
+    for (Page* group = pageAllocator.m_freeGroupLists[8]; group != nullptr; group = group->next()) // NOLINT
         ++idx8Count;
 
     REQUIRE(idx8Count == 1);
-    REQUIRE(pageAllocator.m_freeGroupLists[8]->groupSize() == pagesCount1);
+    REQUIRE(pageAllocator.m_freeGroupLists[8]->groupSize() == pagesCount1); // NOLINT
 
     auto stats = pageAllocator.getStats();
     REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));

@@ -10,7 +10,7 @@ HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
 FormatStyle:     none
 User:            kuba
-CheckOptions:    
+CheckOptions:
   - key:             abseil-string-find-startswith.AbseilStringsMatchHeader
     value:           absl/strings/match.h
   - key:             abseil-string-find-startswith.IncludeStyle

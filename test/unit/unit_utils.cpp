@@ -37,10 +37,8 @@
 #include <cstddef>
 
 // Make access to private members for testing.
-// clang-format off
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define private     public
-// clang-format on
+#define private public
 
 #include <utils.hpp>
 #include <zone.hpp>
@@ -52,7 +50,8 @@ TEST_CASE("Values are correctly checked if they are a power of 2", "[unit][utils
 {
     double idx = 0.0;
 
-    for (std::size_t i = 0; i < 1000000; ++i) {
+    constexpr std::size_t iterations = 1000000;
+    for (std::size_t i = 0; i < iterations; ++i) {
         bool isPowerOf2 = utils::isPowerOf2(i);
         REQUIRE(isPowerOf2 == (std::log2(double(i)) == idx));
 
@@ -65,8 +64,9 @@ TEST_CASE("Values are correctly rounded to the closest power of 2", "[unit][util
 {
     double idx = 0.0;
 
-    for (std::size_t i = 1; i < 1000000; ++i) {
-        double requiredValue = std::pow(2.0, idx);
+    constexpr std::size_t iterations = 1000000;
+    for (std::size_t i = 1; i < iterations; ++i) {
+        double requiredValue = std::pow(2.0, idx); // NOLINT
         auto value = utils::roundPowerOf2(i);
         REQUIRE(value == requiredValue);
 
@@ -77,9 +77,11 @@ TEST_CASE("Values are correctly rounded to the closest power of 2", "[unit][util
 
 TEST_CASE("Pointers are correctly moved", "[unit][utils]")
 {
+    constexpr int memorySize = 64;
+
     SECTION("Pointer has the type 'char'")
     {
-        std::array<std::byte, 64> memory{};
+        std::array<std::byte, memorySize> memory{};
 
         for (std::size_t i = 0; i < memory.size(); ++i) {
             auto* ptr = reinterpret_cast<char*>(&memory[0]);
@@ -89,7 +91,7 @@ TEST_CASE("Pointers are correctly moved", "[unit][utils]")
 
     SECTION("Pointer has the type 'long double'")
     {
-        std::array<std::byte, 64> memory{};
+        std::array<std::byte, memorySize> memory{};
 
         for (std::size_t i = 0; i < memory.size(); ++i) {
             auto* ptr = reinterpret_cast<long double*>(&memory[0]);
@@ -99,7 +101,7 @@ TEST_CASE("Pointers are correctly moved", "[unit][utils]")
 
     SECTION("Pointer has the type 'Chunk'")
     {
-        std::array<std::byte, 64> memory{};
+        std::array<std::byte, memorySize> memory{};
 
         for (std::size_t i = 0; i < memory.size(); ++i) {
             auto* ptr = reinterpret_cast<Chunk*>(&memory[0]);

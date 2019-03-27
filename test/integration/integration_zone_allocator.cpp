@@ -40,10 +40,8 @@
 #include <random>
 
 // Make access to private members for testing.
-// clang-format off
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define private     public
-// clang-format on
+#define private public
 
 #include <page_allocator.hpp>
 #include <utils.hpp>
@@ -58,8 +56,8 @@ TEST_CASE("ZoneAllocator integration tests (long-term)", "[integration][zone_all
     constexpr auto testDuration = 30min;
     constexpr int allocationsCount = 100;
 
-    std::size_t pageSize = 256;
-    std::size_t pagesCount = 256;
+    constexpr std::size_t pageSize = 256;
+    constexpr std::size_t pagesCount = 256;
     PageAllocator pageAllocator;
 
     auto size = pageSize * pagesCount;

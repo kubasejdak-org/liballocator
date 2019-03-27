@@ -60,25 +60,25 @@ struct PerfStats {
 static void perf_showStats(const PerfStats& stats, const char* name, bool showFirst = false)
 {
     if (showFirst)
-        std::printf("+--------------------------------+-------------+-------------+\n"); // NOLINT
-    std::printf("| %-30s |  allocate   |   release   |\n", name); // NOLINT
-    std::printf("+--------------------------------+-------------+-------------+\n"); // NOLINT
+        std::printf("+--------------------------------+-------------+-------------+\n");                                 // NOLINT
+    std::printf("| %-30s |  allocate   |   release   |\n", name);                                                        // NOLINT
+    std::printf("+--------------------------------+-------------+-------------+\n");                                     // NOLINT
     std::printf("| %30s | %8.4f us | %8.4f us |\n", "liballocator", stats.liballocatorAlloc, stats.liballocatorRelease); // NOLINT
-    std::printf("| %30s | %8.4f us | %8.4f us |\n", "malloc", stats.mallocAlloc, stats.mallocRelease); // NOLINT
-    std::printf("| %30s | %8.4f us | %8.4f us |\n", "new", stats.newAlloc, stats.newRelease); // NOLINT
-    std::printf("+--------------------------------+-------------+-------------+\n"); // NOLINT
+    std::printf("| %30s | %8.4f us | %8.4f us |\n", "malloc", stats.mallocAlloc, stats.mallocRelease);                   // NOLINT
+    std::printf("| %30s | %8.4f us | %8.4f us |\n", "new", stats.newAlloc, stats.newRelease);                            // NOLINT
+    std::printf("+--------------------------------+-------------+-------------+\n");                                     // NOLINT
 }
 
 TEST_CASE("1000000x 134 bytes", "[perf][allocator]")
 {
     std::string allocator;
-    std::size_t allocSize = 134;
+    constexpr std::size_t allocSize = 134;
     constexpr int allocationsCount = 1000000;
     PerfStats stats{};
 
     // Initialize liballocator.
-    std::size_t pageSize = 256;
-    std::size_t pagesCount = 535;
+    constexpr std::size_t pageSize = 256;
+    constexpr std::size_t pagesCount = 535;
     auto size = pageSize * pagesCount;
     auto memory = test::alignedAlloc(pageSize, size);
     REQUIRE(allocator::init(std::uintptr_t(memory.get()), std::uintptr_t(memory.get() + size), pageSize));
@@ -86,7 +86,7 @@ TEST_CASE("1000000x 134 bytes", "[perf][allocator]")
     for (int i = 0; i < allocationsCount; ++i) {
         {
             auto startAlloc = test::currentTime();
-            auto *ptr = allocator::allocate(allocSize);
+            auto* ptr = allocator::allocate(allocSize);
             auto endAlloc = test::currentTime();
 
             auto startRelease = test::currentTime();
@@ -99,7 +99,7 @@ TEST_CASE("1000000x 134 bytes", "[perf][allocator]")
 
         {
             auto startAlloc = test::currentTime();
-            auto *ptr = malloc(allocSize); // NOLINT
+            auto* ptr = malloc(allocSize); // NOLINT
             auto endAlloc = test::currentTime();
 
             auto startRelease = test::currentTime();
@@ -112,7 +112,7 @@ TEST_CASE("1000000x 134 bytes", "[perf][allocator]")
 
         {
             auto startAlloc = test::currentTime();
-            auto *ptr = new char[allocSize]; // NOLINT
+            auto* ptr = new char[allocSize]; // NOLINT
             auto endAlloc = test::currentTime();
 
             auto startRelease = test::currentTime();
@@ -136,13 +136,13 @@ TEST_CASE("1000000x 134 bytes", "[perf][allocator]")
 TEST_CASE("1000000x 4056 bytes", "[perf][allocator]")
 {
     std::string allocator;
-    std::size_t allocSize = 4056;
+    constexpr std::size_t allocSize = 4056;
     constexpr int allocationsCount = 1000000;
     PerfStats stats{};
 
     // Initialize liballocator.
-    std::size_t pageSize = 256;
-    std::size_t pagesCount = 535;
+    constexpr std::size_t pageSize = 256;
+    constexpr std::size_t pagesCount = 535;
     auto size = pageSize * pagesCount;
     auto memory = test::alignedAlloc(pageSize, size);
     REQUIRE(allocator::init(std::uintptr_t(memory.get()), std::uintptr_t(memory.get() + size), pageSize));
@@ -150,7 +150,7 @@ TEST_CASE("1000000x 4056 bytes", "[perf][allocator]")
     for (int i = 0; i < allocationsCount; ++i) {
         {
             auto startAlloc = test::currentTime();
-            auto *ptr = allocator::allocate(allocSize);
+            auto* ptr = allocator::allocate(allocSize);
             auto endAlloc = test::currentTime();
 
             auto startRelease = test::currentTime();
@@ -163,7 +163,7 @@ TEST_CASE("1000000x 4056 bytes", "[perf][allocator]")
 
         {
             auto startAlloc = test::currentTime();
-            auto *ptr = malloc(allocSize); // NOLINT
+            auto* ptr = malloc(allocSize); // NOLINT
             auto endAlloc = test::currentTime();
 
             auto startRelease = test::currentTime();
@@ -176,7 +176,7 @@ TEST_CASE("1000000x 4056 bytes", "[perf][allocator]")
 
         {
             auto startAlloc = test::currentTime();
-            auto *ptr = new char[allocSize]; // NOLINT
+            auto* ptr = new char[allocSize]; // NOLINT
             auto endAlloc = test::currentTime();
 
             auto startRelease = test::currentTime();
@@ -207,8 +207,8 @@ TEST_CASE("2000x random number of bytes", "[perf][allocator]")
     PerfStats stats{};
 
     // Initialize liballocator.
-    std::size_t pageSize = 256;
-    std::size_t pagesCount = 4096;
+    constexpr std::size_t pageSize = 256;
+    constexpr std::size_t pagesCount = 4096;
     auto size = pageSize * pagesCount;
     auto memory = test::alignedAlloc(pageSize, size);
     REQUIRE(memory != nullptr);
@@ -226,7 +226,7 @@ TEST_CASE("2000x random number of bytes", "[perf][allocator]")
 
         {
             auto startAlloc = test::currentTime();
-            auto *ptr = allocator::allocate(allocSize);
+            auto* ptr = allocator::allocate(allocSize);
             auto endAlloc = test::currentTime();
 
             if (ptr == nullptr) {
@@ -240,7 +240,7 @@ TEST_CASE("2000x random number of bytes", "[perf][allocator]")
 
         {
             auto startAlloc = test::currentTime();
-            auto *ptr = malloc(allocSize); // NOLINT
+            auto* ptr = malloc(allocSize); // NOLINT
             auto endAlloc = test::currentTime();
 
             if (ptr == nullptr) {
@@ -256,7 +256,7 @@ TEST_CASE("2000x random number of bytes", "[perf][allocator]")
         {
             try {
                 auto startAlloc = test::currentTime();
-                auto *ptr = new char[allocSize]; // NOLINT
+                auto* ptr = new char[allocSize]; // NOLINT
                 auto endAlloc = test::currentTime();
 
                 newMem.at(i) = ptr;

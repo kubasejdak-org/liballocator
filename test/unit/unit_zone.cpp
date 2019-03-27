@@ -38,10 +38,8 @@
 #include <cstddef>
 
 // Make access to private members for testing.
-// clang-format off
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define private     public
-// clang-format on
+#define private public
 
 #include <page.hpp>
 #include <zone.hpp>
@@ -56,7 +54,7 @@ TEST_CASE("Zone structure is naturally aligned", "[unit][zone]")
 
 TEST_CASE("Zone is properly initialized", "[unit][zone]")
 {
-    std::size_t pageSize = 256;
+    constexpr std::size_t pageSize = 256;
     auto memory = test::alignedAlloc(pageSize, pageSize);
 
     std::array<std::byte, sizeof(Page)> buffer{};
@@ -64,7 +62,7 @@ TEST_CASE("Zone is properly initialized", "[unit][zone]")
     page->setAddress(std::uintptr_t(memory.get()));
 
     Zone zone;
-    std::size_t chunkSize = 64;
+    constexpr std::size_t chunkSize = 64;
 
     zone.init(page, pageSize, chunkSize);
     REQUIRE(zone.m_next == nullptr);
@@ -109,7 +107,7 @@ TEST_CASE("Zone is properly cleared", "[unit][zone]")
 
 TEST_CASE("Zone properly allocates chunks", "[unit][zone]")
 {
-    std::size_t pageSize = 256;
+    constexpr std::size_t pageSize = 256;
     auto memory = test::alignedAlloc(pageSize, pageSize);
 
     std::array<std::byte, sizeof(Page)> buffer{};
@@ -117,7 +115,7 @@ TEST_CASE("Zone properly allocates chunks", "[unit][zone]")
     page->setAddress(std::uintptr_t(memory.get()));
 
     Zone zone;
-    std::size_t chunkSize = 64;
+    constexpr std::size_t chunkSize = 64;
     zone.init(page, pageSize, chunkSize);
 
     std::size_t chunksCount = zone.chunksCount();
