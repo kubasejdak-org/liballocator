@@ -41,69 +41,73 @@ namespace memory {
 class Page;
 
 /// @class Chunk
-/// @brief Represents a memory chunk. Chunks are part of the zone.
+/// Represents a memory chunk. Chunks are part of the zone.
 /// @note Each chunk has the size, which is a power of 2.
 class Chunk : public ListNode<Chunk> {};
 
 /// @class Zone
-/// @brief Represents a memory zone. Each zone consists of the memory chunks of equal size.
+/// Represents a memory zone. Each zone consists of the memory chunks of equal size.
 class Zone : public ListNode<Zone> {
 public:
-    /// @brief Default constructor.
+    /// Default constructor.
     Zone() = default;
 
-    /// @brief Copy constructor.
+    /// Copy constructor.
     /// @param[in] other        Zone to be used in initialization.
     /// @note This constructor is deleted, because zones should be initialized only in-place.
     Zone(const Zone& other) = delete;
 
-    /// @brief Move constructor.
+    /// Move constructor.
     /// @param[in] other        Page to be used in initialization.
     /// @note This constructor is deleted, because pages should be initialized only in-place.
     Zone(Zone&& other) = delete;
 
-    /// @brief Initializes the zone. It is used as a replacement for the constructor.
+    /// Initializes the zone. It is used as a replacement for the constructor.
     /// @param[in] page         page to be associated with this zone.
     /// @param[in] pageSize     Size of the associated page.
     /// @param[in] chunkSize    Size of the chunk to be used within this zone.
     void init(Page* page, std::size_t pageSize, std::size_t chunkSize);
 
-    /// @brief Clears the internal state of the zone.
+    /// Clears the internal state of the zone.
     void clear();
 
-    /// @brief Returns the page, that this zone is bound to.
+    /// Returns the page, that this zone is bound to.
     /// @return Page, that this zone is associated with.
     Page* page();
 
-    /// @brief Returns size of the chunks, that create this zone.
+    /// Returns size of the chunks, that create this zone.
     /// @return Size of the chunks created from this zone.
     std::size_t chunkSize();
 
-    /// @brief Returns total count of the chunks, that are part of this zone.
+    /// Returns total count of the chunks, that are part of this zone.
     /// @return Number of chunks, that create this zone.
     std::size_t chunksCount();
 
-    /// @brief Returns number of the non-allocated chunks in this zone.
+    /// Returns number of the non-allocated chunks in this zone.
     /// @return Number of chunks, that are not allocated in this zone.
     std::size_t freeChunksCount();
 
-    /// @brief Allocates the chunk from this zone and returns it.
+    /// Allocates the chunk from this zone and returns it.
     /// @return Allocated chunk.
     /// @note This function updates the 'free' counter.
     Chunk* takeChunk();
 
-    /// @brief Releases the given chunk.
+    /// Releases the given chunk.
     /// @param[in] chunk        Chunk to be released.
     /// @note This function updates the 'free' counter.
     void giveChunk(Chunk* chunk);
 
-    /// @brief Checks if given chunk is part of the current zone and if it is valid.
+    /// Checks if given chunk is part of the current zone and if it is valid.
     /// @param[in] chunk        Chunk to be checked.
-    /// @return True if given chunk is valid, false otherwise.
+    /// @return Flag indicating if given chunk is valid.
+    /// @retval true            Given chunk is valid.
+    /// @retval false           Given chunk is invalid or is not part of the current zone.
     bool isValidChunk(Chunk* chunk);
 
-    /// @brief Checks if the Zone class is naturally aligned.
-    /// @return True if Zone class is naturally aligned, false otherwise.
+    /// Checks if the Zone class is naturally aligned.
+    /// @return Flag indicating if the Zone class is naturally aligned.
+    /// @retval true            Zone class is naturally aligned.
+    /// @retval false           Zone class is not naturally aligned.
     /// @note Natural alignment of a class means, that its size is equal to the sum of all its data members.
     static constexpr bool isNaturallyAligned()
     {

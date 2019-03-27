@@ -40,61 +40,65 @@
 namespace memory {
 
 /// @class Page
-/// @brief Represents a physical memory page.
+/// Represents a physical memory page.
 class Page : public ListNode<Page> {
 public:
-    /// @brief Default constructor.
+    /// Default constructor.
     /// @note This constructor is deleted, because pages should be initialized only in-place.
     Page() = delete;
 
-    /// @brief Copy constructor.
+    /// Copy constructor.
     /// @param[in] other        Page to be used in initialization.
     /// @note This constructor is deleted, because pages should be initialized only in-place.
     Page(const Page& other) = delete;
 
-    /// @brief Move constructor.
+    /// Move constructor.
     /// @param[in] other        Page to be used in initialization.
     /// @note This constructor is deleted, because pages should be initialized only in-place.
     Page(Page&& other) = delete;
 
-    /// @brief Initializes the page. It is used as a replacement for the constructor.
+    /// Initializes the page. It is used as a replacement for the constructor.
     void init();
 
-    /// @brief Sets the physical address of the given page.
+    /// Sets the physical address of the given page.
     /// @param[in] addr         Physical address to be set.
     void setAddress(std::uintptr_t addr);
 
-    /// @brief Sets the size of the pages group, that this page represents.
+    /// Sets the size of the pages group, that this page represents.
     /// @param[in] groupSize    Size of the group to be set.
     /// @note Group size should be set only to the first and to the last page in the group.
     void setGroupSize(std::size_t groupSize);
 
-    /// @brief Sets the 'used' flag of the current page to the given state.
+    /// Sets the 'used' flag of the current page to the given state.
     /// @param[in] value        State to be set.
     void setUsed(bool value);
 
-    /// @brief Returns the page, that lies immediately after the given page.
+    /// Returns the page, that lies immediately after the given page.
     /// @return Pointer to the next sibling page.
     Page* nextSibling();
 
-    /// @brief Returns the page, that lies immediately before the given page.
+    /// Returns the page, that lies immediately before the given page.
     /// @return Pointer to the previous sibling page.
     Page* prevSibling();
 
-    /// @brief Returns physical address of the current page.
+    /// Returns physical address of the current page.
     /// @return Physical address.
     std::uintptr_t address();
 
-    /// @brief Returns size of the group represented by the current page.
+    /// Returns size of the group represented by the current page.
     /// @return Size of the group.
     std::size_t groupSize();
 
-    /// @brief Returns flag indicating if current page is used or not.
-    /// @return True if page is used, false otherwise.
+    /// Returns flag indicating if current page is used or not.
+    /// @return Flag indicating if current page is used or not.
+    /// @retval true            Page is used.
+    /// @retval false           Page is not used.
     bool isUsed();
 
-    /// @brief Checks if the Page class is naturally aligned.
-    /// @return True if Page class is naturally aligned, false otherwise.
+    /// Checks if the Page class is naturally aligned.
+    /// @return Flag indicating it the Page class is naturally aligned.
+    /// @retval true            Page class is naturally aligned.
+    /// @retval false           Page class is not naturally aligned.
     /// @note Natural alignment of a class means, that its size is equal to the sum of all its data members.
     static constexpr bool isNaturallyAligned()
     {
@@ -105,8 +109,8 @@ public:
     }
 
 private:
-    /// @class Flags
-    /// @brief Represents a packed set of flags used internally by pages.
+    /// @union Flags
+    /// Represents a packed set of flags used internally by pages.
     union Flags {
         struct {
             std::size_t groupSize : 21; ///< Size of the group. This is set only for the first and to the last page in the group.

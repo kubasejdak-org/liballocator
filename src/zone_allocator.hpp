@@ -42,11 +42,11 @@ namespace memory {
 class PageAllocator;
 
 /// @class ZoneAllocator
-/// @brief Represents the ZoneAllocator.
+/// Represents the ZoneAllocator.
 class ZoneAllocator {
 public:
-    /// @class Stats
-    /// @brief Represents the statistical data of the ZoneAllocator.
+    /// @struct Stats
+    /// Represents the statistical data of the ZoneAllocator.
     struct Stats {
         std::size_t usedMemorySize;      ///< Size of the memory that is under the control of the ZoneAllocator
         std::size_t reservedMemorySize;  ///< Size of the memory reserved for the ZoneAllocator within allocated zones.
@@ -54,34 +54,38 @@ public:
         std::size_t allocatedMemorySize; ///< Size of the memory allocated by the user within allocated zones.
     };
 
-    /// @brief Default constructor.
+    /// Default constructor.
     ZoneAllocator() noexcept;
 
-    /// @brief Initializes the ZoneAllocator with the given PageAllocator and page size.
+    /// Initializes the ZoneAllocator with the given PageAllocator and page size.
     /// @param[in] pageAllocator        PageAllocator to be used in ZoneAllocator.
     /// @param[in] pageSize             Size of the physical page.
-    /// @return True on success, false otherwise.
+    /// @return Result of the initialization.
+    /// @retval true                    ZoneAllocator has been initialized.
+    /// @retval false                   Some error occurred.
     [[nodiscard]] bool init(PageAllocator* pageAllocator, std::size_t pageSize);
 
-    /// @brief Clears the ZoneAllocator internal state.
+    /// Clears the ZoneAllocator internal state.
     void clear();
 
-    /// @brief Allocates the memory chunk of at least given size.
+    /// Allocates the memory chunk of at least given size.
     /// @param[in] size                 Size of the demanded memory chunk.
-    /// @return Pointer to the allocated memory chunk on success, nullptr otherwise.
+    /// @return Result of the allocation.
+    /// @retval void*                   Pointer to the allocated memory chunk on success.
+    /// @retval nullptr                 Some error occurred.
     [[nodiscard]] void* allocate(std::size_t size);
 
-    /// @brief Releases the given memory chunk.
+    /// Releases the given memory chunk.
     /// @param[in] ptr                  Pointer to the memory chunk to be released.
     /// @note This function accepts nullptr input.
     void release(void* ptr);
 
-    /// @brief Returns the current statistics of ZoneAllocator.
+    /// Returns the current statistics of ZoneAllocator.
     /// @return ZoneAllocator statistics.
     Stats getStats();
 
 private:
-    /// @brief Allocates memory chunk from the given zone.
+    /// Allocates memory chunk from the given zone.
     /// @param[in] zone                 Zone from which chunk should be allocated.
     /// @return Allocated memory chunk.
     /// @note Template parameter is used here to cast the returned value the given type.
@@ -93,9 +97,11 @@ private:
         return reinterpret_cast<T*>(zone->takeChunk());
     }
 
-    /// @brief Deallocates memory chunk to the given zone.
+    /// Deallocates memory chunk to the given zone.
     /// @param[in] chunk                Chunk to be deallocated.
-    /// @return True on success, false otherwise.
+    /// @return Result of the chunk deallocation.
+    /// @retval true                    Chunk has been deallocated.
+    /// @retval false                   Chunk has not been deallocated.
     /// @note Template parameter is used here to accept any input without casting.
     template <typename T>
     bool deallocateChunk(T* chunk)
@@ -121,52 +127,62 @@ private:
         return true;
     }
 
-    /// @brief Returns size rounded up to the closest chunk size.
+    /// Returns size rounded up to the closest chunk size.
     /// @param[in] size                 Size to be rounded up.
     /// @return Closest chunk size.
     std::size_t chunkSize(std::size_t size);
 
-    /// @brief Returns an index of the zone with the given chunk size.
+    /// Returns an index of the zone with the given chunk size.
     /// @param[in] chunkSize            Chunk size to be used in calculations.
     /// @return Index of the zone in the array of all known zones.
     std::size_t zoneIdx(std::size_t chunkSize);
 
-    /// @brief Returns the Zone from the given array index, that has at least one free chunk.
+    /// Returns the Zone from the given array index, that has at least one free chunk.
     /// @param[in] idx                  Index from which Zone should be taken.
-    /// @return Pointer to the Zone on success, nullptr otherwise.
+    /// @return Result of the search.
+    /// @retval Zone*                   Pointer to the Zone on success.
+    /// @retval nullptr                 No free zone was found.
     Zone* getFreeZone(std::size_t idx);
 
-    /// @brief Checks if there is the minimal required number of free chunks in the zone at given array index.
+    /// Checks if there is the minimal required number of free chunks in the zone at given array index.
     /// @param[in] idx                  Index to be checked.
-    /// @return True if new Zone with the given index should be allocated, false otherwise.
+    /// @return Flag indicating if a new zone should be allocated.
+    /// @retval true                    New Zone with the given index should be allocated.
+    /// @retval false                   No need to allocate a new zone.
     bool shouldAllocateZone(std::size_t idx);
 
-    /// @brief Allocates new Zone with the chunks of given size.
+    /// Allocates new Zone with the chunks of given size.
     /// @param[in] chunkSize            Size of the chunks in the allocated zone.
-    /// @return Pointer to the allocated Zone on success, nullptr otherwise.
+    /// @return Result of the allocation.
+    /// @retval Zone*                   Pointer to the allocated Zone on success.
+    /// @retval nullptr                 Some error occurred.
     Zone* allocateZone(std::size_t chunkSize);
 
-    /// @brief Initializes given zone.
+    /// Initializes given zone.
     /// @param[in,out] zone             Zone to be initialized.
     /// @param[in] chunkSize            Size of the chunks in this zone.
-    /// @return True on success, false otherwise.
+    /// @return Result of the initialization.
+    /// @retval true                    Zone has been initialized.
+    /// @retval false                   Some error occurred.
     bool initZone(Zone* zone, std::size_t chunkSize);
 
-    /// @brief Clears the given zone.
+    /// Clears the given zone.
     /// @param[in,out] zone             Zone to be cleared.
     void clearZone(Zone* zone);
 
-    /// @brief Adds the given zone to the array of known zones.
+    /// Adds the given zone to the array of known zones.
     /// @param[in,out] zone             Zone to be added.
     void addZone(Zone* zone);
 
-    /// @brief Removes the given zone from the array of known zones.
+    /// Removes the given zone from the array of known zones.
     /// @param[in,out] zone             Zone to be removed.
     void removeZone(Zone* zone);
 
-    /// @brief Finds the Zone that given chunk belong to.
+    /// Finds the Zone that given chunk belong to.
     /// @param[in,out] chunk            Chunk for which zone should be found.
-    /// @return Zone that given chunk belong to if found, nullptr otherwise.
+    /// @return Result of the search.
+    /// @retval Zone*                   Zone that given chunk belong to if found.
+    /// @retval nullptr                 Zone has not been found.
     Zone* findZone(Chunk* chunk);
 
 private:
@@ -174,8 +190,8 @@ private:
     static constexpr std::size_t MAX_ZONE_IDX = 8;        ///< Maximal supported entries in the zone array.
 
 private:
-    /// @class ZoneInfo
-    /// @brief Represents the meta-data of the zone.
+    /// @struct ZoneInfo
+    /// Represents the meta-data of the zone.
     struct ZoneInfo {
         Zone* head = nullptr;            ///< Head of the zones with the given index.
         std::size_t freeChunksCount = 0; ///< Total number of free chunks in zones with the given index.

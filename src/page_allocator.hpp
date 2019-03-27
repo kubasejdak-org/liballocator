@@ -45,11 +45,11 @@
 namespace memory {
 
 /// @class PageAllocator
-/// @brief Represents an allocator of physical pages.
+/// Represents an allocator of physical pages.
 class PageAllocator {
 public:
     /// @class Stats
-    /// @brief Represents the statistical data of the PageAllocator.
+    /// Represents the statistical data of the PageAllocator.
     struct Stats {
         std::size_t totalMemorySize;     ///< Total size of the memory passed during initialization.
         std::size_t effectiveMemorySize; ///< Effective size of the memory, that can be used by the PageAllocator.
@@ -61,95 +61,108 @@ public:
         std::size_t freePagesCount;      ///< Current number of the free pages.
     };
 
-    /// @brief Default constructor.
+    /// Default constructor.
     PageAllocator() noexcept;
-    /// @brief Initializes the PageAllocator with the given memory model.
+
+    /// Initializes the PageAllocator with the given memory model.
     /// @param[in] regions          Array of memory regions to be used by PageAllocator. Last entry should be zeroed.
     /// @param[in] pageSize         Size of the page on the current platform.
-    /// @return True on success, false otherwise.
+    /// @return Result of the initialization.
+    /// @retval true                PageAllocator has been initialized.
+    /// @retval false               Some error occurred.
     [[nodiscard]] bool init(Region* regions, std::size_t pageSize);
 
-    /// @brief Clears the internal state of the PageAllocator.
+    /// Clears the internal state of the PageAllocator.
     void clear();
 
-    /// @brief Allocates the given number of physical pages.
+    /// Allocates the given number of physical pages.
     /// @param[in] count            Number of pages to be allocated.
-    /// @return A set of allocated pages.
+    /// @return Result of the allocation.
+    /// @retval Page*               A set of allocated pages on success.
+    /// @retval nullptr             Some error occurred.
     /// @note All allocated pages must be from the same region.
     [[nodiscard]] Page* allocate(std::size_t count);
 
-    /// @brief Releases the given set of pages.
+    /// Releases the given set of pages.
     /// @param[in] pages            List of pages to be released.
     void release(Page* pages);
 
-    /// @brief Returns the Page, which contains the given address.
+    /// Returns the Page, which contains the given address.
     /// @param[in] addr             Address for which Page should be found.
-    /// @return Pointer to Page containing given address if found, nullptr otherwise.
+    /// @return Result of the check.
+    /// @retval Page*               Pointer to Page containing given address if found.
+    /// @retval nullptr             There is no page with the given address.
     Page* getPage(std::uintptr_t addr);
 
-    /// @brief Returns the current statistics of PageAllocator.
+    /// Returns the current statistics of PageAllocator.
     /// @return PageAllocator statistics.
     Stats getStats();
 
 private:
-    /// @brief Checks if the page size has a proper value.
+    /// Checks if the page size has a proper value.
     /// @param[in] pageSize         Page size to be checked.
-    /// @return True if page size is valid, false otherwise.
+    /// @return Flag indicating if the page size has a proper value.
+    /// @retval true                Page size is valid.
+    /// @retval false               Page size is invalid.
     /// @note This function checks if pageSize has the minimal size and if is a power of 2.
     bool isValidPageSize(std::size_t pageSize);
 
-    /// @brief Returns the total number of pages from all known regions.
+    /// Returns the total number of pages from all known regions.
     /// @return Number of all pages from all known regions.
     std::size_t countPages();
 
-    /// @brief Returns the index of the best region to store the page descriptors.
+    /// Returns the index of the best region to store the page descriptors.
     /// @return Index of the region, where page descriptors will be stored.
     std::size_t chooseDescRegion();
 
-    /// @brief Reserves the necessary number of pages to store the page descriptors.
+    /// Reserves the necessary number of pages to store the page descriptors.
     /// @return Number of pages, that are used to store the page descriptors.
     std::size_t reserveDescPages();
 
-    /// @brief Checks if the given page is valid.
+    /// Checks if the given page is valid.
     /// @param[in] page             Page to be checked.
-    /// @return True if page is valid, false otherwise.
+    /// @return Flag indicating if the given page is valid.
+    /// @retval true                Page is valid.
+    /// @retval false               Page is invalid.
     bool isValidPage(Page* page);
 
-    /// @brief Returns the RegionInfo, which contains the given address.
+    /// Returns the RegionInfo, which contains the given address.
     /// @param[in] addr             Address for which RegionInfo should be found.
-    /// @return Pointer to RegionInfo containing given address if found, nullptr otherwise.
+    /// @return Result of the search.
+    /// @retval RegionInfo*         Pointer to RegionInfo containing given address if found.
+    /// @retval nullptr             No region contains the given address.
     RegionInfo* getRegion(std::uintptr_t addr);
 
-    /// @brief Calculates index in the groups array, for which group with the given page count should be stored.
+    /// Calculates index in the groups array, for which group with the given page count should be stored.
     /// @param[in] pageCount        Number of pages, for which index should be calculated.
     /// @return Index in the groups array.
     std::size_t groupIdx(std::size_t pageCount);
 
-    /// @brief Initializes given group.
+    /// Initializes given group.
     /// @param[in,out] group        Group to be initialized.
     /// @param[in] groupSize        Size of the initialized group.
     void initGroup(Page* group, std::size_t groupSize);
 
-    /// @brief Clears the given group.
+    /// Clears the given group.
     /// @param[in,out] group        Group to be cleared.
     void clearGroup(Page* group);
 
-    /// @brief Adds given group to the array of free groups.
+    /// Adds given group to the array of free groups.
     /// @param[in,out] group        Group to be added.
     void addGroup(Page* group);
 
-    /// @brief Removes given group from the array of free groups.
+    /// Removes given group from the array of free groups.
     /// @param[in,out] group        Group to be removed.
     void removeGroup(Page* group);
 
-    /// @brief Splits given group into one of given size and second with the remaining size.
+    /// Splits given group into one of given size and second with the remaining size.
     /// @param[in] group            Group to be splitted.
     /// @param[in] size             Target size of the first group.
     /// @returns Tuple with group of demanded size and with the group of the remaining size.
     /// @note If the given group has already the correct size, then second pointer in the tuple is nullptr.
     std::tuple<Page*, Page*> splitGroup(Page* group, std::size_t size);
 
-    /// @brief Joins two given groups into one.
+    /// Joins two given groups into one.
     /// @param[in] firstGroup       First group to be joined.
     /// @param[in] secondGroup      Second group to be joined.
     /// @return Group that is a sum of the two given groups.

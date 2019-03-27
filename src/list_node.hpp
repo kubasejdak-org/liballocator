@@ -37,31 +37,33 @@
 namespace memory {
 
 /// @class ListNode
-/// @brief Represents a node of the generic doubly-linked list.
+/// Represents a node of the generic doubly-linked list.
 template <typename T>
 class ListNode {
 public:
-    /// @brief Default constructor.
+    /// Default constructor.
     ListNode()
     {
         initListNode();
     }
 
-    /// @brief Initializes the node.
+    /// Initializes the node.
     void initListNode()
     {
         m_next = nullptr;
         m_prev = nullptr;
     }
 
-    /// @brief Returns the node from the list.
+    /// Returns the node from the list.
     /// @return Pointer to the next list node.
+    /// @retval T*              Pointer to the next node if exists.
+    /// @retval nullptr         There is no next node.
     T* next()
     {
         return m_next;
     }
 
-    /// @brief Adds current node to the given list.
+    /// Adds current node to the given list.
     /// @param[in,out] list     Pointer to the list, to which node should be added.
     void addToList(T** list)
     {
@@ -77,7 +79,7 @@ public:
         *list = static_cast<T*>(this);
     }
 
-    /// @brief Removes current node from the given list.
+    /// Removes current node from the given list.
     /// @param[in,out] list     Pointer to the list, from which node should be removed.
     void removeFromList(T** list)
     {

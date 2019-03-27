@@ -36,15 +36,17 @@
 
 namespace memory::utils {
 
-/// @brief Checks if the given value is a power of 2.
+/// Checks if the given value is a power of 2.
 /// @param[in] value        Value to be checked.
-/// @return True if value is power of 2, false otherwise.
+/// @return Flag indicating if the given value is a power of 2.
+/// @retval true            Value is power of 2.
+/// @retval false           Value is not a power of 2.
 inline bool isPowerOf2(std::size_t value)
 {
     return (value > 0 && ((value & (value - 1)) == 0));
 }
 
-/// @brief Returns the given value, that is rounded up to the closest power of 2.
+/// Returns the given value, that is rounded up to the closest power of 2.
 /// @param[in] value        Value to be rounded.
 /// @return Value rounded up to the closest power of 2.
 inline std::size_t roundPowerOf2(std::size_t value)
@@ -62,7 +64,7 @@ inline std::size_t roundPowerOf2(std::size_t value)
     return result;
 }
 
-/// @brief Returns the given pointer moved by given number of bytes.
+/// Returns the given pointer moved by given number of bytes.
 /// @param[in] ptr          Pointer to be moved.
 /// @param[in] step         Number of bytes to move the pointer.
 /// @return Value of the moved pointer.
