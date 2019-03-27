@@ -47,8 +47,8 @@
 using namespace memory;
 
 struct TestNode : public ListNode<TestNode> {
-public:
     TestNode() = default;
+    // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
     int value{0};
 };
 
