@@ -39,6 +39,7 @@
 
 // Make access to private members for testing.
 // clang-format off
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define private     public
 // clang-format on
 
@@ -58,8 +59,8 @@ TEST_CASE("Zone is properly initialized", "[unit][zone]")
     std::size_t pageSize = 256;
     auto memory = test::alignedAlloc(pageSize, pageSize);
 
-    std::byte buffer[sizeof(Page)];
-    auto* page = reinterpret_cast<Page*>(buffer);
+    std::array<std::byte, sizeof(Page)> buffer{};
+    auto* page = reinterpret_cast<Page*>(buffer.data());
     page->setAddress(std::uintptr_t(memory.get()));
 
     Zone zone;
@@ -111,8 +112,8 @@ TEST_CASE("Zone properly allocates chunks", "[unit][zone]")
     std::size_t pageSize = 256;
     auto memory = test::alignedAlloc(pageSize, pageSize);
 
-    std::byte buffer[sizeof(Page)];
-    auto* page = reinterpret_cast<Page*>(buffer);
+    std::array<std::byte, sizeof(Page)> buffer{};
+    auto* page = reinterpret_cast<Page*>(buffer.data());
     page->setAddress(std::uintptr_t(memory.get()));
 
     Zone zone;
@@ -138,8 +139,8 @@ TEST_CASE("Zone properly deallocates chunks", "[unit][zone]")
     constexpr std::size_t pageSize = 256;
     auto memory = test::alignedAlloc(pageSize, pageSize);
 
-    std::byte buffer[sizeof(Page)];
-    auto* page = reinterpret_cast<Page*>(buffer);
+    std::array<std::byte, sizeof(Page)> buffer{};
+    auto* page = reinterpret_cast<Page*>(buffer.data());
     page->setAddress(std::uintptr_t(memory.get()));
 
     Zone zone;
@@ -180,8 +181,8 @@ TEST_CASE("Zone properly checks if given zone is valid", "[unit][zone]")
     constexpr std::size_t pageSize = 256;
     auto memory = test::alignedAlloc(pageSize, pageSize);
 
-    std::byte buffer[sizeof(Page)];
-    auto* page = reinterpret_cast<Page*>(buffer);
+    std::array<std::byte, sizeof(Page)> buffer{};
+    auto* page = reinterpret_cast<Page*>(buffer.data());
     page->setAddress(std::uintptr_t(memory.get()));
 
     Zone zone;

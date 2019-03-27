@@ -36,6 +36,8 @@
 
 #include <allocator/allocator.hpp>
 
+#include <array>
+
 namespace {
 
 memory::PageAllocator pageAllocator; // NOLINT(fuchsia-statically-constructed-objects)
@@ -63,13 +65,13 @@ bool init(Region* regions, std::size_t pageSize)
 bool init(std::uintptr_t start, std::uintptr_t end, std::size_t pageSize)
 {
     // clang-format off
-    Region regions[] = {
-        {.address = start, .size = end - start},
-        {.address = 0,     .size = 0}
-    };
+    std::array<Region, 2> regions = {{
+        {start, end - start},
+        {0,     0}
+    }};
     // clang-format on
 
-    return init(regions, pageSize);
+    return init(regions.data(), pageSize);
 }
 
 void clear()

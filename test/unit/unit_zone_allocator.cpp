@@ -41,6 +41,7 @@
 
 // Make access to private members for testing.
 // clang-format off
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define private     public
 // clang-format on
 
@@ -90,13 +91,13 @@ TEST_CASE("ZoneAllocator is properly initialized", "[unit][zone_allocator]")
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    Region regions[] = {
+    std::array<Region, 2> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
-    };
+    }};
     // clang-format on
 
-    REQUIRE(pageAllocator.init(regions, pageSize));
+    REQUIRE(pageAllocator.init(regions.data(), pageSize));
 
     ZoneAllocator zoneAllocator;
 
@@ -162,13 +163,13 @@ TEST_CASE("ZoneAllocator stats are properly initialized", "[unit][zone_allocator
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    Region regions[] = {
+    std::array<Region, 2> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
-    };
+    }};
     // clang-format on
 
-    REQUIRE(pageAllocator.init(regions, pageSize));
+    REQUIRE(pageAllocator.init(regions.data(), pageSize));
 
     ZoneAllocator zoneAllocator;
     REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
@@ -241,13 +242,13 @@ TEST_CASE("Zone is properly initialized by the zone allocator", "[unit][zone_all
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    Region regions[] = {
+    std::array<Region, 2> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
-    };
+    }};
     // clang-format on
 
-    REQUIRE(pageAllocator.init(regions, pageSize));
+    REQUIRE(pageAllocator.init(regions.data(), pageSize));
 
     ZoneAllocator zoneAllocator;
     REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
@@ -287,13 +288,13 @@ TEST_CASE("Zone is properly cleared by the zone allocator", "[unit][zone_allocat
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    Region regions[] = {
+    std::array<Region, 2> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
-    };
+    }};
     // clang-format on
 
-    REQUIRE(pageAllocator.init(regions, pageSize));
+    REQUIRE(pageAllocator.init(regions.data(), pageSize));
 
     ZoneAllocator zoneAllocator;
     REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
@@ -401,13 +402,13 @@ TEST_CASE("Zone allocator properly finds the zones", "[unit][zone_allocator]")
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    Region regions[] = {
+    std::array<Region, 2> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
-    };
+    }};
     // clang-format on
 
-    REQUIRE(pageAllocator.init(regions, pageSize));
+    REQUIRE(pageAllocator.init(regions.data(), pageSize));
 
     ZoneAllocator zoneAllocator;
     REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
@@ -450,13 +451,13 @@ TEST_CASE("Zone allocator properly checks if a zone should be allocated", "[unit
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    Region regions[] = {
+    std::array<Region, 2> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
-    };
+    }};
     // clang-format on
 
-    REQUIRE(pageAllocator.init(regions, pageSize));
+    REQUIRE(pageAllocator.init(regions.data(), pageSize));
 
     ZoneAllocator zoneAllocator;
     REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
@@ -525,13 +526,13 @@ TEST_CASE("Zone allocator properly finds free zones", "[unit][zone_allocator]")
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    Region regions[] = {
+    std::array<Region, 2> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
-    };
+    }};
     // clang-format on
 
-    REQUIRE(pageAllocator.init(regions, pageSize));
+    REQUIRE(pageAllocator.init(regions.data(), pageSize));
 
     ZoneAllocator zoneAllocator;
     REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
@@ -590,13 +591,13 @@ TEST_CASE("Zone allocator properly allocates chunks", "[unit][zone_allocator]")
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    Region regions[] = {
+    std::array<Region, 2> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
-    };
+    }};
     // clang-format on
 
-    REQUIRE(pageAllocator.init(regions, pageSize));
+    REQUIRE(pageAllocator.init(regions.data(), pageSize));
 
     ZoneAllocator zoneAllocator;
     REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
@@ -658,13 +659,13 @@ TEST_CASE("Zone allocator properly deallocates chunks", "[unit][zone_allocator]"
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    Region regions[] = {
+    std::array<Region, 2> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
-    };
+    }};
     // clang-format on
 
-    REQUIRE(pageAllocator.init(regions, pageSize));
+    REQUIRE(pageAllocator.init(regions.data(), pageSize));
 
     ZoneAllocator zoneAllocator;
     REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
@@ -814,13 +815,13 @@ TEST_CASE("Zone allocator properly allocates zones", "[unit][zone_allocator]")
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    Region regions[] = {
+    std::array<Region, 2> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
-    };
+    }};
     // clang-format on
 
-    REQUIRE(pageAllocator.init(regions, pageSize));
+    REQUIRE(pageAllocator.init(regions.data(), pageSize));
 
     ZoneAllocator zoneAllocator;
     REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
@@ -932,13 +933,13 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    Region regions[] = {
+    std::array<Region, 2> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
-    };
+    }};
     // clang-format on
 
-    REQUIRE(pageAllocator.init(regions, pageSize));
+    REQUIRE(pageAllocator.init(regions.data(), pageSize));
 
     ZoneAllocator zoneAllocator;
     REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
@@ -1216,13 +1217,13 @@ TEST_CASE("Zone allocator properly releases user memory", "[unit][zone_allocator
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    Region regions[] = {
+    std::array<Region, 2> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
-    };
+    }};
     // clang-format on
 
-    REQUIRE(pageAllocator.init(regions, pageSize));
+    REQUIRE(pageAllocator.init(regions.data(), pageSize));
 
     ZoneAllocator zoneAllocator;
     REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));

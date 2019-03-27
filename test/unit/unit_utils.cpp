@@ -38,6 +38,7 @@
 
 // Make access to private members for testing.
 // clang-format off
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define private     public
 // clang-format on
 

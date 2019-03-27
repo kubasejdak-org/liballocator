@@ -37,6 +37,7 @@
 
 // Make access to private members for testing.
 // clang-format off
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define private     public
 // clang-format on
 
@@ -52,8 +53,8 @@ TEST_CASE("Page structure is naturally aligned", "[unit][page]")
 
 TEST_CASE("Page is properly initialized", "[unit][page]")
 {
-    std::byte buffer[sizeof(Page)];
-    auto* page = reinterpret_cast<Page*>(buffer);
+    std::array<std::byte, sizeof(Page)> buffer{};
+    auto* page = reinterpret_cast<Page*>(buffer.data());
 
     page->init();
     REQUIRE(page->m_next == nullptr);
@@ -66,11 +67,11 @@ TEST_CASE("Page is properly initialized", "[unit][page]")
 TEST_CASE("Accessing siblings works as expected", "[unit][page]")
 {
     constexpr int pageCount = 3;
-    std::byte buffer[pageCount * sizeof(Page)];
+    std::array<std::byte, pageCount * sizeof(Page)> buffer{};
     std::array<Page*, pageCount> page{};
 
     for (int i = 0; i < pageCount; ++i) {
-        page.at(i) = reinterpret_cast<Page*>(buffer) + i;
+        page.at(i) = reinterpret_cast<Page*>(buffer.data()) + i;
         page.at(i)->init();
         page.at(i)->setAddress(std::uintptr_t(i));
     }

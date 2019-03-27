@@ -41,6 +41,7 @@
 
 // Make access to private members for testing.
 // clang-format off
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define private     public
 // clang-format on
 
@@ -65,13 +66,13 @@ TEST_CASE("ZoneAllocator integration tests (long-term)", "[integration][zone_all
     auto memory = test::alignedAlloc(pageSize, size);
 
     // clang-format off
-    Region regions[] = {
+    std::array<Region, 2> regions = {{
         {std::uintptr_t(memory.get()), size},
         {0,                            0}
-    };
+    }};
     // clang-format on
 
-    REQUIRE(pageAllocator.init(regions, pageSize));
+    REQUIRE(pageAllocator.init(regions.data(), pageSize));
 
     ZoneAllocator zoneAllocator;
     REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));

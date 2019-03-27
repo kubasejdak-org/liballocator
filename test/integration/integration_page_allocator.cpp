@@ -34,12 +34,14 @@
 
 #include <test_utils.hpp>
 
+#include <array>
 #include <chrono>
 #include <cstddef>
 #include <random>
 
 // Make access to private members for testing.
 // clang-format off
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define private     public
 // clang-format on
 
@@ -54,12 +56,12 @@ TEST_CASE("PageAllocator integration tests (long-term)", "[integration][page_all
     constexpr auto testDuration = 30min;
     constexpr int allocationsCount = 100;
 
-    std::size_t pageSize = 256;
+    constexpr std::size_t pageSize = 256;
     PageAllocator pageAllocator;
 
-    std::size_t pagesCount1 = 535;
-    std::size_t pagesCount2 = 87;
-    std::size_t pagesCount3 = 4;
+    constexpr std::size_t pagesCount1 = 535;
+    constexpr std::size_t pagesCount2 = 87;
+    constexpr std::size_t pagesCount3 = 4;
     auto size1 = pageSize * pagesCount1;
     auto size2 = pageSize * pagesCount2;
     auto size3 = pageSize * pagesCount3;
@@ -68,15 +70,15 @@ TEST_CASE("PageAllocator integration tests (long-term)", "[integration][page_all
     auto memory3 = test::alignedAlloc(pageSize, size3);
 
     // clang-format off
-    Region regions[] = {
+    std::array<Region, 4> regions = {{
         {std::uintptr_t(memory1.get()), size1},
         {std::uintptr_t(memory2.get()), size2},
         {std::uintptr_t(memory3.get()), size3},
         {0,                             0}
-    };
+    }};
     // clang-format on
 
-    REQUIRE(pageAllocator.init(regions, pageSize));
+    REQUIRE(pageAllocator.init(regions.data(), pageSize));
     auto freePagesCount = pageAllocator.m_freePagesCount;
     auto maxAllocSize = freePagesCount / 4;
 
