@@ -1,10 +1,11 @@
 <map id="memory::ZoneAllocator" name="memory::ZoneAllocator">
-<area shape="rect" id="node2" href="$classmemory_1_1_zone.html" title="Represents a memory zone. Each zone consists of the memory chunks of equal size. " alt="" coords="397,192,504,217"/>
-<area shape="rect" id="node3" href="$classmemory_1_1_list_node.html" title="memory::ListNode\&lt; Zone \&gt;" alt="" coords="358,292,541,317"/>
-<area shape="rect" id="node4" href="$classmemory_1_1_page.html" title="Represents a physical memory page. " alt="" coords="205,92,313,117"/>
-<area shape="rect" id="node5" href="$classmemory_1_1_list_node.html" title="memory::ListNode\&lt; Page \&gt;" alt="" coords="189,192,373,217"/>
-<area shape="rect" id="node9" href="$classmemory_1_1_page_allocator.html" title="Represents an allocator of physical pages. " alt="" coords="5,192,165,217"/>
-<area shape="rect" id="node6" href="$unionmemory_1_1_page_1_1_flags.html" title="Represents a packed set of flags used internally by pages. " alt="" coords="185,5,333,31"/>
-<area shape="rect" id="node7" href="$classmemory_1_1_chunk.html" title="Represents a memory chunk. Chunks are part of the zone. " alt="" coords="514,92,630,117"/>
-<area shape="rect" id="node8" href="$classmemory_1_1_list_node.html" title="memory::ListNode\&lt; Chunk \&gt;" alt="" coords="536,192,727,217"/>
+<area shape="rect" id="node1" title=" " alt="" coords="148,292,308,317"/>
+<area shape="rect" id="node2" href="$classmemory_1_1_zone.html" title=" " alt="" coords="397,192,504,217"/>
+<area shape="rect" id="node3" href="$classmemory_1_1_list_node.html" title=" " alt="" coords="358,292,541,317"/>
+<area shape="rect" id="node4" href="$classmemory_1_1_page.html" title=" " alt="" coords="205,92,313,117"/>
+<area shape="rect" id="node5" href="$classmemory_1_1_list_node.html" title=" " alt="" coords="189,192,373,217"/>
+<area shape="rect" id="node9" href="$classmemory_1_1_page_allocator.html" title=" " alt="" coords="5,192,165,217"/>
+<area shape="rect" id="node6" href="$unionmemory_1_1_page_1_1_flags.html" title=" " alt="" coords="185,5,333,31"/>
+<area shape="rect" id="node7" href="$classmemory_1_1_chunk.html" title=" " alt="" coords="514,92,630,117"/>
+<area shape="rect" id="node8" href="$classmemory_1_1_list_node.html" title=" " alt="" coords="536,192,727,217"/>
 </map>
