@@ -76,11 +76,11 @@ TEST_CASE("Adding to empty list", "[unit][list_node]")
 
 TEST_CASE("Adding to non-empty list", "[unit][list_node]")
 {
-    constexpr int nodeCount = 5;
-    std::array<TestNode, nodeCount> node{};
+    constexpr int cNodeCount = 5;
+    std::array<TestNode, cNodeCount> node{};
 
     TestNode* list = nullptr;
-    for (int i = 0; i < nodeCount; ++i) {
+    for (int i = 0; i < cNodeCount; ++i) {
         node.at(i).initListNode();
         node.at(i).value = i;
         node.at(i).addToList(&list);
@@ -88,11 +88,11 @@ TEST_CASE("Adding to non-empty list", "[unit][list_node]")
 
     SECTION("All nodes are in the list")
     {
-        std::array<bool, nodeCount> nodePresent{};
+        std::array<bool, cNodeCount> nodePresent{};
 
         for (auto* it = list; it != nullptr; it = it->next()) {
             auto idx = it->value;
-            REQUIRE(idx < nodeCount);
+            REQUIRE(idx < cNodeCount);
             nodePresent.at(idx) = true;
         }
 
@@ -102,7 +102,7 @@ TEST_CASE("Adding to non-empty list", "[unit][list_node]")
 
     SECTION("All nodes are in correct order")
     {
-        int idx = nodeCount - 1;
+        int idx = cNodeCount - 1;
         for (auto* it = list; it != nullptr; it = it->next(), --idx)
             REQUIRE(it->value == node.at(idx).value);
     }
@@ -110,11 +110,11 @@ TEST_CASE("Adding to non-empty list", "[unit][list_node]")
 
 TEST_CASE("Removing from list with 5 nodes", "[unit][list_node]")
 {
-    constexpr int nodeCount = 5;
-    std::array<TestNode, nodeCount> node{};
+    constexpr int cNodeCount = 5;
+    std::array<TestNode, cNodeCount> node{};
 
     TestNode* list = nullptr;
-    for (int i = 0; i < nodeCount; ++i) {
+    for (int i = 0; i < cNodeCount; ++i) {
         node.at(i).initListNode();
         node.at(i).value = i;
         node.at(i).addToList(&list);
@@ -128,7 +128,7 @@ TEST_CASE("Removing from list with 5 nodes", "[unit][list_node]")
         REQUIRE(node.at(idx).m_next == nullptr);
         REQUIRE(node.at(idx).m_prev == nullptr);
 
-        int i = nodeCount - 1;
+        int i = cNodeCount - 1;
         for (auto* it = list; it != nullptr; it = it->next(), --i) {
             if (i == idx)
                 --i;
@@ -145,7 +145,7 @@ TEST_CASE("Removing from list with 5 nodes", "[unit][list_node]")
         REQUIRE(node.at(idx).m_next == nullptr);
         REQUIRE(node.at(idx).m_prev == nullptr);
 
-        int i = nodeCount - 1;
+        int i = cNodeCount - 1;
         for (auto* it = list; it != nullptr; it = it->next(), --i) {
             if (i == idx)
                 --i;
@@ -162,7 +162,7 @@ TEST_CASE("Removing from list with 5 nodes", "[unit][list_node]")
         REQUIRE(node.at(idx).m_next == nullptr);
         REQUIRE(node.at(idx).m_prev == nullptr);
 
-        int i = nodeCount - 1;
+        int i = cNodeCount - 1;
         for (auto* it = list; it != nullptr; it = it->next(), --i) {
             if (i == idx)
                 --i;
@@ -173,7 +173,7 @@ TEST_CASE("Removing from list with 5 nodes", "[unit][list_node]")
 
     SECTION("Removing all nodes starting from first")
     {
-        for (int i = nodeCount - 1; i >= 0; --i) {
+        for (int i = cNodeCount - 1; i >= 0; --i) {
             node.at(i).removeFromList(&list);
             REQUIRE(node.at(i).value == i);
             REQUIRE(node.at(i).m_next == nullptr);
@@ -185,7 +185,7 @@ TEST_CASE("Removing from list with 5 nodes", "[unit][list_node]")
 
     SECTION("Removing all nodes starting from last")
     {
-        for (int i = 0; i < nodeCount; ++i) {
+        for (int i = 0; i < cNodeCount; ++i) {
             node.at(i).removeFromList(&list);
             REQUIRE(node.at(i).value == i);
             REQUIRE(node.at(i).m_next == nullptr);

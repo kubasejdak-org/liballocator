@@ -54,34 +54,34 @@ TEST_CASE("Zone structure is naturally aligned", "[unit][zone]")
 
 TEST_CASE("Zone is properly initialized", "[unit][zone]")
 {
-    constexpr std::size_t pageSize = 256;
-    auto memory = test::alignedAlloc(pageSize, pageSize);
+    constexpr std::size_t cPageSize = 256;
+    auto memory = test::alignedAlloc(cPageSize, cPageSize);
 
     std::array<std::byte, sizeof(Page)> buffer{};
     auto* page = reinterpret_cast<Page*>(buffer.data());
     page->setAddress(std::uintptr_t(memory.get()));
 
     Zone zone;
-    constexpr std::size_t chunkSize = 64;
+    constexpr std::size_t cChunkSize = 64;
 
-    zone.init(page, pageSize, chunkSize);
+    zone.init(page, cPageSize, cChunkSize);
     REQUIRE(zone.m_next == nullptr);
     REQUIRE(zone.m_prev == nullptr);
     REQUIRE(zone.m_page == page);
-    REQUIRE(zone.m_chunkSize == chunkSize);
-    REQUIRE(zone.m_chunksCount == (pageSize / chunkSize));
-    REQUIRE(zone.m_freeChunksCount == (pageSize / chunkSize));
-    std::uintptr_t lastChunkAddr = page->address() + pageSize - chunkSize;
+    REQUIRE(zone.m_chunkSize == cChunkSize);
+    REQUIRE(zone.m_chunksCount == (cPageSize / cChunkSize));
+    REQUIRE(zone.m_freeChunksCount == (cPageSize / cChunkSize));
+    std::uintptr_t lastChunkAddr = page->address() + cPageSize - cChunkSize;
     REQUIRE(zone.m_freeChunks == reinterpret_cast<Chunk*>(lastChunkAddr));
 
     REQUIRE(zone.page() == page);
-    REQUIRE(zone.chunkSize() == chunkSize);
-    REQUIRE(zone.chunksCount() == (pageSize / chunkSize));
-    REQUIRE(zone.freeChunksCount() == (pageSize / chunkSize));
+    REQUIRE(zone.chunkSize() == cChunkSize);
+    REQUIRE(zone.chunksCount() == (cPageSize / cChunkSize));
+    REQUIRE(zone.freeChunksCount() == (cPageSize / cChunkSize));
 
     auto* chunk = reinterpret_cast<Chunk*>(zone.page()->address());
     for (std::size_t i = 0; i < zone.chunksCount(); ++i) {
-        REQUIRE(std::uintptr_t(chunk) == zone.page()->address() + i * chunkSize);
+        REQUIRE(std::uintptr_t(chunk) == zone.page()->address() + i * cChunkSize);
         chunk = chunk->m_prev;
     }
 }
@@ -107,16 +107,16 @@ TEST_CASE("Zone is properly cleared", "[unit][zone]")
 
 TEST_CASE("Zone properly allocates chunks", "[unit][zone]")
 {
-    constexpr std::size_t pageSize = 256;
-    auto memory = test::alignedAlloc(pageSize, pageSize);
+    constexpr std::size_t cPageSize = 256;
+    auto memory = test::alignedAlloc(cPageSize, cPageSize);
 
     std::array<std::byte, sizeof(Page)> buffer{};
     auto* page = reinterpret_cast<Page*>(buffer.data());
     page->setAddress(std::uintptr_t(memory.get()));
 
     Zone zone;
-    constexpr std::size_t chunkSize = 64;
-    zone.init(page, pageSize, chunkSize);
+    constexpr std::size_t cChunkSize = 64;
+    zone.init(page, cPageSize, cChunkSize);
 
     std::size_t chunksCount = zone.chunksCount();
     std::size_t freeChunksCount = zone.chunksCount();
@@ -124,7 +124,7 @@ TEST_CASE("Zone properly allocates chunks", "[unit][zone]")
         --freeChunksCount;
         auto* chunk = zone.takeChunk();
         REQUIRE(chunk);
-        REQUIRE(std::uintptr_t(chunk) == zone.page()->address() + pageSize - chunkSize * (1 + i));
+        REQUIRE(std::uintptr_t(chunk) == zone.page()->address() + cPageSize - cChunkSize * (1 + i));
         REQUIRE(zone.chunksCount() == chunksCount);
         REQUIRE(zone.freeChunksCount() == freeChunksCount);
     }
@@ -134,18 +134,18 @@ TEST_CASE("Zone properly allocates chunks", "[unit][zone]")
 
 TEST_CASE("Zone properly deallocates chunks", "[unit][zone]")
 {
-    constexpr std::size_t pageSize = 256;
-    auto memory = test::alignedAlloc(pageSize, pageSize);
+    constexpr std::size_t cPageSize = 256;
+    auto memory = test::alignedAlloc(cPageSize, cPageSize);
 
     std::array<std::byte, sizeof(Page)> buffer{};
     auto* page = reinterpret_cast<Page*>(buffer.data());
     page->setAddress(std::uintptr_t(memory.get()));
 
     Zone zone;
-    constexpr std::size_t chunkSize = 64;
-    zone.init(page, pageSize, chunkSize);
+    constexpr std::size_t cChunkSize = 64;
+    zone.init(page, cPageSize, cChunkSize);
 
-    std::array<Chunk*, (pageSize / chunkSize)> chunks{};
+    std::array<Chunk*, (cPageSize / cChunkSize)> chunks{};
 
     for (std::size_t i = 0; i < zone.chunksCount(); ++i)
         chunks.at(i) = zone.takeChunk();
@@ -170,24 +170,24 @@ TEST_CASE("Zone properly deallocates chunks", "[unit][zone]")
         zone.giveChunk(chunks[1]);
     }
 
-    REQUIRE(zone.chunksCount() == (pageSize / chunkSize));
-    REQUIRE(zone.freeChunksCount() == (pageSize / chunkSize));
+    REQUIRE(zone.chunksCount() == (cPageSize / cChunkSize));
+    REQUIRE(zone.freeChunksCount() == (cPageSize / cChunkSize));
 }
 
 TEST_CASE("Zone properly checks if given zone is valid", "[unit][zone]")
 {
-    constexpr std::size_t pageSize = 256;
-    auto memory = test::alignedAlloc(pageSize, pageSize);
+    constexpr std::size_t cPageSize = 256;
+    auto memory = test::alignedAlloc(cPageSize, cPageSize);
 
     std::array<std::byte, sizeof(Page)> buffer{};
     auto* page = reinterpret_cast<Page*>(buffer.data());
     page->setAddress(std::uintptr_t(memory.get()));
 
     Zone zone;
-    constexpr std::size_t chunkSize = 64;
-    zone.init(page, pageSize, chunkSize);
+    constexpr std::size_t cChunkSize = 64;
+    zone.init(page, cPageSize, cChunkSize);
 
-    std::array<Chunk*, (pageSize / chunkSize)> chunks{};
+    std::array<Chunk*, (cPageSize / cChunkSize)> chunks{};
 
     for (std::size_t i = 0; i < zone.chunksCount(); ++i)
         chunks.at(i) = zone.takeChunk();
@@ -200,7 +200,7 @@ TEST_CASE("Zone properly checks if given zone is valid", "[unit][zone]")
 
     SECTION("Check address from the middle of the valid chunk")
     {
-        std::uintptr_t addr = std::uintptr_t(chunks[0]) + chunkSize / 2;
+        std::uintptr_t addr = std::uintptr_t(chunks[0]) + cChunkSize / 2;
         REQUIRE(!zone.isValidChunk(reinterpret_cast<Chunk*>(addr)));
     }
 
@@ -218,7 +218,7 @@ TEST_CASE("Zone properly checks if given zone is valid", "[unit][zone]")
 
     SECTION("Check address higher than the zone end")
     {
-        std::uintptr_t addr = zone.page()->address() + pageSize + 1;
+        std::uintptr_t addr = zone.page()->address() + cPageSize + 1;
         REQUIRE(!zone.isValidChunk(reinterpret_cast<Chunk*>(addr)));
     }
 

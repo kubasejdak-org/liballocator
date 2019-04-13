@@ -53,15 +53,15 @@ using namespace memory;
 TEST_CASE("ZoneAllocator integration tests (long-term)", "[integration][zone_allocator]")
 {
     using namespace std::chrono_literals;
-    constexpr auto testDuration = 30min;
-    constexpr int allocationsCount = 100;
+    constexpr auto cTestDuration = 30min;
+    constexpr int cAllocationsCount = 100;
 
-    constexpr std::size_t pageSize = 256;
-    constexpr std::size_t pagesCount = 256;
+    constexpr std::size_t cPageSize = 256;
+    constexpr std::size_t cPagesCount = 256;
     PageAllocator pageAllocator;
 
-    auto size = pageSize * pagesCount;
-    auto memory = test::alignedAlloc(pageSize, size);
+    auto size = cPageSize * cPagesCount;
+    auto memory = test::alignedAlloc(cPageSize, size);
 
     // clang-format off
     std::array<Region, 2> regions = {{
@@ -70,22 +70,22 @@ TEST_CASE("ZoneAllocator integration tests (long-term)", "[integration][zone_all
     }};
     // clang-format on
 
-    REQUIRE(pageAllocator.init(regions.data(), pageSize));
+    REQUIRE(pageAllocator.init(regions.data(), cPageSize));
 
     ZoneAllocator zoneAllocator;
-    REQUIRE(zoneAllocator.init(&pageAllocator, pageSize));
+    REQUIRE(zoneAllocator.init(&pageAllocator, cPageSize));
 
     auto freePagesCount = pageAllocator.m_freePagesCount;
-    auto maxAllocSize = 2 * pageSize;
+    auto maxAllocSize = 2 * cPageSize;
 
     // Initialize random number generator.
     std::random_device randomDevice;
     std::mt19937 randomGenerator(randomDevice());
     std::uniform_int_distribution<std::size_t> distribution(0, maxAllocSize);
 
-    std::array<void*, allocationsCount> ptrs{};
+    std::array<void*, cAllocationsCount> ptrs{};
 
-    for (auto start = test::currentTime(); !test::timeElapsed(start, testDuration);) {
+    for (auto start = test::currentTime(); !test::timeElapsed(start, cTestDuration);) {
         ptrs.fill(nullptr);
 
         // Allocate memory.
@@ -110,7 +110,7 @@ TEST_CASE("ZoneAllocator integration tests (long-term)", "[integration][zone_all
 
         for (const auto& zone : zoneAllocator.m_zones) {
             if (zone.head == &zoneAllocator.m_initialZone) {
-                REQUIRE(zone.freeChunksCount == (pageSize / zoneAllocator.m_zoneDescChunkSize));
+                REQUIRE(zone.freeChunksCount == (cPageSize / zoneAllocator.m_zoneDescChunkSize));
                 continue;
             }
 
@@ -119,9 +119,9 @@ TEST_CASE("ZoneAllocator integration tests (long-term)", "[integration][zone_all
         }
 
         auto stats = zoneAllocator.getStats();
-        REQUIRE(stats.usedMemorySize == pageSize);
+        REQUIRE(stats.usedMemorySize == cPageSize);
         REQUIRE(stats.reservedMemorySize == 0);
-        REQUIRE(stats.freeMemorySize == pageSize);
+        REQUIRE(stats.freeMemorySize == cPageSize);
         REQUIRE(stats.allocatedMemorySize == 0);
     }
 }

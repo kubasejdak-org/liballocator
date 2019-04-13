@@ -50,8 +50,8 @@ TEST_CASE("Values are correctly checked if they are a power of 2", "[unit][utils
 {
     double idx = 0.0;
 
-    constexpr std::size_t iterations = 1000000;
-    for (std::size_t i = 0; i < iterations; ++i) {
+    constexpr std::size_t cIterations = 1000000;
+    for (std::size_t i = 0; i < cIterations; ++i) {
         bool isPowerOf2 = utils::isPowerOf2(i);
         REQUIRE(isPowerOf2 == (std::log2(double(i)) == idx));
 
@@ -64,8 +64,8 @@ TEST_CASE("Values are correctly rounded to the closest power of 2", "[unit][util
 {
     double idx = 0.0;
 
-    constexpr std::size_t iterations = 1000000;
-    for (std::size_t i = 1; i < iterations; ++i) {
+    constexpr std::size_t cIterations = 1000000;
+    for (std::size_t i = 1; i < cIterations; ++i) {
         double requiredValue = std::pow(2.0, idx); // NOLINT
         auto value = utils::roundPowerOf2(i);
         REQUIRE(value == requiredValue);
@@ -77,11 +77,11 @@ TEST_CASE("Values are correctly rounded to the closest power of 2", "[unit][util
 
 TEST_CASE("Pointers are correctly moved", "[unit][utils]")
 {
-    constexpr int memorySize = 64;
+    constexpr int cMemorySize = 64;
 
     SECTION("Pointer has the type 'char'")
     {
-        std::array<std::byte, memorySize> memory{};
+        std::array<std::byte, cMemorySize> memory{};
 
         for (std::size_t i = 0; i < memory.size(); ++i) {
             auto* ptr = reinterpret_cast<char*>(&memory[0]);
@@ -91,7 +91,7 @@ TEST_CASE("Pointers are correctly moved", "[unit][utils]")
 
     SECTION("Pointer has the type 'long double'")
     {
-        std::array<std::byte, memorySize> memory{};
+        std::array<std::byte, cMemorySize> memory{};
 
         for (std::size_t i = 0; i < memory.size(); ++i) {
             auto* ptr = reinterpret_cast<long double*>(&memory[0]);
@@ -101,7 +101,7 @@ TEST_CASE("Pointers are correctly moved", "[unit][utils]")
 
     SECTION("Pointer has the type 'Chunk'")
     {
-        std::array<std::byte, memorySize> memory{};
+        std::array<std::byte, cMemorySize> memory{};
 
         for (std::size_t i = 0; i < memory.size(); ++i) {
             auto* ptr = reinterpret_cast<Chunk*>(&memory[0]);

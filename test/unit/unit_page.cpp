@@ -66,11 +66,11 @@ TEST_CASE("Page is properly initialized", "[unit][page]")
 
 TEST_CASE("Accessing siblings works as expected", "[unit][page]")
 {
-    constexpr int pageCount = 3;
-    std::array<std::byte, pageCount * sizeof(Page)> buffer{};
-    std::array<Page*, pageCount> page{};
+    constexpr int cPageCount = 3;
+    std::array<std::byte, cPageCount * sizeof(Page)> buffer{};
+    std::array<Page*, cPageCount> page{};
 
-    for (int i = 0; i < pageCount; ++i) {
+    for (int i = 0; i < cPageCount; ++i) {
         page.at(i) = reinterpret_cast<Page*>(buffer.data()) + i;
         page.at(i)->init();
         page.at(i)->setAddress(std::uintptr_t(i));

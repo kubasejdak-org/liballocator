@@ -67,16 +67,16 @@ TEST_CASE("Allocator is properly cleared", "[unit][allocator]")
 
 TEST_CASE("Allocator is properly initialized", "[unit][allocator]")
 {
-    constexpr std::size_t pageSize = 256;
-    constexpr std::size_t pagesCount1 = 535;
-    constexpr std::size_t pagesCount2 = 87;
-    constexpr std::size_t pagesCount3 = 4;
-    auto size1 = pageSize * pagesCount1;
-    auto size2 = pageSize * pagesCount2;
-    auto size3 = pageSize * pagesCount3;
-    auto memory1 = test::alignedAlloc(pageSize, size1);
-    auto memory2 = test::alignedAlloc(pageSize, size2);
-    auto memory3 = test::alignedAlloc(pageSize, size3);
+    constexpr std::size_t cPageSize = 256;
+    constexpr std::size_t cPagesCount1 = 535;
+    constexpr std::size_t cPagesCount2 = 87;
+    constexpr std::size_t cPagesCount3 = 4;
+    auto size1 = cPageSize * cPagesCount1;
+    auto size2 = cPageSize * cPagesCount2;
+    auto size3 = cPageSize * cPagesCount3;
+    auto memory1 = test::alignedAlloc(cPageSize, size1);
+    auto memory2 = test::alignedAlloc(cPageSize, size2);
+    auto memory3 = test::alignedAlloc(cPageSize, size3);
 
     SECTION("Initialize with multiple memory regions")
     {
@@ -89,11 +89,11 @@ TEST_CASE("Allocator is properly initialized", "[unit][allocator]")
         }};
         // clang-format on
 
-        REQUIRE(allocator::init(regions.data(), pageSize));
+        REQUIRE(allocator::init(regions.data(), cPageSize));
 
         auto stats = allocator::getStats();
         REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
-        REQUIRE(stats.reservedMemorySize == 79 * pageSize);
+        REQUIRE(stats.reservedMemorySize == 79 * cPageSize);
         REQUIRE(stats.userMemorySize == (size1 + size2 + size3 - stats.reservedMemorySize));
         REQUIRE(stats.allocatedMemorySize == 0);
         REQUIRE(stats.freeMemorySize == stats.userMemorySize);
@@ -101,11 +101,11 @@ TEST_CASE("Allocator is properly initialized", "[unit][allocator]")
 
     SECTION("Initialize with single memory region")
     {
-        REQUIRE(allocator::init(std::uintptr_t(memory1.get()), std::uintptr_t(memory1.get() + size1), pageSize));
+        REQUIRE(allocator::init(std::uintptr_t(memory1.get()), std::uintptr_t(memory1.get() + size1), cPageSize));
 
         auto stats = allocator::getStats();
         REQUIRE(stats.totalMemorySize == size1);
-        REQUIRE(stats.reservedMemorySize == 67 * pageSize);
+        REQUIRE(stats.reservedMemorySize == 67 * cPageSize);
         REQUIRE(stats.userMemorySize == (size1 - stats.reservedMemorySize));
         REQUIRE(stats.allocatedMemorySize == 0);
         REQUIRE(stats.freeMemorySize == stats.userMemorySize);
@@ -113,19 +113,19 @@ TEST_CASE("Allocator is properly initialized", "[unit][allocator]")
 
     SECTION("Too small number of pages in each region")
     {
-        auto size = pageSize / 2;
-        auto memory4 = test::alignedAlloc(pageSize, size);
-        auto memory5 = test::alignedAlloc(pageSize, size);
-        auto memory6 = test::alignedAlloc(pageSize, size);
-        auto memory7 = test::alignedAlloc(pageSize, size);
-        auto memory8 = test::alignedAlloc(pageSize, size);
-        auto memory9 = test::alignedAlloc(pageSize, size);
-        auto memory10 = test::alignedAlloc(pageSize, size);
-        auto memory11 = test::alignedAlloc(pageSize, size);
+        auto size = cPageSize / 2;
+        auto memory4 = test::alignedAlloc(cPageSize, size);
+        auto memory5 = test::alignedAlloc(cPageSize, size);
+        auto memory6 = test::alignedAlloc(cPageSize, size);
+        auto memory7 = test::alignedAlloc(cPageSize, size);
+        auto memory8 = test::alignedAlloc(cPageSize, size);
+        auto memory9 = test::alignedAlloc(cPageSize, size);
+        auto memory10 = test::alignedAlloc(cPageSize, size);
+        auto memory11 = test::alignedAlloc(cPageSize, size);
 
         // clang-format off
-        constexpr int regionsCount = 9;
-        std::array<Region, regionsCount> regions = {{
+        constexpr int cRegionsCount = 9;
+        std::array<Region, cRegionsCount> regions = {{
             {std::uintptr_t(memory4.get()),  size},
             {std::uintptr_t(memory5.get()),  size},
             {std::uintptr_t(memory6.get()),  size},
@@ -138,7 +138,7 @@ TEST_CASE("Allocator is properly initialized", "[unit][allocator]")
         }};
         // clang-format on
 
-        REQUIRE(!allocator::init(regions.data(), pageSize));
+        REQUIRE(!allocator::init(regions.data(), cPageSize));
 
         auto stats = allocator::getStats();
         REQUIRE(stats.totalMemorySize == 0);
@@ -151,20 +151,20 @@ TEST_CASE("Allocator is properly initialized", "[unit][allocator]")
 
 TEST_CASE("Allocator properly allocates and releases user memory", "[unit][allocator]")
 {
-    constexpr std::size_t pageSize = 256;
-    constexpr std::size_t pagesCount1 = 535;
-    constexpr std::size_t pagesCount2 = 87;
-    constexpr std::size_t pagesCount3 = 4;
-    auto size1 = pageSize * pagesCount1;
-    auto size2 = pageSize * pagesCount2;
-    auto size3 = pageSize * pagesCount3;
-    auto memory1 = test::alignedAlloc(pageSize, size1);
-    auto memory2 = test::alignedAlloc(pageSize, size2);
-    auto memory3 = test::alignedAlloc(pageSize, size3);
+    constexpr std::size_t cPageSize = 256;
+    constexpr std::size_t cPagesCount1 = 535;
+    constexpr std::size_t cPagesCount2 = 87;
+    constexpr std::size_t cPagesCount3 = 4;
+    auto size1 = cPageSize * cPagesCount1;
+    auto size2 = cPageSize * cPagesCount2;
+    auto size3 = cPageSize * cPagesCount3;
+    auto memory1 = test::alignedAlloc(cPageSize, size1);
+    auto memory2 = test::alignedAlloc(cPageSize, size2);
+    auto memory3 = test::alignedAlloc(cPageSize, size3);
 
     // clang-format off
-    constexpr int regionsCount = 4;
-    std::array<Region, regionsCount> regions = {{
+    constexpr int cRegionsCount = 4;
+    std::array<Region, cRegionsCount> regions = {{
         {std::uintptr_t(memory1.get()), size1},
         {std::uintptr_t(memory2.get()), size2},
         {std::uintptr_t(memory3.get()), size3},
@@ -172,21 +172,21 @@ TEST_CASE("Allocator properly allocates and releases user memory", "[unit][alloc
     }};
     // clang-format on
 
-    REQUIRE(allocator::init(regions.data(), pageSize));
+    REQUIRE(allocator::init(regions.data(), cPageSize));
 
-    constexpr int allocationsCount = 1000;
-    constexpr int iterationsCount = 1000;
-    constexpr int maxAllocPagesCount = 200;
-    auto maxAllocSize = maxAllocPagesCount * pageSize;
+    constexpr int cAllocationsCount = 1000;
+    constexpr int cIterationsCount = 1000;
+    constexpr int cMaxAllocPagesCount = 200;
+    auto maxAllocSize = cMaxAllocPagesCount * cPageSize;
 
     // Initialize random number generator.
     std::random_device randomDevice;
     std::mt19937 randomGenerator(randomDevice());
     std::uniform_int_distribution<std::size_t> distribution(0, maxAllocSize);
 
-    std::array<void*, allocationsCount> ptrs{};
+    std::array<void*, cAllocationsCount> ptrs{};
 
-    for (int i = 0; i < iterationsCount; ++i) {
+    for (int i = 0; i < cIterationsCount; ++i) {
         ptrs.fill(nullptr);
 
         // Allocate memory.
@@ -201,7 +201,7 @@ TEST_CASE("Allocator properly allocates and releases user memory", "[unit][alloc
 
         auto stats = allocator::getStats();
         REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
-        REQUIRE(stats.reservedMemorySize == 79 * pageSize);
+        REQUIRE(stats.reservedMemorySize == 79 * cPageSize);
         REQUIRE(stats.userMemorySize == (size1 + size2 + size3 - stats.reservedMemorySize));
         REQUIRE(stats.allocatedMemorySize == 0);
         REQUIRE(stats.freeMemorySize == stats.userMemorySize);
