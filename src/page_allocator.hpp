@@ -169,21 +169,21 @@ private:
     Page* joinGroup(Page* firstGroup, Page* secondGroup);
 
 private:
-    static constexpr int MIN_PAGE_SIZE = 128;   ///< Minimal supported size of the page.
-    static constexpr int MAX_REGIONS_COUNT = 8; ///< Maximal supported number of memory regions.
-    static constexpr int MAX_GROUP_IDX = 20;    ///< Maximal index of the group in the free array.
+    static constexpr int cMinPageSize = 128;   ///< Minimal supported size of the page.
+    static constexpr int cMaxRegionsCount = 8; ///< Maximal supported number of memory regions.
+    static constexpr int cMaxGroupIdx = 20;    ///< Maximal index of the group in the free array.
 
 private:
-    std::array<RegionInfo, MAX_REGIONS_COUNT> m_regionsInfo{}; ///< Array describing all known regions.
-    std::size_t m_validRegionsCount{};                         ///< Number of used regions.
-    std::size_t m_pageSize{};                                  ///< Size of the page used on this platform.
-    std::size_t m_descRegionIdx{};                             ///< Index of the region used to store page descriptors.
-    std::size_t m_descPagesCount{};                            ///< Number of pages used to store page descriptors.
-    Page* m_pagesHead{};                                       ///< Head of the page descriptors list.
-    Page* m_pagesTail{};                                       ///< Tail of the page descriptors list.
-    std::array<Page*, MAX_GROUP_IDX> m_freeGroupLists{};       ///< Array of the groups with free pages.
-    std::size_t m_pagesCount{};                                ///< Total number of pages known to the PageAllocator.
-    std::size_t m_freePagesCount{};                            ///< Current number of free pages.
+    std::array<RegionInfo, cMaxRegionsCount> m_regionsInfo{}; ///< Array describing all known regions.
+    std::size_t m_validRegionsCount{};                        ///< Number of used regions.
+    std::size_t m_pageSize{};                                 ///< Size of the page used on this platform.
+    std::size_t m_descRegionIdx{};                            ///< Index of the region used to store page descriptors.
+    std::size_t m_descPagesCount{};                           ///< Number of pages used to store page descriptors.
+    Page* m_pagesHead{};                                      ///< Head of the page descriptors list.
+    Page* m_pagesTail{};                                      ///< Tail of the page descriptors list.
+    std::array<Page*, cMaxGroupIdx> m_freeGroupLists{};       ///< Array of the groups with free pages.
+    std::size_t m_pagesCount{};                               ///< Total number of pages known to the PageAllocator.
+    std::size_t m_freePagesCount{};                           ///< Current number of free pages.
 };
 
 } // namespace memory

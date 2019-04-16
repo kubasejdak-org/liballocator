@@ -97,21 +97,21 @@ TEST_CASE("Page size is correctly validated", "[unit][page_allocator]")
 
     SECTION("Page size is smaller than the minimal value")
     {
-        pageSize = PageAllocator::MIN_PAGE_SIZE - 3;
+        pageSize = PageAllocator::cMinPageSize - 3;
         isValidPageSize = pageAllocator.isValidPageSize(pageSize);
         REQUIRE(!isValidPageSize);
     }
 
     SECTION("Page size is equal to the minimal value")
     {
-        pageSize = PageAllocator::MIN_PAGE_SIZE;
+        pageSize = PageAllocator::cMinPageSize;
         isValidPageSize = pageAllocator.isValidPageSize(pageSize);
         REQUIRE(isValidPageSize);
     }
 
     SECTION("Page size is bigger than the minimal value, but not the power of 2")
     {
-        pageSize = (2 * PageAllocator::MIN_PAGE_SIZE) + 1;
+        pageSize = (2 * PageAllocator::cMinPageSize) + 1;
         isValidPageSize = pageAllocator.isValidPageSize(pageSize);
         REQUIRE(!isValidPageSize);
     }
@@ -1414,7 +1414,7 @@ TEST_CASE("Pages are correctly allocated", "[unit][page_allocator]")
             REQUIRE(pageAllocator.getPage(pages.back()->address()) == pages[i]);
         }
 
-        for (std::size_t i = 0; i < PageAllocator::MAX_GROUP_IDX; ++i) {
+        for (std::size_t i = 0; i < PageAllocator::cMaxGroupIdx; ++i) {
             std::size_t idxCount = 0;
             for (Page* group = pageAllocator.m_freeGroupLists.at(i); group != nullptr; group = group->next())
                 ++idxCount;

@@ -54,7 +54,7 @@ bool PageAllocator::init(Region* regions, std::size_t pageSize)
         return false;
 
     for (std::size_t i = 0; regions[i].size != 0; ++i) {
-        if (i == MAX_REGIONS_COUNT)
+        if (i == cMaxRegionsCount)
             return false;
 
         RegionInfo regionInfo{};
@@ -228,7 +228,7 @@ PageAllocator::Stats PageAllocator::getStats()
 
 bool PageAllocator::isValidPageSize(std::size_t pageSize)
 {
-    return (pageSize >= MIN_PAGE_SIZE && utils::isPowerOf2(pageSize));
+    return (pageSize >= cMinPageSize && utils::isPowerOf2(pageSize));
 }
 
 std::size_t PageAllocator::countPages()

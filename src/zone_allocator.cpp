@@ -34,6 +34,7 @@
 #include "page_allocator.hpp"
 #include "utils.hpp"
 
+#include <algorithm>
 #include <cassert>
 #include <cmath>
 #include <numeric>
@@ -134,7 +135,7 @@ ZoneAllocator::Stats ZoneAllocator::getStats()
 
 std::size_t ZoneAllocator::chunkSize(std::size_t size)
 {
-    std::size_t chunkSize = (size < MINIMAL_ALLOC_SIZE) ? MINIMAL_ALLOC_SIZE : size;
+    std::size_t chunkSize = std::max(size, cMinimalAllocSize);
     return utils::roundPowerOf2(chunkSize);
 }
 

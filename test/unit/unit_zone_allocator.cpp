@@ -190,23 +190,23 @@ TEST_CASE("Chunk size is properly calculated", "[unit][zone_allocator]")
 
     SECTION("Size is smaller than the minimal alloc size")
     {
-        size = ZoneAllocator::MINIMAL_ALLOC_SIZE / 2;
+        size = ZoneAllocator::cMinimalAllocSize / 2;
         roundedSize = zoneAllocator.chunkSize(size);
-        REQUIRE(roundedSize == ZoneAllocator::MINIMAL_ALLOC_SIZE);
+        REQUIRE(roundedSize == ZoneAllocator::cMinimalAllocSize);
     }
 
     SECTION("Size is equal to the minimal alloc size")
     {
-        size = ZoneAllocator::MINIMAL_ALLOC_SIZE;
+        size = ZoneAllocator::cMinimalAllocSize;
         roundedSize = zoneAllocator.chunkSize(size);
-        REQUIRE(roundedSize == ZoneAllocator::MINIMAL_ALLOC_SIZE);
+        REQUIRE(roundedSize == ZoneAllocator::cMinimalAllocSize);
     }
 
     SECTION("Size is greater than the minimal alloc size")
     {
-        size = ZoneAllocator::MINIMAL_ALLOC_SIZE * 2;
+        size = ZoneAllocator::cMinimalAllocSize * 2;
         roundedSize = zoneAllocator.chunkSize(size);
-        REQUIRE(roundedSize > ZoneAllocator::MINIMAL_ALLOC_SIZE);
+        REQUIRE(roundedSize > ZoneAllocator::cMinimalAllocSize);
     }
 
     REQUIRE(roundedSize >= size);

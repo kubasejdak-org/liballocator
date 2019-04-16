@@ -102,10 +102,10 @@ public:
     /// @note Natural alignment of a class means, that its size is equal to the sum of all its data members.
     static constexpr bool isNaturallyAligned()
     {
-        constexpr std::size_t requiredSize = sizeof(ListNode<Page>)   // Inherited fields
-                                             + sizeof(std::uintptr_t) // m_addr
-                                             + sizeof(Page::Flags);   // m_flags
-        return (requiredSize == sizeof(Page));
+        constexpr std::size_t cRequiredSize = sizeof(ListNode<Page>)   // Inherited fields
+                                              + sizeof(std::uintptr_t) // m_addr
+                                              + sizeof(Page::Flags);   // m_flags
+        return (cRequiredSize == sizeof(Page));
     }
 
 private:
