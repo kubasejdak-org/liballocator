@@ -141,8 +141,10 @@ private:
     /// @param[in,out] group        Group to be removed.
     void removeGroup(Page* group);
 
-private:
+public:
     static constexpr int cMinPageSize = 128;   ///< Minimal supported size of the page.
+
+private:
     static constexpr int cMaxRegionsCount = 8; ///< Maximal supported number of memory regions.
     static constexpr int cMaxGroupIdx = 20;    ///< Maximal index of the group in the free array.
 
