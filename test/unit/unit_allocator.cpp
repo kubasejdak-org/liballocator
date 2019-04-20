@@ -30,19 +30,14 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <catch2/catch.hpp>
-
+#include <allocator/allocator.hpp>
 #include <test_utils.hpp>
+
+#include <catch2/catch.hpp>
 
 #include <array>
 #include <random>
 #include <regex>
-
-// Make access to private members for testing.
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define private public
-
-#include <allocator/allocator.hpp>
 
 // NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;
