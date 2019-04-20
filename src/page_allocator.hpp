@@ -34,6 +34,7 @@
 
 #include "page.hpp"
 #include "region_info.hpp"
+#include "utils.hpp"
 
 #include <allocator/region.hpp>
 
@@ -99,14 +100,6 @@ public:
     Stats getStats();
 
 private:
-    /// Checks if the page size has a proper value.
-    /// @param[in] pageSize         Page size to be checked.
-    /// @return Flag indicating if the page size has a proper value.
-    /// @retval true                Page size is valid.
-    /// @retval false               Page size is invalid.
-    /// @note This function checks if pageSize has the minimal size and if is a power of 2.
-    bool isValidPageSize(std::size_t pageSize);
-
     /// Returns the total number of pages from all known regions.
     /// @return Number of all pages from all known regions.
     std::size_t countPages();
@@ -161,4 +154,18 @@ private:
     std::size_t m_freePagesCount{};                           ///< Current number of free pages.
 };
 
+namespace detail {
+
+/// Checks if the page size has a proper value.
+/// @param[in] pageSize             Page size to be checked.
+/// @return Flag indicating if the page size has a proper value.
+/// @retval true                    Page size is valid.
+/// @retval false                   Page size is invalid.
+/// @note This function checks if pageSize has the minimal size and if is a power of 2.
+inline bool isValidPageSize(std::size_t pageSize)
+{
+    return (pageSize >= PageAllocator::cMinPageSize && utils::isPowerOf2(pageSize));
+}
+
+} // namespace detail
 } // namespace memory
