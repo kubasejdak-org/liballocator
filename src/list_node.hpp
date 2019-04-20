@@ -37,16 +37,10 @@
 namespace memory {
 
 /// @class ListNode
-/// Represents a node of the generic doubly-linked list.
+/// Represents a node of the generic doubly-linked list, that doesn't allocate.
 template <typename T>
 class ListNode {
 public:
-    /// Default constructor.
-    ListNode()
-    {
-        initListNode();
-    }
-
     /// Initializes the node.
     void initListNode()
     {
@@ -54,13 +48,22 @@ public:
         m_prev = nullptr;
     }
 
-    /// Returns the node from the list.
+    /// Returns the next node from the list.
     /// @return Pointer to the next list node.
     /// @retval T*              Pointer to the next node if exists.
     /// @retval nullptr         There is no next node.
     T* next()
     {
         return m_next;
+    }
+
+    /// Returns the previous node from the list.
+    /// @return Pointer to the previous list node.
+    /// @retval T*              Pointer to the previous node if exists.
+    /// @retval nullptr         There is no previous node.
+    T* prev()
+    {
+        return m_prev;
     }
 
     /// Adds current node to the given list.
@@ -100,8 +103,8 @@ public:
     }
 
 private:
-    T* m_next; ///< Next node in the list.
-    T* m_prev; ///< Previous node in the list.
+    T* m_next{}; ///< Next node in the list.
+    T* m_prev{}; ///< Previous node in the list.
 };
 
 } // namespace memory

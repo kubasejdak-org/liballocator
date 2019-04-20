@@ -30,18 +30,12 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
+#include <list_node.hpp>
+
 #include <catch2/catch.hpp>
 
 #include <array>
 #include <cstddef>
-
-// Make access to private members for testing.
-// clang-format off
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define private     public
-// clang-format on
-
-#include <list_node.hpp>
 
 // NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;
@@ -49,15 +43,15 @@ using namespace memory;
 struct TestNode : public ListNode<TestNode> {
     TestNode() = default;
     // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-    int value{0};
+    int value{};
 };
 
 TEST_CASE("List node is properly initialized", "[unit][list_node]")
 {
     TestNode node;
     node.initListNode();
-    REQUIRE(node.m_next == nullptr);
-    REQUIRE(node.m_prev == nullptr);
+    REQUIRE(node.next() == nullptr);
+    REQUIRE(node.prev() == nullptr);
 }
 
 TEST_CASE("Adding to empty list", "[unit][list_node]")
@@ -70,8 +64,8 @@ TEST_CASE("Adding to empty list", "[unit][list_node]")
     node.addToList(&list);
     REQUIRE(list == &node);
     REQUIRE(list->value == 1);
-    REQUIRE(node.m_next == nullptr);
-    REQUIRE(node.m_prev == nullptr);
+    REQUIRE(node.next() == nullptr);
+    REQUIRE(node.prev() == nullptr);
 }
 
 TEST_CASE("Adding to non-empty list", "[unit][list_node]")
@@ -125,8 +119,8 @@ TEST_CASE("Removing from list with 5 nodes", "[unit][list_node]")
         int idx = 4;
         node.at(idx).removeFromList(&list);
         REQUIRE(node.at(idx).value == idx);
-        REQUIRE(node.at(idx).m_next == nullptr);
-        REQUIRE(node.at(idx).m_prev == nullptr);
+        REQUIRE(node.at(idx).next() == nullptr);
+        REQUIRE(node.at(idx).prev() == nullptr);
 
         int i = cNodeCount - 1;
         for (auto* it = list; it != nullptr; it = it->next(), --i) {
@@ -142,8 +136,8 @@ TEST_CASE("Removing from list with 5 nodes", "[unit][list_node]")
         int idx = 2;
         node.at(idx).removeFromList(&list);
         REQUIRE(node.at(idx).value == idx);
-        REQUIRE(node.at(idx).m_next == nullptr);
-        REQUIRE(node.at(idx).m_prev == nullptr);
+        REQUIRE(node.at(idx).next() == nullptr);
+        REQUIRE(node.at(idx).prev() == nullptr);
 
         int i = cNodeCount - 1;
         for (auto* it = list; it != nullptr; it = it->next(), --i) {
@@ -159,8 +153,8 @@ TEST_CASE("Removing from list with 5 nodes", "[unit][list_node]")
         int idx = 0;
         node.at(idx).removeFromList(&list);
         REQUIRE(node.at(idx).value == idx);
-        REQUIRE(node.at(idx).m_next == nullptr);
-        REQUIRE(node.at(idx).m_prev == nullptr);
+        REQUIRE(node.at(idx).next() == nullptr);
+        REQUIRE(node.at(idx).prev() == nullptr);
 
         int i = cNodeCount - 1;
         for (auto* it = list; it != nullptr; it = it->next(), --i) {
@@ -176,8 +170,8 @@ TEST_CASE("Removing from list with 5 nodes", "[unit][list_node]")
         for (int i = cNodeCount - 1; i >= 0; --i) {
             node.at(i).removeFromList(&list);
             REQUIRE(node.at(i).value == i);
-            REQUIRE(node.at(i).m_next == nullptr);
-            REQUIRE(node.at(i).m_prev == nullptr);
+            REQUIRE(node.at(i).next() == nullptr);
+            REQUIRE(node.at(i).prev() == nullptr);
         }
 
         REQUIRE(list == nullptr);
@@ -188,8 +182,8 @@ TEST_CASE("Removing from list with 5 nodes", "[unit][list_node]")
         for (int i = 0; i < cNodeCount; ++i) {
             node.at(i).removeFromList(&list);
             REQUIRE(node.at(i).value == i);
-            REQUIRE(node.at(i).m_next == nullptr);
-            REQUIRE(node.at(i).m_prev == nullptr);
+            REQUIRE(node.at(i).next() == nullptr);
+            REQUIRE(node.at(i).prev() == nullptr);
         }
 
         REQUIRE(list == nullptr);
@@ -208,6 +202,6 @@ TEST_CASE("Removing from list with 1 node", "[unit][list_node]")
     node.removeFromList(&list);
     REQUIRE(list == nullptr);
     REQUIRE(node.value == 1);
-    REQUIRE(node.m_next == nullptr);
-    REQUIRE(node.m_prev == nullptr);
+    REQUIRE(node.next() == nullptr);
+    REQUIRE(node.prev() == nullptr);
 }
