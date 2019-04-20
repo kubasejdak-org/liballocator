@@ -30,19 +30,14 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <catch2/catch.hpp>
-
+#include <page.hpp>
 #include <test_utils.hpp>
+#include <zone.hpp>
+
+#include <catch2/catch.hpp>
 
 #include <array>
 #include <cstddef>
-
-// Make access to private members for testing.
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define private public
-
-#include <page.hpp>
-#include <zone.hpp>
 
 // NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;
@@ -65,14 +60,12 @@ TEST_CASE("Zone is properly initialized", "[unit][zone]")
     constexpr std::size_t cChunkSize = 64;
 
     zone.init(page, cPageSize, cChunkSize);
-    REQUIRE(zone.m_next == nullptr);
-    REQUIRE(zone.m_prev == nullptr);
-    REQUIRE(zone.m_page == page);
-    REQUIRE(zone.m_chunkSize == cChunkSize);
-    REQUIRE(zone.m_chunksCount == (cPageSize / cChunkSize));
-    REQUIRE(zone.m_freeChunksCount == (cPageSize / cChunkSize));
-    std::uintptr_t lastChunkAddr = page->address() + cPageSize - cChunkSize;
-    REQUIRE(zone.m_freeChunks == reinterpret_cast<Chunk*>(lastChunkAddr));
+    REQUIRE(zone.next() == nullptr);
+    REQUIRE(zone.prev() == nullptr);
+    REQUIRE(zone.page() == page);
+    REQUIRE(zone.chunkSize() == cChunkSize);
+    REQUIRE(zone.chunksCount() == (cPageSize / cChunkSize));
+    REQUIRE(zone.freeChunksCount() == (cPageSize / cChunkSize));
 
     REQUIRE(zone.page() == page);
     REQUIRE(zone.chunkSize() == cChunkSize);
@@ -82,7 +75,7 @@ TEST_CASE("Zone is properly initialized", "[unit][zone]")
     auto* chunk = reinterpret_cast<Chunk*>(zone.page()->address());
     for (std::size_t i = 0; i < zone.chunksCount(); ++i) {
         REQUIRE(std::uintptr_t(chunk) == zone.page()->address() + i * cChunkSize);
-        chunk = chunk->m_prev;
+        chunk = chunk->prev();
     }
 }
 
@@ -91,13 +84,12 @@ TEST_CASE("Zone is properly cleared", "[unit][zone]")
     Zone zone;
     zone.clear();
 
-    REQUIRE(zone.m_next == nullptr);
-    REQUIRE(zone.m_prev == nullptr);
-    REQUIRE(zone.m_page == nullptr);
-    REQUIRE(zone.m_chunkSize == 0);
-    REQUIRE(zone.m_chunksCount == 0);
-    REQUIRE(zone.m_freeChunksCount == 0);
-    REQUIRE(zone.m_freeChunks == nullptr);
+    REQUIRE(zone.next() == nullptr);
+    REQUIRE(zone.prev() == nullptr);
+    REQUIRE(zone.page() == nullptr);
+    REQUIRE(zone.chunkSize() == 0);
+    REQUIRE(zone.chunksCount() == 0);
+    REQUIRE(zone.freeChunksCount() == 0);
 
     REQUIRE(zone.page() == nullptr);
     REQUIRE(zone.chunkSize() == 0);

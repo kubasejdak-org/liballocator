@@ -30,18 +30,14 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
+#include <utils.hpp>
+#include <zone.hpp>
+
 #include <catch2/catch.hpp>
 
 #include <array>
 #include <cmath>
 #include <cstddef>
-
-// Make access to private members for testing.
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define private public
-
-#include <utils.hpp>
-#include <zone.hpp>
 
 // NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;

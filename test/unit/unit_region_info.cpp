@@ -30,9 +30,9 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <catch2/catch.hpp>
-
 #include <region_info.hpp>
+
+#include <catch2/catch.hpp>
 
 #include <array>
 #include <cstddef>
