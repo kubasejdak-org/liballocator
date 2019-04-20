@@ -1101,19 +1101,6 @@ TEST_CASE("Pages are correctly allocated", "[unit][page_allocator]")
         REQUIRE(pages.back());
         REQUIRE(pages.back()->address() == std::uintptr_t(memory3.get()));
 
-        std::size_t idx1Count = 0;
-        for (Page* group = pageAllocator.m_freeGroupLists[1]; group != nullptr; group = group->next())
-            ++idx1Count;
-
-        REQUIRE(idx1Count == 0);
-
-        std::size_t idx0Count = 0;
-        for (Page* group = pageAllocator.m_freeGroupLists[0]; group != nullptr; group = group->next())
-            ++idx0Count;
-
-        REQUIRE(idx0Count == 1);
-        REQUIRE(pageAllocator.m_freeGroupLists[0]->groupSize() == cPagesCount3 - 1);
-
         auto stats = pageAllocator.getStats();
         REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
         REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
@@ -1131,13 +1118,6 @@ TEST_CASE("Pages are correctly allocated", "[unit][page_allocator]")
         pages.push_back(pageAllocator.allocate(cAllocSize));
         REQUIRE(pages.back());
         REQUIRE(pages.back()->address() == std::uintptr_t(memory1.get()));
-
-        std::size_t idx8Count = 0;
-        for (Page* group = pageAllocator.m_freeGroupLists[8]; group != nullptr; group = group->next()) // NOLINT
-            ++idx8Count;
-
-        REQUIRE(idx8Count == 1);
-        REQUIRE(pageAllocator.m_freeGroupLists[8]->groupSize() == cPagesCount1 - cAllocSize);
 
         auto stats = pageAllocator.getStats();
         REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
@@ -1227,14 +1207,6 @@ TEST_CASE("Pages are correctly allocated", "[unit][page_allocator]")
             REQUIRE(pages.back());
             REQUIRE(pageAllocator.getStats().freePagesCount == freePages - i - 1);
             REQUIRE(pageAllocator.getPage(pages.back()->address()) == pages[i]);
-        }
-
-        for (std::size_t i = 0; i < PageAllocator::cMaxGroupIdx; ++i) {
-            std::size_t idxCount = 0;
-            for (Page* group = pageAllocator.m_freeGroupLists.at(i); group != nullptr; group = group->next())
-                ++idxCount;
-
-            REQUIRE(idxCount == 0);
         }
 
         auto stats = pageAllocator.getStats();
@@ -1358,29 +1330,6 @@ TEST_CASE("Pages are correctly released", "[unit][page_allocator]")
             pageAllocator.release(pages[pages.size() - 1 - i]);
     }
 
-    REQUIRE(pageAllocator.getStats().freePagesCount == freePages);
-
-    std::size_t idx1Count = 0;
-    for (Page* group = pageAllocator.m_freeGroupLists[1]; group != nullptr; group = group->next())
-        ++idx1Count;
-
-    REQUIRE(idx1Count == 1);
-    REQUIRE(pageAllocator.m_freeGroupLists[1]->groupSize() == cPagesCount3);
-
-    std::size_t idx2Count = 0;
-    for (Page* group = pageAllocator.m_freeGroupLists[2]; group != nullptr; group = group->next())
-        ++idx2Count;
-
-    REQUIRE(idx2Count == 1);
-    REQUIRE(pageAllocator.m_freeGroupLists[2]->groupSize() == cPagesCount2 - pageAllocator.m_descPagesCount);
-
-    std::size_t idx8Count = 0;
-    for (Page* group = pageAllocator.m_freeGroupLists[8]; group != nullptr; group = group->next()) // NOLINT
-        ++idx8Count;
-
-    REQUIRE(idx8Count == 1);
-    REQUIRE(pageAllocator.m_freeGroupLists[8]->groupSize() == cPagesCount1); // NOLINT
-
     auto stats = pageAllocator.getStats();
     REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
     REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
@@ -1390,4 +1339,5 @@ TEST_CASE("Pages are correctly released", "[unit][page_allocator]")
     REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
     REQUIRE(stats.reservedPagesCount == 79);
     REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount));
+    REQUIRE(stats.freePagesCount == freePages);
 }
