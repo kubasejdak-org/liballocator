@@ -758,64 +758,6 @@ TEST_CASE("Group is properly removed from list at index 4", "[unit][page_allocat
     REQUIRE(pagesCount == 2);
 }
 
-TEST_CASE("Page is properly verified as valid", "[unit][page_allocator]")
-{
-    constexpr std::size_t cPageSize = 256;
-    PageAllocator pageAllocator;
-
-    constexpr std::size_t cPagesCount1 = 535;
-    constexpr std::size_t cPagesCount2 = 87;
-    constexpr std::size_t cPagesCount3 = 4;
-    auto size1 = cPageSize * cPagesCount1;
-    auto size2 = cPageSize * cPagesCount2;
-    auto size3 = cPageSize * cPagesCount3;
-    auto memory1 = test::alignedAlloc(cPageSize, size1);
-    auto memory2 = test::alignedAlloc(cPageSize, size2);
-    auto memory3 = test::alignedAlloc(cPageSize, size3);
-
-    // clang-format off
-    constexpr int cRegionsCount = 4;
-    std::array<Region, cRegionsCount> regions = {{
-        {std::uintptr_t(memory1.get()), size1},
-        {std::uintptr_t(memory2.get()), size2},
-        {std::uintptr_t(memory3.get()), size3},
-        {0,                             0}
-    }};
-    // clang-format on
-
-    REQUIRE(pageAllocator.init(regions.data(), cPageSize));
-
-    SECTION("Page points to the first page desc")
-    {
-        auto* page = pageAllocator.m_pagesHead;
-        REQUIRE(pageAllocator.isValidPage(page));
-    }
-
-    SECTION("Page points to the last page desc")
-    {
-        auto* page = pageAllocator.m_pagesTail;
-        REQUIRE(pageAllocator.isValidPage(page));
-    }
-
-    SECTION("Page points in the middle of page desc list")
-    {
-        auto* page = pageAllocator.m_pagesHead + pageAllocator.m_descPagesCount / 2;
-        REQUIRE(pageAllocator.isValidPage(page));
-    }
-
-    SECTION("Page points before first page desc")
-    {
-        auto* page = pageAllocator.m_pagesHead - 1;
-        REQUIRE(!pageAllocator.isValidPage(page));
-    }
-
-    SECTION("Page points after last page desc")
-    {
-        auto* page = pageAllocator.m_pagesTail + 1;
-        REQUIRE(!pageAllocator.isValidPage(page));
-    }
-}
-
 TEST_CASE("Pages are correctly resolved from address", "[unit][page_allocator]")
 {
     constexpr std::size_t cPageSize = 256;
