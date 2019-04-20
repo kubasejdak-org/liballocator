@@ -31,6 +31,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 
 #include "page_allocator.hpp"
+#include "group.hpp"
 #include "utils.hpp"
 
 #include <cassert>
@@ -293,34 +294,6 @@ RegionInfo* PageAllocator::getRegion(std::uintptr_t addr)
     return nullptr;
 }
 
-std::size_t PageAllocator::groupIdx(std::size_t pageCount)
-{
-    if (pageCount < 2)
-        return 0;
-
-    return static_cast<std::size_t>(std::floor(std::log2(pageCount)) - 1);
-}
-
-void PageAllocator::initGroup(Page* group, std::size_t groupSize)
-{
-    assert(group);
-
-    Page* firstPage = group;
-    Page* lastPage = group + groupSize - 1;
-    firstPage->setGroupSize(groupSize);
-    lastPage->setGroupSize(groupSize);
-}
-
-void PageAllocator::clearGroup(Page* group)
-{
-    assert(group);
-
-    Page* firstPage = group;
-    Page* lastPage = group + group->groupSize() - 1;
-    firstPage->setGroupSize(0);
-    lastPage->setGroupSize(0);
-}
-
 void PageAllocator::addGroup(Page* group)
 {
     assert(group);
@@ -347,41 +320,6 @@ void PageAllocator::removeGroup(Page* group)
         auto* page = group + i;
         page->setUsed(true);
     }
-}
-
-std::tuple<Page*, Page*> PageAllocator::splitGroup(Page* group, std::size_t size)
-{
-    assert(group);
-    assert(size);
-    assert(size <= group->groupSize());
-
-    if (size == group->groupSize())
-        return std::tuple<Page*, Page*>(group, nullptr);
-
-    std::size_t secondSize = group->groupSize() - size;
-    clearGroup(group);
-
-    Page* firstGroup = group;
-    Page* secondGroup = group + size;
-
-    initGroup(firstGroup, size);
-    initGroup(secondGroup, secondSize);
-
-    return std::make_tuple(firstGroup, secondGroup);
-}
-
-Page* PageAllocator::joinGroup(Page* firstGroup, Page* secondGroup)
-{
-    assert(firstGroup);
-    assert(secondGroup);
-
-    std::size_t joinedSize = firstGroup->groupSize() + secondGroup->groupSize();
-
-    clearGroup(firstGroup);
-    clearGroup(secondGroup);
-    initGroup(firstGroup, joinedSize);
-
-    return firstGroup;
 }
 
 } // namespace memory

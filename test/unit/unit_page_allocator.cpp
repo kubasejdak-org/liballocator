@@ -44,6 +44,7 @@
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define private public
 
+#include <group.hpp>
 #include <page_allocator.hpp>
 
 // NOLINTNEXTLINE(google-build-using-namespace)
@@ -481,97 +482,6 @@ TEST_CASE("Pages with page descriptors are properly reserved", "[unit][page_allo
     }
 }
 
-TEST_CASE("Group index is properly computed", "[unit][page_allocator]")
-{
-    PageAllocator pageAllocator;
-    std::map<std::size_t, std::pair<std::size_t, size_t>> idxRange = {
-        {0, {0, 3}},               // NOLINT
-        {1, {4, 7}},               // NOLINT
-        {2, {8, 15}},              // NOLINT
-        {3, {16, 31}},             // NOLINT
-        {4, {32, 63}},             // NOLINT
-        {5, {64, 127}},            // NOLINT
-        {6, {128, 255}},           // NOLINT
-        {7, {256, 511}},           // NOLINT
-        {8, {512, 1023}},          // NOLINT
-        {9, {1024, 2047}},         // NOLINT
-        {10, {2048, 4095}},        // NOLINT
-        {11, {4096, 8191}},        // NOLINT
-        {12, {8192, 16383}},       // NOLINT
-        {13, {16384, 32767}},      // NOLINT
-        {14, {32768, 65535}},      // NOLINT
-        {15, {65536, 131071}},     // NOLINT
-        {16, {131072, 262143}},    // NOLINT
-        {17, {262144, 524287}},    // NOLINT
-        {18, {524288, 1048575}},   // NOLINT
-        {19, {1048576, 2097151}}}; // NOLINT
-
-    constexpr std::size_t cIterations = 0x200000;
-    for (std::size_t i = 0; i < cIterations; ++i) {
-        auto idx = pageAllocator.groupIdx(i);
-        REQUIRE(i >= idxRange[idx].first);
-        REQUIRE(i <= idxRange[idx].second);
-    }
-}
-
-TEST_CASE("Group is properly initialized", "[unit][page_allocator]")
-{
-    PageAllocator pageAllocator;
-
-    SECTION("Group has 1 page")
-    {
-        constexpr std::size_t cGroupSize = 1;
-        std::array<std::byte, sizeof(Page) * cGroupSize> memory{};
-
-        auto* group = reinterpret_cast<Page*>(std::begin(memory));
-        pageAllocator.initGroup(group, cGroupSize);
-        REQUIRE(group->groupSize() == cGroupSize);
-    }
-
-    SECTION("Group has 5 pages")
-    {
-        constexpr std::size_t cGroupSize = 5;
-        std::array<std::byte, sizeof(Page) * cGroupSize> memory{};
-
-        auto* group = reinterpret_cast<Page*>(std::begin(memory));
-        pageAllocator.initGroup(group, cGroupSize);
-        Page* firstPage = group;
-        Page* lastPage = group + cGroupSize - 1;
-        REQUIRE(firstPage->groupSize() == cGroupSize);
-        REQUIRE(lastPage->groupSize() == cGroupSize);
-    }
-}
-
-TEST_CASE("Group is properly cleared", "[unit][page_allocator]")
-{
-    PageAllocator pageAllocator;
-
-    SECTION("Group has 1 page")
-    {
-        constexpr std::size_t cGroupSize = 1;
-        std::array<std::byte, sizeof(Page) * cGroupSize> memory{};
-
-        auto* group = reinterpret_cast<Page*>(std::begin(memory));
-        pageAllocator.initGroup(group, cGroupSize);
-        pageAllocator.clearGroup(group);
-        REQUIRE(group->groupSize() == 0);
-    }
-
-    SECTION("Group has 5 pages")
-    {
-        constexpr std::size_t cGroupSize = 5;
-        std::array<std::byte, sizeof(Page) * cGroupSize> memory{};
-
-        auto* group = reinterpret_cast<Page*>(std::begin(memory));
-        pageAllocator.initGroup(group, cGroupSize);
-        pageAllocator.clearGroup(group);
-        Page* firstPage = group;
-        Page* lastPage = group + cGroupSize - 1;
-        REQUIRE(firstPage->groupSize() == 0);
-        REQUIRE(lastPage->groupSize() == 0);
-    }
-}
-
 TEST_CASE("Group is properly added to list", "[unit][page_allocator]")
 {
     PageAllocator pageAllocator;
@@ -583,7 +493,7 @@ TEST_CASE("Group is properly added to list", "[unit][page_allocator]")
         std::array<std::byte, sizeof(Page) * cGroupSize> memory{};
 
         auto* group = reinterpret_cast<Page*>(std::begin(memory));
-        pageAllocator.initGroup(group, cGroupSize);
+        initGroup(group, cGroupSize);
         pageAllocator.addGroup(group);
 
         for (Page* it = pageAllocator.m_freeGroupLists[0]; it != nullptr; it = it->next()) {
@@ -607,9 +517,9 @@ TEST_CASE("Group is properly added to list", "[unit][page_allocator]")
         auto* group1 = reinterpret_cast<Page*>(std::begin(memory1));
         auto* group2 = reinterpret_cast<Page*>(std::begin(memory2));
         auto* group3 = reinterpret_cast<Page*>(std::begin(memory3));
-        pageAllocator.initGroup(group1, cGroupSize);
-        pageAllocator.initGroup(group2, cGroupSize);
-        pageAllocator.initGroup(group3, cGroupSize);
+        initGroup(group1, cGroupSize);
+        initGroup(group2, cGroupSize);
+        initGroup(group3, cGroupSize);
         pageAllocator.addGroup(group1);
         pageAllocator.addGroup(group2);
         pageAllocator.addGroup(group3);
@@ -631,7 +541,7 @@ TEST_CASE("Group is properly added to list", "[unit][page_allocator]")
         std::array<std::byte, sizeof(Page) * cGroupSize> memory{};
 
         auto* group = reinterpret_cast<Page*>(std::begin(memory));
-        pageAllocator.initGroup(group, cGroupSize);
+        initGroup(group, cGroupSize);
         pageAllocator.addGroup(group);
 
         for (Page* it = pageAllocator.m_freeGroupLists[4]; it != nullptr; it = it->next()) {
@@ -655,9 +565,9 @@ TEST_CASE("Group is properly added to list", "[unit][page_allocator]")
         auto* group1 = reinterpret_cast<Page*>(std::begin(memory1));
         auto* group2 = reinterpret_cast<Page*>(std::begin(memory2));
         auto* group3 = reinterpret_cast<Page*>(std::begin(memory3));
-        pageAllocator.initGroup(group1, cGroupSize);
-        pageAllocator.initGroup(group2, cGroupSize);
-        pageAllocator.initGroup(group3, cGroupSize);
+        initGroup(group1, cGroupSize);
+        initGroup(group2, cGroupSize);
+        initGroup(group3, cGroupSize);
         pageAllocator.addGroup(group1);
         pageAllocator.addGroup(group2);
         pageAllocator.addGroup(group3);
@@ -686,9 +596,9 @@ TEST_CASE("Group is properly removed from list at index 0", "[unit][page_allocat
     auto* group1 = reinterpret_cast<Page*>(std::begin(memory1));
     auto* group2 = reinterpret_cast<Page*>(std::begin(memory2));
     auto* group3 = reinterpret_cast<Page*>(std::begin(memory3));
-    pageAllocator.initGroup(group1, cGroupSize);
-    pageAllocator.initGroup(group2, cGroupSize);
-    pageAllocator.initGroup(group3, cGroupSize);
+    initGroup(group1, cGroupSize);
+    initGroup(group2, cGroupSize);
+    initGroup(group3, cGroupSize);
     pageAllocator.addGroup(group1);
     pageAllocator.addGroup(group2);
     pageAllocator.addGroup(group3);
@@ -773,9 +683,9 @@ TEST_CASE("Group is properly removed from list at index 4", "[unit][page_allocat
     auto* group1 = reinterpret_cast<Page*>(std::begin(memory1));
     auto* group2 = reinterpret_cast<Page*>(std::begin(memory2));
     auto* group3 = reinterpret_cast<Page*>(std::begin(memory3));
-    pageAllocator.initGroup(group1, cGroupSize);
-    pageAllocator.initGroup(group2, cGroupSize);
-    pageAllocator.initGroup(group3, cGroupSize);
+    initGroup(group1, cGroupSize);
+    initGroup(group2, cGroupSize);
+    initGroup(group3, cGroupSize);
     pageAllocator.addGroup(group1);
     pageAllocator.addGroup(group2);
     pageAllocator.addGroup(group3);
@@ -846,95 +756,6 @@ TEST_CASE("Group is properly removed from list at index 4", "[unit][page_allocat
     }
 
     REQUIRE(pagesCount == 2);
-}
-
-TEST_CASE("Group is properly splitted", "[unit][page_allocator]")
-{
-    constexpr std::size_t cGroupSize = 10;
-    std::array<std::byte, sizeof(Page) * cGroupSize> memory{};
-
-    auto* group = reinterpret_cast<Page*>(std::begin(memory));
-
-    PageAllocator pageAllocator;
-    pageAllocator.initGroup(group, cGroupSize);
-
-    Page* firstGroup = nullptr;
-    Page* secondGroup = nullptr;
-    std::size_t splitSize = 0;
-
-    SECTION("Split size is equal to group size")
-    {
-        splitSize = cGroupSize;
-        std::tie(firstGroup, secondGroup) = pageAllocator.splitGroup(group, splitSize);
-        REQUIRE(firstGroup);
-        REQUIRE(firstGroup->groupSize() == splitSize);
-        REQUIRE(secondGroup == nullptr);
-    }
-
-    SECTION("First group should have 1 page")
-    {
-        splitSize = 1;
-        std::tie(firstGroup, secondGroup) = pageAllocator.splitGroup(group, splitSize);
-        REQUIRE(firstGroup);
-        REQUIRE(secondGroup);
-        REQUIRE(firstGroup->groupSize() == splitSize);
-        REQUIRE(secondGroup->groupSize() == cGroupSize - splitSize);
-    }
-
-    SECTION("First group should have 3 pages")
-    {
-        splitSize = 3;
-        std::tie(firstGroup, secondGroup) = pageAllocator.splitGroup(group, splitSize);
-        REQUIRE(firstGroup);
-        REQUIRE(secondGroup);
-        REQUIRE(firstGroup->groupSize() == splitSize);
-        REQUIRE(secondGroup->groupSize() == cGroupSize - splitSize);
-    }
-
-    SECTION("First group should have 5 pages")
-    {
-        splitSize = 5; // NOLINT
-        std::tie(firstGroup, secondGroup) = pageAllocator.splitGroup(group, splitSize);
-        REQUIRE(firstGroup);
-        REQUIRE(secondGroup);
-        REQUIRE(firstGroup->groupSize() == splitSize);
-        REQUIRE(secondGroup->groupSize() == cGroupSize - splitSize);
-    }
-}
-
-TEST_CASE("Group is properly joined", "[unit][page_allocator]")
-{
-    constexpr std::size_t cGroupSize = 10;
-    std::array<std::byte, sizeof(Page) * cGroupSize> memory{};
-
-    auto* group = reinterpret_cast<Page*>(std::begin(memory));
-
-    PageAllocator pageAllocator;
-    pageAllocator.initGroup(group, cGroupSize);
-
-    std::size_t splitSize = 0;
-
-    SECTION("First group should have 1 page")
-    {
-        splitSize = 1;
-    }
-
-    SECTION("First group should have 3 pages")
-    {
-        splitSize = 3;
-    }
-
-    SECTION("First group should have 5 pages")
-    {
-        splitSize = 5; // NOLINT
-    }
-
-    Page* firstGroup = nullptr;
-    Page* secondGroup = nullptr;
-    std::tie(firstGroup, secondGroup) = pageAllocator.splitGroup(group, splitSize);
-    Page* joinedGroup = pageAllocator.joinGroup(firstGroup, secondGroup);
-    REQUIRE(joinedGroup);
-    REQUIRE(joinedGroup->groupSize() == cGroupSize);
 }
 
 TEST_CASE("Page is properly verified as valid", "[unit][page_allocator]")

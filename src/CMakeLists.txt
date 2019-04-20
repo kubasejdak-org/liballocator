@@ -3,6 +3,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/version.hpp.in ${CMAKE_CURRENT_SOURCE
 
 add_library(liballocator
     allocator.cpp
+    group.cpp
     page_allocator.cpp
     page.cpp
     region_info.cpp

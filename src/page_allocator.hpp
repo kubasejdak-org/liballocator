@@ -133,20 +133,6 @@ private:
     /// @retval nullptr             No region contains the given address.
     RegionInfo* getRegion(std::uintptr_t addr);
 
-    /// Calculates index in the groups array, for which group with the given page count should be stored.
-    /// @param[in] pageCount        Number of pages, for which index should be calculated.
-    /// @return Index in the groups array.
-    std::size_t groupIdx(std::size_t pageCount);
-
-    /// Initializes given group.
-    /// @param[in,out] group        Group to be initialized.
-    /// @param[in] groupSize        Size of the initialized group.
-    void initGroup(Page* group, std::size_t groupSize);
-
-    /// Clears the given group.
-    /// @param[in,out] group        Group to be cleared.
-    void clearGroup(Page* group);
-
     /// Adds given group to the array of free groups.
     /// @param[in,out] group        Group to be added.
     void addGroup(Page* group);
@@ -154,19 +140,6 @@ private:
     /// Removes given group from the array of free groups.
     /// @param[in,out] group        Group to be removed.
     void removeGroup(Page* group);
-
-    /// Splits given group into one of given size and second with the remaining size.
-    /// @param[in] group            Group to be splitted.
-    /// @param[in] size             Target size of the first group.
-    /// @returns Tuple with group of demanded size and with the group of the remaining size.
-    /// @note If the given group has already the correct size, then second pointer in the tuple is nullptr.
-    std::tuple<Page*, Page*> splitGroup(Page* group, std::size_t size);
-
-    /// Joins two given groups into one.
-    /// @param[in] firstGroup       First group to be joined.
-    /// @param[in] secondGroup      Second group to be joined.
-    /// @return Group that is a sum of the two given groups.
-    Page* joinGroup(Page* firstGroup, Page* secondGroup);
 
 private:
     static constexpr int cMinPageSize = 128;   ///< Minimal supported size of the page.
