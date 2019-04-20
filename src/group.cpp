@@ -70,12 +70,13 @@ std::tuple<Page*, Page*> splitGroup(Page* group, std::size_t size)
 {
     assert(group);
     assert(size);
-    assert(size <= group->groupSize());
+    auto groupSize = group->groupSize();
+    assert(size <= groupSize);
 
-    if (size == group->groupSize())
+    if (size == groupSize)
         return std::tuple<Page*, Page*>(group, nullptr);
 
-    std::size_t secondSize = group->groupSize() - size;
+    std::size_t secondSize = groupSize - size;
     clearGroup(group);
 
     Page* firstGroup = group;

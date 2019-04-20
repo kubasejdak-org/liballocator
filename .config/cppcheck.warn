@@ -1,2 +1,1 @@
-[src/page_allocator.cpp:356]: (warning) Assert statement calls a function which may have desired side effects: 'groupSize'.
 (information) Cppcheck cannot find all the include files (use --check-config for details)
