@@ -56,27 +56,6 @@ TEST_CASE("Page allocator is properly cleared", "[unit][page_allocator]")
     std::memset(reinterpret_cast<void*>(&pageAllocator), cPattern, sizeof(PageAllocator));
 
     pageAllocator.clear();
-    for (const auto& region : pageAllocator.m_regionsInfo) {
-        REQUIRE(region.start == 0);
-        REQUIRE(region.end == 0);
-        REQUIRE(region.alignedStart == 0);
-        REQUIRE(region.alignedEnd == 0);
-        REQUIRE(region.pageCount == 0);
-        REQUIRE(region.size == 0);
-        REQUIRE(region.alignedSize == 0);
-        REQUIRE(region.firstPage == nullptr);
-        REQUIRE(region.lastPage == nullptr);
-    }
-    REQUIRE(pageAllocator.m_validRegionsCount == 0);
-    REQUIRE(pageAllocator.m_pageSize == 0);
-    REQUIRE(pageAllocator.m_descRegionIdx == 0);
-    REQUIRE(pageAllocator.m_descPagesCount == 0);
-    REQUIRE(pageAllocator.m_pagesHead == nullptr);
-    REQUIRE(pageAllocator.m_pagesTail == nullptr);
-    for (const auto* page : pageAllocator.m_freeGroupLists)
-        REQUIRE(page == nullptr);
-    REQUIRE(pageAllocator.m_pagesCount == 0);
-    REQUIRE(pageAllocator.m_freePagesCount == 0);
 
     auto stats = pageAllocator.getStats();
     REQUIRE(stats.totalMemorySize == 0);
@@ -158,7 +137,8 @@ TEST_CASE("Pages are correctly counted", "[unit][page_allocator]")
         // clang-format on
 
         REQUIRE(pageAllocator.init(regions.data(), cPageSize));
-        REQUIRE(pageAllocator.m_pagesCount == cPagesCount);
+        auto stats = pageAllocator.getStats();
+        REQUIRE(stats.totalPagesCount == cPagesCount);
     }
 
     SECTION("Regions: 1(535), 2(87), 3(4)")
@@ -184,7 +164,8 @@ TEST_CASE("Pages are correctly counted", "[unit][page_allocator]")
         // clang-format on
 
         REQUIRE(pageAllocator.init(regions.data(), cPageSize));
-        REQUIRE(pageAllocator.m_pagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
+        auto stats = pageAllocator.getStats();
+        REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
     }
 
     SECTION("All regions have 5 pages")
@@ -216,7 +197,8 @@ TEST_CASE("Pages are correctly counted", "[unit][page_allocator]")
         // clang-format on
 
         REQUIRE(pageAllocator.init(regions.data(), cPageSize));
-        REQUIRE(pageAllocator.m_pagesCount == (cPagesCount * 8));
+        auto stats = pageAllocator.getStats();
+        REQUIRE(stats.totalPagesCount == (cPagesCount * 8));
     }
 
     SECTION("All regions have 5 pages")
@@ -247,7 +229,8 @@ TEST_CASE("Pages are correctly counted", "[unit][page_allocator]")
         // clang-format on
 
         REQUIRE(!pageAllocator.init(regions.data(), cPageSize));
-        REQUIRE(pageAllocator.m_pagesCount == 0);
+        auto stats = pageAllocator.getStats();
+        REQUIRE(stats.totalPagesCount == 0);
     }
 
     SECTION("Too many regions are passed to the allocator")
@@ -1194,7 +1177,7 @@ TEST_CASE("PageAllocator stats are properly initialized", "[unit][page_allocator
     REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
     REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
     REQUIRE(stats.freeMemorySize == (cPageSize * (stats.totalPagesCount - stats.reservedPagesCount)));
-    REQUIRE(stats.pageSize == pageAllocator.m_pageSize);
+    REQUIRE(stats.pageSize == cPageSize);
     REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
     REQUIRE(stats.reservedPagesCount == 79);
     REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount));
@@ -1239,7 +1222,7 @@ TEST_CASE("Pages are correctly allocated", "[unit][page_allocator]")
         REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
         REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
         REQUIRE(stats.freeMemorySize == (cPageSize * (stats.totalPagesCount - stats.reservedPagesCount)));
-        REQUIRE(stats.pageSize == pageAllocator.m_pageSize);
+        REQUIRE(stats.pageSize == cPageSize);
         REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
         REQUIRE(stats.reservedPagesCount == 79);
         REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount));
@@ -1255,7 +1238,7 @@ TEST_CASE("Pages are correctly allocated", "[unit][page_allocator]")
         REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
         REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
         REQUIRE(stats.freeMemorySize == (cPageSize * (stats.totalPagesCount - stats.reservedPagesCount)));
-        REQUIRE(stats.pageSize == pageAllocator.m_pageSize);
+        REQUIRE(stats.pageSize == cPageSize);
         REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
         REQUIRE(stats.reservedPagesCount == 79);
         REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount));
@@ -1271,7 +1254,7 @@ TEST_CASE("Pages are correctly allocated", "[unit][page_allocator]")
         REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
         REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
         REQUIRE(stats.freeMemorySize == (cPageSize * (stats.totalPagesCount - stats.reservedPagesCount)));
-        REQUIRE(stats.pageSize == pageAllocator.m_pageSize);
+        REQUIRE(stats.pageSize == cPageSize);
         REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
         REQUIRE(stats.reservedPagesCount == 79);
         REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount));
@@ -1328,7 +1311,7 @@ TEST_CASE("Pages are correctly allocated", "[unit][page_allocator]")
         REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
         REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
         REQUIRE(stats.freeMemorySize == (cPageSize * (stats.totalPagesCount - stats.reservedPagesCount) - cAllocSize * cPageSize));
-        REQUIRE(stats.pageSize == pageAllocator.m_pageSize);
+        REQUIRE(stats.pageSize == cPageSize);
         REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
         REQUIRE(stats.reservedPagesCount == 79);
         REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount - cAllocSize));
@@ -1346,7 +1329,7 @@ TEST_CASE("Pages are correctly allocated", "[unit][page_allocator]")
         REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
         REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
         REQUIRE(stats.freeMemorySize == (cPageSize * (stats.totalPagesCount - stats.reservedPagesCount) - cPagesCount1 * cPageSize));
-        REQUIRE(stats.pageSize == pageAllocator.m_pageSize);
+        REQUIRE(stats.pageSize == cPageSize);
         REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
         REQUIRE(stats.reservedPagesCount == 79);
         REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount - cPagesCount1));
@@ -1366,7 +1349,7 @@ TEST_CASE("Pages are correctly allocated", "[unit][page_allocator]")
         REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
         REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
         REQUIRE(stats.freeMemorySize == (cPageSize * (stats.totalPagesCount - stats.reservedPagesCount) - 4 * cPageSize));
-        REQUIRE(stats.pageSize == pageAllocator.m_pageSize);
+        REQUIRE(stats.pageSize == cPageSize);
         REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
         REQUIRE(stats.reservedPagesCount == 79);
         REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount - 4));
@@ -1399,7 +1382,7 @@ TEST_CASE("Pages are correctly allocated", "[unit][page_allocator]")
         REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
         REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
         REQUIRE(stats.freeMemorySize == 6 * cPageSize);
-        REQUIRE(stats.pageSize == pageAllocator.m_pageSize);
+        REQUIRE(stats.pageSize == cPageSize);
         REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
         REQUIRE(stats.reservedPagesCount == 79);
         REQUIRE(stats.freePagesCount == 6);
@@ -1427,7 +1410,7 @@ TEST_CASE("Pages are correctly allocated", "[unit][page_allocator]")
         REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
         REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
         REQUIRE(stats.freeMemorySize == 0);
-        REQUIRE(stats.pageSize == pageAllocator.m_pageSize);
+        REQUIRE(stats.pageSize == cPageSize);
         REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
         REQUIRE(stats.reservedPagesCount == 79);
         REQUIRE(stats.freePagesCount == 0);
@@ -1571,7 +1554,7 @@ TEST_CASE("Pages are correctly released", "[unit][page_allocator]")
     REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
     REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
     REQUIRE(stats.freeMemorySize == (cPageSize * (stats.totalPagesCount - stats.reservedPagesCount)));
-    REQUIRE(stats.pageSize == pageAllocator.m_pageSize);
+    REQUIRE(stats.pageSize == cPageSize);
     REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
     REQUIRE(stats.reservedPagesCount == 79);
     REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount));
