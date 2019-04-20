@@ -75,7 +75,7 @@ TEST_CASE("ZoneAllocator integration tests (long-term)", "[integration][zone_all
     ZoneAllocator zoneAllocator;
     REQUIRE(zoneAllocator.init(&pageAllocator, cPageSize));
 
-    auto freePagesCount = pageAllocator.m_freePagesCount;
+    auto freePagesCount = pageAllocator.getStats().freePagesCount;
     auto maxAllocSize = 2 * cPageSize;
 
     // Initialize random number generator.
@@ -106,7 +106,7 @@ TEST_CASE("ZoneAllocator integration tests (long-term)", "[integration][zone_all
         }
         REQUIRE(chunkCount == zoneAllocator.m_initialZone.freeChunksCount());
         REQUIRE(chunkCount == zoneAllocator.m_initialZone.chunksCount());
-        REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
+        REQUIRE(pageAllocator.getStats().freePagesCount == freePagesCount);
 
         for (const auto& zone : zoneAllocator.m_zones) {
             if (zone.head == &zoneAllocator.m_initialZone) {

@@ -30,20 +30,15 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <catch2/catch.hpp>
-
+#include <page_allocator.hpp>
 #include <test_utils.hpp>
+
+#include <catch2/catch.hpp>
 
 #include <array>
 #include <chrono>
 #include <cstddef>
 #include <random>
-
-// Make access to private members for testing.
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define private public
-
-#include <page_allocator.hpp>
 
 // NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;
@@ -77,7 +72,7 @@ TEST_CASE("PageAllocator integration tests (long-term)", "[integration][page_all
     // clang-format on
 
     REQUIRE(pageAllocator.init(regions.data(), cPageSize));
-    auto freePagesCount = pageAllocator.m_freePagesCount;
+    auto freePagesCount = pageAllocator.getStats().freePagesCount;
     auto maxAllocSize = freePagesCount / 4;
 
     // Initialize random number generator.
@@ -100,37 +95,15 @@ TEST_CASE("PageAllocator integration tests (long-term)", "[integration][page_all
         for (auto* page : pages)
             pageAllocator.release(page);
 
-        REQUIRE(pageAllocator.m_freePagesCount == freePagesCount);
-
-        std::size_t idx1Count = 0;
-        for (Page* group = pageAllocator.m_freeGroupLists[1]; group != nullptr; group = group->next())
-            ++idx1Count;
-
-        REQUIRE(idx1Count == 1);
-        REQUIRE(pageAllocator.m_freeGroupLists[1]->groupSize() == cPagesCount3);
-
-        std::size_t idx2Count = 0;
-        for (Page* group = pageAllocator.m_freeGroupLists[2]; group != nullptr; group = group->next())
-            ++idx2Count;
-
-        REQUIRE(idx2Count == 1);
-        REQUIRE(pageAllocator.m_freeGroupLists[2]->groupSize() == cPagesCount2 - pageAllocator.m_descPagesCount);
-
-        std::size_t idx8Count = 0;
-        for (Page* group = pageAllocator.m_freeGroupLists[8]; group != nullptr; group = group->next()) // NOLINT
-            ++idx8Count;
-
-        REQUIRE(idx8Count == 1);
-        REQUIRE(pageAllocator.m_freeGroupLists[8]->groupSize() == cPagesCount1);
-
         auto stats = pageAllocator.getStats();
         REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
         REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
         REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
         REQUIRE(stats.freeMemorySize == (cPageSize * (stats.totalPagesCount - stats.reservedPagesCount)));
-        REQUIRE(stats.pageSize == pageAllocator.m_pageSize);
+        REQUIRE(stats.pageSize == cPageSize);
         REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
         REQUIRE(stats.reservedPagesCount == 79);
         REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount));
+        REQUIRE(stats.freePagesCount == freePagesCount);
     }
 }
