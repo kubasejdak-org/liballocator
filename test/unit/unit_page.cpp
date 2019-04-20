@@ -30,18 +30,12 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
+#include <page.hpp>
+
 #include <catch2/catch.hpp>
 
 #include <array>
 #include <cstddef>
-
-// Make access to private members for testing.
-// clang-format off
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define private     public
-// clang-format on
-
-#include <page.hpp>
 
 // NOLINTNEXTLINE(google-build-using-namespace)
 using namespace memory;
@@ -57,11 +51,11 @@ TEST_CASE("Page is properly initialized", "[unit][page]")
     auto* page = reinterpret_cast<Page*>(buffer.data());
 
     page->init();
-    REQUIRE(page->m_next == nullptr);
-    REQUIRE(page->m_prev == nullptr);
-    REQUIRE(page->m_addr == 0);
-    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-    REQUIRE(page->m_flags.value == 0);
+    REQUIRE(page->next() == nullptr);
+    REQUIRE(page->prev() == nullptr);
+    REQUIRE(page->address() == 0);
+    REQUIRE(page->groupSize() == 0);
+    REQUIRE(!page->isUsed());
 }
 
 TEST_CASE("Accessing siblings works as expected", "[unit][page]")
