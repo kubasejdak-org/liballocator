@@ -39,8 +39,7 @@
 #include <map>
 #include <utility>
 
-// NOLINTNEXTLINE(google-build-using-namespace)
-using namespace memory;
+namespace memory {
 
 TEST_CASE("Group index is properly computed", "[unit][group]")
 {
@@ -214,3 +213,5 @@ TEST_CASE("Group is properly joined", "[unit][group]")
     REQUIRE(joinedGroup);
     REQUIRE(joinedGroup->groupSize() == cGroupSize);
 }
+
+} // namespace memory

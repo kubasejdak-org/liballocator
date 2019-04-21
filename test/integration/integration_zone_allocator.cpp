@@ -30,9 +30,12 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <catch2/catch.hpp>
-
+#include <allocator/region.hpp>
+#include <page_allocator.hpp>
 #include <test_utils.hpp>
+#include <utils.hpp>
+
+#include <catch2/catch.hpp>
 
 #include <array>
 #include <chrono>
@@ -43,12 +46,9 @@
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define private public
 
-#include <page_allocator.hpp>
-#include <utils.hpp>
 #include <zone_allocator.hpp>
 
-// NOLINTNEXTLINE(google-build-using-namespace)
-using namespace memory;
+namespace memory {
 
 TEST_CASE("ZoneAllocator integration tests (long-term)", "[integration][zone_allocator]")
 {
@@ -125,3 +125,5 @@ TEST_CASE("ZoneAllocator integration tests (long-term)", "[integration][zone_all
         REQUIRE(stats.allocatedMemorySize == 0);
     }
 }
+
+} // namespace memory

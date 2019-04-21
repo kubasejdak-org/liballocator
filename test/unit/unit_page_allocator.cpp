@@ -30,7 +30,9 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
+#include <allocator/region.hpp>
 #include <group.hpp>
+#include <page.hpp>
 #include <page_allocator.hpp>
 #include <test_utils.hpp>
 

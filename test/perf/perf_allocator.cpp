@@ -30,9 +30,10 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <catch2/catch.hpp>
-
+#include <allocator/allocator.hpp>
 #include <test_utils.hpp>
+
+#include <catch2/catch.hpp>
 
 #include <array>
 #include <chrono>
@@ -40,13 +41,6 @@
 #include <cstdio>
 #include <cstdlib>
 #include <random>
-
-#include <iostream>
-
-#include <allocator/allocator.hpp>
-
-// NOLINTNEXTLINE(google-build-using-namespace)
-using namespace memory;
 
 struct PerfStats {
     double liballocatorAlloc = 0.0;
@@ -68,6 +62,8 @@ static void perfShowStats(const PerfStats& stats, const char* name, bool showFir
     std::printf("| %30s | %8.4f us | %8.4f us |\n", "new", stats.newAlloc, stats.newRelease);                            // NOLINT
     std::printf("+--------------------------------+-------------+-------------+\n");                                     // NOLINT
 }
+
+namespace memory {
 
 TEST_CASE("1000000x 134 bytes", "[perf][allocator]")
 {
@@ -305,3 +301,5 @@ TEST_CASE("2000x random number of bytes", "[perf][allocator]")
     stats.newRelease /= double(cAllocationsCount);
     perfShowStats(stats, "2000x random number of bytes");
 }
+
+} // namespace memory

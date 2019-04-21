@@ -30,9 +30,11 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <catch2/catch.hpp>
-
+#include <allocator/region.hpp>
 #include <test_utils.hpp>
+#include <utils.hpp>
+
+#include <catch2/catch.hpp>
 
 #include <array>
 #include <cmath>
@@ -43,12 +45,11 @@
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define private public
 
+#include <page.hpp>
 #include <page_allocator.hpp>
-#include <utils.hpp>
 #include <zone_allocator.hpp>
 
-// NOLINTNEXTLINE(google-build-using-namespace)
-using namespace memory;
+namespace memory {
 
 TEST_CASE("ZoneAllocator is properly cleared", "[unit][zone_allocator]")
 {
@@ -1385,3 +1386,5 @@ TEST_CASE("Zone allocator properly releases user memory", "[unit][zone_allocator
     REQUIRE(stats.freeMemorySize == cPageSize);
     REQUIRE(stats.allocatedMemorySize == 0);
 }
+
+} // namespace memory

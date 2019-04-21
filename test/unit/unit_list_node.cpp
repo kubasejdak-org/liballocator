@@ -37,8 +37,7 @@
 #include <array>
 #include <cstddef>
 
-// NOLINTNEXTLINE(google-build-using-namespace)
-using namespace memory;
+namespace memory {
 
 struct TestNode : public ListNode<TestNode> {
     TestNode() = default;
@@ -205,3 +204,5 @@ TEST_CASE("Removing from list with 1 node", "[unit][list_node]")
     REQUIRE(node.next() == nullptr);
     REQUIRE(node.prev() == nullptr);
 }
+
+} // namespace memory

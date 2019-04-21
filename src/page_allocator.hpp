@@ -32,11 +32,8 @@
 
 #pragma once
 
-#include "page.hpp"
 #include "region_info.hpp"
 #include "utils.hpp"
-
-#include <allocator/region.hpp>
 
 #include <array>
 #include <cstddef>
@@ -44,6 +41,9 @@
 #include <tuple>
 
 namespace memory {
+
+class Page;
+struct Region;
 
 /// @class PageAllocator
 /// Represents an allocator of physical pages.

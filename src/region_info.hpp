@@ -32,15 +32,14 @@
 
 #pragma once
 
-#include "page.hpp"
-
-#include <allocator/region.hpp>
-
 #include <cstddef>
 #include <cstdint>
 #include <optional>
 
 namespace memory {
+
+class Page;
+struct Region;
 
 /// @struct RegionInfo
 /// Represents the meta data of the physical memory region.

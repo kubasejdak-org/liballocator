@@ -39,8 +39,7 @@
 #include <cmath>
 #include <cstddef>
 
-// NOLINTNEXTLINE(google-build-using-namespace)
-using namespace memory;
+namespace memory {
 
 TEST_CASE("Values are correctly checked if they are a power of 2", "[unit][utils]")
 {
@@ -105,3 +104,5 @@ TEST_CASE("Pointers are correctly moved", "[unit][utils]")
         }
     }
 }
+
+} // namespace memory

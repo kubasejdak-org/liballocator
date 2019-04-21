@@ -39,8 +39,7 @@
 #include <array>
 #include <cstddef>
 
-// NOLINTNEXTLINE(google-build-using-namespace)
-using namespace memory;
+namespace memory {
 
 TEST_CASE("Zone structure is naturally aligned", "[unit][zone]")
 {
@@ -224,3 +223,5 @@ TEST_CASE("Zone properly checks if given zone is valid", "[unit][zone]")
         REQUIRE(!zone.isValidChunk(reinterpret_cast<Chunk*>(0xdeadbeef)));
     }
 }
+
+} // namespace memory

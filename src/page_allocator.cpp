@@ -32,6 +32,9 @@
 
 #include "page_allocator.hpp"
 #include "group.hpp"
+#include "page.hpp"
+
+#include <allocator/region.hpp>
 
 #include <cassert>
 #include <cmath>

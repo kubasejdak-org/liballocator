@@ -31,6 +31,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 
 #include "zone_allocator.hpp"
+#include "page.hpp"
 #include "page_allocator.hpp"
 #include "utils.hpp"
 

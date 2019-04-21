@@ -39,8 +39,7 @@
 #include <random>
 #include <regex>
 
-// NOLINTNEXTLINE(google-build-using-namespace)
-using namespace memory;
+namespace memory {
 
 TEST_CASE("Allocator returns a valid version", "[unit][allocator]")
 {
@@ -202,3 +201,5 @@ TEST_CASE("Allocator properly allocates and releases user memory", "[unit][alloc
         REQUIRE(stats.freeMemorySize == stats.userMemorySize);
     }
 }
+
+} // namespace memory

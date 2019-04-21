@@ -30,6 +30,7 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
+#include <allocator/region.hpp>
 #include <page_allocator.hpp>
 #include <test_utils.hpp>
 
@@ -40,8 +41,7 @@
 #include <cstddef>
 #include <random>
 
-// NOLINTNEXTLINE(google-build-using-namespace)
-using namespace memory;
+namespace memory {
 
 TEST_CASE("PageAllocator integration tests (long-term)", "[integration][page_allocator]")
 {
@@ -107,3 +107,5 @@ TEST_CASE("PageAllocator integration tests (long-term)", "[integration][page_all
         REQUIRE(stats.freePagesCount == freePagesCount);
     }
 }
+
+} // namespace memory

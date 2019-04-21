@@ -37,8 +37,7 @@
 #include <array>
 #include <cstddef>
 
-// NOLINTNEXTLINE(google-build-using-namespace)
-using namespace memory;
+namespace memory {
 
 TEST_CASE("Page structure is naturally aligned", "[unit][page]")
 {
@@ -82,3 +81,5 @@ TEST_CASE("Accessing siblings works as expected", "[unit][page]")
         REQUIRE(next->address() == page[2]->address());
     }
 }
+
+} // namespace memory

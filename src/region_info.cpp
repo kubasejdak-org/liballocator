@@ -31,6 +31,9 @@
 /////////////////////////////////////////////////////////////////////////////////////
 
 #include "region_info.hpp"
+#include "page.hpp"
+
+#include <allocator/region.hpp>
 
 #include <cassert>
 #include <optional>

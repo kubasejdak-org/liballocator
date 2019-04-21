@@ -30,6 +30,7 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
+#include <allocator/region.hpp>
 #include <region_info.hpp>
 
 #include <catch2/catch.hpp>
@@ -38,8 +39,7 @@
 #include <cstddef>
 #include <cstring>
 
-// NOLINTNEXTLINE(google-build-using-namespace)
-using namespace memory;
+namespace memory {
 
 TEST_CASE("RegionInfo structure is properly cleared", "[unit][region_info]")
 {
@@ -328,3 +328,5 @@ TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
         REQUIRE(regionInfo.lastPage == nullptr);
     }
 }
+
+} // namespace memory
