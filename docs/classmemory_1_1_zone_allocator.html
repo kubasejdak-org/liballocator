@@ -69,6 +69,7 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#pri-static-attribs">Static Private Attributes</a> &#124;
@@ -122,6 +123,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a18b55b7366b59377c9e609971bfa7383"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmemory_1_1_zone_allocator_1_1_stats.html">Stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#a18b55b7366b59377c9e609971bfa7383">getStats</a> ()</td></tr>
 <tr class="separator:a18b55b7366b59377c9e609971bfa7383"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a90b381b8c05c274dfe24529c06bdcf58"><td class="memItemLeft" align="right" valign="top"><a id="a90b381b8c05c274dfe24529c06bdcf58"></a>
+static constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#a90b381b8c05c274dfe24529c06bdcf58">cMinimalAllocSize</a> = 16</td></tr>
+<tr class="memdesc:a90b381b8c05c274dfe24529c06bdcf58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimal size of chunk, that can be allocated. <br /></td></tr>
+<tr class="separator:a90b381b8c05c274dfe24529c06bdcf58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:ad40dce42f15b9fe8291937395bd4f6fa"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
@@ -130,17 +138,13 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a57e59aeea5e6614d5dae68a0e42fe6e9"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a57e59aeea5e6614d5dae68a0e42fe6e9"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#a57e59aeea5e6614d5dae68a0e42fe6e9">deallocateChunk</a> (T *chunk)</td></tr>
 <tr class="separator:a57e59aeea5e6614d5dae68a0e42fe6e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab84859fe19f9c170358296000a84afe7"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#ab84859fe19f9c170358296000a84afe7">chunkSize</a> (std::size_t size)</td></tr>
-<tr class="separator:ab84859fe19f9c170358296000a84afe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1997b436d31b2592a0941f012e6dd564"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#a1997b436d31b2592a0941f012e6dd564">zoneIdx</a> (std::size_t <a class="el" href="classmemory_1_1_zone_allocator.html#ab84859fe19f9c170358296000a84afe7">chunkSize</a>)</td></tr>
-<tr class="separator:a1997b436d31b2592a0941f012e6dd564"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4d27f31f3a662a2a3e1f49baab33b51"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmemory_1_1_zone.html">Zone</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#af4d27f31f3a662a2a3e1f49baab33b51">getFreeZone</a> (std::size_t idx)</td></tr>
 <tr class="separator:af4d27f31f3a662a2a3e1f49baab33b51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8fb7d5982e9a81670c2adaeaeaff16ff"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#a8fb7d5982e9a81670c2adaeaeaff16ff">shouldAllocateZone</a> (std::size_t idx)</td></tr>
 <tr class="separator:a8fb7d5982e9a81670c2adaeaeaff16ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7da186826913a6bf31e63c8374b0f0d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmemory_1_1_zone.html">Zone</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#a7da186826913a6bf31e63c8374b0f0d4">allocateZone</a> (std::size_t <a class="el" href="classmemory_1_1_zone_allocator.html#ab84859fe19f9c170358296000a84afe7">chunkSize</a>)</td></tr>
+<tr class="memitem:a7da186826913a6bf31e63c8374b0f0d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmemory_1_1_zone.html">Zone</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#a7da186826913a6bf31e63c8374b0f0d4">allocateZone</a> (std::size_t chunkSize)</td></tr>
 <tr class="separator:a7da186826913a6bf31e63c8374b0f0d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a133209879406d863e5a1833dab09b396"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#a133209879406d863e5a1833dab09b396">initZone</a> (<a class="el" href="classmemory_1_1_zone.html">Zone</a> *zone, std::size_t <a class="el" href="classmemory_1_1_zone_allocator.html#ab84859fe19f9c170358296000a84afe7">chunkSize</a>)</td></tr>
+<tr class="memitem:a133209879406d863e5a1833dab09b396"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#a133209879406d863e5a1833dab09b396">initZone</a> (<a class="el" href="classmemory_1_1_zone.html">Zone</a> *zone, std::size_t chunkSize)</td></tr>
 <tr class="separator:a133209879406d863e5a1833dab09b396"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a255cdbbc98f8aa19c5e6d56051f79d63"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#a255cdbbc98f8aa19c5e6d56051f79d63">clearZone</a> (<a class="el" href="classmemory_1_1_zone.html">Zone</a> *zone)</td></tr>
 <tr class="separator:a255cdbbc98f8aa19c5e6d56051f79d63"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -173,21 +177,17 @@ std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <a class="el" href="classmemory_1_1_zone.html">Zone</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#a047637fc7b8f1d6f1e5f5efd0fe60ef2">m_initialZone</a> {}</td></tr>
 <tr class="memdesc:a047637fc7b8f1d6f1e5f5efd0fe60ef2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initial static zone. <br /></td></tr>
 <tr class="separator:a047637fc7b8f1d6f1e5f5efd0fe60ef2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac117a7e39232032fb5ea9fea98aa216a"><td class="memItemLeft" align="right" valign="top"><a id="ac117a7e39232032fb5ea9fea98aa216a"></a>
-std::array&lt; <a class="el" href="structmemory_1_1_zone_allocator_1_1_zone_info.html">ZoneInfo</a>, <a class="el" href="classmemory_1_1_zone_allocator.html#add39253b095a46d4382ea0da121f6c9d">MAX_ZONE_IDX</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#ac117a7e39232032fb5ea9fea98aa216a">m_zones</a> {}</td></tr>
-<tr class="memdesc:ac117a7e39232032fb5ea9fea98aa216a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array of all zones known in the <a class="el" href="classmemory_1_1_zone_allocator.html">ZoneAllocator</a>. <br /></td></tr>
-<tr class="separator:ac117a7e39232032fb5ea9fea98aa216a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a694cd8f5843beb9c511cda0949a9f268"><td class="memItemLeft" align="right" valign="top"><a id="a694cd8f5843beb9c511cda0949a9f268"></a>
+std::array&lt; <a class="el" href="structmemory_1_1_zone_allocator_1_1_zone_info.html">ZoneInfo</a>, <a class="el" href="classmemory_1_1_zone_allocator.html#a169c3c2204c7064677ffdfff7ae5b775">cMaxZoneIdx</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#a694cd8f5843beb9c511cda0949a9f268">m_zones</a> {}</td></tr>
+<tr class="memdesc:a694cd8f5843beb9c511cda0949a9f268"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array of all zones known in the <a class="el" href="classmemory_1_1_zone_allocator.html">ZoneAllocator</a>. <br /></td></tr>
+<tr class="separator:a694cd8f5843beb9c511cda0949a9f268"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
-<tr class="memitem:a5d2d4f06783b126bcb6b79fb128c9586"><td class="memItemLeft" align="right" valign="top"><a id="a5d2d4f06783b126bcb6b79fb128c9586"></a>
-static constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#a5d2d4f06783b126bcb6b79fb128c9586">MINIMAL_ALLOC_SIZE</a> = 16</td></tr>
-<tr class="memdesc:a5d2d4f06783b126bcb6b79fb128c9586"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimal size of chunk, that can be allocated. <br /></td></tr>
-<tr class="separator:a5d2d4f06783b126bcb6b79fb128c9586"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add39253b095a46d4382ea0da121f6c9d"><td class="memItemLeft" align="right" valign="top"><a id="add39253b095a46d4382ea0da121f6c9d"></a>
-static constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#add39253b095a46d4382ea0da121f6c9d">MAX_ZONE_IDX</a> = 8</td></tr>
-<tr class="memdesc:add39253b095a46d4382ea0da121f6c9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximal supported entries in the zone array. <br /></td></tr>
-<tr class="separator:add39253b095a46d4382ea0da121f6c9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a169c3c2204c7064677ffdfff7ae5b775"><td class="memItemLeft" align="right" valign="top"><a id="a169c3c2204c7064677ffdfff7ae5b775"></a>
+static constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_zone_allocator.html#a169c3c2204c7064677ffdfff7ae5b775">cMaxZoneIdx</a> = 8</td></tr>
+<tr class="memdesc:a169c3c2204c7064677ffdfff7ae5b775"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximal supported entries in the zone array. <br /></td></tr>
+<tr class="separator:a169c3c2204c7064677ffdfff7ae5b775"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents the <a class="el" href="classmemory_1_1_zone_allocator.html">ZoneAllocator</a>. </p>
@@ -329,39 +329,6 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="ab84859fe19f9c170358296000a84afe7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab84859fe19f9c170358296000a84afe7">&#9670;&nbsp;</a></span>chunkSize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::size_t memory::ZoneAllocator::chunkSize </td>
-          <td>(</td>
-          <td class="paramtype">std::size_t&#160;</td>
-          <td class="paramname"><em>size</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Returns size rounded up to the closest chunk size. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>Size to be rounded up. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Closest chunk size. </dd></dl>
 
 </div>
 </div>
@@ -726,39 +693,6 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="a1997b436d31b2592a0941f012e6dd564"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1997b436d31b2592a0941f012e6dd564">&#9670;&nbsp;</a></span>zoneIdx()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::size_t memory::ZoneAllocator::zoneIdx </td>
-          <td>(</td>
-          <td class="paramtype">std::size_t&#160;</td>
-          <td class="paramname"><em>chunkSize</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Returns an index of the zone with the given chunk size. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">chunkSize</td><td><a class="el" href="classmemory_1_1_chunk.html">Chunk</a> size to be used in calculations. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Index of the zone in the array of all known zones. </dd></dl>
 
 </div>
 </div>

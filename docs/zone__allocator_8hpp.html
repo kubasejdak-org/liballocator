@@ -67,25 +67,30 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">zone_allocator.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="zone_8hpp_source.html">zone.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="utils_8hpp_source.html">utils.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="zone_8hpp_source.html">zone.hpp</a>&quot;</code><br />
 <code>#include &lt;array&gt;</code><br />
+<code>#include &lt;cmath&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for zone_allocator.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="zone__allocator_8hpp__incl.png" border="0" usemap="#src_2zone__allocator_8hpp" alt=""/></div>
 <map name="src_2zone__allocator_8hpp" id="src_2zone__allocator_8hpp">
-<area shape="rect"  title=" " alt="" coords="85,5,240,31"/>
-<area shape="rect"  href="zone_8hpp.html" title=" " alt="" coords="48,79,124,104"/>
-<area shape="rect"  title=" " alt="" coords="130,152,194,177"/>
-<area shape="rect"  title=" " alt="" coords="199,79,251,104"/>
-<area shape="rect"  href="list__node_8hpp.html" title=" " alt="" coords="5,152,106,177"/>
-<area shape="rect"  title=" " alt="" coords="24,225,88,251"/>
+<area shape="rect"  title=" " alt="" coords="113,5,268,31"/>
+<area shape="rect"  href="utils_8hpp.html" title=" " alt="" coords="5,79,76,104"/>
+<area shape="rect"  title=" " alt="" coords="66,152,130,177"/>
+<area shape="rect"  href="zone_8hpp.html" title=" " alt="" coords="152,79,228,104"/>
+<area shape="rect"  title=" " alt="" coords="252,79,304,104"/>
+<area shape="rect"  title=" " alt="" coords="328,79,386,104"/>
+<area shape="rect"  href="list__node_8hpp.html" title=" " alt="" coords="155,152,255,177"/>
+<area shape="rect"  title=" " alt="" coords="173,225,237,251"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -109,6 +114,13 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmemory_1_1_zone_allocator_1_1_zone_info.html">memory::ZoneAllocator::ZoneInfo</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a862abda7514847c2c488ff1acc6965f5"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="zone__allocator_8hpp.html#a862abda7514847c2c488ff1acc6965f5">memory::detail::zoneIdx</a> (std::size_t chunkSize)</td></tr>
+<tr class="separator:a862abda7514847c2c488ff1acc6965f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd19fd31db9a5907f4fe05668396d768"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="zone__allocator_8hpp.html#afd19fd31db9a5907f4fe05668396d768">memory::detail::chunkSize</a> (std::size_t size)</td></tr>
+<tr class="separator:afd19fd31db9a5907f4fe05668396d768"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>Kuba Sejdak </dd></dl>
@@ -119,7 +131,74 @@ Classes</h2></td></tr>
 <li>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.</li>
 <li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.</li>
 </ol>
-<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. </p><pre class="fragment"></pre> </div></div><!-- contents -->
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. </p><pre class="fragment"></pre> </div><h2 class="groupheader">Function Documentation</h2>
+<a id="file_afd19fd31db9a5907f4fe05668396d768"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_afd19fd31db9a5907f4fe05668396d768">&#9670;&nbsp;</a></span>chunkSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t memory::detail::chunkSize </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>size</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns size rounded up to the closest chunk size. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>Size to be rounded up. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Closest chunk size. </dd></dl>
+
+</div>
+</div>
+<a id="file_a862abda7514847c2c488ff1acc6965f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_a862abda7514847c2c488ff1acc6965f5">&#9670;&nbsp;</a></span>zoneIdx()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t memory::detail::zoneIdx </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>chunkSize</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns an index of the zone with the given chunk size. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">chunkSize</td><td>Chunk size to be used in calculations. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Index of the zone in the array of all known zones. </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['list_5fnode_2ehpp',['list_node.hpp',['../list__node_8hpp.html',1,'']]]
+  ['group_2ecpp',['group.cpp',['../group_8cpp.html',1,'']]],
+  ['group_2ehpp',['group.hpp',['../group_8hpp.html',1,'']]]
 ];

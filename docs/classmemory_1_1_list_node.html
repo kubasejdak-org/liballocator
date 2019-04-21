@@ -88,16 +88,14 @@ Collaboration diagram for memory::ListNode&lt; T &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a71f27dac8d03b851af351b57315e1c90"><td class="memItemLeft" align="right" valign="top"><a id="a71f27dac8d03b851af351b57315e1c90"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_list_node.html#a71f27dac8d03b851af351b57315e1c90">ListNode</a> ()</td></tr>
-<tr class="memdesc:a71f27dac8d03b851af351b57315e1c90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
-<tr class="separator:a71f27dac8d03b851af351b57315e1c90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abfbb97fa1e0fd266d41c80a8079dbce2"><td class="memItemLeft" align="right" valign="top"><a id="abfbb97fa1e0fd266d41c80a8079dbce2"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_list_node.html#abfbb97fa1e0fd266d41c80a8079dbce2">initListNode</a> ()</td></tr>
 <tr class="memdesc:abfbb97fa1e0fd266d41c80a8079dbce2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the node. <br /></td></tr>
 <tr class="separator:abfbb97fa1e0fd266d41c80a8079dbce2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a396669c96d3d72bf11098c6676336492"><td class="memItemLeft" align="right" valign="top">T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_list_node.html#a396669c96d3d72bf11098c6676336492">next</a> ()</td></tr>
 <tr class="separator:a396669c96d3d72bf11098c6676336492"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7495b64f20a19b41c6aaf7b33f68b396"><td class="memItemLeft" align="right" valign="top">T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_list_node.html#a7495b64f20a19b41c6aaf7b33f68b396">prev</a> ()</td></tr>
+<tr class="separator:a7495b64f20a19b41c6aaf7b33f68b396"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60a93cdf174c3565734927c245f3979d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_list_node.html#a60a93cdf174c3565734927c245f3979d">addToList</a> (T **list)</td></tr>
 <tr class="separator:a60a93cdf174c3565734927c245f3979d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa430314f24a8af4dedd5c8b3e2e3269e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_list_node.html#aa430314f24a8af4dedd5c8b3e2e3269e">removeFromList</a> (T **list)</td></tr>
@@ -106,11 +104,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:adb2db6f53d659910e6171ea74c337ea0"><td class="memItemLeft" align="right" valign="top"><a id="adb2db6f53d659910e6171ea74c337ea0"></a>
-T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_list_node.html#adb2db6f53d659910e6171ea74c337ea0">m_next</a></td></tr>
+T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_list_node.html#adb2db6f53d659910e6171ea74c337ea0">m_next</a> {}</td></tr>
 <tr class="memdesc:adb2db6f53d659910e6171ea74c337ea0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Next node in the list. <br /></td></tr>
 <tr class="separator:adb2db6f53d659910e6171ea74c337ea0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa93160b704199a911deb2f7cc84e16ad"><td class="memItemLeft" align="right" valign="top"><a id="aa93160b704199a911deb2f7cc84e16ad"></a>
-T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_list_node.html#aa93160b704199a911deb2f7cc84e16ad">m_prev</a></td></tr>
+T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmemory_1_1_list_node.html#aa93160b704199a911deb2f7cc84e16ad">m_prev</a> {}</td></tr>
 <tr class="memdesc:aa93160b704199a911deb2f7cc84e16ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Previous node in the list. <br /></td></tr>
 <tr class="separator:aa93160b704199a911deb2f7cc84e16ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -118,7 +116,7 @@ T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 <div class="textblock"><h3>template&lt;typename T&gt;<br />
 class memory::ListNode&lt; T &gt;</h3>
 
-<p>Represents a node of the generic doubly-linked list. </p>
+<p>Represents a node of the generic doubly-linked list, that doesn't allocate. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a60a93cdf174c3565734927c245f3979d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a60a93cdf174c3565734927c245f3979d">&#9670;&nbsp;</a></span>addToList()</h2>
@@ -178,11 +176,46 @@ template&lt;typename T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Returns the node from the list. </p><dl class="section return"><dt>Returns</dt><dd>Pointer to the next list node. </dd></dl>
+<p>Returns the next node from the list. </p><dl class="section return"><dt>Returns</dt><dd>Pointer to the next list node. </dd></dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname">T*</td><td>Pointer to the next node if exists. </td></tr>
     <tr><td class="paramname">nullptr</td><td>There is no next node. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a7495b64f20a19b41c6aaf7b33f68b396"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7495b64f20a19b41c6aaf7b33f68b396">&#9670;&nbsp;</a></span>prev()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T* <a class="el" href="classmemory_1_1_list_node.html">memory::ListNode</a>&lt; T &gt;::prev </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the previous node from the list. </p><dl class="section return"><dt>Returns</dt><dd>Pointer to the previous list node. </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">T*</td><td>Pointer to the previous node if exists. </td></tr>
+    <tr><td class="paramname">nullptr</td><td>There is no previous node. </td></tr>
   </table>
   </dd>
 </dl>
