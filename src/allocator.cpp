@@ -49,7 +49,7 @@ namespace memory::allocator {
 
 const char* version()
 {
-    return LIBALLOCATOR_VERSION;
+    return cLiballocatorVersion;
 }
 
 bool init(Region* regions, std::size_t pageSize)

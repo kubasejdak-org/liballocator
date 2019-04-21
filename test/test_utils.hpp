@@ -43,7 +43,7 @@ inline std::unique_ptr<std::byte, decltype(&std::free)> alignedAlloc(std::size_t
 {
     void* ptr = nullptr;
 
-    // TODO: This is a workaround for bug in GCC lacking std::aligned_alloc().
+    // TODO(kuba): This is a workaround for bug in GCC lacking std::aligned_alloc().
     // return std::unique_ptr<std::byte, decltype(&std::free)>(std::aligned_alloc(alignment, size));
     posix_memalign(&ptr, alignment, size);
 

@@ -81,6 +81,7 @@ bool PageAllocator::init(Region* regions, std::size_t pageSize)
         region.lastPage = page + region.pageCount - 1;
 
         for (auto addr = region.alignedStart; addr != region.alignedEnd; addr += m_pageSize) {
+            assert(page);
             page->init();
             page->setAddress(addr);
             page = page->nextSibling();

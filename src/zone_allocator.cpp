@@ -33,11 +33,9 @@
 #include "zone_allocator.hpp"
 #include "page.hpp"
 #include "page_allocator.hpp"
-#include "utils.hpp"
 
 #include <algorithm>
 #include <cassert>
-#include <cmath>
 #include <numeric>
 
 namespace memory {
@@ -53,8 +51,8 @@ bool ZoneAllocator::init(PageAllocator* pageAllocator, std::size_t pageSize)
 
     m_pageAllocator = pageAllocator;
     m_pageSize = pageSize;
-    m_zoneDescChunkSize = chunkSize(sizeof(Zone));
-    m_zoneDescIdx = zoneIdx(m_zoneDescChunkSize);
+    m_zoneDescChunkSize = detail::chunkSize(sizeof(Zone));
+    m_zoneDescIdx = detail::zoneIdx(m_zoneDescChunkSize);
     if (!initZone(&m_initialZone, m_zoneDescChunkSize))
         return false;
 
@@ -85,8 +83,8 @@ void* ZoneAllocator::allocate(std::size_t size)
         return nullptr;
     }
 
-    std::size_t allocSize = chunkSize(size);
-    std::size_t idx = zoneIdx(allocSize);
+    std::size_t allocSize = detail::chunkSize(size);
+    std::size_t idx = detail::zoneIdx(allocSize);
 
     Zone* zone = shouldAllocateZone(idx) ? allocateZone(allocSize) : getFreeZone(idx);
     if (zone == nullptr)
@@ -113,7 +111,7 @@ ZoneAllocator::Stats ZoneAllocator::getStats()
     auto end = std::end(m_zones);
 
     // clang-format off
-    std::size_t usedZonesCount = std::accumulate(start, end, 0U, [](const size_t& sum, const ZoneInfo& zoneInfo) {
+    std::size_t usedZonesCount = std::accumulate(start, end, 0u, [](const size_t& sum, const ZoneInfo& zoneInfo) {
         std::size_t count = 0;
         for (auto* zone = zoneInfo.head; zone != nullptr; zone = zone->next(), ++count);
         return sum + count;
@@ -123,7 +121,7 @@ ZoneAllocator::Stats ZoneAllocator::getStats()
     Stats stats{};
     stats.usedMemorySize = usedZonesCount * m_pageSize;
     stats.reservedMemorySize = (usedZonesCount > 0) ? (usedZonesCount - 1) * m_zoneDescChunkSize : 0;
-    stats.freeMemorySize = std::accumulate(start, end, 0U, [](const size_t& sum, const ZoneInfo& zoneInfo) {
+    stats.freeMemorySize = std::accumulate(start, end, 0u, [](const size_t& sum, const ZoneInfo& zoneInfo) {
         if (zoneInfo.head == nullptr)
             return sum;
 
@@ -132,17 +130,6 @@ ZoneAllocator::Stats ZoneAllocator::getStats()
     stats.allocatedMemorySize = stats.usedMemorySize - stats.reservedMemorySize - stats.freeMemorySize;
 
     return stats;
-}
-
-std::size_t ZoneAllocator::chunkSize(std::size_t size)
-{
-    std::size_t chunkSize = std::max(size, cMinimalAllocSize);
-    return utils::roundPowerOf2(chunkSize);
-}
-
-std::size_t ZoneAllocator::zoneIdx(std::size_t chunkSize)
-{
-    return static_cast<std::size_t>(std::floor(std::log2(chunkSize)) - 4);
 }
 
 Zone* ZoneAllocator::getFreeZone(std::size_t idx)
@@ -208,7 +195,7 @@ void ZoneAllocator::addZone(Zone* zone)
 {
     assert(zone);
 
-    auto idx = zoneIdx(zone->chunkSize());
+    auto idx = detail::zoneIdx(zone->chunkSize());
     zone->addToList(&m_zones.at(idx).head);
     m_zones.at(idx).freeChunksCount += zone->freeChunksCount();
 }
@@ -218,7 +205,7 @@ void ZoneAllocator::removeZone(Zone* zone)
     assert(zone);
     assert(zone != &m_initialZone);
 
-    auto idx = zoneIdx(zone->chunkSize());
+    auto idx = detail::zoneIdx(zone->chunkSize());
     zone->removeFromList(&m_zones.at(idx).head);
     m_zones.at(idx).freeChunksCount -= zone->freeChunksCount();
 }

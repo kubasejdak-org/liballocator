@@ -32,14 +32,22 @@
 
 #pragma once
 
+#include "utils.hpp"
 #include "zone.hpp"
 
 #include <array>
+#include <cmath>
 #include <cstddef>
 
 namespace memory {
 
 class PageAllocator;
+
+namespace detail {
+
+    std::size_t zoneIdx(std::size_t chunkSize);
+
+} // namespace detail
 
 /// @class ZoneAllocator
 /// Represents the ZoneAllocator.
@@ -92,7 +100,7 @@ private:
     template <typename T>
     T* allocateChunk(Zone* zone)
     {
-        std::size_t idx = zoneIdx(zone->chunkSize());
+        std::size_t idx = detail::zoneIdx(zone->chunkSize());
         m_zones[idx].freeChunksCount--;
         return reinterpret_cast<T*>(zone->takeChunk());
     }
@@ -114,7 +122,7 @@ private:
         if (!zone->isValidChunk(zoneChunk))
             return false;
 
-        std::size_t idx = zoneIdx(zone->chunkSize());
+        std::size_t idx = detail::zoneIdx(zone->chunkSize());
         m_zones[idx].freeChunksCount++;
         zone->giveChunk(zoneChunk);
 
@@ -126,16 +134,6 @@ private:
 
         return true;
     }
-
-    /// Returns size rounded up to the closest chunk size.
-    /// @param[in] size                 Size to be rounded up.
-    /// @return Closest chunk size.
-    std::size_t chunkSize(std::size_t size);
-
-    /// Returns an index of the zone with the given chunk size.
-    /// @param[in] chunkSize            Chunk size to be used in calculations.
-    /// @return Index of the zone in the array of all known zones.
-    std::size_t zoneIdx(std::size_t chunkSize);
 
     /// Returns the Zone from the given array index, that has at least one free chunk.
     /// @param[in] idx                  Index from which Zone should be taken.
@@ -185,8 +183,10 @@ private:
     /// @retval nullptr                 Zone has not been found.
     Zone* findZone(Chunk* chunk);
 
-private:
+public:
     static constexpr std::size_t cMinimalAllocSize = 16; ///< Minimal size of chunk, that can be allocated.
+
+private:
     static constexpr std::size_t cMaxZoneIdx = 8;        ///< Maximal supported entries in the zone array.
 
 private:
@@ -205,4 +205,24 @@ private:
     std::array<ZoneInfo, cMaxZoneIdx> m_zones{}; ///< Array of all zones known in the ZoneAllocator.
 };
 
+namespace detail {
+
+/// Returns size rounded up to the closest chunk size.
+/// @param[in] size                     Size to be rounded up.
+/// @return Closest chunk size.
+inline std::size_t chunkSize(std::size_t size)
+{
+    std::size_t chunkSize = std::max(size, ZoneAllocator::cMinimalAllocSize);
+    return utils::roundPowerOf2(chunkSize);
+}
+
+/// Returns an index of the zone with the given chunk size.
+/// @param[in] chunkSize                Chunk size to be used in calculations.
+/// @return Index of the zone in the array of all known zones.
+inline std::size_t zoneIdx(std::size_t chunkSize)
+{
+    return static_cast<std::size_t>(std::floor(std::log2(chunkSize)) - 4);
+}
+
+} // namespace detail
 } // namespace memory
