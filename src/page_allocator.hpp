@@ -135,7 +135,7 @@ private:
     void removeGroup(Page* group);
 
 public:
-    static constexpr int cMinPageSize = 128;   ///< Minimal supported size of the page.
+    static constexpr int cMinPageSize = 128; ///< Minimal supported size of the page.
 
 private:
     static constexpr int cMaxRegionsCount = 8; ///< Maximal supported number of memory regions.

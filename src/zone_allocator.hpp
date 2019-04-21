@@ -45,7 +45,7 @@ class PageAllocator;
 
 namespace detail {
 
-    std::size_t zoneIdx(std::size_t chunkSize);
+std::size_t zoneIdx(std::size_t chunkSize);
 
 } // namespace detail
 
@@ -187,7 +187,7 @@ public:
     static constexpr std::size_t cMinimalAllocSize = 16; ///< Minimal size of chunk, that can be allocated.
 
 private:
-    static constexpr std::size_t cMaxZoneIdx = 8;        ///< Maximal supported entries in the zone array.
+    static constexpr std::size_t cMaxZoneIdx = 8; ///< Maximal supported entries in the zone array.
 
 private:
     /// @struct ZoneInfo
