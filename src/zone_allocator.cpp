@@ -111,7 +111,7 @@ ZoneAllocator::Stats ZoneAllocator::getStats()
     auto end = std::end(m_zones);
 
     // clang-format off
-    std::size_t usedZonesCount = std::accumulate(start, end, 0u, [](const size_t& sum, const ZoneInfo& zoneInfo) {
+    std::size_t usedZonesCount = std::accumulate(start, end, 0U, [](const size_t& sum, const ZoneInfo& zoneInfo) {
         std::size_t count = 0;
         for (auto* zone = zoneInfo.head; zone != nullptr; zone = zone->next(), ++count);
         return sum + count;
@@ -121,7 +121,7 @@ ZoneAllocator::Stats ZoneAllocator::getStats()
     Stats stats{};
     stats.usedMemorySize = usedZonesCount * m_pageSize;
     stats.reservedMemorySize = (usedZonesCount > 0) ? (usedZonesCount - 1) * m_zoneDescChunkSize : 0;
-    stats.freeMemorySize = std::accumulate(start, end, 0u, [](const size_t& sum, const ZoneInfo& zoneInfo) {
+    stats.freeMemorySize = std::accumulate(start, end, 0U, [](const size_t& sum, const ZoneInfo& zoneInfo) {
         if (zoneInfo.head == nullptr)
             return sum;
 
