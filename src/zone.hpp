@@ -59,8 +59,23 @@ public:
 
     /// Move constructor.
     /// @param[in] other        Page to be used in initialization.
-    /// @note This constructor is deleted, because pages should be initialized only in-place.
+    /// @note This constructor is deleted, because zones should be initialized only in-place.
     Zone(Zone&& other) = delete;
+
+    /// Destructor.
+    ~Zone() = default;
+
+    /// Assignment operator.
+    /// @param[in] other        Zone to be used in assignment.
+    /// @return Reference to the assignment value.
+    /// @note This operator is deleted, because zones should not be copied.
+    Zone& operator=(const Zone& other) = delete;
+
+    /// Move assignment operator.
+    /// @param[in] other        Zone to be used in assignment.
+    /// @return Reference to the assignment value.
+    /// @note This operator is deleted, because zones should not be copied.
+    Zone& operator=(Zone&& other) = delete;
 
     /// Initializes the zone. It is used as a replacement for the constructor.
     /// @param[in] page         page to be associated with this zone.

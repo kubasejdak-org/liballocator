@@ -101,7 +101,7 @@ private:
     T* allocateChunk(Zone* zone)
     {
         std::size_t idx = detail::zoneIdx(zone->chunkSize());
-        m_zones[idx].freeChunksCount--;
+        m_zones.at(idx).freeChunksCount--;
         return reinterpret_cast<T*>(zone->takeChunk());
     }
 
@@ -123,7 +123,7 @@ private:
             return false;
 
         std::size_t idx = detail::zoneIdx(zone->chunkSize());
-        m_zones[idx].freeChunksCount++;
+        m_zones.at(idx).freeChunksCount++;
         zone->giveChunk(zoneChunk);
 
         if (zone->chunksCount() == zone->freeChunksCount() && zone != &m_initialZone) {

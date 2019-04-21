@@ -54,11 +54,11 @@ inline std::size_t roundPowerOf2(std::size_t value)
     auto result = value;
 
     --result;
-    result |= (result >> 1);
-    result |= (result >> 2);
-    result |= (result >> 4);
-    result |= (result >> 8);
-    result |= (result >> 16);
+    result |= (result >> 1U);  // NOLINT
+    result |= (result >> 2U);  // NOLINT
+    result |= (result >> 4U);  // NOLINT
+    result |= (result >> 8U);  // NOLINT
+    result |= (result >> 16U); // NOLINT
     ++result;
 
     return result;
