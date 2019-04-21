@@ -1,10 +1,12 @@
 ---
 Checks:          'clang-diagnostic-*,clang-analyzer-*,*,
                   -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
-                  -cppcoreguidelines-pro-type-reinterpret-cast,
                   -cppcoreguidelines-pro-bounds-pointer-arithmetic,
+                  -cppcoreguidelines-pro-type-reinterpret-cast,
+                  -fuchsia-default-arguments,
+                  -google-runtime-references,
                   -hicpp-no-array-decay,
-                  -fuchsia-default-arguments'
+                  -llvm-header-guard'
 WarningsAsErrors: '*'
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
@@ -554,7 +556,7 @@ CheckOptions:
   - key:             readability-identifier-naming.TypedefSuffix
     value:           ''
   - key:             readability-identifier-naming.TypeTemplateParameterCase
-    value:           'camelBack'
+    value:           'CamelCase'
   - key:             readability-identifier-naming.TypeTemplateParameterPrefix
     value:           ''
   - key:             readability-identifier-naming.TypeTemplateParameterSuffix
