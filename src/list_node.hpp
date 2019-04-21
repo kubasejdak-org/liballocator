@@ -52,19 +52,13 @@ public:
     /// @return Pointer to the next list node.
     /// @retval T*              Pointer to the next node if exists.
     /// @retval nullptr         There is no next node.
-    T* next()
-    {
-        return m_next;
-    }
+    T* next() { return m_next; }
 
     /// Returns the previous node from the list.
     /// @return Pointer to the previous list node.
     /// @retval T*              Pointer to the previous node if exists.
     /// @retval nullptr         There is no previous node.
-    T* prev()
-    {
-        return m_prev;
-    }
+    T* prev() { return m_prev; }
 
     /// Adds current node to the given list.
     /// @param[in,out] list     Pointer to the list, to which node should be added.

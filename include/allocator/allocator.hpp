@@ -43,7 +43,7 @@ namespace memory::allocator {
 /// Represents the statistical data of the allocator.
 struct Stats {
     std::size_t totalMemorySize;     ///< Total size of the memory passed during initialization.
-    std::size_t reservedMemorySize;  ///< Size of the memory reserved for the liballocator or ignored due to the alignment.
+    std::size_t reservedMemorySize;  ///< Size of the memory reserved for the liballocator or ignored due to alignment.
     std::size_t userMemorySize;      ///< Size of the memory available to the user.
     std::size_t allocatedMemorySize; ///< Size of the memory allocated by the user.
     std::size_t freeMemorySize;      ///< Size of the free user memory.

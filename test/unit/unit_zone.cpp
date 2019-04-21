@@ -213,6 +213,7 @@ TEST_CASE("Zone properly checks if given zone is valid", "[unit][zone]")
         REQUIRE(!zone.isValidChunk(reinterpret_cast<Chunk*>(addr)));
     }
 
+    // clang-format off
     SECTION("Check nullptr")
     {
         REQUIRE(!zone.isValidChunk(nullptr));
@@ -222,6 +223,7 @@ TEST_CASE("Zone properly checks if given zone is valid", "[unit][zone]")
     {
         REQUIRE(!zone.isValidChunk(reinterpret_cast<Chunk*>(0xdeadbeef)));
     }
+    // clang-format on
 }
 
 } // namespace memory

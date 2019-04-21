@@ -129,7 +129,7 @@ private:
     union Flags {
         struct {
             // NOLINTNEXTLINE
-            std::size_t groupSize : 21; ///< Size of the group. This is set only for the first and to the last page in the group.
+            std::size_t groupSize : 21; ///< Size of the group. This is set only for the first and last page in group.
             bool used : 1;              ///< Flag indicating whether this page is used or not.
         };
 

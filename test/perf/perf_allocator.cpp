@@ -54,13 +54,14 @@ struct PerfStats {
 static void perfShowStats(const PerfStats& stats, const char* name, bool showFirst = false)
 {
     if (showFirst)
-        std::printf("+--------------------------------+-------------+-------------+\n");                                 // NOLINT
-    std::printf("| %-30s |  allocate   |   release   |\n", name);                                                        // NOLINT
-    std::printf("+--------------------------------+-------------+-------------+\n");                                     // NOLINT
-    std::printf("| %30s | %8.4f us | %8.4f us |\n", "liballocator", stats.liballocatorAlloc, stats.liballocatorRelease); // NOLINT
-    std::printf("| %30s | %8.4f us | %8.4f us |\n", "malloc", stats.mallocAlloc, stats.mallocRelease);                   // NOLINT
-    std::printf("| %30s | %8.4f us | %8.4f us |\n", "new", stats.newAlloc, stats.newRelease);                            // NOLINT
-    std::printf("+--------------------------------+-------------+-------------+\n");                                     // NOLINT
+        std::printf("+--------------------------------+-------------+-------------+\n"); // NOLINT
+    std::printf("| %-30s |  allocate   |   release   |\n", name);                        // NOLINT
+    std::printf("+--------------------------------+-------------+-------------+\n");     // NOLINT
+    // NOLINTNEXTLINE
+    std::printf("| %30s | %8.4f us | %8.4f us |\n", "liballocator", stats.liballocatorAlloc, stats.liballocatorRelease);
+    std::printf("| %30s | %8.4f us | %8.4f us |\n", "malloc", stats.mallocAlloc, stats.mallocRelease); // NOLINT
+    std::printf("| %30s | %8.4f us | %8.4f us |\n", "new", stats.newAlloc, stats.newRelease);          // NOLINT
+    std::printf("+--------------------------------+-------------+-------------+\n");                   // NOLINT
 }
 
 namespace memory {

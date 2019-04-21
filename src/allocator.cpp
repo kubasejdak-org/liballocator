@@ -64,12 +64,7 @@ bool init(Region* regions, std::size_t pageSize)
 
 bool init(std::uintptr_t start, std::uintptr_t end, std::size_t pageSize)
 {
-    // clang-format off
-    std::array<Region, 2> regions = {{
-        {start, end - start},
-        {0,     0}
-    }};
-    // clang-format on
+    std::array<Region, 2> regions = {{{start, end - start}, {0, 0}}};
 
     return init(regions.data(), pageSize);
 }
@@ -97,6 +92,7 @@ Stats getStats()
 
     Stats stats{};
     stats.totalMemorySize = pageStats.totalMemorySize;
+    // clang-format off
     stats.reservedMemorySize = pageStats.totalMemorySize - pageStats.effectiveMemorySize // Lost due to the alignment.
                                + pageStats.reservedPagesCount * pageStats.pageSize       // Reserved by the PageAllocator.
                                + zoneStats.reservedMemorySize;                           // Reserved by the ZoneAllocator.
@@ -104,6 +100,7 @@ Stats getStats()
     stats.allocatedMemorySize = pageStats.userMemorySize - pageStats.freeMemorySize - zoneStats.usedMemorySize // Allocated from PageAllocator by user.
                                 + zoneStats.allocatedMemorySize;                                               // Allocated from ZoneAllocator by user.
     stats.freeMemorySize = stats.userMemorySize - stats.allocatedMemorySize;
+    // clang-format on
 
     return stats;
 }
