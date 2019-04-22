@@ -56,14 +56,20 @@ DisableFormat: false
 ExperimentalAutoDetectBinPacking: false
 FixNamespaceComments: true
 ForEachMacros: ['foreach', 'Q_FOREACH', 'BOOST_FOREACH']
-#IncludeBlocks: Regroup
-#IncludeCategories:
-#  - Regex:           '^"(llvm|llvm-c|clang|clang-c)/'
-#    Priority:        2
-#  - Regex:           '^(<|"(gtest|gmock|isl|json)/)'
-#    Priority:        3
-#  - Regex:           '.*'
-#    Priority:        1
+IncludeBlocks: Regroup
+IncludeCategories:
+  # Headers in <> without extension.
+  - Regex:           '<([A-Za-z0-9\/_-])+>'
+    Priority:        4
+  # Headers in <> from specific external libraries.
+  - Regex:           '<(catch2|boost)\/'
+    Priority:        3
+  # Headers in <> with extension.
+  - Regex:           '<([A-Za-z0-9.\/_-])+>'
+    Priority:        2
+  # Headers in "" with extension.
+  - Regex:           '"([A-Za-z0-9.\/_-])+"'
+    Priority:        1
 IncludeIsMainRegex: '(Test)?$'
 IndentCaseLabels: true
 IndentPPDirectives: AfterHash
