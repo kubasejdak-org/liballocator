@@ -11,11 +11,17 @@ add_library(liballocator
     zone_allocator.cpp
 )
 
-target_compile_features(liballocator PRIVATE cxx_std_17)
+target_compile_features(liballocator
+    PRIVATE cxx_std_17
+)
 
-target_include_directories(liballocator PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(liballocator
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-target_link_libraries(liballocator PUBLIC liballocator_include)
+target_link_libraries(liballocator
+    PUBLIC liballocator_include
+)
 
 toolchain_setTargetOutputPath(liballocator ${PROJECT_SOURCE_DIR}/bin)
 toolchain_showTargetConfig(liballocator)
