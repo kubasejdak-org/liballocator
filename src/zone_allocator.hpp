@@ -119,9 +119,6 @@ private:
         if (!zone)
             return false;
 
-        if (!zone->isValidChunk(zoneChunk))
-            return false;
-
         std::size_t idx = detail::zoneIdx(zone->chunkSize());
         m_zones.at(idx).freeChunksCount++;
         zone->giveChunk(zoneChunk);

@@ -220,7 +220,7 @@ Zone* ZoneAllocator::findZone(Chunk* chunk)
 
     for (auto& zoneInfo : m_zones) {
         for (auto* zone = zoneInfo.head; zone != nullptr; zone = zone->next()) {
-            if (zone->page()->address() == pageAddr)
+            if (zone->page()->address() == pageAddr && zone->isValidChunk(chunk))
                 return zone;
         }
     }
