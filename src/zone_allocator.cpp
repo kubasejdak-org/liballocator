@@ -135,14 +135,13 @@ ZoneAllocator::Stats ZoneAllocator::getStats()
 
 Zone* ZoneAllocator::getFreeZone(std::size_t idx)
 {
-    for (auto* zone = m_zones.at(idx).head; zone != nullptr; zone = zone->next()) {
-        if (zone->freeChunksCount() == 0)
-            continue;
-
-        return zone;
+    Zone* zone = nullptr;
+    for (zone = m_zones.at(idx).head; zone != nullptr; zone = zone->next()) {
+        if (zone->freeChunksCount() > 0)
+            break;
     }
 
-    return nullptr;
+    return zone;
 }
 
 bool ZoneAllocator::shouldAllocateZone(std::size_t idx)
