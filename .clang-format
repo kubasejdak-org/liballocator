@@ -62,7 +62,7 @@ IncludeCategories:
   - Regex:           '<([A-Za-z0-9\/_-])+>'
     Priority:        4
   # Headers in <> from specific external libraries.
-  - Regex:           '<(catch2|boost)\/'
+  - Regex:           '<((boost)|(catch2|fmt|spdlog))\/([A-Za-z0-9.\/_-])+>'
     Priority:        3
   # Headers in <> with extension.
   - Regex:           '<([A-Za-z0-9.\/_-])+>'
