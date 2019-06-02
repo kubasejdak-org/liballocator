@@ -31,7 +31,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 
 #define CATCH_CONFIG_MAIN
-#define CATCH_CONFIG_DEFAULT_REPORTER "verbose"
+#define CATCH_CONFIG_DEFAULT_REPORTER "verbose" // NOLINT
 
 #include <catch2/VerboseReporter.hpp>
 #include <catch2/catch.hpp>
