@@ -31,4 +31,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 
 #define CATCH_CONFIG_MAIN
+#define CATCH_CONFIG_DEFAULT_REPORTER "verbose"
+
 #include <catch2/catch.hpp>
+#include <catch2/VerboseReporter.hpp>
