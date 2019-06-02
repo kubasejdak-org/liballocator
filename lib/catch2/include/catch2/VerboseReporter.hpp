@@ -32,6 +32,8 @@
 
 #pragma once
 
+#include <catch2/catch.hpp>
+
 namespace Catch {
 
 class VerboseReporter : public StreamingReporterBase<VerboseReporter> {
