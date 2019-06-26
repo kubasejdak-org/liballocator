@@ -132,7 +132,7 @@ private:
     void sectionEnded(const SectionStats& sectionStats) override
     {
         std::stringstream ss;
-        ss << indentation() << "End SECTION: " << sectionStats.sectionInfo.name;
+        ss << indentation() << "End";
         stream << ss.str();
         printStatus(ss.str().size(), sectionStats.assertions.allOk());
 
@@ -147,7 +147,7 @@ private:
 
         auto elapsedMs = m_testTimer.getElapsedMilliseconds();
         std::stringstream ss;
-        ss << " End TEST CASE [" <<  elapsedMs << " ms]";
+        ss << " End [" <<  elapsedMs << " ms]";
         stream << ss.str();
         printStatus(ss.str().size(), testCaseStats.totals.assertions.allOk());
 
