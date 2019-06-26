@@ -6,7 +6,7 @@ git:
 
 env:
   global:
-    - CMAKE_VER=3.14.0
+    - CMAKE_VER=3.14.5
     - TESTS=true
     - DOCS=true
     - CLANG_CHECKS=false
@@ -21,6 +21,9 @@ matrix:
     - os: linux
       dist: xenial
       env: _CC=gcc CC_VER=8
+    - os: linux
+      dist: xenial
+      env: _CC=gcc CC_VER=9
     - os: linux
       dist: xenial
       env: _CC=clang CC_VER=6.0.1
@@ -42,6 +45,9 @@ matrix:
     - os: osx
       osx_image: xcode10
       env: _CC=gcc CC_VER=8
+    - os: osx
+      osx_image: xcode10
+      env: _CC=gcc CC_VER=9
     - os: osx
       osx_image: xcode10
       env: _CC=clang CC_VER=6.0.1
