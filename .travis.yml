@@ -8,10 +8,9 @@ env:
   global:
     - CMAKE_VER=3.14.5
     - TESTS=true
-    - DOCS=true
     - CLANG_CHECKS=false
     - CODECOV=false
-    - CMAKE_OPTS=""
+    - CMAKE_ARGS=""
 
 matrix:
   include:
@@ -29,7 +28,7 @@ matrix:
       env: _CC=clang CC_VER=8.0.0
     - os: linux
       dist: bionic
-      env: _CC=arm-none-eabi-gcc CC_VER=8 TESTS=false CMAKE_OPTS=-DCMAKE_TOOLCHAIN_FILE=../tools/cmake/arm-none-eabi-gcc.cmake
+      env: _CC=arm-none-eabi-gcc CC_VER=8 TESTS=false CMAKE_ARGS=-DCMAKE_TOOLCHAIN_FILE=../tools/cmake/arm-none-eabi-gcc.cmake
     - os: osx
       osx_image: xcode11
       env: _CC=gcc CC_VER=8
@@ -44,14 +43,13 @@ matrix:
       env: _CC=clang CC_VER=8.0.0 CLANG_CHECKS=true CODECOV=true
     - os: osx
       osx_image: xcode11
-      env: _CC=arm-none-eabi-gcc CC_VER=8 TESTS=false CMAKE_OPTS=-DCMAKE_TOOLCHAIN_FILE=../tools/cmake/arm-none-eabi-gcc.cmake
+      env: _CC=arm-none-eabi-gcc CC_VER=8 TESTS=false CMAKE_ARGS=-DCMAKE_TOOLCHAIN_FILE=../tools/cmake/arm-none-eabi-gcc.cmake
 
 before_install:
   - export PATH=${TRAVIS_BUILD_DIR}/tools/ci:${PATH}
   - mkdir -p deps && cd $_
 
 install:
-  - pip install conan
   - install-${_CC}.sh ${CC_VER} ${TRAVIS_OS_NAME}
   - install-cmake.sh ${CMAKE_VER} ${TRAVIS_OS_NAME}
   - if [[ ${CLANG_CHECKS} == true ]]; then pip install pyyaml; fi
@@ -73,12 +71,13 @@ before_script:
   - mkdir build && cd $_
 
 script:
-  - cmake -DLIBALLOCATOR_TESTS=${TESTS} -DLIBALLOCATOR_DOCS=${DOCS} -DLIBALLOCATOR_COVERAGE=${CODECOV} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ${CMAKE_OPTS} ..
+  - cmake -DLIBALLOCATOR_COVERAGE=${CODECOV} ${CMAKE_ARGS} ..
   - make
-  - if [[ ${DOCS} == true ]]; then make doxygen; fi
+  - make doxygen
 
   - |
     if [[ ${TESTS} == true ]]; then
+      make tests
       ctest -R UnitTests
       ctest -R PerformanceTests
     fi

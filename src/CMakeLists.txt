@@ -1,5 +1,5 @@
 utils_log("Configuring '${CMAKE_CURRENT_SOURCE_DIR}/version.hpp'")
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/version.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/version.hpp)
+configure_file(version.hpp.in version.hpp)
 
 add_library(liballocator
     allocator.cpp
@@ -11,17 +11,14 @@ add_library(liballocator
     zone_allocator.cpp
 )
 
+target_include_directories(liballocator
+    PUBLIC ../include
+    PRIVATE .
+)
+
 target_compile_features(liballocator
     PRIVATE cxx_std_17
 )
 
-target_include_directories(liballocator
-    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
-target_link_libraries(liballocator
-    PUBLIC liballocator_include
-)
-
-toolchain_setTargetOutputPath(liballocator ${PROJECT_SOURCE_DIR}/bin)
+toolchain_setTargetOutputPath(liballocator ${CMAKE_BINARY_DIR}/bin)
 toolchain_showTargetConfig(liballocator)
