@@ -1,5 +1,5 @@
 utils_log("Configuring '${CMAKE_CURRENT_SOURCE_DIR}/version.hpp'")
-configure_file(version.hpp.in version.hpp)
+configure_file(version.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/version.hpp)
 
 add_library(liballocator
     allocator.cpp
