@@ -34,6 +34,6 @@ toolchain_setTargetOutputPath(tests ${CMAKE_BINARY_DIR}/bin)
 
 # Test definitions.
 get_target_property(RUNTIME_OUTPUT tests RUNTIME_OUTPUT_DIRECTORY)
-add_test(UnitTests ${RUNTIME_OUTPUT}/liballocator_tests [unit] "")
-add_test(IntegrationTests ${RUNTIME_OUTPUT}/liballocator_tests [integration] "")
-add_test(PerformanceTests ${RUNTIME_OUTPUT}/liballocator_tests [perf] "")
+add_test(UnitTests ${RUNTIME_OUTPUT}/tests [unit] "")
+add_test(IntegrationTests ${RUNTIME_OUTPUT}/tests [integration] "")
+add_test(PerformanceTests ${RUNTIME_OUTPUT}/tests [perf] "")
