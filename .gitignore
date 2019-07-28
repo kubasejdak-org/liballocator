@@ -1,5 +1,6 @@
 # Object and executable files.
 build/
+cmake-build-*/
 bin/
 
 # Project files.
