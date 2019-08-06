@@ -54,13 +54,13 @@ void Page::setAddress(std::uintptr_t addr)
 void Page::setGroupSize(std::size_t groupSize)
 {
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-    m_flags.groupSize = groupSize;
+    m_flags.bits.groupSize = groupSize;
 }
 
 void Page::setUsed(bool value)
 {
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-    m_flags.used = value;
+    m_flags.bits.used = value;
 }
 
 Page* Page::nextSibling()
@@ -81,13 +81,13 @@ std::uintptr_t Page::address()
 std::size_t Page::groupSize()
 {
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-    return m_flags.groupSize;
+    return m_flags.bits.groupSize;
 }
 
 bool Page::isUsed()
 {
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-    return m_flags.used;
+    return m_flags.bits.used;
 }
 
 } // namespace memory

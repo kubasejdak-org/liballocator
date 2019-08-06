@@ -127,12 +127,13 @@ private:
     /// @union Flags
     /// Represents a packed set of flags used internally by pages.
     union Flags {
-        struct {
+        struct PageFlags{
             // NOLINTNEXTLINE
             std::size_t groupSize : 21; ///< Size of the group. This is set only for the first and last page in group.
             bool used : 1;              ///< Flag indicating whether this page is used or not.
         };
 
+        PageFlags bits;
         std::uint32_t value; ///< Raw bytes used to store the flags.
     };
 

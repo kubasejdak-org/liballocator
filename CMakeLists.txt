@@ -19,7 +19,7 @@ if(NOT CMAKE_EXPORT_COMPILE_COMMANDS)
 endif()
 
 # Project-wide compilation options.
-add_compile_options(-Wall -Wextra -Werror)
+add_compile_options(-Wall -Wextra -Wpedantic -Werror)
 
 if(LIBALLOCATOR_COVERAGE)
     utils_log("Building liballocator with coverage report")
