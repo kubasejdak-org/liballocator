@@ -1,4 +1,4 @@
-language: cpp
+python: "3.7"
 sudo: required
 
 git:
@@ -52,7 +52,7 @@ before_install:
 install:
   - install-${_CC}.sh ${CC_VER} ${TRAVIS_OS_NAME}
   - install-cmake.sh ${CMAKE_VER} ${TRAVIS_OS_NAME}
-  - if [[ ${CLANG_CHECKS} == true ]]; then pip install pyyaml; fi
+  #- if [[ ${CLANG_CHECKS} == true ]]; then pip install pyyaml; fi
   - install-cppcheck.sh ${TRAVIS_OS_NAME}
   - install-doxygen.sh ${TRAVIS_OS_NAME}
   - if [[ ${CODECOV} == true ]]; then install-lcov.sh ${TRAVIS_OS_NAME}; fi
