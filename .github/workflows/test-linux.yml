@@ -33,7 +33,7 @@ jobs:
       run: |
         chown -R root:root build
         cd build/bin
-        ./liballocator-tests.elf [unit]
+        ./liballocator-tests [unit]
 
     - name: Generate coverage report
       run: |
@@ -75,4 +75,4 @@ jobs:
         run: |
           chown -R root:root build
           cd build/bin
-          ./liballocator-tests.elf [unit]
+          ./liballocator-tests [unit]
