@@ -13,37 +13,37 @@ jobs:
         mode: [Debug, Release]
 
     steps:
-    - uses: actions/checkout@v1
+      - uses: actions/checkout@v1
 
-    - name: Build application
-      run: |
-        mkdir build
-        cd build
+      - name: Build application
+        run: |
+          mkdir build
+          cd build
 
-        conan install .. --build missing -s build_type=${{ matrix.mode }}
-        cmake .. -DPLATFORM=linux -DTOOLCHAIN=gcc-${{ matrix.gcc }} -DCMAKE_BUILD_TYPE=${{ matrix.mode }} -DCOVERAGE=ON
-        make
+          conan install .. --build missing -s build_type=${{ matrix.mode }}
+          cmake .. -DPLATFORM=linux -DTOOLCHAIN=gcc-${{ matrix.gcc }} -DCMAKE_BUILD_TYPE=${{ matrix.mode }} -DCOVERAGE=ON
+          make
 
-    - uses: actions/upload-artifact@v1
-      with:
-        name: build_gcc_${{ matrix.gcc }}_${{ matrix.mode }}
-        path: build/bin
+      - uses: actions/upload-artifact@v1
+        with:
+          name: build_gcc_${{ matrix.gcc }}_${{ matrix.mode }}
+          path: build/bin
 
-    - name: Run tests
-      run: |
-        chown -R root:root build
-        cd build/bin
-        ./liballocator-tests [unit]
+      - name: Run tests
+        run: |
+          chown -R root:root build
+          cd build/bin
+          ./liballocator-tests [unit]
 
-    - name: Generate coverage report
-      run: |
-        cd build
-        make coverage
+      - name: Generate coverage report
+        run: |
+          cd build
+          make coverage
 
-    - name: Upload coverage report
-      run: |
-        cd build
-        bash -c "bash <(curl -s https://codecov.io/bash) -t ${{ secrets.ACCESS_TOKEN_CODECOV }}"
+      - name: Upload coverage report
+        run: |
+          cd build
+          bash -c "bash <(curl -s https://codecov.io/bash) -t ${{ secrets.ACCESS_TOKEN_CODECOV }}"
 
   test-linux-clang:
     runs-on: ubuntu-latest
