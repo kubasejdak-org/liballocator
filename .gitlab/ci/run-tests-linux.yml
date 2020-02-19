@@ -1,0 +1,37 @@
+.Run_Test:
+  stage: test
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - cd ${AppArtifact}/bin
+    - ./liballocator-tests ${TestTags}
+
+.Run_Test_Linux:
+  extends: .Run_Test
+  stage: test
+  tags:
+    - linux
+    - shared
+  image: kubasejdak/gcc:latest
+
+#.Run_Test_Linux_ARM:
+#  extends: .Run_Test
+#  stage: test
+#  tags:
+#    - raspberrypi
+
+#Linux_ARM_UT:
+#  extends: .Run_Test_Linux_ARM
+#  dependencies:
+#    - Linux_ARM_GCC_Debug_Build
+#  variables:
+#    AppArtifact: "Linux_ARM_GCC_Debug_Build"
+#    TestTags: "[unit]"
+
+Linux_UT:
+  extends: .Run_Test_Linux
+  dependencies:
+    - Linux_GCC_Debug_Build
+  variables:
+    AppArtifact: "Linux_GCC_Debug_Build"
+    TestTags: "[unit]"
