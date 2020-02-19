@@ -36,25 +36,25 @@
   stage: build-Clang
   image: kubasejdak/arm-linux-gnueabihf-clang:latest
 
-Linux_ARM_Clang_Debug_Build:
-  extends: .Build_Test_Linux_ARM_Clang
-  variables:
-    Script: "linux-arm-clang-9-debug"
+# Linux_ARM_Clang_Debug_Build:
+#   extends: .Build_Test_Linux_ARM_Clang
+#   variables:
+#     Script: "linux-arm-clang-9-debug"
 
-Linux_ARM_Clang_Release_Build:
-  extends: .Build_Test_Linux_ARM_Clang
-  variables:
-    Script: "linux-arm-clang-9-release"
+# Linux_ARM_Clang_Release_Build:
+#   extends: .Build_Test_Linux_ARM_Clang
+#   variables:
+#     Script: "linux-arm-clang-9-release"
 
-Linux_ARM_GCC_Debug_Build:
-  extends: .Build_Test_Linux_ARM_GCC
-  variables:
-    Script: "linux-arm-gcc-9-debug"
+# Linux_ARM_GCC_Debug_Build:
+#   extends: .Build_Test_Linux_ARM_GCC
+#   variables:
+#     Script: "linux-arm-gcc-9-debug"
 
-Linux_ARM_GCC_Release_Build:
-  extends: .Build_Test_Linux_ARM_GCC
-  variables:
-    Script: "linux-arm-gcc-9-release"
+# Linux_ARM_GCC_Release_Build:
+#   extends: .Build_Test_Linux_ARM_GCC
+#   variables:
+#     Script: "linux-arm-gcc-9-release"
 
 Linux_Clang_Debug_Build:
   extends: .Build_Test_Linux_Clang
