@@ -1,4 +1,4 @@
-add_subdirectory(init/${PLATFORM})
+add_subdirectory(init)
 
 add_library(appliballocator-tests OBJECT EXCLUDE_FROM_ALL
     appMain.cpp
