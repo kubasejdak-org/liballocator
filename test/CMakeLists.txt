@@ -27,6 +27,7 @@ target_compile_features(appliballocator-tests
     PRIVATE cxx_std_17
 )
 
+conan_get(Catch2/2.11.1@catchorg/stable)
 find_package(Catch2 REQUIRED)
 
 target_link_libraries(appliballocator-tests
