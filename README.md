@@ -1,12 +1,3 @@
-[![Test Linux](https://github.com/kubasejdak/liballocator/workflows/Test%20Linux/badge.svg)](https://github.com/kubasejdak/liballocator/actions?query=workflow%3A%22Test+Linux%22)
-
-[![Quality](https://github.com/kubasejdak/liballocator/workflows/Quality/badge.svg)](https://github.com/kubasejdak/liballocator/actions?query=workflow%3A%22Quality%22)
-[![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/kubasejdak/liballocator)](https://www.codefactor.io/repository/github/kubasejdak/liballocator)
-[![codecov.io](http://codecov.io/github/kubasejdak/liballocator/coverage.svg?branch=master)](http://codecov.io/github/kubasejdak/liballocator?branch=master)
-
-[![Github Releases](https://img.shields.io/github/release/kubasejdak/liballocator.svg)](https://github.com/kubasejdak/liballocator/releases)
-[![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
-
 # liballocator
 
 The purpose of this project is to provide a convenient and fairly robust memory allocator for the embedded environments in C++.
@@ -36,7 +27,7 @@ liballocator consists of two parts:
 
 ## Requirements
 
-* CMake v3.13.4+,
+* CMake v3.15+,
 * GCC/Clang with C++17 support,
 * Linux/macOS (not tested on Windows).
 
@@ -44,10 +35,9 @@ liballocator consists of two parts:
 
 To use liballocator in your CMake project all you need to do is:
 
-* Download this repository into your project (IMPORTANT: liballocator contains git submodules):
+* Download this repository into your project:
 ```
-git clone --recurse-submodules git@github.com:kubasejdak/liballocator.git   # Since Git 2.13
-git clone --recursive git@github.com:kubasejdak/liballocator.git            # Before Git 2.13
+git clone https://gitlab.com/kubasejdak-libs/liballocator.git
 ```
 
 * Add it to CMake with:
