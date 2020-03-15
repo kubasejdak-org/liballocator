@@ -38,8 +38,8 @@
 #include <catch2/catch.hpp>
 
 #include <array>
-#include <cstring>
 #include <cmath>
+#include <cstring>
 #include <vector>
 
 namespace memory {
