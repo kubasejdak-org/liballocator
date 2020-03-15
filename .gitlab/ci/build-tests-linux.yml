@@ -48,25 +48,25 @@
     Platform: "linux"
     Toolchain: "gcc-9"
 
-#Linux_ARM_Clang_Debug_Build:
-#  extends: .Build_Test_Linux_ARM_Clang
-#  variables:
-#    BuildType: "Debug"
+Linux_ARM_Clang_Debug_Build:
+  extends: .Build_Test_Linux_ARM_Clang
+  variables:
+    BuildType: "Debug"
 
-#Linux_ARM_Clang_Release_Build:
-#  extends: .Build_Test_Linux_ARM_Clang
-#  variables:
-#    BuildType: "Release"
+Linux_ARM_Clang_Release_Build:
+  extends: .Build_Test_Linux_ARM_Clang
+  variables:
+    BuildType: "Release"
 
-#Linux_ARM_GCC_Debug_Build:
-#  extends: .Build_Test_Linux_ARM_GCC
-#  variables:
-#    BuildType: "Debug"
+Linux_ARM_GCC_Debug_Build:
+  extends: .Build_Test_Linux_ARM_GCC
+  variables:
+    BuildType: "Debug"
 
-#Linux_ARM_GCC_Release_Build:
-#  extends: .Build_Test_Linux_ARM_GCC
-#  variables:
-#    BuildType: "Release"
+Linux_ARM_GCC_Release_Build:
+  extends: .Build_Test_Linux_ARM_GCC
+  variables:
+    BuildType: "Release"
 
 Linux_Clang_Debug_Build:
   extends: .Build_Test_Linux_Clang
