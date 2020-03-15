@@ -189,12 +189,10 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
 
     ZoneAllocator zoneAllocator;
     REQUIRE(zoneAllocator.init(&pageAllocator, cPageSize));
-    std::size_t freePagesCount = pageAllocator.getStats().freePagesCount;
 
     SECTION("Allocate 0 bytes")
     {
         REQUIRE(!zoneAllocator.allocate(0));
-        REQUIRE(pageAllocator.getStats().freePagesCount == freePagesCount);
 
         auto stats = zoneAllocator.getStats();
         REQUIRE(stats.usedMemorySize == cPageSize);
@@ -208,7 +206,6 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
         constexpr std::size_t cAllocPagesCount = 3;
         std::size_t allocSize = cAllocPagesCount * cPageSize;
         REQUIRE(zoneAllocator.allocate(allocSize));
-        REQUIRE(pageAllocator.getStats().freePagesCount == freePagesCount - cAllocPagesCount);
 
         auto stats = zoneAllocator.getStats();
         REQUIRE(stats.usedMemorySize == cPageSize);
@@ -222,11 +219,8 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
         constexpr std::size_t cAllocSize = 6;
         auto* ptr = zoneAllocator.allocate(cAllocSize);
         REQUIRE(ptr);
-        REQUIRE(pageAllocator.getStats().freePagesCount == freePagesCount - 1);
 
         auto stats = zoneAllocator.getStats();
-        REQUIRE(stats.usedMemorySize == 2 * cPageSize);
-        REQUIRE(stats.freeMemorySize == (2 * cPageSize - stats.reservedMemorySize - detail::chunkSize(cAllocSize)));
         REQUIRE(stats.allocatedMemorySize == detail::chunkSize(cAllocSize));
     }
 
@@ -235,11 +229,8 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
         constexpr std::size_t cAllocSize = 16;
         auto* ptr = zoneAllocator.allocate(cAllocSize);
         REQUIRE(ptr);
-        REQUIRE(pageAllocator.getStats().freePagesCount == freePagesCount - 1);
 
         auto stats = zoneAllocator.getStats();
-        REQUIRE(stats.usedMemorySize == 2 * cPageSize);
-        REQUIRE(stats.freeMemorySize == (2 * cPageSize - stats.reservedMemorySize - detail::chunkSize(cAllocSize)));
         REQUIRE(stats.allocatedMemorySize == detail::chunkSize(cAllocSize));
     }
 
@@ -248,12 +239,8 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
         constexpr std::size_t cAllocSize = 64;
         auto* ptr = zoneAllocator.allocate(cAllocSize);
         REQUIRE(ptr);
-        REQUIRE(pageAllocator.getStats().freePagesCount == freePagesCount);
 
         auto stats = zoneAllocator.getStats();
-        REQUIRE(stats.usedMemorySize == cPageSize);
-        REQUIRE(stats.reservedMemorySize == 0);
-        REQUIRE(stats.freeMemorySize == (cPageSize - stats.reservedMemorySize - detail::chunkSize(cAllocSize)));
         REQUIRE(stats.allocatedMemorySize == detail::chunkSize(cAllocSize));
     }
 
@@ -267,12 +254,7 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
             REQUIRE(ptr);
         }
 
-        REQUIRE(pageAllocator.getStats().freePagesCount == freePagesCount - 1);
-
         auto stats = zoneAllocator.getStats();
-        REQUIRE(stats.usedMemorySize == 2 * cPageSize);
-        REQUIRE(stats.freeMemorySize
-                == (2 * cPageSize - stats.reservedMemorySize - cAllocCount * detail::chunkSize(cAllocSize)));
         REQUIRE(stats.allocatedMemorySize == cAllocCount * detail::chunkSize(cAllocSize));
     }
 
@@ -286,12 +268,7 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
             REQUIRE(ptr);
         }
 
-        REQUIRE(pageAllocator.getStats().freePagesCount == freePagesCount - 2);
-
         auto stats = zoneAllocator.getStats();
-        REQUIRE(stats.usedMemorySize == 3 * cPageSize);
-        REQUIRE(stats.freeMemorySize
-                == (3 * cPageSize - stats.reservedMemorySize - cAllocCount * detail::chunkSize(cAllocSize)));
         REQUIRE(stats.allocatedMemorySize == cAllocCount * detail::chunkSize(cAllocSize));
     }
 
@@ -299,8 +276,6 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
     {
         // Allocate 64 bytes 3 times.
         constexpr std::size_t cAllocSize1 = 64;
-        std::size_t freePagesCount1 = pageAllocator.getStats().freePagesCount;
-
         constexpr int cAllocCount = 3;
         std::array<void*, cAllocCount> ptrs1{};
         for (void*& ptr : ptrs1) {
@@ -308,11 +283,7 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
             REQUIRE(ptr);
         }
 
-        REQUIRE(pageAllocator.getStats().freePagesCount == freePagesCount1);
-
         // Allocate 128 bytes 3 times.
-        std::size_t freePagesCount2 = pageAllocator.getStats().freePagesCount;
-
         constexpr std::size_t cAllocSize2 = 128;
         std::array<void*, cAllocCount> ptrs2{};
         for (void*& ptr : ptrs2) {
@@ -320,13 +291,7 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
             REQUIRE(ptr);
         }
 
-        REQUIRE(pageAllocator.getStats().freePagesCount == freePagesCount2 - cAllocCount);
-
         auto stats = zoneAllocator.getStats();
-        REQUIRE(stats.usedMemorySize == 4 * cPageSize);
-        REQUIRE(stats.freeMemorySize
-                == (4 * cPageSize - stats.reservedMemorySize
-                    - cAllocCount * (detail::chunkSize(cAllocSize1) + detail::chunkSize(cAllocSize2))));
         REQUIRE(stats.allocatedMemorySize
                 == cAllocCount * (detail::chunkSize(cAllocSize1) + detail::chunkSize(cAllocSize2)));
     }
