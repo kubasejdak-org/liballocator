@@ -22,7 +22,7 @@ add_compile_options(-Wall -Wextra -Wpedantic -Werror)
 
 # Generate coverage report.
 if (COVERAGE)
-    add_lcov_coverage(${platform_SOURCE_DIR}/app/* ${CMAKE_CURRENT_SOURCE_DIR}/test/*)
+    add_lcov_coverage(${CMAKE_CURRENT_SOURCE_DIR}/test/*)
 endif ()
 
 add_subdirectory(${platform_SOURCE_DIR}/app ${platform_BINARY_DIR})
