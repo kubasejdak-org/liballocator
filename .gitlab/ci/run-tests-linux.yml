@@ -8,17 +8,15 @@
 
 .Run_Test_Linux:
   extends: .Run_Test
-  stage: test
   tags:
     - linux
     - shared
   image: kubasejdak/gcc:latest
 
-#.Run_Test_Linux_ARM:
-#  extends: .Run_Test
-#  stage: test
-#  tags:
-#    - raspberrypi
+.Run_Test_Linux_ARM:
+  extends: .Run_Test
+  tags:
+    - raspberrypi
 
 #Linux_ARM_UT:
 #  extends: .Run_Test_Linux_ARM
