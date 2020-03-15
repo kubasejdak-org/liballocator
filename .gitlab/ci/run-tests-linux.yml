@@ -18,13 +18,13 @@
   tags:
     - raspberrypi
 
-#Linux_ARM_UT:
-#  extends: .Run_Test_Linux_ARM
-#  dependencies:
-#    - Linux_ARM_GCC_Debug_Build
-#  variables:
-#    AppArtifact: "Linux_ARM_GCC_Debug_Build"
-#    TestTags: "[unit]"
+Linux_ARM_UT:
+  extends: .Run_Test_Linux_ARM
+  dependencies:
+    - Linux_ARM_GCC_Debug_Build
+  variables:
+    AppArtifact: "Linux_ARM_GCC_Debug_Build"
+    TestTags: "[unit]"
 
 Linux_UT:
   extends: .Run_Test_Linux

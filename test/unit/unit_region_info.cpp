@@ -32,10 +32,10 @@
 
 #include <allocator/region.hpp>
 #include <region_info.hpp>
+#include <test_utils.hpp>
 
 #include <catch2/catch.hpp>
 
-#include <array>
 #include <cstddef>
 #include <cstring>
 
@@ -61,34 +61,37 @@ TEST_CASE("RegionInfo structure is properly cleared", "[unit][region_info]")
 
 TEST_CASE("Aligned start address is properly computed", "[unit][region_info]")
 {
-    constexpr std::size_t cPageSize = 4096;
+    constexpr std::size_t cPageSize = 512;
 
     SECTION("Already start-aligned region")
     {
-        alignas(cPageSize) std::array<std::byte, cPageSize> memory{};
-        Region region = {std::uintptr_t(std::begin(memory)), memory.size()};
+        constexpr auto cSize = cPageSize;
+        auto memory = test::alignedAlloc(cPageSize, cSize);
+        Region region = {std::uintptr_t(memory.get()), cSize};
 
         auto start = detail::alignedStart(region, cPageSize);
         REQUIRE(start);
-        REQUIRE(*start == std::uintptr_t(std::begin(memory)));
+        REQUIRE(*start == std::uintptr_t(memory.get()));
     }
 
     SECTION("Not start-aligned region and aligned start is within region boundaries")
     {
+        constexpr auto cSize = 2 * cPageSize;
         constexpr std::size_t cOffset = 15;
-        alignas(cPageSize) std::array<std::byte, 2 * cPageSize> memory{};
-        Region region = {std::uintptr_t(std::begin(memory) + cOffset), memory.size() - cOffset};
+        auto memory = test::alignedAlloc(cPageSize, cSize);
+        Region region = {std::uintptr_t(memory.get() + cOffset), cSize - cOffset};
 
         auto start = detail::alignedStart(region, cPageSize);
         REQUIRE(start);
-        REQUIRE(*start == std::uintptr_t(std::begin(memory) + cPageSize));
+        REQUIRE(*start == std::uintptr_t(memory.get() + cPageSize));
     }
 
     SECTION("Not start-aligned region and aligned start is outside region boundaries")
     {
+        constexpr auto cSize = cPageSize;
         constexpr std::size_t cOffset = 15;
-        alignas(cPageSize) std::array<std::byte, cPageSize> memory{};
-        Region region = {std::uintptr_t(std::begin(memory) + cOffset), memory.size() - 2 * cOffset};
+        auto memory = test::alignedAlloc(cPageSize, cSize);
+        Region region = {std::uintptr_t(memory.get() + cOffset), cSize - 2 * cOffset};
 
         auto start = detail::alignedStart(region, cPageSize);
         REQUIRE(!start);
@@ -97,34 +100,37 @@ TEST_CASE("Aligned start address is properly computed", "[unit][region_info]")
 
 TEST_CASE("Aligned end address is properly computed", "[unit][region_info]")
 {
-    constexpr std::size_t cPageSize = 4096;
+    constexpr std::size_t cPageSize = 512;
 
     SECTION("Already end-aligned region")
     {
-        alignas(cPageSize) std::array<std::byte, cPageSize> memory{};
-        Region region = {std::uintptr_t(std::begin(memory)), memory.size()};
+        constexpr auto cSize = cPageSize;
+        auto memory = test::alignedAlloc(cPageSize, cSize);
+        Region region = {std::uintptr_t(memory.get()), cSize};
 
         auto end = detail::alignedEnd(region, cPageSize);
         REQUIRE(end);
-        REQUIRE(*end == std::uintptr_t(std::end(memory)));
+        REQUIRE(*end == std::uintptr_t(memory.get() + cPageSize));
     }
 
     SECTION("Not end-aligned region and aligned end is within region boundaries")
     {
+        constexpr auto cSize = 2 * cPageSize;
         constexpr std::size_t cOffset = 15;
-        alignas(cPageSize) std::array<std::byte, 2 * cPageSize> memory{};
-        Region region = {std::uintptr_t(std::begin(memory)), memory.size() - cOffset};
+        auto memory = test::alignedAlloc(cPageSize, cSize);
+        Region region = {std::uintptr_t(memory.get()), cSize - cOffset};
 
         auto end = detail::alignedEnd(region, cPageSize);
         REQUIRE(end);
-        REQUIRE(*end == std::uintptr_t(std::begin(memory) + cPageSize));
+        REQUIRE(*end == std::uintptr_t(memory.get() + cPageSize));
     }
 
     SECTION("Not end-aligned region and aligned end is outside region boundaries")
     {
+        constexpr auto cSize = cPageSize;
         constexpr std::size_t cOffset = 15;
-        alignas(cPageSize) std::array<std::byte, cPageSize> memory{};
-        Region region = {std::uintptr_t(std::begin(memory)) + cOffset, memory.size() - 2 * cOffset};
+        auto memory = test::alignedAlloc(cPageSize, cSize);
+        Region region = {std::uintptr_t(memory.get()) + cOffset, cSize - 2 * cOffset};
 
         auto end = detail::alignedEnd(region, cPageSize);
         REQUIRE(!end);
@@ -133,14 +139,15 @@ TEST_CASE("Aligned end address is properly computed", "[unit][region_info]")
 
 TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
 {
-    constexpr std::size_t cPageSize = 4096;
+    constexpr std::size_t cPageSize = 512;
     RegionInfo regionInfo{};
     clearRegionInfo(regionInfo);
 
     SECTION("Region smaller than one page")
     {
-        alignas(cPageSize) std::array<std::byte, cPageSize - 1> memory{};
-        Region region = {std::uintptr_t(std::begin(memory)), memory.size()};
+        constexpr auto cSize = cPageSize - 1;
+        auto memory = test::alignedAlloc(cPageSize, cSize);
+        Region region = {std::uintptr_t(memory.get()), cSize};
 
         bool result = initRegionInfo(regionInfo, region, cPageSize);
         REQUIRE(!result);
@@ -149,8 +156,9 @@ TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
     SECTION("Fully aligned region, lays on 1 page")
     {
         constexpr std::size_t cPageCount = 1;
-        alignas(cPageSize) std::array<std::byte, cPageCount * cPageSize> memory{};
-        Region region = {std::uintptr_t(std::begin(memory)), memory.size()};
+        constexpr auto cSize = cPageCount * cPageSize;
+        auto memory = test::alignedAlloc(cPageSize, cSize);
+        Region region = {std::uintptr_t(memory.get()), cSize};
 
         bool result = initRegionInfo(regionInfo, region, cPageSize);
         REQUIRE(result);
@@ -168,8 +176,9 @@ TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
     SECTION("Fully aligned region, lays on 5 pages")
     {
         constexpr std::size_t cPageCount = 5;
-        alignas(cPageSize) std::array<std::byte, cPageCount * cPageSize> memory{};
-        Region region = {std::uintptr_t(std::begin(memory)), memory.size()};
+        constexpr auto cSize = cPageCount * cPageSize;
+        auto memory = test::alignedAlloc(cPageSize, cSize);
+        Region region = {std::uintptr_t(memory.get()), cSize};
 
         bool result = initRegionInfo(regionInfo, region, cPageSize);
         REQUIRE(result);
@@ -187,9 +196,10 @@ TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
     SECTION("Start-aligned region, lays on 1 page")
     {
         constexpr std::size_t cPageCount = 1;
+        constexpr auto cSize = cPageCount * cPageSize;
         constexpr std::size_t cOffset = 15;
-        alignas(cPageSize) std::array<std::byte, cPageCount * cPageSize> memory{};
-        Region region = {std::uintptr_t(std::begin(memory)), memory.size() - cOffset};
+        auto memory = test::alignedAlloc(cPageSize, cSize);
+        Region region = {std::uintptr_t(memory.get()), cSize - cOffset};
 
         bool result = initRegionInfo(regionInfo, region, cPageSize);
         REQUIRE(!result);
@@ -198,9 +208,10 @@ TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
     SECTION("Start-aligned region, lays on 2 pages")
     {
         constexpr std::size_t cPageCount = 2;
+        constexpr auto cSize = cPageCount * cPageSize;
         constexpr std::size_t cOffset = 15;
-        alignas(cPageSize) std::array<std::byte, cPageCount * cPageSize> memory{};
-        Region region = {std::uintptr_t(std::begin(memory)), memory.size() - cOffset};
+        auto memory = test::alignedAlloc(cPageSize, cSize);
+        Region region = {std::uintptr_t(memory.get()), cSize - cOffset};
 
         bool result = initRegionInfo(regionInfo, region, cPageSize);
         REQUIRE(result);
@@ -218,9 +229,10 @@ TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
     SECTION("Start-aligned region, lays on 5 pages")
     {
         constexpr std::size_t cPageCount = 5;
+        constexpr auto cSize = cPageCount * cPageSize;
         constexpr std::size_t cOffset = 15;
-        alignas(cPageSize) std::array<std::byte, cPageCount * cPageSize> memory{};
-        Region region = {std::uintptr_t(std::begin(memory)), memory.size() - cOffset};
+        auto memory = test::alignedAlloc(cPageSize, cSize);
+        Region region = {std::uintptr_t(memory.get()), cSize - cOffset};
 
         bool result = initRegionInfo(regionInfo, region, cPageSize);
         REQUIRE(result);
@@ -238,9 +250,10 @@ TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
     SECTION("End-aligned region, lays on 1 page")
     {
         constexpr std::size_t cPageCount = 1;
+        constexpr auto cSize = cPageCount * cPageSize;
         constexpr std::size_t cOffset = 15;
-        alignas(cPageSize) std::array<std::byte, cPageCount * cPageSize> memory{};
-        Region region = {std::uintptr_t(std::begin(memory) + cOffset), memory.size() - cOffset};
+        auto memory = test::alignedAlloc(cPageSize, cSize);
+        Region region = {std::uintptr_t(memory.get() + cOffset), cSize - cOffset};
 
         bool result = initRegionInfo(regionInfo, region, cPageSize);
         REQUIRE(!result);
@@ -249,15 +262,16 @@ TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
     SECTION("End-aligned region, lays on 2 pages")
     {
         constexpr std::size_t cPageCount = 2;
+        constexpr auto cSize = cPageCount * cPageSize;
         constexpr std::size_t cOffset = 15;
-        alignas(cPageSize) std::array<std::byte, cPageCount * cPageSize> memory{};
-        Region region = {std::uintptr_t(std::begin(memory) + cOffset), memory.size() - cOffset};
+        auto memory = test::alignedAlloc(cPageSize, cSize);
+        Region region = {std::uintptr_t(memory.get() + cOffset), cSize - cOffset};
 
         bool result = initRegionInfo(regionInfo, region, cPageSize);
         REQUIRE(result);
         REQUIRE(regionInfo.start == region.address);
         REQUIRE(regionInfo.end == region.address + region.size);
-        REQUIRE(regionInfo.alignedStart == std::uintptr_t(std::begin(memory) + cPageSize));
+        REQUIRE(regionInfo.alignedStart == std::uintptr_t(memory.get() + cPageSize));
         REQUIRE(regionInfo.alignedEnd == region.address + region.size);
         REQUIRE(regionInfo.pageCount == (cPageCount - 1));
         REQUIRE(regionInfo.size == region.size);
@@ -269,15 +283,16 @@ TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
     SECTION("End-aligned region, lays on 5 pages")
     {
         constexpr std::size_t cPageCount = 5;
+        constexpr auto cSize = cPageCount * cPageSize;
         constexpr std::size_t cOffset = 15;
-        alignas(cPageSize) std::array<std::byte, cPageCount * cPageSize> memory{};
-        Region region = {std::uintptr_t(std::begin(memory) + cOffset), memory.size() - cOffset};
+        auto memory = test::alignedAlloc(cPageSize, cSize);
+        Region region = {std::uintptr_t(memory.get() + cOffset), cSize - cOffset};
 
         bool result = initRegionInfo(regionInfo, region, cPageSize);
         REQUIRE(result);
         REQUIRE(regionInfo.start == region.address);
         REQUIRE(regionInfo.end == region.address + region.size);
-        REQUIRE(regionInfo.alignedStart == std::uintptr_t(std::begin(memory) + cPageSize));
+        REQUIRE(regionInfo.alignedStart == std::uintptr_t(memory.get() + cPageSize));
         REQUIRE(regionInfo.alignedEnd == region.address + region.size);
         REQUIRE(regionInfo.pageCount == (cPageCount - 1));
         REQUIRE(regionInfo.size == region.size);
@@ -289,9 +304,10 @@ TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
     SECTION("Fully unaligned region, lays on 1 page")
     {
         constexpr std::size_t cPageCount = 1;
+        constexpr auto cSize = cPageCount * cPageSize;
         constexpr std::size_t cOffset = 15;
-        alignas(cPageSize) std::array<std::byte, cPageCount * cPageSize> memory{};
-        Region region = {std::uintptr_t(std::begin(memory) + cOffset), memory.size() - 2 * cOffset};
+        auto memory = test::alignedAlloc(cPageSize, cSize);
+        Region region = {std::uintptr_t(memory.get() + cOffset), cSize - 2 * cOffset};
 
         bool result = initRegionInfo(regionInfo, region, cPageSize);
         REQUIRE(!result);
@@ -300,9 +316,10 @@ TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
     SECTION("Fully unaligned region, lays on 2 pages")
     {
         constexpr std::size_t cPageCount = 2;
+        constexpr auto cSize = cPageCount * cPageSize;
         constexpr std::size_t cOffset = 15;
-        alignas(cPageSize) std::array<std::byte, cPageCount * cPageSize> memory{};
-        Region region = {std::uintptr_t(std::begin(memory) + cOffset), memory.size() - 2 * cOffset};
+        auto memory = test::alignedAlloc(cPageSize, cSize);
+        Region region = {std::uintptr_t(memory.get() + cOffset), cSize - 2 * cOffset};
 
         bool result = initRegionInfo(regionInfo, region, cPageSize);
         REQUIRE(!result);
@@ -311,16 +328,17 @@ TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
     SECTION("Fully unaligned region, lays on 5 pages")
     {
         constexpr std::size_t cPageCount = 5;
+        constexpr auto cSize = cPageCount * cPageSize;
         constexpr std::size_t cOffset = 15;
-        alignas(cPageSize) std::array<std::byte, cPageCount * cPageSize> memory{};
-        Region region = {std::uintptr_t(std::begin(memory) + cOffset), memory.size() - 2 * cOffset};
+        auto memory = test::alignedAlloc(cPageSize, cSize);
+        Region region = {std::uintptr_t(memory.get() + cOffset), cSize - 2 * cOffset};
 
         bool result = initRegionInfo(regionInfo, region, cPageSize);
         REQUIRE(result);
         REQUIRE(regionInfo.start == region.address);
         REQUIRE(regionInfo.end == region.address + region.size);
-        REQUIRE(regionInfo.alignedStart == std::uintptr_t(std::begin(memory) + cPageSize));
-        REQUIRE(regionInfo.alignedEnd == std::uintptr_t(std::end(memory) - cPageSize));
+        REQUIRE(regionInfo.alignedStart == std::uintptr_t(memory.get() + cPageSize));
+        REQUIRE(regionInfo.alignedEnd == std::uintptr_t((memory.get() + cSize) - cPageSize));
         REQUIRE(regionInfo.pageCount == (cPageCount - 2));
         REQUIRE(regionInfo.size == region.size);
         REQUIRE(regionInfo.alignedSize == (cPageCount - 2) * cPageSize);

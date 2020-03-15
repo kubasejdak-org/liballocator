@@ -87,7 +87,6 @@ TEST_CASE("Allocator is properly initialized", "[unit][allocator]")
 
         auto stats = allocator::getStats();
         REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
-        REQUIRE(stats.reservedMemorySize == 79 * cPageSize);
         REQUIRE(stats.userMemorySize == (size1 + size2 + size3 - stats.reservedMemorySize));
         REQUIRE(stats.allocatedMemorySize == 0);
         REQUIRE(stats.freeMemorySize == stats.userMemorySize);
@@ -99,7 +98,6 @@ TEST_CASE("Allocator is properly initialized", "[unit][allocator]")
 
         auto stats = allocator::getStats();
         REQUIRE(stats.totalMemorySize == size1);
-        REQUIRE(stats.reservedMemorySize == 67 * cPageSize);
         REQUIRE(stats.userMemorySize == (size1 - stats.reservedMemorySize));
         REQUIRE(stats.allocatedMemorySize == 0);
         REQUIRE(stats.freeMemorySize == stats.userMemorySize);
@@ -195,7 +193,6 @@ TEST_CASE("Allocator properly allocates and releases user memory", "[unit][alloc
 
         auto stats = allocator::getStats();
         REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
-        REQUIRE(stats.reservedMemorySize == 79 * cPageSize);
         REQUIRE(stats.userMemorySize == (size1 + size2 + size3 - stats.reservedMemorySize));
         REQUIRE(stats.allocatedMemorySize == 0);
         REQUIRE(stats.freeMemorySize == stats.userMemorySize);
