@@ -30,12 +30,12 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include "page_allocator.hpp"
+#include "PageAllocator.hpp"
 
+#include "Page.hpp"
 #include "group.hpp"
-#include "page.hpp"
 
-#include <allocator/region.hpp>
+#include <allocator/Region.hpp>
 
 #include <cassert>
 #include <cmath>

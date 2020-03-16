@@ -30,7 +30,7 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <list_node.hpp>
+#include <ListNode.hpp>
 
 #include <catch2/catch.hpp>
 
@@ -45,7 +45,7 @@ struct TestNode : public ListNode<TestNode> {
     int value{};
 };
 
-TEST_CASE("List node is properly initialized", "[unit][list_node]")
+TEST_CASE("List node is properly initialized", "[unit][ListNode]")
 {
     TestNode node;
     node.initListNode();
@@ -53,7 +53,7 @@ TEST_CASE("List node is properly initialized", "[unit][list_node]")
     REQUIRE(node.prev() == nullptr);
 }
 
-TEST_CASE("Adding to empty list", "[unit][list_node]")
+TEST_CASE("Adding to empty list", "[unit][ListNode]")
 {
     TestNode node;
     node.initListNode();
@@ -67,7 +67,7 @@ TEST_CASE("Adding to empty list", "[unit][list_node]")
     REQUIRE(node.prev() == nullptr);
 }
 
-TEST_CASE("Adding to non-empty list", "[unit][list_node]")
+TEST_CASE("Adding to non-empty list", "[unit][ListNode]")
 {
     constexpr int cNodeCount = 5;
     std::array<TestNode, cNodeCount> node{};
@@ -101,7 +101,7 @@ TEST_CASE("Adding to non-empty list", "[unit][list_node]")
     }
 }
 
-TEST_CASE("Removing from list with 5 nodes", "[unit][list_node]")
+TEST_CASE("Removing from list with 5 nodes", "[unit][ListNode]")
 {
     constexpr int cNodeCount = 5;
     std::array<TestNode, cNodeCount> node{};
@@ -189,7 +189,7 @@ TEST_CASE("Removing from list with 5 nodes", "[unit][list_node]")
     }
 }
 
-TEST_CASE("Removing from list with 1 node", "[unit][list_node]")
+TEST_CASE("Removing from list with 1 node", "[unit][ListNode]")
 {
     TestNode node;
     node.initListNode();

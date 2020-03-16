@@ -30,12 +30,12 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <allocator/region.hpp>
-#include <page.hpp>
-#include <page_allocator.hpp>
-#include <test_utils.hpp>
+#include <Page.hpp>
+#include <PageAllocator.hpp>
+#include <TestUtils.hpp>
+#include <ZoneAllocator.hpp>
+#include <allocator/Region.hpp>
 #include <utils.hpp>
-#include <zone_allocator.hpp>
 
 #include <catch2/catch.hpp>
 
@@ -46,7 +46,7 @@
 
 namespace memory {
 
-TEST_CASE("ZoneAllocator is properly cleared", "[unit][zone_allocator]")
+TEST_CASE("ZoneAllocator is properly cleared", "[unit][ZoneAllocator]")
 {
     ZoneAllocator zoneAllocator;
     constexpr int cPattern = 0x5a;
@@ -61,7 +61,7 @@ TEST_CASE("ZoneAllocator is properly cleared", "[unit][zone_allocator]")
     REQUIRE(stats.allocatedMemorySize == 0);
 }
 
-TEST_CASE("ZoneAllocator is properly initialized", "[unit][zone_allocator]")
+TEST_CASE("ZoneAllocator is properly initialized", "[unit][ZoneAllocator]")
 {
     constexpr std::size_t cPageSize = 256;
     constexpr std::size_t cPagesCount = 256;
@@ -101,7 +101,7 @@ TEST_CASE("ZoneAllocator is properly initialized", "[unit][zone_allocator]")
     }
 }
 
-TEST_CASE("ZoneAllocator stats are properly initialized", "[unit][zone_allocator]")
+TEST_CASE("ZoneAllocator stats are properly initialized", "[unit][ZoneAllocator]")
 {
     constexpr std::size_t cPageSize = 256;
     constexpr std::size_t cPagesCount = 256;
@@ -125,7 +125,7 @@ TEST_CASE("ZoneAllocator stats are properly initialized", "[unit][zone_allocator
     REQUIRE(stats.allocatedMemorySize == 0);
 }
 
-TEST_CASE("Chunk size is properly calculated", "[unit][zone_allocator]")
+TEST_CASE("Chunk size is properly calculated", "[unit][ZoneAllocator]")
 {
     std::size_t size = 0;
     std::size_t roundedSize = 0;
@@ -155,7 +155,7 @@ TEST_CASE("Chunk size is properly calculated", "[unit][zone_allocator]")
     REQUIRE(std::pow(2.0, std::log2(double(roundedSize))) == double(roundedSize)); // NOLINT
 }
 
-TEST_CASE("Zone index is properly calculated", "[unit][zone_allocator]")
+TEST_CASE("Zone index is properly calculated", "[unit][ZoneAllocator]")
 {
     std::map<std::size_t, std::pair<std::size_t, size_t>> idxRange = {{0, {16, 31}},      // NOLINT
                                                                       {1, {32, 63}},      // NOLINT
@@ -173,7 +173,7 @@ TEST_CASE("Zone index is properly calculated", "[unit][zone_allocator]")
     }
 }
 
-TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocator]")
+TEST_CASE("Zone allocator properly allocates user memory", "[unit][ZoneAllocator]")
 {
     constexpr std::size_t cPageSize = 256;
     constexpr std::size_t cPagesCount = 256;
@@ -323,7 +323,7 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][zone_allocato
     }
 }
 
-TEST_CASE("Zone allocator properly releases user memory", "[unit][zone_allocator]")
+TEST_CASE("Zone allocator properly releases user memory", "[unit][ZoneAllocator]")
 {
     constexpr std::size_t cPageSize = 256;
     constexpr std::size_t cPagesCount = 256;

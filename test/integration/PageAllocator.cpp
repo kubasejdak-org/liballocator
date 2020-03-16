@@ -30,11 +30,9 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <allocator/region.hpp>
-#include <page_allocator.hpp>
-#include <test_utils.hpp>
-#include <utils.hpp>
-#include <zone_allocator.hpp>
+#include <PageAllocator.hpp>
+#include <TestUtils.hpp>
+#include <allocator/Region.hpp>
 
 #include <catch2/catch.hpp>
 
@@ -45,61 +43,68 @@
 
 namespace memory {
 
-TEST_CASE("ZoneAllocator integration tests (long-term)", "[integration][zone_allocator]")
+TEST_CASE("PageAllocator integration tests (long-term)", "[integration][PageAllocator]")
 {
     using namespace std::chrono_literals;
     constexpr auto cTestDuration = 30min;
     constexpr int cAllocationsCount = 100;
 
     constexpr std::size_t cPageSize = 256;
-    constexpr std::size_t cPagesCount = 256;
     PageAllocator pageAllocator;
 
-    auto size = cPageSize * cPagesCount;
-    auto memory = test::alignedAlloc(cPageSize, size);
+    constexpr std::size_t cPagesCount1 = 535;
+    constexpr std::size_t cPagesCount2 = 87;
+    constexpr std::size_t cPagesCount3 = 4;
+    auto size1 = cPageSize * cPagesCount1;
+    auto size2 = cPageSize * cPagesCount2;
+    auto size3 = cPageSize * cPagesCount3;
+    auto memory1 = test::alignedAlloc(cPageSize, size1);
+    auto memory2 = test::alignedAlloc(cPageSize, size2);
+    auto memory3 = test::alignedAlloc(cPageSize, size3);
 
     // clang-format off
-    std::array<Region, 2> regions = {{
-        {std::uintptr_t(memory.get()), size},
-        {0,                            0}
+    std::array<Region, 4> regions = {{
+        {std::uintptr_t(memory1.get()), size1},
+        {std::uintptr_t(memory2.get()), size2},
+        {std::uintptr_t(memory3.get()), size3},
+        {0,                             0}
     }};
     // clang-format on
 
     REQUIRE(pageAllocator.init(regions.data(), cPageSize));
-
-    ZoneAllocator zoneAllocator;
-    REQUIRE(zoneAllocator.init(&pageAllocator, cPageSize));
-
     auto freePagesCount = pageAllocator.getStats().freePagesCount;
-    auto maxAllocSize = 2 * cPageSize;
+    auto maxAllocSize = freePagesCount / 4;
 
     // Initialize random number generator.
     std::random_device randomDevice;
     std::mt19937 randomGenerator(randomDevice());
     std::uniform_int_distribution<std::size_t> distribution(0, maxAllocSize);
 
-    std::array<void*, cAllocationsCount> ptrs{};
+    std::array<Page*, cAllocationsCount> pages{};
 
     for (auto start = test::currentTime(); !test::timeElapsed(start, cTestDuration);) {
-        ptrs.fill(nullptr);
+        pages.fill(nullptr);
 
-        // Allocate memory.
-        for (auto*& ptr : ptrs) {
-            auto allocSize = distribution(randomGenerator);
-            ptr = zoneAllocator.allocate(allocSize);
+        // Allocate pages.
+        for (auto*& page : pages) {
+            auto n = distribution(randomGenerator);
+            page = pageAllocator.allocate(n);
         }
 
-        // Release memory.
-        for (auto* ptr : ptrs)
-            zoneAllocator.release(ptr);
+        // Release pages.
+        for (auto* page : pages)
+            pageAllocator.release(page);
 
-        REQUIRE(pageAllocator.getStats().freePagesCount == freePagesCount);
-
-        auto stats = zoneAllocator.getStats();
-        REQUIRE(stats.usedMemorySize == cPageSize);
-        REQUIRE(stats.reservedMemorySize == 0);
-        REQUIRE(stats.freeMemorySize == cPageSize);
-        REQUIRE(stats.allocatedMemorySize == 0);
+        auto stats = pageAllocator.getStats();
+        REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
+        REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
+        REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
+        REQUIRE(stats.freeMemorySize == (cPageSize * (stats.totalPagesCount - stats.reservedPagesCount)));
+        REQUIRE(stats.pageSize == cPageSize);
+        REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
+        REQUIRE(stats.reservedPagesCount == 79);
+        REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount));
+        REQUIRE(stats.freePagesCount == freePagesCount);
     }
 }
 

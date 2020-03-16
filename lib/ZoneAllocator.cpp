@@ -30,10 +30,10 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include "zone_allocator.hpp"
+#include "ZoneAllocator.hpp"
 
-#include "page.hpp"
-#include "page_allocator.hpp"
+#include "Page.hpp"
+#include "PageAllocator.hpp"
 
 #include <algorithm>
 #include <cassert>

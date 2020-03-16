@@ -30,95 +30,79 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include "zone.hpp"
+#include "RegionInfo.hpp"
 
-#include "page.hpp"
-#include "utils.hpp"
+#include "Page.hpp"
+
+#include <allocator/Region.hpp>
 
 #include <cassert>
+#include <optional>
 
 namespace memory {
 
-static_assert(Zone::isNaturallyAligned(), "class Zone is not naturally aligned");
-
-void Zone::init(Page* page, std::size_t pageSize, std::size_t chunkSize)
+void clearRegionInfo(RegionInfo& regionInfo)
 {
-    assert(page);
-    assert(pageSize);
-    assert(chunkSize);
-
-    clear();
-
-    m_page = page;
-    m_chunkSize = chunkSize;
-    m_chunksCount = pageSize / chunkSize;
-    m_freeChunksCount = m_chunksCount;
-
-    auto* chunk = reinterpret_cast<Chunk*>(page->address());
-    for (std::size_t i = 0; i < m_chunksCount; ++i, chunk = utils::movePtr(chunk, m_chunkSize)) {
-        chunk->initListNode();
-        chunk->addToList(&m_freeChunks);
-    }
+    regionInfo.start = 0;
+    regionInfo.end = 0;
+    regionInfo.alignedStart = 0;
+    regionInfo.alignedEnd = 0;
+    regionInfo.pageCount = 0;
+    regionInfo.size = 0;
+    regionInfo.alignedSize = 0;
+    regionInfo.firstPage = nullptr;
+    regionInfo.lastPage = nullptr;
 }
 
-void Zone::clear()
+bool initRegionInfo(RegionInfo& regionInfo, const Region& region, std::size_t pageSize)
 {
-    initListNode();
-    m_page = nullptr;
-    m_chunkSize = 0;
-    m_chunksCount = 0;
-    m_freeChunksCount = 0;
-    m_freeChunks = nullptr;
+    clearRegionInfo(regionInfo);
+
+    if (region.size < pageSize)
+        return false;
+
+    regionInfo.start = region.address;
+    regionInfo.end = region.address + region.size;
+    auto start = detail::alignedStart(region, pageSize);
+    assert(start);
+
+    regionInfo.alignedStart = *start;
+    auto end = detail::alignedEnd(region, pageSize);
+    assert(end);
+
+    regionInfo.alignedEnd = *end;
+    regionInfo.pageCount = (regionInfo.alignedEnd - regionInfo.alignedStart) / pageSize;
+    if (regionInfo.pageCount == 0)
+        return false;
+
+    regionInfo.size = region.size;
+    regionInfo.alignedSize = regionInfo.pageCount * pageSize;
+
+    return true;
 }
 
-Page* Zone::page()
+namespace detail {
+
+std::optional<std::uintptr_t> alignedStart(const Region& region, std::size_t pageSize)
 {
-    return m_page;
+    auto start = region.address & ~(pageSize - 1);
+    if (start < region.address)
+        start += pageSize;
+
+    if (start > (region.address + region.size))
+        return {};
+
+    return start;
 }
 
-std::size_t Zone::chunkSize()
+std::optional<std::uintptr_t> alignedEnd(const Region& region, std::size_t pageSize)
 {
-    return m_chunkSize;
+    auto end = (region.address + region.size) & ~(pageSize - 1);
+    if (end < region.address)
+        return {};
+
+    return end;
 }
 
-std::size_t Zone::chunksCount()
-{
-    return m_chunksCount;
-}
-
-std::size_t Zone::freeChunksCount()
-{
-    return m_freeChunksCount;
-}
-
-Chunk* Zone::takeChunk()
-{
-    assert(m_freeChunksCount);
-
-    auto* chunk = m_freeChunks;
-    chunk->removeFromList(&m_freeChunks);
-    --m_freeChunksCount;
-
-    return chunk;
-}
-
-void Zone::giveChunk(Chunk* chunk)
-{
-    assert(chunk);
-
-    chunk->addToList(&m_freeChunks);
-    ++m_freeChunksCount;
-}
-
-bool Zone::isValidChunk(Chunk* chunk)
-{
-    auto* it = reinterpret_cast<Chunk*>(m_page->address());
-    for (std::size_t i = 0; i < m_chunksCount; ++i, it = utils::movePtr(it, m_chunkSize)) {
-        if (it == chunk)
-            return true;
-    }
-
-    return false;
-}
-
+} // namespace detail
 } // namespace memory
