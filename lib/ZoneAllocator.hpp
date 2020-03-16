@@ -32,8 +32,8 @@
 
 #pragma once
 
+#include "Zone.hpp"
 #include "utils.hpp"
-#include "zone.hpp"
 
 #include <array>
 #include <cmath>

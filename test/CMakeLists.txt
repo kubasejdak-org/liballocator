@@ -2,18 +2,18 @@ add_subdirectory(init)
 
 add_library(appliballocator-tests OBJECT EXCLUDE_FROM_ALL
     appMain.cpp
-    integration/integration_page_allocator.cpp
-    integration/integration_zone_allocator.cpp
-    perf/perf_allocator.cpp
-    unit/unit_allocator.cpp
-    unit/unit_group.cpp
-    unit/unit_list_node.cpp
-    unit/unit_page.cpp
-    unit/unit_page_allocator.cpp
-    unit/unit_region_info.cpp
-    unit/unit_utils.cpp
-    unit/unit_zone.cpp
-    unit/unit_zone_allocator.cpp
+    integration/PageAllocator.cpp
+    integration/ZoneAllocator.cpp
+    perf/allocator.cpp
+    unit/allocator.cpp
+    unit/group.cpp
+    unit/ListNode.cpp
+    unit/Page.cpp
+    unit/PageAllocator.cpp
+    unit/RegionInfo.cpp
+    unit/utils.cpp
+    unit/Zone.cpp
+    unit/ZoneAllocator.cpp
 )
 
 # Link with private implementation of library for testing.

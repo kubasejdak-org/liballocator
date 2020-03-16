@@ -32,7 +32,7 @@
 
 #include "group.hpp"
 
-#include "page.hpp"
+#include "Page.hpp"
 
 #include <cassert>
 #include <cmath>

@@ -32,7 +32,7 @@
 
 #pragma once
 
-#include "region.hpp"
+#include "Region.hpp"
 
 #include <cstddef>
 #include <cstdint>

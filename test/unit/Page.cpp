@@ -30,7 +30,7 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <page.hpp>
+#include <Page.hpp>
 
 #include <catch2/catch.hpp>
 
@@ -39,12 +39,12 @@
 
 namespace memory {
 
-TEST_CASE("Page structure is naturally aligned", "[unit][page]")
+TEST_CASE("Page structure is naturally aligned", "[unit][Page]")
 {
     REQUIRE(Page::isNaturallyAligned());
 }
 
-TEST_CASE("Page is properly initialized", "[unit][page]")
+TEST_CASE("Page is properly initialized", "[unit][Page]")
 {
     std::array<std::byte, sizeof(Page)> buffer{};
     auto* page = reinterpret_cast<Page*>(buffer.data());
@@ -57,7 +57,7 @@ TEST_CASE("Page is properly initialized", "[unit][page]")
     REQUIRE(!page->isUsed());
 }
 
-TEST_CASE("Accessing siblings works as expected", "[unit][page]")
+TEST_CASE("Accessing siblings works as expected", "[unit][Page]")
 {
     constexpr int cPageCount = 3;
     std::array<std::byte, cPageCount * sizeof(Page)> buffer{};

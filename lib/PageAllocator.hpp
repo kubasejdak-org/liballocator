@@ -32,7 +32,7 @@
 
 #pragma once
 
-#include "region_info.hpp"
+#include "RegionInfo.hpp"
 #include "utils.hpp"
 
 #include <array>

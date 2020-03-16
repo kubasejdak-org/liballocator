@@ -30,64 +30,95 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include "page.hpp"
+#include "Zone.hpp"
+
+#include "Page.hpp"
+#include "utils.hpp"
 
 #include <cassert>
 
 namespace memory {
 
-static_assert(Page::isNaturallyAligned(), "class Page is not naturally aligned");
+static_assert(Zone::isNaturallyAligned(), "class Zone is not naturally aligned");
 
-void Page::init()
+void Zone::init(Page* page, std::size_t pageSize, std::size_t chunkSize)
+{
+    assert(page);
+    assert(pageSize);
+    assert(chunkSize);
+
+    clear();
+
+    m_page = page;
+    m_chunkSize = chunkSize;
+    m_chunksCount = pageSize / chunkSize;
+    m_freeChunksCount = m_chunksCount;
+
+    auto* chunk = reinterpret_cast<Chunk*>(page->address());
+    for (std::size_t i = 0; i < m_chunksCount; ++i, chunk = utils::movePtr(chunk, m_chunkSize)) {
+        chunk->initListNode();
+        chunk->addToList(&m_freeChunks);
+    }
+}
+
+void Zone::clear()
 {
     initListNode();
-    m_addr = 0;
-    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-    m_flags.value = 0;
+    m_page = nullptr;
+    m_chunkSize = 0;
+    m_chunksCount = 0;
+    m_freeChunksCount = 0;
+    m_freeChunks = nullptr;
 }
 
-void Page::setAddress(std::uintptr_t addr)
+Page* Zone::page()
 {
-    m_addr = addr;
+    return m_page;
 }
 
-void Page::setGroupSize(std::size_t groupSize)
+std::size_t Zone::chunkSize()
 {
-    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-    m_flags.bits.groupSize = groupSize;
+    return m_chunkSize;
 }
 
-void Page::setUsed(bool value)
+std::size_t Zone::chunksCount()
 {
-    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-    m_flags.bits.used = value;
+    return m_chunksCount;
 }
 
-Page* Page::nextSibling()
+std::size_t Zone::freeChunksCount()
 {
-    return (this + 1);
+    return m_freeChunksCount;
 }
 
-Page* Page::prevSibling()
+Chunk* Zone::takeChunk()
 {
-    return (this - 1);
+    assert(m_freeChunksCount);
+
+    auto* chunk = m_freeChunks;
+    chunk->removeFromList(&m_freeChunks);
+    --m_freeChunksCount;
+
+    return chunk;
 }
 
-std::uintptr_t Page::address()
+void Zone::giveChunk(Chunk* chunk)
 {
-    return m_addr;
+    assert(chunk);
+
+    chunk->addToList(&m_freeChunks);
+    ++m_freeChunksCount;
 }
 
-std::size_t Page::groupSize()
+bool Zone::isValidChunk(Chunk* chunk)
 {
-    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-    return m_flags.bits.groupSize;
-}
+    auto* it = reinterpret_cast<Chunk*>(m_page->address());
+    for (std::size_t i = 0; i < m_chunksCount; ++i, it = utils::movePtr(it, m_chunkSize)) {
+        if (it == chunk)
+            return true;
+    }
 
-bool Page::isUsed()
-{
-    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-    return m_flags.bits.used;
+    return false;
 }
 
 } // namespace memory

@@ -30,9 +30,9 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <page.hpp>
-#include <test_utils.hpp>
-#include <zone.hpp>
+#include <Page.hpp>
+#include <TestUtils.hpp>
+#include <Zone.hpp>
 
 #include <catch2/catch.hpp>
 
@@ -41,12 +41,12 @@
 
 namespace memory {
 
-TEST_CASE("Zone structure is naturally aligned", "[unit][zone]")
+TEST_CASE("Zone structure is naturally aligned", "[unit][Zone]")
 {
     REQUIRE(Zone::isNaturallyAligned());
 }
 
-TEST_CASE("Zone is properly initialized", "[unit][zone]")
+TEST_CASE("Zone is properly initialized", "[unit][Zone]")
 {
     constexpr std::size_t cPageSize = 256;
     auto memory = test::alignedAlloc(cPageSize, cPageSize);
@@ -78,7 +78,7 @@ TEST_CASE("Zone is properly initialized", "[unit][zone]")
     }
 }
 
-TEST_CASE("Zone is properly cleared", "[unit][zone]")
+TEST_CASE("Zone is properly cleared", "[unit][Zone]")
 {
     Zone zone;
     zone.clear();
@@ -96,7 +96,7 @@ TEST_CASE("Zone is properly cleared", "[unit][zone]")
     REQUIRE(zone.freeChunksCount() == 0);
 }
 
-TEST_CASE("Zone properly allocates chunks", "[unit][zone]")
+TEST_CASE("Zone properly allocates chunks", "[unit][Zone]")
 {
     constexpr std::size_t cPageSize = 256;
     auto memory = test::alignedAlloc(cPageSize, cPageSize);
@@ -123,7 +123,7 @@ TEST_CASE("Zone properly allocates chunks", "[unit][zone]")
     REQUIRE(zone.freeChunksCount() == 0);
 }
 
-TEST_CASE("Zone properly deallocates chunks", "[unit][zone]")
+TEST_CASE("Zone properly deallocates chunks", "[unit][Zone]")
 {
     constexpr std::size_t cPageSize = 256;
     auto memory = test::alignedAlloc(cPageSize, cPageSize);
@@ -165,7 +165,7 @@ TEST_CASE("Zone properly deallocates chunks", "[unit][zone]")
     REQUIRE(zone.freeChunksCount() == (cPageSize / cChunkSize));
 }
 
-TEST_CASE("Zone properly checks if given zone is valid", "[unit][zone]")
+TEST_CASE("Zone properly checks if given zone is valid", "[unit][Zone]")
 {
     constexpr std::size_t cPageSize = 256;
     auto memory = test::alignedAlloc(cPageSize, cPageSize);

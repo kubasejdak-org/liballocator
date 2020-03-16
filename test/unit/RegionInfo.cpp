@@ -30,9 +30,9 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <allocator/region.hpp>
-#include <region_info.hpp>
-#include <test_utils.hpp>
+#include <RegionInfo.hpp>
+#include <TestUtils.hpp>
+#include <allocator/Region.hpp>
 
 #include <catch2/catch.hpp>
 
@@ -41,7 +41,7 @@
 
 namespace memory {
 
-TEST_CASE("RegionInfo structure is properly cleared", "[unit][region_info]")
+TEST_CASE("RegionInfo structure is properly cleared", "[unit][RegionInfo]")
 {
     RegionInfo regionInfo{};
     constexpr int cPattern = 0x5a;
@@ -59,7 +59,7 @@ TEST_CASE("RegionInfo structure is properly cleared", "[unit][region_info]")
     REQUIRE(regionInfo.lastPage == nullptr);
 }
 
-TEST_CASE("Aligned start address is properly computed", "[unit][region_info]")
+TEST_CASE("Aligned start address is properly computed", "[unit][RegionInfo]")
 {
     constexpr std::size_t cPageSize = 512;
 
@@ -98,7 +98,7 @@ TEST_CASE("Aligned start address is properly computed", "[unit][region_info]")
     }
 }
 
-TEST_CASE("Aligned end address is properly computed", "[unit][region_info]")
+TEST_CASE("Aligned end address is properly computed", "[unit][RegionInfo]")
 {
     constexpr std::size_t cPageSize = 512;
 
@@ -137,7 +137,7 @@ TEST_CASE("Aligned end address is properly computed", "[unit][region_info]")
     }
 }
 
-TEST_CASE("RegionInfo is properly initialized", "[unit][region_info]")
+TEST_CASE("RegionInfo is properly initialized", "[unit][RegionInfo]")
 {
     constexpr std::size_t cPageSize = 512;
     RegionInfo regionInfo{};
