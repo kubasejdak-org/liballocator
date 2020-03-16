@@ -30,8 +30,8 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
+#include <Page.hpp>
 #include <group.hpp>
-#include <page.hpp>
 
 #include <catch2/catch.hpp>
 
@@ -41,7 +41,7 @@
 
 namespace memory {
 
-TEST_CASE("Group index is properly computed", "[unit][group]")
+TEST_CASE("Group index is properly computed", "[unit][Group]")
 {
     std::map<std::size_t, std::pair<std::size_t, size_t>> idxRange = {{0, {0, 3}},               // NOLINT
                                                                       {1, {4, 7}},               // NOLINT
@@ -72,7 +72,7 @@ TEST_CASE("Group index is properly computed", "[unit][group]")
     }
 }
 
-TEST_CASE("Group is properly initialized", "[unit][group]")
+TEST_CASE("Group is properly initialized", "[unit][Group]")
 {
     SECTION("Group has 1 page")
     {
@@ -98,7 +98,7 @@ TEST_CASE("Group is properly initialized", "[unit][group]")
     }
 }
 
-TEST_CASE("Group is properly cleared", "[unit][group]")
+TEST_CASE("Group is properly cleared", "[unit][Group]")
 {
     SECTION("Group has 1 page")
     {
@@ -126,7 +126,7 @@ TEST_CASE("Group is properly cleared", "[unit][group]")
     }
 }
 
-TEST_CASE("Group is properly splitted", "[unit][group]")
+TEST_CASE("Group is properly splitted", "[unit][Group]")
 {
     constexpr std::size_t cGroupSize = 10;
     std::array<std::byte, sizeof(Page) * cGroupSize> memory{};
@@ -179,7 +179,7 @@ TEST_CASE("Group is properly splitted", "[unit][group]")
     }
 }
 
-TEST_CASE("Group is properly joined", "[unit][group]")
+TEST_CASE("Group is properly joined", "[unit][Group]")
 {
     constexpr std::size_t cGroupSize = 10;
     std::array<std::byte, sizeof(Page) * cGroupSize> memory{};

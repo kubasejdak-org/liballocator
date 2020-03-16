@@ -30,9 +30,9 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include "page_allocator.hpp"
+#include "PageAllocator.hpp"
+#include "ZoneAllocator.hpp"
 #include "version.hpp"
-#include "zone_allocator.hpp"
 
 #include <allocator/allocator.hpp>
 

@@ -30,79 +30,64 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include "region_info.hpp"
-
-#include "page.hpp"
-
-#include <allocator/region.hpp>
+#include "Page.hpp"
 
 #include <cassert>
-#include <optional>
 
 namespace memory {
 
-void clearRegionInfo(RegionInfo& regionInfo)
+static_assert(Page::isNaturallyAligned(), "class Page is not naturally aligned");
+
+void Page::init()
 {
-    regionInfo.start = 0;
-    regionInfo.end = 0;
-    regionInfo.alignedStart = 0;
-    regionInfo.alignedEnd = 0;
-    regionInfo.pageCount = 0;
-    regionInfo.size = 0;
-    regionInfo.alignedSize = 0;
-    regionInfo.firstPage = nullptr;
-    regionInfo.lastPage = nullptr;
+    initListNode();
+    m_addr = 0;
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+    m_flags.value = 0;
 }
 
-bool initRegionInfo(RegionInfo& regionInfo, const Region& region, std::size_t pageSize)
+void Page::setAddress(std::uintptr_t addr)
 {
-    clearRegionInfo(regionInfo);
-
-    if (region.size < pageSize)
-        return false;
-
-    regionInfo.start = region.address;
-    regionInfo.end = region.address + region.size;
-    auto start = detail::alignedStart(region, pageSize);
-    assert(start);
-
-    regionInfo.alignedStart = *start;
-    auto end = detail::alignedEnd(region, pageSize);
-    assert(end);
-
-    regionInfo.alignedEnd = *end;
-    regionInfo.pageCount = (regionInfo.alignedEnd - regionInfo.alignedStart) / pageSize;
-    if (regionInfo.pageCount == 0)
-        return false;
-
-    regionInfo.size = region.size;
-    regionInfo.alignedSize = regionInfo.pageCount * pageSize;
-
-    return true;
+    m_addr = addr;
 }
 
-namespace detail {
-
-std::optional<std::uintptr_t> alignedStart(const Region& region, std::size_t pageSize)
+void Page::setGroupSize(std::size_t groupSize)
 {
-    auto start = region.address & ~(pageSize - 1);
-    if (start < region.address)
-        start += pageSize;
-
-    if (start > (region.address + region.size))
-        return {};
-
-    return start;
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+    m_flags.bits.groupSize = groupSize;
 }
 
-std::optional<std::uintptr_t> alignedEnd(const Region& region, std::size_t pageSize)
+void Page::setUsed(bool value)
 {
-    auto end = (region.address + region.size) & ~(pageSize - 1);
-    if (end < region.address)
-        return {};
-
-    return end;
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+    m_flags.bits.used = value;
 }
 
-} // namespace detail
+Page* Page::nextSibling()
+{
+    return (this + 1);
+}
+
+Page* Page::prevSibling()
+{
+    return (this - 1);
+}
+
+std::uintptr_t Page::address()
+{
+    return m_addr;
+}
+
+std::size_t Page::groupSize()
+{
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+    return m_flags.bits.groupSize;
+}
+
+bool Page::isUsed()
+{
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+    return m_flags.bits.used;
+}
+
 } // namespace memory

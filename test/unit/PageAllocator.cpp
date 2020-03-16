@@ -30,10 +30,10 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <allocator/region.hpp>
-#include <page.hpp>
-#include <page_allocator.hpp>
-#include <test_utils.hpp>
+#include <Page.hpp>
+#include <PageAllocator.hpp>
+#include <TestUtils.hpp>
+#include <allocator/Region.hpp>
 
 #include <catch2/catch.hpp>
 
@@ -44,7 +44,7 @@
 
 namespace memory {
 
-TEST_CASE("Page allocator is properly cleared", "[unit][page_allocator]")
+TEST_CASE("Page allocator is properly cleared", "[unit][PageAllocator]")
 {
     PageAllocator pageAllocator;
     constexpr int cPattern = 0x5a;
@@ -63,7 +63,7 @@ TEST_CASE("Page allocator is properly cleared", "[unit][page_allocator]")
     REQUIRE(stats.freePagesCount == 0);
 }
 
-TEST_CASE("Page size is correctly validated", "[unit][page_allocator]")
+TEST_CASE("Page size is correctly validated", "[unit][PageAllocator]")
 {
     PageAllocator pageAllocator;
     std::size_t pageSize = 0;
@@ -107,7 +107,7 @@ TEST_CASE("Page size is correctly validated", "[unit][page_allocator]")
     REQUIRE(pageAllocator.init(regions.data(), pageSize) == isValidPageSize);
 }
 
-TEST_CASE("Pages are correctly counted", "[unit][page_allocator]")
+TEST_CASE("Pages are correctly counted", "[unit][PageAllocator]")
 {
     constexpr std::size_t cPageSize = 256;
     PageAllocator pageAllocator;
@@ -238,7 +238,7 @@ TEST_CASE("Pages are correctly counted", "[unit][page_allocator]")
     }
 }
 
-TEST_CASE("Pages with page descriptors are properly reserved", "[unit][page_allocator]")
+TEST_CASE("Pages with page descriptors are properly reserved", "[unit][PageAllocator]")
 {
     constexpr std::size_t cPageSize = 256;
     PageAllocator pageAllocator;
@@ -324,7 +324,7 @@ TEST_CASE("Pages with page descriptors are properly reserved", "[unit][page_allo
     REQUIRE(stats.reservedPagesCount == reservedPagesCount);
 }
 
-TEST_CASE("Pages are correctly resolved from address", "[unit][page_allocator]")
+TEST_CASE("Pages are correctly resolved from address", "[unit][PageAllocator]")
 {
     constexpr std::size_t cPageSize = 256;
     PageAllocator pageAllocator;
@@ -414,7 +414,7 @@ TEST_CASE("Pages are correctly resolved from address", "[unit][page_allocator]")
     }
 }
 
-TEST_CASE("PageAllocator stats are properly initialized", "[unit][page_allocator]")
+TEST_CASE("PageAllocator stats are properly initialized", "[unit][PageAllocator]")
 {
     constexpr std::size_t cPageSize = 256;
     PageAllocator pageAllocator;
@@ -449,7 +449,7 @@ TEST_CASE("PageAllocator stats are properly initialized", "[unit][page_allocator
     REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount));
 }
 
-TEST_CASE("Pages are correctly allocated", "[unit][page_allocator]")
+TEST_CASE("Pages are correctly allocated", "[unit][PageAllocator]")
 {
     constexpr std::size_t cPageSize = 256;
     PageAllocator pageAllocator;
@@ -654,7 +654,7 @@ TEST_CASE("Pages are correctly allocated", "[unit][page_allocator]")
     }
 }
 
-TEST_CASE("Pages are correctly released", "[unit][page_allocator]")
+TEST_CASE("Pages are correctly released", "[unit][PageAllocator]")
 {
     constexpr std::size_t cPageSize = 256;
     PageAllocator pageAllocator;
