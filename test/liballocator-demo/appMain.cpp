@@ -46,9 +46,14 @@ void* operator new(std::size_t size)
     return memory::allocator::allocate(size);
 }
 
-void operator delete(void* ptr)
+void operator delete(void* ptr) noexcept
 {
     memory::allocator::release(ptr);
+}
+
+void operator delete(void* ptr, [[maybe_unused]] std::size_t sz) noexcept
+{
+    operator delete(ptr);
 }
 
 static void showStats()
@@ -63,7 +68,7 @@ static void showStats()
 }
 
 // NOLINTNEXTLINE
-int appMain(int argc, char* argv[])
+int appMain([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 {
     if (!platformInit())
         return EXIT_FAILURE;
