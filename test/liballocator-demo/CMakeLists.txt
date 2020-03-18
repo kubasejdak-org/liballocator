@@ -6,6 +6,6 @@ target_compile_features(appliballocator-demo
     PRIVATE cxx_std_17
 )
 
-target_link_libraries(appliballocator-tests
+target_link_libraries(appliballocator-demo
     PRIVATE platform-init liballocator
 )
