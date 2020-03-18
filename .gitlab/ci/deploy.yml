@@ -30,6 +30,6 @@ pages:
     - cd ${CI_JOB_NAME}
 
     # Generate documentation.
-    - cmake .. -DPLATFORM=linux
+    - cmake .. -DPLATFORM=linux -DAPP=liballocator-tests
     - make doxygen
     - mv docs/* ../public
