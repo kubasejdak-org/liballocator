@@ -7,5 +7,6 @@ target_compile_features(appliballocator-demo
 )
 
 target_link_libraries(appliballocator-demo
-    PRIVATE platform-init liballocator
+    PUBLIC platform-init
+    PRIVATE liballocator
 )
