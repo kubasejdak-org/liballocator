@@ -12,7 +12,7 @@ include(cmake/coverage.cmake)
 include(cmake/doxygen.cmake)
 include(cmake/platform.cmake)
 
-project(liballocator VERSION 1.0.5 LANGUAGES CXX)
+project(liballocator VERSION 1.0.5 LANGUAGES ASM C CXX)
 
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)

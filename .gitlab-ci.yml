@@ -10,6 +10,7 @@ stages:
   - deploy
 
 include:
+  - ".gitlab/ci/build-demo-baremetal.yml"
   - ".gitlab/ci/build-tests-linux.yml"
   - ".gitlab/ci/coverage-linux.yml"
   - ".gitlab/ci/deploy.yml"
