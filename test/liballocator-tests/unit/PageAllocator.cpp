@@ -71,21 +71,21 @@ TEST_CASE("Page size is correctly validated", "[unit][PageAllocator]")
 
     SECTION("Page size is smaller than the minimal value")
     {
-        pageSize = PageAllocator::cMinPageSize - 3;
+        pageSize = PageAllocator::minimalPageSize() - 3;
         isValidPageSize = detail::isValidPageSize(pageSize);
         REQUIRE(!isValidPageSize);
     }
 
     SECTION("Page size is equal to the minimal value")
     {
-        pageSize = PageAllocator::cMinPageSize;
+        pageSize = PageAllocator::minimalPageSize();
         isValidPageSize = detail::isValidPageSize(pageSize);
         REQUIRE(isValidPageSize);
     }
 
     SECTION("Page size is bigger than the minimal value, but not the power of 2")
     {
-        pageSize = (2 * PageAllocator::cMinPageSize) + 1;
+        pageSize = (2 * PageAllocator::minimalPageSize()) + 1;
         isValidPageSize = detail::isValidPageSize(pageSize);
         REQUIRE(!isValidPageSize);
     }

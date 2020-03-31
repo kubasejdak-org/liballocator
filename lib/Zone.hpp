@@ -127,11 +127,11 @@ public:
     static constexpr bool isNaturallyAligned()
     {
         constexpr std::size_t cRequiredSize = sizeof(ListNode<Zone>) // Inherited fields
-                                              + sizeof(Page*)        // m_page
-                                              + sizeof(std::size_t)  // m_chunkSize
-                                              + sizeof(std::size_t)  // m_chunksCount
-                                              + sizeof(std::size_t)  // m_freeChunksCount
-                                              + sizeof(Chunk*);      // m_freeChunks
+                                              + sizeof(m_page)       // NOLINT(bugprone-sizeof-expression)
+                                              + sizeof(m_chunkSize)
+                                              + sizeof(m_chunksCount)
+                                              + sizeof(m_freeChunksCount)
+                                              + sizeof(m_freeChunks); // NOLINT(bugprone-sizeof-expression)
         return (cRequiredSize == sizeof(Zone));
     }
 
