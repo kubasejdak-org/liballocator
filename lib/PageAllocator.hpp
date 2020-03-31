@@ -101,7 +101,11 @@ public:
 
     /// Returns minimal supported size of the page.
     /// @return Minimal supported size of the page.
-    static constexpr int minimalPageSize() { return 128; }
+    static constexpr std::size_t minimalPageSize()
+    {
+        constexpr std::size_t cMinimalPageSize = 128;
+        return cMinimalPageSize;
+    }
 
 private:
     /// Returns the total number of pages from all known regions.

@@ -94,7 +94,11 @@ public:
 
     /// Returns minimal size of chunk, that can be allocated.
     /// @return Minimal size of chunk, that can be allocated.
-    static constexpr std::size_t minimalAllocSize() { return 16; }
+    static constexpr std::size_t minimalAllocSize()
+    {
+        constexpr std::size_t cMinimalAllocSize = 16;
+        return cMinimalAllocSize;
+    }
 
 private:
     /// Allocates memory chunk from the given zone.
