@@ -92,6 +92,10 @@ public:
     /// @return ZoneAllocator statistics.
     Stats getStats();
 
+    /// Returns minimal size of chunk, that can be allocated.
+    /// @return Minimal size of chunk, that can be allocated.
+    static constexpr std::size_t minimalAllocSize() { return 16; }
+
 private:
     /// Allocates memory chunk from the given zone.
     /// @param[in] zone                 Zone from which chunk should be allocated.
@@ -180,11 +184,8 @@ private:
     /// @retval nullptr                 Zone has not been found.
     Zone* findZone(Chunk* chunk);
 
-public:
-    static constexpr std::size_t cMinimalAllocSize = 16; ///< Minimal size of chunk, that can be allocated.
-
 private:
-    static constexpr std::size_t cMaxZoneIdx = 8; ///< Maximal supported entries in the zone array.
+    static constexpr std::size_t m_cMaxZoneIdx = 8; ///< Maximal supported entries in the zone array.
 
 private:
     /// @struct ZoneInfo
@@ -194,12 +195,12 @@ private:
         std::size_t freeChunksCount{}; ///< Total number of free chunks in zones with the given index.
     };
 
-    PageAllocator* m_pageAllocator{};            ///< PageAllocator to be used as the source of the new pages.
-    std::size_t m_pageSize{};                    ///< Size of the page on this platform.
-    std::size_t m_zoneDescChunkSize{};           ///< Size of the chunks that are used to store zone descriptors.
-    std::size_t m_zoneDescIdx{};                 ///< Index of the zones, from which zone descriptors are allocated.
-    Zone m_initialZone{};                        ///< Initial static zone.
-    std::array<ZoneInfo, cMaxZoneIdx> m_zones{}; ///< Array of all zones known in the ZoneAllocator.
+    PageAllocator* m_pageAllocator{};              ///< PageAllocator to be used as the source of the new pages.
+    std::size_t m_pageSize{};                      ///< Size of the page on this platform.
+    std::size_t m_zoneDescChunkSize{};             ///< Size of the chunks that are used to store zone descriptors.
+    std::size_t m_zoneDescIdx{};                   ///< Index of the zones, from which zone descriptors are allocated.
+    Zone m_initialZone{};                          ///< Initial static zone.
+    std::array<ZoneInfo, m_cMaxZoneIdx> m_zones{}; ///< Array of all zones known in the ZoneAllocator.
 };
 
 namespace detail {
@@ -209,7 +210,7 @@ namespace detail {
 /// @return Closest chunk size.
 inline std::size_t chunkSize(std::size_t size)
 {
-    std::size_t chunkSize = std::max(size, ZoneAllocator::cMinimalAllocSize);
+    std::size_t chunkSize = std::max(size, ZoneAllocator::minimalAllocSize());
     return utils::roundPowerOf2(chunkSize);
 }
 

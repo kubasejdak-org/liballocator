@@ -99,6 +99,10 @@ public:
     /// @return PageAllocator statistics.
     Stats getStats();
 
+    /// Returns minimal supported size of the page.
+    /// @return Minimal supported size of the page.
+    static constexpr int minimalPageSize() { return 128; }
+
 private:
     /// Returns the total number of pages from all known regions.
     /// @return Number of all pages from all known regions.
@@ -134,24 +138,21 @@ private:
     /// @param[in,out] group        Group to be removed.
     void removeGroup(Page* group);
 
-public:
-    static constexpr int cMinPageSize = 128; ///< Minimal supported size of the page.
+private:
+    static constexpr int m_cMaxRegionsCount = 8; ///< Maximal supported number of memory regions.
+    static constexpr int m_cMaxGroupIdx = 20;    ///< Maximal index of the group in the free array.
 
 private:
-    static constexpr int cMaxRegionsCount = 8; ///< Maximal supported number of memory regions.
-    static constexpr int cMaxGroupIdx = 20;    ///< Maximal index of the group in the free array.
-
-private:
-    std::array<RegionInfo, cMaxRegionsCount> m_regionsInfo{}; ///< Array describing all known regions.
-    std::size_t m_validRegionsCount{};                        ///< Number of used regions.
-    std::size_t m_pageSize{};                                 ///< Size of the page used on this platform.
-    std::size_t m_descRegionIdx{};                            ///< Index of the region used to store page descriptors.
-    std::size_t m_descPagesCount{};                           ///< Number of pages used to store page descriptors.
-    Page* m_pagesHead{};                                      ///< Head of the page descriptors list.
-    Page* m_pagesTail{};                                      ///< Tail of the page descriptors list.
-    std::array<Page*, cMaxGroupIdx> m_freeGroupLists{};       ///< Array of the groups with free pages.
-    std::size_t m_pagesCount{};                               ///< Total number of pages known to the PageAllocator.
-    std::size_t m_freePagesCount{};                           ///< Current number of free pages.
+    std::array<RegionInfo, m_cMaxRegionsCount> m_regionsInfo{}; ///< Array describing all known regions.
+    std::size_t m_validRegionsCount{};                          ///< Number of used regions.
+    std::size_t m_pageSize{};                                   ///< Size of the page used on this platform.
+    std::size_t m_descRegionIdx{};                              ///< Index of the region used to store page descriptors.
+    std::size_t m_descPagesCount{};                             ///< Number of pages used to store page descriptors.
+    Page* m_pagesHead{};                                        ///< Head of the page descriptors list.
+    Page* m_pagesTail{};                                        ///< Tail of the page descriptors list.
+    std::array<Page*, m_cMaxGroupIdx> m_freeGroupLists{};       ///< Array of the groups with free pages.
+    std::size_t m_pagesCount{};                                 ///< Total number of pages known to the PageAllocator.
+    std::size_t m_freePagesCount{};                             ///< Current number of free pages.
 };
 
 namespace detail {
@@ -164,7 +165,7 @@ namespace detail {
 /// @note This function checks if pageSize has the minimal size and if is a power of 2.
 inline bool isValidPageSize(std::size_t pageSize)
 {
-    return (pageSize >= PageAllocator::cMinPageSize && utils::isPowerOf2(pageSize));
+    return (pageSize >= PageAllocator::minimalPageSize() && utils::isPowerOf2(pageSize));
 }
 
 } // namespace detail
