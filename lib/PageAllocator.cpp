@@ -38,7 +38,6 @@
 #include <allocator/Region.hpp>
 
 #include <cassert>
-#include <cmath>
 #include <numeric>
 
 namespace memory {
@@ -58,7 +57,7 @@ bool PageAllocator::init(Region* regions, std::size_t pageSize)
         return false;
 
     for (std::size_t i = 0; regions[i].size != 0; ++i) {
-        if (i == cMaxRegionsCount)
+        if (i == m_cMaxRegionsCount)
             return false;
 
         RegionInfo regionInfo{};

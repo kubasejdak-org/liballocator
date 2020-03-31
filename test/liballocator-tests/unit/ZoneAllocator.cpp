@@ -35,7 +35,6 @@
 #include <TestUtils.hpp>
 #include <ZoneAllocator.hpp>
 #include <allocator/Region.hpp>
-#include <utils.hpp>
 
 #include <catch2/catch.hpp>
 
@@ -132,23 +131,23 @@ TEST_CASE("Chunk size is properly calculated", "[unit][ZoneAllocator]")
 
     SECTION("Size is smaller than the minimal alloc size")
     {
-        size = ZoneAllocator::cMinimalAllocSize / 2;
+        size = ZoneAllocator::minimalAllocSize() / 2;
         roundedSize = detail::chunkSize(size);
-        REQUIRE(roundedSize == ZoneAllocator::cMinimalAllocSize);
+        REQUIRE(roundedSize == ZoneAllocator::minimalAllocSize());
     }
 
     SECTION("Size is equal to the minimal alloc size")
     {
-        size = ZoneAllocator::cMinimalAllocSize;
+        size = ZoneAllocator::minimalAllocSize();
         roundedSize = detail::chunkSize(size);
-        REQUIRE(roundedSize == ZoneAllocator::cMinimalAllocSize);
+        REQUIRE(roundedSize == ZoneAllocator::minimalAllocSize());
     }
 
     SECTION("Size is greater than the minimal alloc size")
     {
-        size = ZoneAllocator::cMinimalAllocSize * 2;
+        size = ZoneAllocator::minimalAllocSize() * 2;
         roundedSize = detail::chunkSize(size);
-        REQUIRE(roundedSize > ZoneAllocator::cMinimalAllocSize);
+        REQUIRE(roundedSize > ZoneAllocator::minimalAllocSize());
     }
 
     REQUIRE(roundedSize >= size);
