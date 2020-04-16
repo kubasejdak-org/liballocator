@@ -480,14 +480,7 @@ TEST_CASE("Pages are correctly allocated", "[unit][PageAllocator]")
         REQUIRE(pages.back() == nullptr);
 
         auto stats = pageAllocator.getStats();
-        REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
-        REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
-        REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
         REQUIRE(stats.freeMemorySize == (cPageSize * (stats.totalPagesCount - stats.reservedPagesCount)));
-        REQUIRE(stats.pageSize == cPageSize);
-        REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
-        auto reservedPagesCount = std::ceil((double(stats.totalPagesCount) * sizeof(Page)) / cPageSize);
-        REQUIRE(stats.reservedPagesCount == reservedPagesCount);
         REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount));
     }
 
@@ -497,14 +490,7 @@ TEST_CASE("Pages are correctly allocated", "[unit][PageAllocator]")
         REQUIRE(pages.back() == nullptr);
 
         auto stats = pageAllocator.getStats();
-        REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
-        REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
-        REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
         REQUIRE(stats.freeMemorySize == (cPageSize * (stats.totalPagesCount - stats.reservedPagesCount)));
-        REQUIRE(stats.pageSize == cPageSize);
-        REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
-        auto reservedPagesCount = std::ceil((double(stats.totalPagesCount) * sizeof(Page)) / cPageSize);
-        REQUIRE(stats.reservedPagesCount == reservedPagesCount);
         REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount));
     }
 
@@ -514,14 +500,7 @@ TEST_CASE("Pages are correctly allocated", "[unit][PageAllocator]")
         REQUIRE(pages.back() == nullptr);
 
         auto stats = pageAllocator.getStats();
-        REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
-        REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
-        REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
         REQUIRE(stats.freeMemorySize == (cPageSize * (stats.totalPagesCount - stats.reservedPagesCount)));
-        REQUIRE(stats.pageSize == cPageSize);
-        REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
-        auto reservedPagesCount = std::ceil((double(stats.totalPagesCount) * sizeof(Page)) / cPageSize);
-        REQUIRE(stats.reservedPagesCount == reservedPagesCount);
         REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount));
     }
 
@@ -531,15 +510,8 @@ TEST_CASE("Pages are correctly allocated", "[unit][PageAllocator]")
         REQUIRE(pages.back());
 
         auto stats = pageAllocator.getStats();
-        REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
-        REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
-        REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
         REQUIRE(stats.freeMemorySize
                 == (cPageSize * (stats.totalPagesCount - stats.reservedPagesCount) - 1 * cPageSize));
-        REQUIRE(stats.pageSize == cPageSize);
-        REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
-        auto reservedPagesCount = std::ceil((double(stats.totalPagesCount) * sizeof(Page)) / cPageSize);
-        REQUIRE(stats.reservedPagesCount == reservedPagesCount);
         REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount - 1));
     }
 
@@ -550,15 +522,8 @@ TEST_CASE("Pages are correctly allocated", "[unit][PageAllocator]")
         REQUIRE(pages.back());
 
         auto stats = pageAllocator.getStats();
-        REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
-        REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
-        REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
         REQUIRE(stats.freeMemorySize
                 == (cPageSize * (stats.totalPagesCount - stats.reservedPagesCount) - cAllocSize * cPageSize));
-        REQUIRE(stats.pageSize == cPageSize);
-        REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
-        auto reservedPagesCount = std::ceil((double(stats.totalPagesCount) * sizeof(Page)) / cPageSize);
-        REQUIRE(stats.reservedPagesCount == reservedPagesCount);
         REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount - cAllocSize));
     }
 
@@ -568,15 +533,8 @@ TEST_CASE("Pages are correctly allocated", "[unit][PageAllocator]")
         REQUIRE(pages.back());
 
         auto stats = pageAllocator.getStats();
-        REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
-        REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
-        REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
         REQUIRE(stats.freeMemorySize
                 == (cPageSize * (stats.totalPagesCount - stats.reservedPagesCount) - cPagesCount1 * cPageSize));
-        REQUIRE(stats.pageSize == cPageSize);
-        REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
-        auto reservedPagesCount = std::ceil((double(stats.totalPagesCount) * sizeof(Page)) / cPageSize);
-        REQUIRE(stats.reservedPagesCount == reservedPagesCount);
         REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount - cPagesCount1));
     }
 
@@ -589,15 +547,8 @@ TEST_CASE("Pages are correctly allocated", "[unit][PageAllocator]")
         }
 
         auto stats = pageAllocator.getStats();
-        REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
-        REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
-        REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
         REQUIRE(stats.freeMemorySize
                 == (cPageSize * (stats.totalPagesCount - stats.reservedPagesCount) - 4 * cPageSize));
-        REQUIRE(stats.pageSize == cPageSize);
-        REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
-        auto reservedPagesCount = std::ceil((double(stats.totalPagesCount) * sizeof(Page)) / cPageSize);
-        REQUIRE(stats.reservedPagesCount == reservedPagesCount);
         REQUIRE(stats.freePagesCount == (stats.totalPagesCount - stats.reservedPagesCount - 4));
     }
 
@@ -621,14 +572,7 @@ TEST_CASE("Pages are correctly allocated", "[unit][PageAllocator]")
         REQUIRE(pageAllocator.getStats().freePagesCount == freePages - allocated);
 
         auto stats = pageAllocator.getStats();
-        REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
-        REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
-        REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
         REQUIRE(stats.freeMemorySize == 6 * cPageSize);
-        REQUIRE(stats.pageSize == cPageSize);
-        REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
-        auto reservedPagesCount = std::ceil((double(stats.totalPagesCount) * sizeof(Page)) / cPageSize);
-        REQUIRE(stats.reservedPagesCount == reservedPagesCount);
         REQUIRE(stats.freePagesCount == 6);
     }
 
@@ -642,16 +586,19 @@ TEST_CASE("Pages are correctly allocated", "[unit][PageAllocator]")
         }
 
         auto stats = pageAllocator.getStats();
-        REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
-        REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
-        REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
         REQUIRE(stats.freeMemorySize == 0);
-        REQUIRE(stats.pageSize == cPageSize);
-        REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
-        auto reservedPagesCount = std::ceil((double(stats.totalPagesCount) * sizeof(Page)) / cPageSize);
-        REQUIRE(stats.reservedPagesCount == reservedPagesCount);
         REQUIRE(stats.freePagesCount == 0);
     }
+
+    auto stats = pageAllocator.getStats();
+    REQUIRE(stats.totalMemorySize == (size1 + size2 + size3));
+    REQUIRE(stats.effectiveMemorySize == (size1 + size2 + size3));
+    REQUIRE(stats.userMemorySize == stats.effectiveMemorySize - (stats.pageSize * stats.reservedPagesCount));
+
+    REQUIRE(stats.pageSize == cPageSize);
+    REQUIRE(stats.totalPagesCount == (cPagesCount1 + cPagesCount2 + cPagesCount3));
+    auto reservedPagesCount = std::ceil((double(stats.totalPagesCount) * sizeof(Page)) / cPageSize);
+    REQUIRE(stats.reservedPagesCount == reservedPagesCount);
 }
 
 TEST_CASE("Pages are correctly released", "[unit][PageAllocator]")
