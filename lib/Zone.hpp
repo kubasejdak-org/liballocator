@@ -86,15 +86,15 @@ public:
 
     /// Returns size of the chunks, that create this zone.
     /// @return Size of the chunks created from this zone.
-    std::size_t chunkSize();
+    [[nodiscard]] std::size_t chunkSize() const;
 
     /// Returns total count of the chunks, that are part of this zone.
     /// @return Number of chunks, that create this zone.
-    std::size_t chunksCount();
+    [[nodiscard]] std::size_t chunksCount() const;
 
     /// Returns number of the non-allocated chunks in this zone.
     /// @return Number of chunks, that are not allocated in this zone.
-    std::size_t freeChunksCount();
+    [[nodiscard]] std::size_t freeChunksCount() const;
 
     /// Allocates the chunk from this zone and returns it.
     /// @return Allocated chunk.

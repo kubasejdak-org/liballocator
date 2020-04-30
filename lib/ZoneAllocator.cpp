@@ -108,8 +108,8 @@ void ZoneAllocator::release(void* ptr)
 
 ZoneAllocator::Stats ZoneAllocator::getStats()
 {
-    auto start = std::begin(m_zones);
-    auto end = std::end(m_zones);
+    auto* start = std::begin(m_zones);
+    auto* end = std::end(m_zones);
 
     // clang-format off
     std::size_t usedZonesCount = std::accumulate(start, end, 0U, [](const size_t& sum, const ZoneInfo& zoneInfo) {

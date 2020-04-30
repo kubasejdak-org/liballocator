@@ -214,8 +214,8 @@ Page* PageAllocator::getPage(std::uintptr_t addr)
 
 PageAllocator::Stats PageAllocator::getStats()
 {
-    auto start = std::begin(m_regionsInfo);
-    auto end = std::begin(m_regionsInfo) + m_validRegionsCount;
+    auto* start = std::begin(m_regionsInfo);
+    auto* end = std::begin(m_regionsInfo) + m_validRegionsCount;
 
     Stats stats{};
     stats.totalMemorySize = std::accumulate(start, end, 0U, [](const size_t& sum, const RegionInfo& region) {

@@ -73,18 +73,18 @@ Page* Page::prevSibling()
     return (this - 1);
 }
 
-std::uintptr_t Page::address()
+std::uintptr_t Page::address() const
 {
     return m_addr;
 }
 
-std::size_t Page::groupSize()
+std::size_t Page::groupSize() const
 {
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
     return m_flags.bits.groupSize;
 }
 
-bool Page::isUsed()
+bool Page::isUsed() const
 {
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
     return m_flags.bits.used;

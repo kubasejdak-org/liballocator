@@ -76,17 +76,17 @@ Page* Zone::page()
     return m_page;
 }
 
-std::size_t Zone::chunkSize()
+std::size_t Zone::chunkSize() const
 {
     return m_chunkSize;
 }
 
-std::size_t Zone::chunksCount()
+std::size_t Zone::chunksCount() const
 {
     return m_chunksCount;
 }
 
-std::size_t Zone::freeChunksCount()
+std::size_t Zone::freeChunksCount() const
 {
     return m_freeChunksCount;
 }

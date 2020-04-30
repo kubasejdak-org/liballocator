@@ -93,17 +93,17 @@ public:
 
     /// Returns physical address of the current page.
     /// @return Physical address.
-    std::uintptr_t address();
+    [[nodiscard]] std::uintptr_t address() const;
 
     /// Returns size of the group represented by the current page.
     /// @return Size of the group.
-    std::size_t groupSize();
+    [[nodiscard]] std::size_t groupSize() const;
 
     /// Returns flag indicating if current page is used or not.
     /// @return Flag indicating if current page is used or not.
     /// @retval true        Page is used.
     /// @retval false       Page is not used.
-    bool isUsed();
+    [[nodiscard]] bool isUsed() const;
 
     /// Checks if the Page class is naturally aligned.
     /// @return Flag indicating it the Page class is naturally aligned.
