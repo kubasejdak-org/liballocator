@@ -36,7 +36,6 @@
 
 namespace memory {
 
-/// @class ListNode
 /// Represents a node of the generic doubly-linked list, that doesn't allocate.
 template <typename T>
 class ListNode {
@@ -61,7 +60,7 @@ public:
     T* prev() { return m_prev; }
 
     /// Adds current node to the given list.
-    /// @param[in,out] list     Pointer to the list, to which node should be added.
+    /// @param list             Pointer to the list, to which node should be added.
     void addToList(T** list)
     {
         assert(list);
@@ -77,7 +76,7 @@ public:
     }
 
     /// Removes current node from the given list.
-    /// @param[in,out] list     Pointer to the list, from which node should be removed.
+    /// @param list             Pointer to the list, from which node should be removed.
     void removeFromList(T** list)
     {
         assert(list);

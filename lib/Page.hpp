@@ -39,53 +39,48 @@
 
 namespace memory {
 
-/// @class Page
 /// Represents a physical memory page.
 class Page : public ListNode<Page> {
 public:
     /// Default constructor.
-    /// @note This constructor is deleted, because pages should be initialized only in-place.
+    /// @note This constructor is deleted, because Page should be initialized only in-place.
     Page() = delete;
 
     /// Copy constructor.
-    /// @param[in] other        Page to be used in initialization.
-    /// @note This constructor is deleted, because pages should be initialized only in-place.
-    Page(const Page& other) = delete;
+    /// @note This constructor is deleted, because Page is not meant to be copy-constructed.
+    Page(const Page&) = delete;
 
     /// Move constructor.
-    /// @param[in] other        Page to be used in initialization.
-    /// @note This constructor is deleted, because pages should be initialized only in-place.
-    Page(Page&& other) = delete;
+    /// @note This constructor is deleted, because Page is not meant to be move-constructed.
+    Page(Page&&) = delete;
 
     /// Destructor.
     ~Page() = default;
 
-    /// Assignment operator.
-    /// @param[in] other        Page to be used in assignment.
-    /// @return Reference to the assignment value.
-    /// @note This operator is deleted, because pages should not be copied.
+    /// Copy assignment operator.
+    /// @return Reference to self.
+    /// @note This operator is deleted, because Page is not meant to be copy-assigned.
     Page& operator=(const Page& other) = delete;
 
     /// Move assignment operator.
-    /// @param[in] other        Page to be used in assignment.
-    /// @return Reference to the assignment value.
-    /// @note This operator is deleted, because pages should not be copied.
+    /// @return Reference to self.
+    /// @note This operator is deleted, because Page is not meant to be move-assigned.
     Page& operator=(Page&& other) = delete;
 
     /// Initializes the page. It is used as a replacement for the constructor.
     void init();
 
     /// Sets the physical address of the given page.
-    /// @param[in] addr         Physical address to be set.
+    /// @param addr         Physical address to be set.
     void setAddress(std::uintptr_t addr);
 
     /// Sets the size of the pages group, that this page represents.
-    /// @param[in] groupSize    Size of the group to be set.
+    /// @param groupSize    Size of the group to be set.
     /// @note Group size should be set only to the first and to the last page in the group.
     void setGroupSize(std::size_t groupSize);
 
     /// Sets the 'used' flag of the current page to the given state.
-    /// @param[in] value        State to be set.
+    /// @param value        State to be set.
     void setUsed(bool value);
 
     /// Returns the page, that lies immediately after the given page.
@@ -106,14 +101,14 @@ public:
 
     /// Returns flag indicating if current page is used or not.
     /// @return Flag indicating if current page is used or not.
-    /// @retval true            Page is used.
-    /// @retval false           Page is not used.
+    /// @retval true        Page is used.
+    /// @retval false       Page is not used.
     bool isUsed();
 
     /// Checks if the Page class is naturally aligned.
     /// @return Flag indicating it the Page class is naturally aligned.
-    /// @retval true            Page class is naturally aligned.
-    /// @retval false           Page class is not naturally aligned.
+    /// @retval true        Page class is naturally aligned.
+    /// @retval false       Page class is not naturally aligned.
     /// @note Natural alignment of a class means, that its size is equal to the sum of all its data members.
     static constexpr bool isNaturallyAligned()
     {
@@ -124,11 +119,9 @@ public:
     }
 
 private:
-    /// @union Flags
     /// Represents a packed set of flags used internally by pages.
     union Flags {
         struct PageFlags {
-            // NOLINTNEXTLINE
             std::size_t groupSize : 21; ///< Size of the group. This is set only for the first and last page in group.
             bool used : 1;              ///< Flag indicating whether this page is used or not.
         };

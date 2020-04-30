@@ -40,12 +40,10 @@ namespace memory {
 
 class Page;
 
-/// @class Chunk
 /// Represents a memory chunk. Chunks are part of the zone.
 /// @note Each chunk has the size, which is a power of 2.
 class Chunk : public ListNode<Chunk> {};
 
-/// @class Zone
 /// Represents a memory zone. Each zone consists of the memory chunks of equal size.
 class Zone : public ListNode<Zone> {
 public:
@@ -53,34 +51,30 @@ public:
     Zone() = default;
 
     /// Copy constructor.
-    /// @param[in] other        Zone to be used in initialization.
-    /// @note This constructor is deleted, because zones should be initialized only in-place.
-    Zone(const Zone& other) = delete;
+    /// @note This constructor is deleted, because Zone is not meant to be copy-constructed.
+    Zone(const Zone&) = delete;
 
     /// Move constructor.
-    /// @param[in] other        Page to be used in initialization.
-    /// @note This constructor is deleted, because zones should be initialized only in-place.
-    Zone(Zone&& other) = delete;
+    /// @note This constructor is deleted, because Zone is not meant to be move-constructed.
+    Zone(Zone&&) = delete;
 
     /// Destructor.
     ~Zone() = default;
 
-    /// Assignment operator.
-    /// @param[in] other        Zone to be used in assignment.
-    /// @return Reference to the assignment value.
-    /// @note This operator is deleted, because zones should not be copied.
-    Zone& operator=(const Zone& other) = delete;
+    /// Copy assignment operator.
+    /// @return Reference to self.
+    /// @note This operator is deleted, because Zone is not meant to be copy-assigned.
+    Zone& operator=(const Zone&) = delete;
 
     /// Move assignment operator.
-    /// @param[in] other        Zone to be used in assignment.
-    /// @return Reference to the assignment value.
-    /// @note This operator is deleted, because zones should not be copied.
-    Zone& operator=(Zone&& other) = delete;
+    /// @return Reference to self.
+    /// @note This operator is deleted, because Zone is not meant to be move-assigned.
+    Zone& operator=(Zone&&) = delete;
 
     /// Initializes the zone. It is used as a replacement for the constructor.
-    /// @param[in] page         page to be associated with this zone.
-    /// @param[in] pageSize     Size of the associated page.
-    /// @param[in] chunkSize    Size of the chunk to be used within this zone.
+    /// @param page         Page to be associated with this zone.
+    /// @param pageSize     Size of the associated page.
+    /// @param chunkSize    Size of the chunk to be used within this zone.
     void init(Page* page, std::size_t pageSize, std::size_t chunkSize);
 
     /// Clears the internal state of the zone.
@@ -108,29 +102,27 @@ public:
     Chunk* takeChunk();
 
     /// Releases the given chunk.
-    /// @param[in] chunk        Chunk to be released.
+    /// @param chunk        Chunk to be released.
     /// @note This function updates the 'free' counter.
     void giveChunk(Chunk* chunk);
 
     /// Checks if given chunk is part of the current zone and if it is valid.
-    /// @param[in] chunk        Chunk to be checked.
+    /// @param chunk        Chunk to be checked.
     /// @return Flag indicating if given chunk is valid.
-    /// @retval true            Given chunk is valid.
-    /// @retval false           Given chunk is invalid or is not part of the current zone.
+    /// @retval true        Given chunk is valid.
+    /// @retval false       Given chunk is invalid or is not part of the current zone.
     bool isValidChunk(Chunk* chunk);
 
     /// Checks if the Zone class is naturally aligned.
     /// @return Flag indicating if the Zone class is naturally aligned.
-    /// @retval true            Zone class is naturally aligned.
-    /// @retval false           Zone class is not naturally aligned.
+    /// @retval true        Zone class is naturally aligned.
+    /// @retval false       Zone class is not naturally aligned.
     /// @note Natural alignment of a class means, that its size is equal to the sum of all its data members.
     static constexpr bool isNaturallyAligned()
     {
         constexpr std::size_t cRequiredSize = sizeof(ListNode<Zone>) // Inherited fields
                                               + sizeof(m_page)       // NOLINT(bugprone-sizeof-expression)
-                                              + sizeof(m_chunkSize)
-                                              + sizeof(m_chunksCount)
-                                              + sizeof(m_freeChunksCount)
+                                              + sizeof(m_chunkSize) + sizeof(m_chunksCount) + sizeof(m_freeChunksCount)
                                               + sizeof(m_freeChunks); // NOLINT(bugprone-sizeof-expression)
         return (cRequiredSize == sizeof(Zone));
     }

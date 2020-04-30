@@ -37,7 +37,6 @@
 
 namespace memory {
 
-/// @struct Region
 /// Represents a continuous block of physical memory.
 struct Region {
     std::uintptr_t address; ///< Physical address of the memory block.

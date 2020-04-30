@@ -39,7 +39,6 @@
 
 namespace memory::allocator {
 
-/// @struct Stats
 /// Represents the statistical data of the allocator.
 struct Stats {
     std::size_t totalMemorySize;     ///< Total size of the memory passed during initialization.
@@ -54,20 +53,20 @@ struct Stats {
 const char* version();
 
 /// Initializes liballocator with the given array of memory regions and page size.
-/// @param[in] regions      Array of memory regions to be used by liballocator. Last entry should be zeroed.
-/// @param[in] pageSize     Size of the page on the current platform.
+/// @param regions      Array of memory regions to be used by liballocator. Last entry should be zeroed.
+/// @param pageSize     Size of the page on the current platform.
 /// @return Result of the initialization.
-/// @retval true            Allocator has been initialized.
-/// @retval false           Some error occurred.
+/// @retval true        Allocator has been initialized.
+/// @retval false       Some error occurred.
 [[nodiscard]] bool init(Region* regions, std::size_t pageSize);
 
 /// Initializes liballocator with the given array of memory boundaries and page size.
-/// @param[in] start        Start address of a memory region to be used by liballocator.
-/// @param[in] end          End address of a memory region to be used by liballocator.
-/// @param[in] pageSize     Size of the page on the current platform.
+/// @param start        Start address of a memory region to be used by liballocator.
+/// @param end          End address of a memory region to be used by liballocator.
+/// @param pageSize     Size of the page on the current platform.
 /// @return Result of the initialization.
-/// @retval true            Allocator has been initialized.
-/// @retval false           Some error occurred.
+/// @retval true        Allocator has been initialized.
+/// @retval false       Some error occurred.
 /// @note This overload is equivalent to the above version of init() with only one memory region entry.
 [[nodiscard]] bool init(std::uintptr_t start, std::uintptr_t end, std::size_t pageSize);
 
@@ -75,14 +74,14 @@ const char* version();
 void clear();
 
 /// Allocates memory block with the given size.
-/// @param[in] size         Demanded size of the allocated memory block.
+/// @param size         Demanded size of the allocated memory block.
 /// @return Result of the allocation.
-/// @retval void*           Allocated memory block on success.
-/// @retval nullptr         Some error occurred.
+/// @retval void*       Allocated memory block on success.
+/// @retval nullptr     Some error occurred.
 [[nodiscard]] void* allocate(std::size_t size);
 
 /// Releases the memory block pointed by given pointer.
-/// @param[in] ptr          Pointer to the memory block, that should be released.
+/// @param ptr          Pointer to the memory block, that should be released.
 /// @note If the given pointer is nullptr, then function exists without an error.
 void release(void* ptr);
 
