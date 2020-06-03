@@ -636,6 +636,11 @@ TEST_CASE("Pages are correctly released", "[unit][PageAllocator]")
     SECTION("Releasing 1 page")
     {
         pages.push_back(pageAllocator.allocate(1));
+
+        constexpr int cMemsetPattern = 0x5a;
+        for (auto*& page : pages)
+            std::memset(reinterpret_cast<void*>(page->address()), cMemsetPattern, page->groupSize() * cPageSize);
+
         pageAllocator.release(pages.back());
     }
 
@@ -643,12 +648,22 @@ TEST_CASE("Pages are correctly released", "[unit][PageAllocator]")
     {
         constexpr int cAllocSize = 17;
         pages.push_back(pageAllocator.allocate(cAllocSize));
+
+        constexpr int cMemsetPattern = 0x5a;
+        for (auto*& page : pages)
+            std::memset(reinterpret_cast<void*>(page->address()), cMemsetPattern, page->groupSize() * cPageSize);
+
         pageAllocator.release(pages.back());
     }
 
     SECTION("Releasing whole region")
     {
         pages.push_back(pageAllocator.allocate(cPagesCount1));
+
+        constexpr int cMemsetPattern = 0x5a;
+        for (auto*& page : pages)
+            std::memset(reinterpret_cast<void*>(page->address()), cMemsetPattern, page->groupSize() * cPageSize);
+
         pageAllocator.release(pages.back());
     }
 
@@ -656,6 +671,10 @@ TEST_CASE("Pages are correctly released", "[unit][PageAllocator]")
     {
         for (std::size_t i = 0; i < 4; ++i)
             pages.push_back(pageAllocator.allocate(1));
+
+        constexpr int cMemsetPattern = 0x5a;
+        for (auto*& page : pages)
+            std::memset(reinterpret_cast<void*>(page->address()), cMemsetPattern, page->groupSize() * cPageSize);
 
         for (auto* page : pages)
             pageAllocator.release(page);
@@ -665,6 +684,10 @@ TEST_CASE("Pages are correctly released", "[unit][PageAllocator]")
     {
         for (std::size_t i = 0; i < 4; ++i)
             pages.push_back(pageAllocator.allocate(1));
+
+        constexpr int cMemsetPattern = 0x5a;
+        for (auto*& page : pages)
+            std::memset(reinterpret_cast<void*>(page->address()), cMemsetPattern, page->groupSize() * cPageSize);
 
         for (std::size_t i = 0; i < pages.size(); ++i)
             pageAllocator.release(pages[pages.size() - 1 - i]);
@@ -676,6 +699,10 @@ TEST_CASE("Pages are correctly released", "[unit][PageAllocator]")
         pages.push_back(pageAllocator.allocate(cPagesCount2 - pageAllocator.getStats().reservedPagesCount - 2));
         pages.push_back(pageAllocator.allocate(cPagesCount1 - 2));
 
+        constexpr int cMemsetPattern = 0x5a;
+        for (auto*& page : pages)
+            std::memset(reinterpret_cast<void*>(page->address()), cMemsetPattern, page->groupSize() * cPageSize);
+
         for (auto* page : pages)
             pageAllocator.release(page);
     }
@@ -686,6 +713,10 @@ TEST_CASE("Pages are correctly released", "[unit][PageAllocator]")
         pages.push_back(pageAllocator.allocate(cPagesCount2 - pageAllocator.getStats().reservedPagesCount - 2));
         pages.push_back(pageAllocator.allocate(cPagesCount1 - 2));
 
+        constexpr int cMemsetPattern = 0x5a;
+        for (auto*& page : pages)
+            std::memset(reinterpret_cast<void*>(page->address()), cMemsetPattern, page->groupSize() * cPageSize);
+
         for (std::size_t i = 0; i < pages.size(); ++i)
             pageAllocator.release(pages[pages.size() - 1 - i]);
     }
@@ -695,6 +726,10 @@ TEST_CASE("Pages are correctly released", "[unit][PageAllocator]")
         for (std::size_t i = 0; i < freePages; ++i)
             pages.push_back(pageAllocator.allocate(1));
 
+        constexpr int cMemsetPattern = 0x5a;
+        for (auto*& page : pages)
+            std::memset(reinterpret_cast<void*>(page->address()), cMemsetPattern, page->groupSize() * cPageSize);
+
         for (auto* page : pages)
             pageAllocator.release(page);
     }
@@ -703,6 +738,10 @@ TEST_CASE("Pages are correctly released", "[unit][PageAllocator]")
     {
         for (std::size_t i = 0; i < freePages; ++i)
             pages.push_back(pageAllocator.allocate(1));
+
+        constexpr int cMemsetPattern = 0x5a;
+        for (auto*& page : pages)
+            std::memset(reinterpret_cast<void*>(page->address()), cMemsetPattern, page->groupSize() * cPageSize);
 
         for (std::size_t i = 0; i < pages.size(); ++i)
             pageAllocator.release(pages[pages.size() - 1 - i]);
