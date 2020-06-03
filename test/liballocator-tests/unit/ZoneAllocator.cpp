@@ -357,9 +357,13 @@ TEST_CASE("Zone allocator properly releases user memory", "[unit][ZoneAllocator]
     SECTION("Release memory with size equal to 3 pages")
     {
         constexpr std::size_t cAllocPagesCount = 3;
-        std::size_t allocSize = cAllocPagesCount * cPageSize;
+        constexpr std::size_t cAllocSize = cAllocPagesCount * cPageSize;
         std::size_t freePagesCount = pageAllocator.getStats().freePagesCount;
-        auto* ptr = zoneAllocator.allocate(allocSize);
+        auto* ptr = zoneAllocator.allocate(cAllocSize);
+
+        constexpr int cMemsetPattern = 0x5a;
+        std::memset(ptr, cMemsetPattern, cAllocSize);
+
         zoneAllocator.release(ptr);
         REQUIRE(pageAllocator.getStats().freePagesCount == freePagesCount);
     }
@@ -370,6 +374,10 @@ TEST_CASE("Zone allocator properly releases user memory", "[unit][ZoneAllocator]
 
         constexpr std::size_t cAllocSize = 6;
         auto* ptr = zoneAllocator.allocate(cAllocSize);
+
+        constexpr int cMemsetPattern = 0x5a;
+        std::memset(ptr, cMemsetPattern, cAllocSize);
+
         zoneAllocator.release(ptr);
         REQUIRE(pageAllocator.getStats().freePagesCount == freePagesCount);
     }
@@ -380,6 +388,10 @@ TEST_CASE("Zone allocator properly releases user memory", "[unit][ZoneAllocator]
 
         constexpr std::size_t cAllocSize = 16;
         auto* ptr = zoneAllocator.allocate(cAllocSize);
+
+        constexpr int cMemsetPattern = 0x5a;
+        std::memset(ptr, cMemsetPattern, cAllocSize);
+
         zoneAllocator.release(ptr);
         REQUIRE(pageAllocator.getStats().freePagesCount == freePagesCount);
     }
@@ -390,6 +402,10 @@ TEST_CASE("Zone allocator properly releases user memory", "[unit][ZoneAllocator]
 
         constexpr std::size_t cAllocSize = 64;
         auto* ptr = zoneAllocator.allocate(cAllocSize);
+
+        constexpr int cMemsetPattern = 0x5a;
+        std::memset(ptr, cMemsetPattern, cAllocSize);
+
         zoneAllocator.release(ptr);
         REQUIRE(pageAllocator.getStats().freePagesCount == freePagesCount);
     }
@@ -401,8 +417,12 @@ TEST_CASE("Zone allocator properly releases user memory", "[unit][ZoneAllocator]
         constexpr std::size_t cAllocSize = 64;
         constexpr int cAllocCount = 6;
         std::array<void*, cAllocCount> ptrs{};
-        for (void*& ptr : ptrs)
+        for (void*& ptr : ptrs) {
             ptr = zoneAllocator.allocate(cAllocSize);
+
+            constexpr int cMemsetPattern = 0x5a;
+            std::memset(ptr, cMemsetPattern, cAllocSize);
+        }
 
         for (void* ptr : ptrs)
             zoneAllocator.release(ptr);
@@ -417,8 +437,12 @@ TEST_CASE("Zone allocator properly releases user memory", "[unit][ZoneAllocator]
         constexpr std::size_t cAllocSize = 115;
         constexpr int cAllocCount = 4;
         std::array<void*, cAllocCount> ptrs{};
-        for (void*& ptr : ptrs)
+        for (void*& ptr : ptrs) {
             ptr = zoneAllocator.allocate(cAllocSize);
+
+            constexpr int cMemsetPattern = 0x5a;
+            std::memset(ptr, cMemsetPattern, cAllocSize);
+        }
 
         for (void* ptr : ptrs)
             zoneAllocator.release(ptr);
@@ -434,14 +458,22 @@ TEST_CASE("Zone allocator properly releases user memory", "[unit][ZoneAllocator]
         constexpr std::size_t cAllocSize1 = 64;
         constexpr int cAllocCount = 4;
         std::array<void*, cAllocCount> ptrs1{};
-        for (void*& ptr : ptrs1)
+        for (void*& ptr : ptrs1) {
             ptr = zoneAllocator.allocate(cAllocSize1);
+
+            constexpr int cMemsetPattern = 0x5a;
+            std::memset(ptr, cMemsetPattern, cAllocSize1);
+        }
 
         // Allocate 128 bytes 3 times.
         constexpr std::size_t cAllocSize2 = 128;
         std::array<void*, cAllocCount> ptrs2{};
-        for (void*& ptr : ptrs2)
+        for (void*& ptr : ptrs2) {
             ptr = zoneAllocator.allocate(cAllocSize2);
+
+            constexpr int cMemsetPattern = 0x5a;
+            std::memset(ptr, cMemsetPattern, cAllocSize2);
+        }
 
         // Release 64 bytes 3 times.
         for (void* ptr : ptrs1)
