@@ -127,6 +127,7 @@ private:
 
         std::size_t idx = detail::zoneIdx(zone->chunkSize());
         m_zones.at(idx).freeChunksCount++;
+        zoneChunk->initListNode();
         zone->giveChunk(zoneChunk);
 
         if (zone->chunksCount() == zone->freeChunksCount() && zone != &m_initialZone) {

@@ -30,6 +30,7 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
+#include <Page.hpp>
 #include <PageAllocator.hpp>
 #include <TestUtils.hpp>
 #include <allocator/Region.hpp>
@@ -39,6 +40,7 @@
 #include <array>
 #include <chrono>
 #include <cstddef>
+#include <cstring>
 #include <random>
 
 namespace memory {
@@ -89,6 +91,9 @@ TEST_CASE("PageAllocator integration tests (long-term)", "[integration][PageAllo
         for (auto*& page : pages) {
             auto n = distribution(randomGenerator);
             page = pageAllocator.allocate(n);
+
+            constexpr int cMemsetPattern = 0x5a;
+            std::memset(reinterpret_cast<void*>(page->address()), cMemsetPattern, page->groupSize() * cPageSize);
         }
 
         // Release pages.
