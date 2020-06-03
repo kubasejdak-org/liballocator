@@ -185,6 +185,9 @@ TEST_CASE("Allocator properly allocates and releases user memory", "[unit][alloc
         for (auto*& ptr : ptrs) {
             auto allocSize = distribution(randomGenerator);
             ptr = allocator::allocate(allocSize);
+
+            constexpr int cMemsetPattern = 0x5a;
+            std::memset(ptr, cMemsetPattern, allocSize);
         }
 
         // Release memory.
