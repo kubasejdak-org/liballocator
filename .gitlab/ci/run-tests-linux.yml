@@ -8,13 +8,14 @@
 
 .Run_Test_Linux:
   extends: .Run_Test
+  image: kubasejdak/gcc:latest
   tags:
     - linux
     - shared
-  image: kubasejdak/gcc:latest
 
 .Run_Test_Linux_ARM:
   extends: .Run_Test
+  image: kubasejdak/arm-tests:latest
   tags:
     - raspberrypi
 
