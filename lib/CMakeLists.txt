@@ -1,6 +1,9 @@
 message(STATUS "Configuring '${CMAKE_CURRENT_SOURCE_DIR}/version.hpp'")
 configure_file(version.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/version.hpp)
 
+# Project-wide compilation options.
+add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:CXX>:-std=c++2a>)
+
 add_library(liballocator
     allocator.cpp
     group.cpp
@@ -14,8 +17,4 @@ add_library(liballocator
 target_include_directories(liballocator
     PUBLIC include
     PRIVATE .
-)
-
-target_compile_features(liballocator
-    PRIVATE cxx_std_17
 )
