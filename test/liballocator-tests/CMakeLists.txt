@@ -21,11 +21,7 @@ target_include_directories(appliballocator-tests
     PRIVATE . ${ALLOCATOR_INCLUDES}
 )
 
-target_compile_features(appliballocator-tests
-    PRIVATE cxx_std_17
-)
-
-conan_get(REQUIRES catch2/2.12.1)
+conan_get(REQUIRES catch2/2.12.4)
 find_package(Catch2 REQUIRED)
 
 target_link_libraries(appliballocator-tests
