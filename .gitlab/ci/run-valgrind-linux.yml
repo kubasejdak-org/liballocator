@@ -1,4 +1,4 @@
-Valgrind_Linux:
+Linux_Valgrind:
   stage: valgrind
   image: kubasejdak/gcc:latest
   tags:
