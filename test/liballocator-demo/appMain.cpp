@@ -36,6 +36,7 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <memory>
 
 // Defined in linker script.
 extern char heapMin;
@@ -73,7 +74,8 @@ int appMain([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     if (!platformInit())
         return EXIT_FAILURE;
 
-    if (!memory::allocator::init(std::uintptr_t(&heapMin), std::uintptr_t(&heapMax), 4096)) {
+    constexpr std::size_t cPageSize = 4096;
+    if (!memory::allocator::init(std::uintptr_t(&heapMin), std::uintptr_t(&heapMax), cPageSize)) {
         std::printf("error: Failed to initialize liballocator.\n");
         while (true) {
             // Empty.
@@ -83,15 +85,18 @@ int appMain([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     std::printf("Initialized liballocator v%s.\n", memory::allocator::version());
     showStats();
 
-    std::printf("Allocate 113 B (new char[113])... ");
-    char* ptr = new char[113];
-    std::printf("ptr = %p\n", ptr);
+    {
+        std::printf("Allocate 113 B (std::make_unique<char[]>)... ");
+        constexpr int cAllocSize = 113;
+        auto ptr = std::make_unique<char[]>(cAllocSize); // NOLINT
+        std::printf("ptr = %p\n", static_cast<void*>(ptr.get()));
+        showStats();
+
+        std::printf("Release memory (ptr.reset())...\n");
+    }
     showStats();
 
-    std::printf("Release ptr (delete [] ptr)...\n");
-    delete[] ptr;
-    showStats();
-
+    std::printf("PASSED\n");
     while (true) {
         // Empty.
     }
