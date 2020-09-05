@@ -17,6 +17,10 @@
     # Build application.
     - cmake .. -DPLATFORM=${Platform} -DAPP=liballocator-demo -DCMAKE_BUILD_TYPE=${BuildType}
     - make
+    - make liballocator-demo.bin
+
+    # Copy CI tools.
+    - cp -R ../tools/ci bin/
 
 Baremetal_ARM_GCC_Debug_Build:
   extends: .Build_Demo_Baremetal
