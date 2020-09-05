@@ -36,11 +36,13 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <map>
 #include <memory>
+#include <vector>
 
 // Defined in linker script.
-extern char heapMin;
-extern char heapMax;
+extern const char heapMin; // NOLINT
+extern const char heapMax; // NOLINT
 
 void* operator new(std::size_t size)
 {
@@ -57,6 +59,13 @@ void operator delete(void* ptr, [[maybe_unused]] std::size_t sz) noexcept
     operator delete(ptr);
 }
 
+static std::size_t freeMemory()
+{
+    return memory::allocator::getStats().freeMemorySize;
+}
+
+static std::size_t initialFreeMemory;
+
 static void showStats()
 {
     auto stats = memory::allocator::getStats();
@@ -68,25 +77,26 @@ static void showStats()
     std::printf("\n");
 }
 
-// NOLINTNEXTLINE
-int appMain([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
+static void testStart(const char* description)
 {
-    if (!platformInit())
-        return EXIT_FAILURE;
+    std::printf("------------------------------------------------\n");
+    std::printf("%s\n\n", description);
+    showStats();
+}
 
-    constexpr std::size_t cPageSize = 4096;
-    if (!memory::allocator::init(std::uintptr_t(&heapMin), std::uintptr_t(&heapMax), cPageSize)) {
-        std::printf("error: Failed to initialize liballocator.\n");
-        while (true) {
-            // Empty.
-        }
-    }
-
-    std::printf("Initialized liballocator v%s.\n", memory::allocator::version());
+static bool testEnd()
+{
     showStats();
 
+    return (initialFreeMemory == freeMemory());
+}
+
+static bool testSmartPointers()
+{
+    testStart("Testing allocator with smart pointers");
+
     {
-        std::printf("Allocate 113 B (std::make_unique<char[]>)... ");
+        std::printf("Allocate 113 B (std::make_unique<char[]>)...\n");
         constexpr int cAllocSize = 113;
         auto ptr = std::make_unique<char[]>(cAllocSize); // NOLINT
         std::printf("ptr = %p\n", static_cast<void*>(ptr.get()));
@@ -94,12 +104,78 @@ int appMain([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
         std::printf("Release memory (ptr.reset())...\n");
     }
-    showStats();
 
-    std::printf("PASSED\n");
-    while (true) {
-        // Empty.
+    return testEnd();
+}
+
+static bool testVector()
+{
+    testStart("Testing allocator with std::vector<int>");
+
+    {
+        std::vector<int> vec;
+        constexpr int cItemsCount = 16;
+
+        for (int i = 0; i < cItemsCount; ++i)
+            vec.push_back(i);
+
+        for (std::size_t i = 0; i < vec.size(); ++i)
+            std::printf("vec[%u] = %d\n", i, vec[i]);
     }
 
-    return 0;
+    return testEnd();
+}
+
+static bool testMap()
+{
+    testStart("Testing allocator with std::map<int, std::string>");
+
+    {
+        std::map<int, std::string> map;
+        map[0] = "Great resources on modern C++:";
+        map[1] = "C++ Weekly - YouTube channel hosted by Jason Turner";
+        map[2] = "\"Effective\" books by Scott Meyers";
+        map[3] = "C++ Core Guidelines - set of guidelines, rules, and best practices about coding in C++";
+        map[4] = "CppCast - the first podcast for C++ developers by C++ developers";
+
+        for (const auto& [key, value] : map)
+            std::printf("map[%d] = %s\n", key, value.c_str());
+    }
+
+    return testEnd();
+}
+
+// NOLINTNEXTLINE
+int appMain([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
+{
+    if (!platformInit())
+        return EXIT_FAILURE;
+
+    constexpr std::size_t cPageSize = 512;
+    if (!memory::allocator::init(std::uintptr_t(&heapMin), std::uintptr_t(&heapMax), cPageSize)) {
+        std::printf("error: Failed to initialize liballocator.\n");
+        std::printf("FAILED\n");
+        return EXIT_FAILURE;
+    }
+
+    std::printf("Initialized liballocator v%s.\n\n", memory::allocator::version());
+    initialFreeMemory = freeMemory();
+
+    if (!testSmartPointers()) {
+        std::printf("FAILED\n");
+        return EXIT_FAILURE;
+    }
+
+    if (!testVector()) {
+        std::printf("FAILED\n");
+        return EXIT_FAILURE;
+    }
+
+    if (!testMap()) {
+        std::printf("FAILED\n");
+        return EXIT_FAILURE;
+    }
+
+    std::printf("PASSED\n");
+    return EXIT_SUCCESS;
 }

@@ -76,7 +76,9 @@ void* ZoneAllocator::allocate(std::size_t size)
     if (size == 0)
         return nullptr;
 
-    if (size >= m_pageSize) {
+    std::size_t allocSize = detail::chunkSize(size);
+
+    if (size >= m_pageSize || allocSize >= m_pageSize) {
         auto pageCount = static_cast<std::size_t>(std::ceil(double(size) / double(m_pageSize)));
         if (auto* page = m_pageAllocator->allocate(pageCount))
             return reinterpret_cast<void*>(page->address());
@@ -84,9 +86,7 @@ void* ZoneAllocator::allocate(std::size_t size)
         return nullptr;
     }
 
-    std::size_t allocSize = detail::chunkSize(size);
     std::size_t idx = detail::zoneIdx(allocSize);
-
     Zone* zone = shouldAllocateZone(idx) ? allocateZone(allocSize) : getFreeZone(idx);
     if (zone == nullptr)
         return nullptr;
