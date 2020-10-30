@@ -150,7 +150,7 @@ bool ZoneAllocator::shouldAllocateZone(std::size_t idx)
     return (m_zones.at(idx).freeChunksCount == triggerCount);
 }
 
-Zone* ZoneAllocator::allocateZone(std::size_t chunkSize)
+Zone* ZoneAllocator::allocateZone(std::size_t chunkSize) // NOLINT(misc-no-recursion)
 {
     if (chunkSize != m_zoneDescChunkSize && shouldAllocateZone(m_zoneDescIdx)) {
         if (allocateZone(m_zoneDescChunkSize) == nullptr)
