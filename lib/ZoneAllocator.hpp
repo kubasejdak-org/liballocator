@@ -118,7 +118,7 @@ private:
     /// @retval false               Chunk has not been deallocated.
     /// @note Template parameter is used here to accept any input without casting.
     template <typename T>
-    bool deallocateChunk(T* chunk)
+    bool deallocateChunk(T* chunk) // NOLINT(misc-no-recursion)
     {
         auto* zoneChunk = reinterpret_cast<Chunk*>(chunk);
         auto* zone = findZone(zoneChunk);

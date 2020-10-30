@@ -40,8 +40,11 @@
 
 namespace {
 
-memory::PageAllocator pageAllocator; // NOLINT(fuchsia-statically-constructed-objects)
-memory::ZoneAllocator zoneAllocator; // NOLINT(fuchsia-statically-constructed-objects)
+// NOLINTNEXTLINE(fuchsia-statically-constructed-objects,cppcoreguidelines-avoid-non-const-global-variables)
+memory::PageAllocator pageAllocator;
+
+// NOLINTNEXTLINE(fuchsia-statically-constructed-objects,cppcoreguidelines-avoid-non-const-global-variables)
+memory::ZoneAllocator zoneAllocator;
 
 } // namespace
 
