@@ -3,7 +3,6 @@ Clang_Format:
   image: kubasejdak/clang:11
   tags:
     - linux
-    - shared
   dependencies: []
   script:
     - tools/check-clang-format.sh lib test
@@ -21,7 +20,6 @@ Clang_Tidy:
   image: kubasejdak/clang:11
   tags:
     - linux
-    - shared
   dependencies: []
   artifacts:
     name: "${CI_JOB_NAME}_${CI_JOB_ID}"
@@ -42,7 +40,6 @@ Coverage_Total:
   image: kubasejdak/gcc:latest
   tags:
     - linux
-    - shared
   dependencies:
     - Coverage
   artifacts:
