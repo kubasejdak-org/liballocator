@@ -3,7 +3,7 @@ Linux_Valgrind:
   image: kubasejdak/gcc:latest
   tags:
     - linux
-  dependencies:
+  needs:
     - Linux_GCC_Debug_Build
   variables:
     GIT_STRATEGY: none
