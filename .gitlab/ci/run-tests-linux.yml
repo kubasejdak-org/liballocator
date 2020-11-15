@@ -20,7 +20,7 @@
 
 Linux_ARM_UT:
   extends: .Run_Test_Linux_ARM
-  dependencies:
+  needs:
     - Linux_ARM_GCC_Debug_Build
   variables:
     AppArtifact: "Linux_ARM_GCC_Debug_Build"
@@ -28,7 +28,7 @@ Linux_ARM_UT:
 
 Linux_UT:
   extends: .Run_Test_Linux
-  dependencies:
+  needs:
     - Linux_GCC_Debug_Build
   variables:
     AppArtifact: "Linux_GCC_Debug_Build"
