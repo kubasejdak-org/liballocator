@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.19)
+
 message(STATUS "Configuring '${CMAKE_CURRENT_SOURCE_DIR}/version.hpp'")
 configure_file(version.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/version.hpp)
 
