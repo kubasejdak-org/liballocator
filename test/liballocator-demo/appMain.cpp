@@ -38,6 +38,7 @@
 #include <cstdlib>
 #include <map>
 #include <memory>
+#include <string>
 #include <vector>
 
 // Defined in linker script.
