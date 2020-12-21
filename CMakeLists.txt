@@ -11,6 +11,7 @@ include(cmake/conan.cmake)
 include(cmake/coverage.cmake)
 include(cmake/doxygen.cmake)
 include(cmake/platform.cmake)
+include(cmake/sanitizers.cmake)
 
 project(liballocator VERSION 1.0.5 LANGUAGES ASM C CXX)
 
@@ -22,6 +23,11 @@ conan_init()
 
 # Project-wide compilation options.
 add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:CXX>:-std=c++17>)
+
+if (SANITIZE)
+    # Enable compiler sanitizers.
+    enable_sanitizers()
+endif ()
 
 if (COVERAGE)
     # Generate coverage report.
