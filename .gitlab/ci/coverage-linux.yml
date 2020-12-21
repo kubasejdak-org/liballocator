@@ -1,5 +1,7 @@
 Coverage:
   stage: coverage
+  only:
+    - master
   image: kubasejdak/gcc:latest
   tags:
     - linux
