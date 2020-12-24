@@ -251,20 +251,12 @@ TEST_CASE("2000x random number of bytes", "[perf][allocator]")
         }
 
         {
-            try {
-                auto startAlloc = test::currentTime();
-                auto* ptr = new char[allocSize]; // NOLINT
-                auto endAlloc = test::currentTime();
+            auto startAlloc = test::currentTime();
+            auto* ptr = new char[allocSize]; // NOLINT
+            auto endAlloc = test::currentTime();
 
-                newMem.at(i) = ptr;
-                stats.newAlloc += test::toMicroseconds(endAlloc - startAlloc);
-            }
-            catch (std::bad_alloc& exc) {
-                allocator::release(liballocatorMem.at(i));
-                free(mallocMem.at(i)); // NOLINT
-                --i;
-                continue;
-            }
+            newMem.at(i) = ptr;
+            stats.newAlloc += test::toMicroseconds(endAlloc - startAlloc);
         }
     }
 
