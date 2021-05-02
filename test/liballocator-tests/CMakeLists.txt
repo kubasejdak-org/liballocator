@@ -21,7 +21,7 @@ target_include_directories(appliballocator-tests
     PRIVATE . ${ALLOCATOR_INCLUDES}
 )
 
-conan_get(REQUIRES catch2/2.13.3)
+conan_get(REQUIRES catch2/2.13.6)
 find_package(Catch2 REQUIRED)
 
 target_compile_definitions(appliballocator-tests
