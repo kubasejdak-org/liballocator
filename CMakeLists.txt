@@ -24,7 +24,7 @@ conan_init()
 # Project-wide compilation options.
 add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:CXX>:-std=c++17>)
 
-if (SANITIZE)
+if (USE_ASAN OR USE_LSAN OR USE_UBSAN)
     # Enable compiler sanitizers.
     enable_sanitizers()
 endif ()
