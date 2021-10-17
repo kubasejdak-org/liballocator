@@ -2,9 +2,9 @@ Coverage:
   stage: coverage
   only:
     - master
-  image: kubasejdak/gcc:latest
+  image: ${DOCKER_IMAGE_GCC}
   tags:
-    - linux
+    - cet_build
   needs: []
   artifacts:
     name: "${CI_JOB_NAME}_${CI_JOB_ID}"
@@ -16,7 +16,7 @@ Coverage:
     - cd ${CI_JOB_NAME}
 
     # Build application.
-    - cmake .. -DPLATFORM=linux -DAPP=liballocator-tests -DCOVERAGE=ON
+    - cmake .. -DAPP=liballocator-tests -DCOVERAGE=ON
     - make
     - bin/liballocator-tests [unit]
     - make coverage

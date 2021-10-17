@@ -1,6 +1,6 @@
 Linux_Valgrind:
   stage: valgrind
-  image: kubasejdak/gcc:latest
+  image: ${DOCKER_IMAGE_GCC}
   tags:
     - linux
   needs:
