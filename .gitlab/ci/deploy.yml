@@ -2,9 +2,9 @@ pages:
   stage: deploy
   only:
     - master
-  image: kubasejdak/gcc:latest
+  image: ${DOCKER_IMAGE_GCC}
   tags:
-    - linux
+    - cet_build
   needs:
     - Coverage_Total
   artifacts:
@@ -20,6 +20,6 @@ pages:
     - mkdir ${CI_JOB_NAME}
     - cd ${CI_JOB_NAME}
 
-    - cmake .. -DPLATFORM=linux -DAPP=liballocator-tests
+    - cmake .. -DAPP=liballocator-tests
     - make doxygen
     - mv docs/* ../public/docs
