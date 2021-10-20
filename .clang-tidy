@@ -16,7 +16,8 @@ Checks:                '*,
                         -modernize-use-trailing-return-type,
                         -performance-no-int-to-ptr,
                         -readability-function-cognitive-complexity,
-                        -readability-redundant-access-specifiers'
+                        -readability-redundant-access-specifiers,
+                        -readability-suspicious-call-argument'
 WarningsAsErrors:      '*'
 HeaderFilterRegex:     ''
 AnalyzeTemporaryDtors: false
