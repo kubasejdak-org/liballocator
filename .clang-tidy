@@ -2,6 +2,7 @@
 Checks:                '*,
                         -*-vararg,
                         -altera-*,
+                        -bugprone-implicit-widening-of-multiplication-result,
                         -concurrency-mt-unsafe,
                         -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
                         -cppcoreguidelines-pro-bounds-constant-array-index,
@@ -15,7 +16,8 @@ Checks:                '*,
                         -modernize-use-trailing-return-type,
                         -performance-no-int-to-ptr,
                         -readability-function-cognitive-complexity,
-                        -readability-redundant-access-specifiers'
+                        -readability-redundant-access-specifiers,
+                        -readability-suspicious-call-argument'
 WarningsAsErrors:      '*'
 HeaderFilterRegex:     ''
 AnalyzeTemporaryDtors: false
