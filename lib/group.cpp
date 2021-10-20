@@ -75,7 +75,7 @@ std::tuple<Page*, Page*> splitGroup(Page* group, std::size_t size)
     assert(size <= groupSize);
 
     if (size == groupSize)
-        return std::tuple<Page*, Page*>(group, nullptr);
+        return std::make_tuple(group, nullptr);
 
     std::size_t secondSize = groupSize - size;
     clearGroup(group);
