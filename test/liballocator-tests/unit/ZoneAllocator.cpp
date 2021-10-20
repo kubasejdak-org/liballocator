@@ -71,8 +71,7 @@ TEST_CASE("ZoneAllocator is properly initialized", "[unit][ZoneAllocator]")
 
     constexpr int cRegionsCount = 2;
     std::array<Region, cRegionsCount> regions = {
-        {std::uintptr_t(memory.get()), size},
-        {                           0,    0}
+        {{std::uintptr_t(memory.get()), size}, {0, 0}}
     };
 
     REQUIRE(pageAllocator.init(regions.data(), cPageSize));
@@ -114,8 +113,7 @@ TEST_CASE("ZoneAllocator stats are properly initialized", "[unit][ZoneAllocator]
 
     constexpr int cRegionsCount = 2;
     std::array<Region, cRegionsCount> regions = {
-        {std::uintptr_t(memory.get()), size},
-        {                           0,    0}
+        {{std::uintptr_t(memory.get()), size}, {0, 0}}
     };
 
     REQUIRE(pageAllocator.init(regions.data(), cPageSize));
@@ -191,8 +189,7 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][ZoneAllocator
 
     constexpr int cRegionsCount = 2;
     std::array<Region, cRegionsCount> regions = {
-        {std::uintptr_t(memory.get()), size},
-        {                           0,    0}
+        {{std::uintptr_t(memory.get()), size}, {0, 0}}
     };
 
     REQUIRE(pageAllocator.init(regions.data(), cPageSize));
@@ -344,8 +341,7 @@ TEST_CASE("Zone allocator properly releases user memory", "[unit][ZoneAllocator]
 
     constexpr int cRegionsCount = 2;
     std::array<Region, cRegionsCount> regions = {
-        {std::uintptr_t(memory.get()), size},
-        {                           0,    0}
+        {{std::uintptr_t(memory.get()), size}, {0, 0}}
     };
 
     REQUIRE(pageAllocator.init(regions.data(), cPageSize));
