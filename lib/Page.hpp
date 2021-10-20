@@ -112,9 +112,9 @@ public:
     /// @note Natural alignment of a class means, that its size is equal to the sum of all its data members.
     static constexpr bool isNaturallyAligned()
     {
-        constexpr std::size_t cRequiredSize = sizeof(ListNode<Page>)   // Inherited fields
-                                              + sizeof(std::uintptr_t) // m_addr
-                                              + sizeof(Page::Flags);   // m_flags
+        constexpr std::size_t cRequiredSize = sizeof(ListNode<Page>) // Inherited fields
+                                            + sizeof(std::uintptr_t) // m_addr
+                                            + sizeof(Page::Flags);   // m_flags
         return (cRequiredSize == sizeof(Page));
     }
 
@@ -123,7 +123,7 @@ private:
     union Flags {
         struct PageFlags {
             std::size_t groupSize : 21; ///< Size of the group. This is set only for the first and last page in group.
-            bool used : 1;              ///< Flag indicating whether this page is used or not.
+            bool used             : 1;  ///< Flag indicating whether this page is used or not.
         };
 
         PageFlags bits;

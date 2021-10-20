@@ -150,7 +150,6 @@ void PageAllocator::release(Page* pages)
     if (pages == nullptr)
         return;
 
-    // clang-format off
     Page* joinedGroup = pages;
 
     // Try joining with pages above the released group.
@@ -188,7 +187,6 @@ void PageAllocator::release(Page* pages)
         joinedGroup = joinGroup(joinedGroup, firstBelow);
     }
     while (true);
-    // clang-format on
 
     addGroup(joinedGroup);
 }
