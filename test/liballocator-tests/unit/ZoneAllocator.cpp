@@ -70,7 +70,9 @@ TEST_CASE("ZoneAllocator is properly initialized", "[unit][ZoneAllocator]")
     auto memory = test::alignedAlloc(cPageSize, size);
 
     constexpr int cRegionsCount = 2;
-    std::array<Region, cRegionsCount> regions = {{{std::uintptr_t(memory.get()), size}, {0, 0}}};
+    std::array<Region, cRegionsCount> regions = {
+        {{std::uintptr_t(memory.get()), size}, {0, 0}}
+    };
 
     REQUIRE(pageAllocator.init(regions.data(), cPageSize));
 
@@ -110,7 +112,9 @@ TEST_CASE("ZoneAllocator stats are properly initialized", "[unit][ZoneAllocator]
     auto memory = test::alignedAlloc(cPageSize, size);
 
     constexpr int cRegionsCount = 2;
-    std::array<Region, cRegionsCount> regions = {{{std::uintptr_t(memory.get()), size}, {0, 0}}};
+    std::array<Region, cRegionsCount> regions = {
+        {{std::uintptr_t(memory.get()), size}, {0, 0}}
+    };
 
     REQUIRE(pageAllocator.init(regions.data(), cPageSize));
 
@@ -156,14 +160,16 @@ TEST_CASE("Chunk size is properly calculated", "[unit][ZoneAllocator]")
 
 TEST_CASE("Zone index is properly calculated", "[unit][ZoneAllocator]")
 {
-    std::map<std::size_t, std::pair<std::size_t, size_t>> idxRange = {{0, {16, 31}},      // NOLINT
-                                                                      {1, {32, 63}},      // NOLINT
-                                                                      {2, {64, 127}},     // NOLINT
-                                                                      {3, {128, 255}},    // NOLINT
-                                                                      {4, {256, 511}},    // NOLINT
-                                                                      {5, {512, 1023}},   // NOLINT
-                                                                      {6, {1024, 2047}},  // NOLINT
-                                                                      {7, {2048, 4095}}}; // NOLINT
+    std::map<std::size_t, std::pair<std::size_t, size_t>> idxRange = {
+        {0,     {16, 31}}, // NOLINT
+        {1,     {32, 63}}, // NOLINT
+        {2,    {64, 127}}, // NOLINT
+        {3,   {128, 255}}, // NOLINT
+        {4,   {256, 511}}, // NOLINT
+        {5,  {512, 1023}}, // NOLINT
+        {6, {1024, 2047}}, // NOLINT
+        {7, {2048, 4095}}  // NOLINT
+    };
 
     for (std::size_t i = idxRange[0].first; i < idxRange[idxRange.size() - 1].second; ++i) {
         auto idx = detail::zoneIdx(i);
@@ -182,7 +188,9 @@ TEST_CASE("Zone allocator properly allocates user memory", "[unit][ZoneAllocator
     auto memory = test::alignedAlloc(cPageSize, size);
 
     constexpr int cRegionsCount = 2;
-    std::array<Region, cRegionsCount> regions = {{{std::uintptr_t(memory.get()), size}, {0, 0}}};
+    std::array<Region, cRegionsCount> regions = {
+        {{std::uintptr_t(memory.get()), size}, {0, 0}}
+    };
 
     REQUIRE(pageAllocator.init(regions.data(), cPageSize));
 
@@ -332,7 +340,9 @@ TEST_CASE("Zone allocator properly releases user memory", "[unit][ZoneAllocator]
     auto memory = test::alignedAlloc(cPageSize, size);
 
     constexpr int cRegionsCount = 2;
-    std::array<Region, cRegionsCount> regions = {{{std::uintptr_t(memory.get()), size}, {0, 0}}};
+    std::array<Region, cRegionsCount> regions = {
+        {{std::uintptr_t(memory.get()), size}, {0, 0}}
+    };
 
     REQUIRE(pageAllocator.init(regions.data(), cPageSize));
 

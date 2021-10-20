@@ -43,26 +43,28 @@ namespace memory {
 
 TEST_CASE("Group index is properly computed", "[unit][Group]")
 {
-    std::map<std::size_t, std::pair<std::size_t, size_t>> idxRange = {{0, {0, 3}},               // NOLINT
-                                                                      {1, {4, 7}},               // NOLINT
-                                                                      {2, {8, 15}},              // NOLINT
-                                                                      {3, {16, 31}},             // NOLINT
-                                                                      {4, {32, 63}},             // NOLINT
-                                                                      {5, {64, 127}},            // NOLINT
-                                                                      {6, {128, 255}},           // NOLINT
-                                                                      {7, {256, 511}},           // NOLINT
-                                                                      {8, {512, 1023}},          // NOLINT
-                                                                      {9, {1024, 2047}},         // NOLINT
-                                                                      {10, {2048, 4095}},        // NOLINT
-                                                                      {11, {4096, 8191}},        // NOLINT
-                                                                      {12, {8192, 16383}},       // NOLINT
-                                                                      {13, {16384, 32767}},      // NOLINT
-                                                                      {14, {32768, 65535}},      // NOLINT
-                                                                      {15, {65536, 131071}},     // NOLINT
-                                                                      {16, {131072, 262143}},    // NOLINT
-                                                                      {17, {262144, 524287}},    // NOLINT
-                                                                      {18, {524288, 1048575}},   // NOLINT
-                                                                      {19, {1048576, 2097151}}}; // NOLINT
+    std::map<std::size_t, std::pair<std::size_t, size_t>> idxRange = {
+        { 0,             {0, 3}}, // NOLINT
+        { 1,             {4, 7}}, // NOLINT
+        { 2,            {8, 15}}, // NOLINT
+        { 3,           {16, 31}}, // NOLINT
+        { 4,           {32, 63}}, // NOLINT
+        { 5,          {64, 127}}, // NOLINT
+        { 6,         {128, 255}}, // NOLINT
+        { 7,         {256, 511}}, // NOLINT
+        { 8,        {512, 1023}}, // NOLINT
+        { 9,       {1024, 2047}}, // NOLINT
+        {10,       {2048, 4095}}, // NOLINT
+        {11,       {4096, 8191}}, // NOLINT
+        {12,      {8192, 16383}}, // NOLINT
+        {13,     {16384, 32767}}, // NOLINT
+        {14,     {32768, 65535}}, // NOLINT
+        {15,    {65536, 131071}}, // NOLINT
+        {16,   {131072, 262143}}, // NOLINT
+        {17,   {262144, 524287}}, // NOLINT
+        {18,  {524288, 1048575}}, // NOLINT
+        {19, {1048576, 2097151}}  // NOLINT
+    };
 
     constexpr std::size_t cIterations = 0x200000;
     for (std::size_t i = 0; i < cIterations; ++i) {
@@ -190,22 +192,14 @@ TEST_CASE("Group is properly joined", "[unit][Group]")
 
     std::size_t splitSize = 0;
 
-    // clang-format off
-    SECTION("First group should have 1 page")
-    {
-        splitSize = 1;
-    }
+    SECTION("First group should have 1 page") { splitSize = 1; }
 
-    SECTION("First group should have 3 pages")
-    {
-        splitSize = 3;
-    }
+    SECTION("First group should have 3 pages") { splitSize = 3; }
 
     SECTION("First group should have 5 pages")
     {
         splitSize = 5; // NOLINT
     }
-    // clang-format on
 
     Page* firstGroup = nullptr;
     Page* secondGroup = nullptr;
