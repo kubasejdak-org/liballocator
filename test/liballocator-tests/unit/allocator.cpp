@@ -74,12 +74,10 @@ TEST_CASE("Allocator is properly initialized", "[unit][allocator]")
 
     SECTION("Initialize with multiple memory regions")
     {
-        std::array<Region, 4> regions = {
-            {{std::uintptr_t(memory1.get()), size1},
-             {std::uintptr_t(memory2.get()), size2},
-             {std::uintptr_t(memory3.get()), size3},
-             {0, 0}}
-        };
+        std::array<Region, 4> regions = {{{std::uintptr_t(memory1.get()), size1},
+                                          {std::uintptr_t(memory2.get()), size2},
+                                          {std::uintptr_t(memory3.get()), size3},
+                                          {0, 0}}};
 
         REQUIRE(allocator::init(regions.data(), cPageSize));
 
@@ -114,17 +112,15 @@ TEST_CASE("Allocator is properly initialized", "[unit][allocator]")
         auto memory11 = test::alignedAlloc(cPageSize, size);
 
         constexpr int cRegionsCount = 9;
-        std::array<Region, cRegionsCount> regions = {
-            {{std::uintptr_t(memory4.get()), size},
-             {std::uintptr_t(memory5.get()), size},
-             {std::uintptr_t(memory6.get()), size},
-             {std::uintptr_t(memory7.get()), size},
-             {std::uintptr_t(memory8.get()), size},
-             {std::uintptr_t(memory9.get()), size},
-             {std::uintptr_t(memory10.get()), size},
-             {std::uintptr_t(memory11.get()), size},
-             {0, 0}}
-        };
+        std::array<Region, cRegionsCount> regions = {{{std::uintptr_t(memory4.get()), size},
+                                                      {std::uintptr_t(memory5.get()), size},
+                                                      {std::uintptr_t(memory6.get()), size},
+                                                      {std::uintptr_t(memory7.get()), size},
+                                                      {std::uintptr_t(memory8.get()), size},
+                                                      {std::uintptr_t(memory9.get()), size},
+                                                      {std::uintptr_t(memory10.get()), size},
+                                                      {std::uintptr_t(memory11.get()), size},
+                                                      {0, 0}}};
 
         REQUIRE(!allocator::init(regions.data(), cPageSize));
 
@@ -151,12 +147,10 @@ TEST_CASE("Allocator properly allocates and releases user memory", "[unit][alloc
     auto memory3 = test::alignedAlloc(cPageSize, size3);
 
     constexpr int cRegionsCount = 4;
-    std::array<Region, cRegionsCount> regions = {
-        {{std::uintptr_t(memory1.get()), size1},
-         {std::uintptr_t(memory2.get()), size2},
-         {std::uintptr_t(memory3.get()), size3},
-         {0, 0}}
-    };
+    std::array<Region, cRegionsCount> regions = {{{std::uintptr_t(memory1.get()), size1},
+                                                  {std::uintptr_t(memory2.get()), size2},
+                                                  {std::uintptr_t(memory3.get()), size3},
+                                                  {0, 0}}};
 
     REQUIRE(allocator::init(regions.data(), cPageSize));
 

@@ -67,9 +67,7 @@ bool init(Region* regions, std::size_t pageSize)
 
 bool init(std::uintptr_t start, std::uintptr_t end, std::size_t pageSize)
 {
-    std::array<Region, 2> regions = {
-        {{start, end - start}, {0, 0}}
-    };
+    std::array<Region, 2> regions = {{{start, end - start}, {0, 0}}};
 
     return init(regions.data(), pageSize);
 }
