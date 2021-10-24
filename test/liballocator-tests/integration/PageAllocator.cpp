@@ -64,12 +64,10 @@ TEST_CASE("PageAllocator integration tests (long-term)", "[integration][PageAllo
     auto memory2 = test::alignedAlloc(cPageSize, size2);
     auto memory3 = test::alignedAlloc(cPageSize, size3);
 
-    std::array<Region, 4> regions = {
-        {{std::uintptr_t(memory1.get()), size1},
-         {std::uintptr_t(memory2.get()), size2},
-         {std::uintptr_t(memory3.get()), size3},
-         {0, 0}}
-    };
+    std::array<Region, 4> regions = {{{std::uintptr_t(memory1.get()), size1},
+                                      {std::uintptr_t(memory2.get()), size2},
+                                      {std::uintptr_t(memory3.get()), size3},
+                                      {0, 0}}};
 
     REQUIRE(pageAllocator.init(regions.data(), cPageSize));
     auto freePagesCount = pageAllocator.getStats().freePagesCount;
