@@ -21,18 +21,11 @@ target_include_directories(appliballocator-tests
     PRIVATE . ${ALLOCATOR_INCLUDES}
 )
 
-conan_get(REQUIRES catch2/2.13.7)
-find_package(Catch2 REQUIRED)
-
 target_compile_definitions(appliballocator-tests
     # This is required to selectively run Catch2 tests using tags on platforms, where cmd line arguments are not available.
-    PRIVATE $<$<BOOL:${TEST_TAGS}>:TEST_TAGS="${TEST_TAGS}">
-)
-
-target_compile_definitions(Catch2::Catch2
-    INTERFACE CATCH_CONFIG_DISABLE_EXCEPTIONS $<$<STREQUAL:${PLATFORM},freertos-arm>:CATCH_CONFIG_NO_POSIX_SIGNALS>
+    PRIVATE $<$<BOOL:${TEST_TAGS}>:TEST_TAGS="${TEST_TAGS}"> CATCH_CONFIG_DISABLE_EXCEPTIONS $<$<STREQUAL:${PLATFORM},freertos-arm>:CATCH_CONFIG_NO_POSIX_SIGNALS>
 )
 
 target_link_libraries(appliballocator-tests
-    PRIVATE platform-init Catch2::Catch2 liballocator
+    PRIVATE platform-init liballocator
 )
