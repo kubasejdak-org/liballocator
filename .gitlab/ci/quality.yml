@@ -32,7 +32,7 @@ Clang_Tidy:
     - cd ${CI_JOB_NAME}
 
     # Check build.
-    - cmake .. -DTOOLCHAIN=clang -DAPP=liballocator-tests
+    - cmake .. -DTOOLCHAIN=clang -DAPP=liballocator-tests -DUSE_CONAN=ON
     - ../tools/check-clang-tidy.sh
 
 Coverage_Total:
