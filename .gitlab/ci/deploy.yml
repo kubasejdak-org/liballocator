@@ -1,19 +1,19 @@
 pages:
   stage: deploy
-  #only:
-  #  - master
+  only:
+    - master
   image: ${DOCKER_IMAGE_GCC}
   tags:
     - cet_build
-  #needs:
-  #  - Coverage_Total
+  needs:
+    - Coverage_Total
   artifacts:
     paths:
       - public
   script:
     # Copy coverage report.
-  #  - mkdir -p public/coverage
-  #  - mv Coverage_Total/html/* public/coverage
+    - mkdir -p public/coverage
+    - mv Coverage_Total/html/* public/coverage
 
     # Generate documentation.
     - mkdir -p public/docs
@@ -22,4 +22,4 @@ pages:
 
     - cmake .. -DAPP=liballocator-tests
     - make doxygen
-    #- mv docs/* ../public/docs
+    - mv docs/* ../public/docs
