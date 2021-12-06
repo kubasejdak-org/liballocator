@@ -16,7 +16,7 @@ Coverage:
     - cd ${CI_JOB_NAME}
 
     # Build application.
-    - cmake .. -DAPP=liballocator-tests -DCOVERAGE=ON
+    - cmake .. -DAPP=liballocator-tests -DUSE_CONAN=ON -DCOVERAGE=ON
     - make
     - bin/liballocator-tests [unit]
     - make coverage
