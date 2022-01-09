@@ -21,7 +21,7 @@ endif ()
 
 if (USE_CONAN)
     conan_init_profile()
-    conan_cmake_install(PATH_OR_REFERENCE ${CMAKE_SOURCE_DIR} BUILD missing PROFILE_BUILD default PROFILE_HOST conan-profile)
+    conan_cmake_install(PATH_OR_REFERENCE ${CMAKE_SOURCE_DIR}test/${APP} BUILD missing PROFILE_BUILD default PROFILE_HOST conan-profile)
     conan_load_buildinfo()
     conan_basic_setup()
 endif ()
@@ -30,12 +30,10 @@ endif ()
 add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:CXX>:-std=c++17>)
 
 if (USE_ASAN OR USE_LSAN OR USE_UBSAN)
-    # Enable compiler sanitizers.
     enable_sanitizers()
 endif ()
 
 if (COVERAGE)
-    # Generate coverage report.
     add_lcov_coverage(IGNORE ${CMAKE_CURRENT_SOURCE_DIR}/test/*)
 endif ()
 
@@ -46,5 +44,4 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_subdirectory(lib)
 add_subdirectory(test)
 
-# Generate documentation.
 doxygen_addTarget(${CMAKE_CURRENT_SOURCE_DIR}/lib README.md)
