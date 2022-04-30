@@ -1,0 +1,187 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 22,
+    "patch": 3
+  },
+  "configurePresets": [
+    {
+      "name": "linux",
+      "hidden": true,
+      "cacheVariables": {
+        "PLATFORM": "linux",
+        "USE_CONAN": "ON"
+      }
+    },
+    {
+      "name": "linux-gcc",
+      "hidden": true,
+      "inherits": "linux"
+    },
+    {
+      "name": "linux-clang",
+      "hidden": true,
+      "inherits": "linux",
+      "cacheVariables": {
+        "TOOLCHAIN": "clang"
+      }
+    },
+    {
+      "name": "linux-arm-gcc",
+      "hidden": true,
+      "inherits": "linux",
+      "cacheVariables": {
+        "TOOLCHAIN": "arm-linux-gnueabihf-gcc"
+      }
+    },
+    {
+      "name": "linux-arm-clang",
+      "hidden": true,
+      "inherits": "linux",
+      "cacheVariables": {
+        "TOOLCHAIN": "arm-linux-gnueabihf-clang"
+      }
+    },
+    {
+      "name": "baremetal-arm",
+      "hidden": true,
+      "cacheVariables": {
+        "PLATFORM": "baremetal-arm",
+        "USE_CONAN": "ON"
+      }
+    },
+    {
+      "name": "freertos-arm",
+      "hidden": true,
+      "cacheVariables": {
+        "PLATFORM": "freertos-arm",
+        "USE_CONAN": "ON"
+      }
+    },
+    {
+      "name": "debug",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "release",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "liballocator-demo",
+      "hidden": true,
+      "cacheVariables": {
+        "APP": "liballocator-demo"
+      }
+    },
+    {
+      "name": "liballocator-tests",
+      "hidden": true,
+      "cacheVariables": {
+        "APP": "liballocator-tests"
+      }
+    },
+    {
+      "name": "demo-baremetal-arm-debug",
+      "inherits": [
+        "liballocator-demo",
+        "baremetal-arm",
+        "debug"
+      ]
+    },
+    {
+      "name": "demo-baremetal-arm-release",
+      "inherits": [
+        "liballocator-demo",
+        "baremetal-arm",
+        "release"
+      ]
+    },
+    {
+      "name": "demo-freertos-arm-debug",
+      "inherits": [
+        "liballocator-demo",
+        "freertos-arm",
+        "debug"
+      ]
+    },
+    {
+      "name": "demo-freertos-arm-release",
+      "inherits": [
+        "liballocator-demo",
+        "freertos-arm",
+        "release"
+      ]
+    },
+    {
+      "name": "tests-linux-gcc-debug",
+      "inherits": [
+        "liballocator-tests",
+        "linux-gcc",
+        "debug"
+      ]
+    },
+    {
+      "name": "tests-linux-gcc-release",
+      "inherits": [
+        "liballocator-tests",
+        "linux-gcc",
+        "release"
+      ]
+    },
+    {
+      "name": "tests-linux-clang-debug",
+      "inherits": [
+        "liballocator-tests",
+        "linux-clang",
+        "debug"
+      ]
+    },
+    {
+      "name": "tests-linux-clang-release",
+      "inherits": [
+        "liballocator-tests",
+        "linux-clang",
+        "release"
+      ]
+    },
+    {
+      "name": "tests-linux-arm-gcc-debug",
+      "inherits": [
+        "liballocator-tests",
+        "linux-arm-gcc",
+        "debug"
+      ]
+    },
+    {
+      "name": "tests-linux-arm-gcc-release",
+      "inherits": [
+        "liballocator-tests",
+        "linux-arm-gcc",
+        "release"
+      ]
+    },
+    {
+      "name": "tests-linux-arm-clang-debug",
+      "inherits": [
+        "liballocator-tests",
+        "linux-arm-clang",
+        "debug"
+      ]
+    },
+    {
+      "name": "tests-linux-arm-clang-release",
+      "inherits": [
+        "liballocator-tests",
+        "linux-arm-clang",
+        "release"
+      ]
+    }
+  ]
+}
