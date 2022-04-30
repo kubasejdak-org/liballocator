@@ -14,7 +14,7 @@
     - cd ${CI_JOB_NAME}
 
     # Build application.
-    - cmake .. -DPLATFORM=${Platform} -DAPP=liballocator-demo -DCMAKE_BUILD_TYPE=${BuildType}
+    - cmake .. --preset ${Preset}
     - make
     - make liballocator-demo.bin
 
@@ -24,27 +24,23 @@
 Baremetal_ARM_GCC_Debug_Build:
   extends: .Build_Demo_Baremetal
   variables:
-    Platform: "baremetal-arm"
-    BuildType: "Debug"
+    Preset: "demo-baremetal-arm-debug"
 
 Baremetal_ARM_GCC_Release_Build:
   extends: .Build_Demo_Baremetal
   only:
     - master
   variables:
-    Platform: "baremetal-arm"
-    BuildType: "Release"
+    Preset: "demo-baremetal-arm-release"
 
 FreeRTOS_ARM_GCC_Debug_Build:
   extends: .Build_Demo_Baremetal
   variables:
-    Platform: "freertos-arm"
-    BuildType: "Debug"
+    Preset: "demo-freertos-arm-debug"
 
 FreeRTOS_ARM_GCC_Release_Build:
   extends: .Build_Demo_Baremetal
   only:
     - master
   variables:
-    Platform: "freertos-arm"
-    BuildType: "Release"
+    Preset: "demo-freertos-arm-release"
