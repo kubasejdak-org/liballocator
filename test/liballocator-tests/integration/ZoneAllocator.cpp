@@ -58,7 +58,9 @@ TEST_CASE("ZoneAllocator integration tests (long-term)", "[integration][ZoneAllo
     auto size = cPageSize * cPagesCount;
     auto memory = test::alignedAlloc(cPageSize, size);
 
-    std::array<Region, 2> regions = {{{std::uintptr_t(memory.get()), size}, {0, 0}}};
+    std::array<Region, 2> regions = {
+        {{std::uintptr_t(memory.get()), size}, {0, 0}}
+    };
 
     REQUIRE(pageAllocator.init(regions.data(), cPageSize));
 
