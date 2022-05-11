@@ -1,5 +1,5 @@
 add_library(appliballocator-demo
-    appMain.cpp
+    appMain2.cpp
 )
 
 target_link_libraries(appliballocator-demo
