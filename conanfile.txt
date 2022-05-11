@@ -1,9 +1,7 @@
 [requires]
 catch2/2.13.8
-fmt/8.1.1
 
 [generators]
 cmake
 
 [options]
-fmt:header_only=True
