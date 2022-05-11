@@ -60,91 +60,91 @@ void operator delete(void* ptr, [[maybe_unused]] std::size_t sz) noexcept
     operator delete(ptr);
 }
 
-static std::size_t freeMemory()
-{
-    return memory::allocator::getStats().freeMemorySize;
-}
+//static std::size_t freeMemory()
+//{
+//    return memory::allocator::getStats().freeMemorySize;
+//}
+//
+//static std::size_t initialFreeMemory;
+//
+//static void showStats()
+//{
+//    auto stats = memory::allocator::getStats();
+//    std::printf("Total memory size     : %u B\n", stats.totalMemorySize);
+//    std::printf("Reserved memory size  : %u B\n", stats.reservedMemorySize);
+//    std::printf("User memory size      : %u B\n", stats.userMemorySize);
+//    std::printf("Allocated memory size : %u B\n", stats.allocatedMemorySize);
+//    std::printf("Free memory size      : %u B\n", stats.freeMemorySize);
+//    std::printf("\n");
+//}
 
-static std::size_t initialFreeMemory;
+//static void testStart(const char* description)
+//{
+//    std::printf("------------------------------------------------\n");
+//    std::printf("%s\n\n", description);
+//    showStats();
+//}
+//
+//static bool testEnd()
+//{
+//    showStats();
+//
+//    return (initialFreeMemory == freeMemory());
+//}
 
-static void showStats()
-{
-    auto stats = memory::allocator::getStats();
-    std::printf("Total memory size     : %u B\n", stats.totalMemorySize);
-    std::printf("Reserved memory size  : %u B\n", stats.reservedMemorySize);
-    std::printf("User memory size      : %u B\n", stats.userMemorySize);
-    std::printf("Allocated memory size : %u B\n", stats.allocatedMemorySize);
-    std::printf("Free memory size      : %u B\n", stats.freeMemorySize);
-    std::printf("\n");
-}
-
-static void testStart(const char* description)
-{
-    std::printf("------------------------------------------------\n");
-    std::printf("%s\n\n", description);
-    showStats();
-}
-
-static bool testEnd()
-{
-    showStats();
-
-    return (initialFreeMemory == freeMemory());
-}
-
-static bool testSmartPointers()
-{
-    testStart("Testing allocator with smart pointers");
-
-    {
-        std::printf("Allocate 113 B (std::make_unique<char[]>)...\n");
-        constexpr int cAllocSize = 113;
-        auto ptr = std::make_unique<char[]>(cAllocSize); // NOLINT
-        std::printf("ptr = %p\n", static_cast<void*>(ptr.get()));
-        showStats();
-
-        std::printf("Release memory (ptr.reset())...\n");
-    }
-
-    return testEnd();
-}
-
-static bool testVector()
-{
-    testStart("Testing allocator with std::vector<int>");
-
-    {
-        std::vector<int> vec;
-        constexpr int cItemsCount = 16;
-
-        for (int i = 0; i < cItemsCount; ++i)
-            vec.push_back(i);
-
-        for (std::size_t i = 0; i < vec.size(); ++i)
-            std::printf("vec[%u] = %d\n", i, vec[i]);
-    }
-
-    return testEnd();
-}
-
-static bool testMap()
-{
-    testStart("Testing allocator with std::map<int, std::string>");
-
-    {
-        std::map<int, std::string> map;
-        map[0] = "Great resources on modern C++:";
-        map[1] = "C++ Weekly - YouTube channel hosted by Jason Turner";
-        map[2] = "\"Effective\" books by Scott Meyers";
-        map[3] = "C++ Core Guidelines - set of guidelines, rules, and best practices about coding in C++";
-        map[4] = "CppCast - the first podcast for C++ developers by C++ developers";
-
-        for (const auto& [key, value] : map)
-            std::printf("map[%d] = %s\n", key, value.c_str());
-    }
-
-    return testEnd();
-}
+//static bool testSmartPointers()
+//{
+//    testStart("Testing allocator with smart pointers");
+//
+//    {
+//        std::printf("Allocate 113 B (std::make_unique<char[]>)...\n");
+//        constexpr int cAllocSize = 113;
+//        auto ptr = std::make_unique<char[]>(cAllocSize); // NOLINT
+//        std::printf("ptr = %p\n", static_cast<void*>(ptr.get()));
+//        showStats();
+//
+//        std::printf("Release memory (ptr.reset())...\n");
+//    }
+//
+//    return testEnd();
+//}
+//
+//static bool testVector()
+//{
+//    testStart("Testing allocator with std::vector<int>");
+//
+//    {
+//        std::vector<int> vec;
+//        constexpr int cItemsCount = 16;
+//
+//        for (int i = 0; i < cItemsCount; ++i)
+//            vec.push_back(i);
+//
+//        for (std::size_t i = 0; i < vec.size(); ++i)
+//            std::printf("vec[%u] = %d\n", i, vec[i]);
+//    }
+//
+//    return testEnd();
+//}
+//
+//static bool testMap()
+//{
+//    testStart("Testing allocator with std::map<int, std::string>");
+//
+//    {
+//        std::map<int, std::string> map;
+//        map[0] = "Great resources on modern C++:";
+//        map[1] = "C++ Weekly - YouTube channel hosted by Jason Turner";
+//        map[2] = "\"Effective\" books by Scott Meyers";
+//        map[3] = "C++ Core Guidelines - set of guidelines, rules, and best practices about coding in C++";
+//        map[4] = "CppCast - the first podcast for C++ developers by C++ developers";
+//
+//        for (const auto& [key, value] : map)
+//            std::printf("map[%d] = %s\n", key, value.c_str());
+//    }
+//
+//    return testEnd();
+//}
 
 // NOLINTNEXTLINE
 int appMain([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
