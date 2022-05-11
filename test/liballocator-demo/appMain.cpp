@@ -32,6 +32,8 @@
 
 #include "platformInit.hpp"
 
+#include <fmt/printf.h>
+
 #include <cstdio>
 #include <cstdlib>
 
@@ -42,7 +44,7 @@ int appMain(int argc, char* argv[])
         return EXIT_FAILURE;
 
     for (int i = 0; i < argc; ++i)
-        std::printf("argv[%d] = '%s'\n", i, argv[0]);
+        fmt::print("argv[{}] = '{}'\n", i, argv[0]);
 
     std::printf("PASSED\n");
     return EXIT_SUCCESS;
