@@ -6,3 +6,4 @@ fmt/8.1.1
 cmake
 
 [options]
+fmt:header_only=True
