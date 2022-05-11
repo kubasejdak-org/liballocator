@@ -4,5 +4,5 @@ add_library(appliballocator-demo
 
 target_link_libraries(appliballocator-demo
     PUBLIC platform-init
-    PRIVATE liballocator
+    #PRIVATE liballocator
 )
