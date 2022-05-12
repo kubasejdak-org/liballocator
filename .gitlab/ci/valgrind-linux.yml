@@ -11,3 +11,13 @@ Linux_Valgrind:
   script:
     - cd ${AppArtifact}/bin
     - valgrind --leak-check=full --show-leak-kinds=all --error-exitcode=123 ./liballocator-tests "unit" || if [ $? -eq 123 ]; then exit 1; fi
+    - |
+      valgrind \
+      --leak-check=full \
+      --show-leak-kinds=definite,indirect,possible \
+      --fair-sched=yes \
+      --track-origins=yes \
+      --trace-children=yes \
+      --error-markers=errstart,errend \
+      --error-exitcode=123 \
+      ./liballocator-tests "unit" || if [ $? -eq 123 ]; then exit 1; fi

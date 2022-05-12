@@ -1,4 +1,4 @@
-add_library(appliballocator-demo
+add_library(appliballocator-demo EXCLUDE_FROM_ALL
     appMain.cpp
 )
 
