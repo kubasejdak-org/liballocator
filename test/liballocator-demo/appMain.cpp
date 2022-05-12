@@ -36,7 +36,6 @@
 
 #include <fmt/printf.h>
 
-#include <cstdio>
 #include <cstdlib>
 #include <map>
 #include <memory>
@@ -154,12 +153,12 @@ int appMain([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     if (!platformInit())
         return EXIT_FAILURE;
 
-//    constexpr std::size_t cPageSize = 512;
-//    if (!memory::allocator::init(std::uintptr_t(&heapMin), std::uintptr_t(&heapMax), cPageSize)) {
-//        std::printf("error: Failed to initialize liballocator.\n");
-//        std::printf("FAILED\n");
-//        return EXIT_FAILURE;
-//    }
+    constexpr std::size_t cPageSize = 512;
+    if (!memory::allocator::init(std::uintptr_t(&heapMin), std::uintptr_t(&heapMax), cPageSize)) {
+        fmt::print("error: Failed to initialize liballocator.\n");
+        fmt::print("FAILED\n");
+        return EXIT_FAILURE;
+    }
 
     fmt::print("Initialized liballocator v{}.\n\n", memory::allocator::version());
     initialFreeMemory = freeMemory();
