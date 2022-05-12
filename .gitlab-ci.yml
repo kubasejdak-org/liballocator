@@ -18,10 +18,10 @@ stages:
 
 include:
   - "/.gitlab/ci/build-baremetal.yml"
-#  - "/.gitlab/ci/build-linux.yml"
-#  - "/.gitlab/ci/coverage-linux.yml"
+  - "/.gitlab/ci/build-linux.yml"
+  - "/.gitlab/ci/coverage-linux.yml"
   - "/.gitlab/ci/demo-baremetal.yml"
-#  - "/.gitlab/ci/deploy.yml"
-#  - "/.gitlab/ci/quality.yml"
-#  - "/.gitlab/ci/test-linux.yml"
-#  - "/.gitlab/ci/valgrind-linux.yml"
+  - "/.gitlab/ci/deploy.yml"
+  - "/.gitlab/ci/quality.yml"
+  - "/.gitlab/ci/test-linux.yml"
+  - "/.gitlab/ci/valgrind-linux.yml"
