@@ -62,12 +62,12 @@ void operator delete(void* ptr, [[maybe_unused]] std::size_t sz) noexcept
     operator delete(ptr);
 }
 
-//static std::size_t freeMemory()
-//{
-//    return memory::allocator::getStats().freeMemorySize;
-//}
+static std::size_t freeMemory()
+{
+    return memory::allocator::getStats().freeMemorySize;
+}
 
-//static std::size_t initialFreeMemory;
+static std::size_t initialFreeMemory;
 
 //static void showStats()
 //{
@@ -161,8 +161,8 @@ int appMain([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 //        return EXIT_FAILURE;
 //    }
 
-//    std::printf("Initialized liballocator v%s.\n\n", memory::allocator::version());
-//    initialFreeMemory = freeMemory();
+    fmt::print("Initialized liballocator v{}.\n\n", memory::allocator::version());
+    initialFreeMemory = freeMemory();
 
 //    if (!testSmartPointers()) {
 //        std::printf("FAILED\n");
@@ -179,6 +179,6 @@ int appMain([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 //        return EXIT_FAILURE;
 //    }
 
-    fmt::print("PASSED\n");
+    fmt::print("PASSED = {}\n", initialFreeMemory);
     return EXIT_SUCCESS;
 }
