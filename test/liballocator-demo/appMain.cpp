@@ -128,24 +128,24 @@ static bool testVector()
     return testEnd();
 }
 
-//static bool testMap()
-//{
-//    testStart("Testing allocator with std::map<int, std::string>");
-//
-//    {
-//        std::map<int, std::string> map;
-//        map[0] = "Great resources on modern C++:";
-//        map[1] = "C++ Weekly - YouTube channel hosted by Jason Turner";
-//        map[2] = "\"Effective\" books by Scott Meyers";
-//        map[3] = "C++ Core Guidelines - set of guidelines, rules, and best practices about coding in C++";
-//        map[4] = "CppCast - the first podcast for C++ developers by C++ developers";
-//
-//        for (const auto& [key, value] : map)
-//            std::printf("map[%d] = %s\n", key, value.c_str());
-//    }
-//
-//    return testEnd();
-//}
+static bool testMap()
+{
+    testStart("Testing allocator with std::map<int, std::string>");
+
+    {
+        std::map<int, std::string> map;
+        map[0] = "Great resources on modern C++:";
+        map[1] = "C++ Weekly - YouTube channel hosted by Jason Turner";
+        map[2] = "\"Effective\" books by Scott Meyers";
+        map[3] = "C++ Core Guidelines - set of guidelines, rules, and best practices about coding in C++";
+        map[4] = "CppCast - the first podcast for C++ developers by C++ developers";
+
+        for (const auto& [key, value] : map)
+            fmt::print("map[{}] = {}\n", key, value);
+    }
+
+    return testEnd();
+}
 
 // NOLINTNEXTLINE
 int appMain([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
@@ -173,10 +173,10 @@ int appMain([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
         return EXIT_FAILURE;
     }
 
-//    if (!testMap()) {
-//        std::printf("FAILED\n");
-//        return EXIT_FAILURE;
-//    }
+    if (!testMap()) {
+        fmt::print("FAILED\n");
+        return EXIT_FAILURE;
+    }
 
     fmt::print("PASSED\n");
     return EXIT_SUCCESS;
