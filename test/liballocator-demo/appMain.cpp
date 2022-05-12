@@ -62,10 +62,10 @@ void operator delete(void* ptr, [[maybe_unused]] std::size_t sz) noexcept
     operator delete(ptr);
 }
 
-static std::size_t freeMemory()
-{
-    return memory::allocator::getStats().freeMemorySize;
-}
+//static std::size_t freeMemory()
+//{
+//    return memory::allocator::getStats().freeMemorySize;
+//}
 
 //static std::size_t initialFreeMemory;
 
@@ -149,13 +149,35 @@ static std::size_t freeMemory()
 //}
 
 // NOLINTNEXTLINE
-int appMain(int argc, char* argv[])
+int appMain([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 {
     if (!platformInit())
         return EXIT_FAILURE;
 
-    for (int i = 0; i < argc; ++i)
-        fmt::print("argv[{}] = '{}'\n", i, argv[0]);
+//    constexpr std::size_t cPageSize = 512;
+//    if (!memory::allocator::init(std::uintptr_t(&heapMin), std::uintptr_t(&heapMax), cPageSize)) {
+//        std::printf("error: Failed to initialize liballocator.\n");
+//        std::printf("FAILED\n");
+//        return EXIT_FAILURE;
+//    }
+
+//    std::printf("Initialized liballocator v%s.\n\n", memory::allocator::version());
+//    initialFreeMemory = freeMemory();
+
+//    if (!testSmartPointers()) {
+//        std::printf("FAILED\n");
+//        return EXIT_FAILURE;
+//    }
+
+//    if (!testVector()) {
+//        std::printf("FAILED\n");
+//        return EXIT_FAILURE;
+//    }
+
+//    if (!testMap()) {
+//        std::printf("FAILED\n");
+//        return EXIT_FAILURE;
+//    }
 
     fmt::print("PASSED\n");
     return EXIT_SUCCESS;
