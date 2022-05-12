@@ -34,7 +34,6 @@
 
 #include <fmt/printf.h>
 
-#include <cstdio>
 #include <cstdlib>
 
 // NOLINTNEXTLINE
@@ -46,6 +45,6 @@ int appMain(int argc, char* argv[])
     for (int i = 0; i < argc; ++i)
         fmt::print("argv[{}] = '{}'\n", i, argv[0]);
 
-    std::printf("PASSED\n");
+    fmt::print("PASSED\n");
     return EXIT_SUCCESS;
 }
