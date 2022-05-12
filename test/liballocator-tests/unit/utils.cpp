@@ -79,7 +79,7 @@ TEST_CASE("Pointers are correctly moved", "[unit][utils]")
         std::array<std::byte, cMemorySize> memory{};
 
         for (std::size_t i = 0; i < memory.size(); ++i) {
-            auto* ptr = reinterpret_cast<char*>(&memory[0]);
+            auto* ptr = reinterpret_cast<char*>(memory.data());
             REQUIRE(utils::movePtr(ptr, i) == reinterpret_cast<char*>(&memory.at(i)));
         }
     }
@@ -89,7 +89,7 @@ TEST_CASE("Pointers are correctly moved", "[unit][utils]")
         std::array<std::byte, cMemorySize> memory{};
 
         for (std::size_t i = 0; i < memory.size(); ++i) {
-            auto* ptr = reinterpret_cast<long double*>(&memory[0]);
+            auto* ptr = reinterpret_cast<long double*>(memory.data());
             REQUIRE(utils::movePtr(ptr, i) == reinterpret_cast<long double*>(&memory.at(i)));
         }
     }
@@ -99,7 +99,7 @@ TEST_CASE("Pointers are correctly moved", "[unit][utils]")
         std::array<std::byte, cMemorySize> memory{};
 
         for (std::size_t i = 0; i < memory.size(); ++i) {
-            auto* ptr = reinterpret_cast<Chunk*>(&memory[0]);
+            auto* ptr = reinterpret_cast<Chunk*>(memory.data());
             REQUIRE(utils::movePtr(ptr, i) == reinterpret_cast<Chunk*>(&memory.at(i)));
         }
     }

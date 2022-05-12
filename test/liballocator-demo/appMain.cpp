@@ -34,7 +34,8 @@
 
 #include <allocator/allocator.hpp>
 
-#include <cstdio>
+#include <fmt/printf.h>
+
 #include <cstdlib>
 #include <map>
 #include <memory>
@@ -70,18 +71,18 @@ static std::size_t initialFreeMemory;
 static void showStats()
 {
     auto stats = memory::allocator::getStats();
-    std::printf("Total memory size     : %u B\n", stats.totalMemorySize);
-    std::printf("Reserved memory size  : %u B\n", stats.reservedMemorySize);
-    std::printf("User memory size      : %u B\n", stats.userMemorySize);
-    std::printf("Allocated memory size : %u B\n", stats.allocatedMemorySize);
-    std::printf("Free memory size      : %u B\n", stats.freeMemorySize);
-    std::printf("\n");
+    fmt::print("Total memory size     : {} B\n", stats.totalMemorySize);
+    fmt::print("Reserved memory size  : {} B\n", stats.reservedMemorySize);
+    fmt::print("User memory size      : {} B\n", stats.userMemorySize);
+    fmt::print("Allocated memory size : {} B\n", stats.allocatedMemorySize);
+    fmt::print("Free memory size      : {} B\n", stats.freeMemorySize);
+    fmt::print("\n");
 }
 
 static void testStart(const char* description)
 {
-    std::printf("------------------------------------------------\n");
-    std::printf("%s\n\n", description);
+    fmt::print("------------------------------------------------\n");
+    fmt::print("{}\n\n", description);
     showStats();
 }
 
@@ -97,13 +98,13 @@ static bool testSmartPointers()
     testStart("Testing allocator with smart pointers");
 
     {
-        std::printf("Allocate 113 B (std::make_unique<char[]>)...\n");
+        fmt::print("Allocate 113 B (std::make_unique<char[]>)...\n");
         constexpr int cAllocSize = 113;
         auto ptr = std::make_unique<char[]>(cAllocSize); // NOLINT
-        std::printf("ptr = %p\n", static_cast<void*>(ptr.get()));
+        fmt::print("ptr = {}\n", static_cast<void*>(ptr.get()));
         showStats();
 
-        std::printf("Release memory (ptr.reset())...\n");
+        fmt::print("Release memory (ptr.reset())...\n");
     }
 
     return testEnd();
@@ -121,7 +122,7 @@ static bool testVector()
             vec.push_back(i);
 
         for (std::size_t i = 0; i < vec.size(); ++i)
-            std::printf("vec[%u] = %d\n", i, vec[i]);
+            fmt::print("vec[{}] = {}\n", i, vec[i]);
     }
 
     return testEnd();
@@ -140,7 +141,7 @@ static bool testMap()
         map[4] = "CppCast - the first podcast for C++ developers by C++ developers";
 
         for (const auto& [key, value] : map)
-            std::printf("map[%d] = %s\n", key, value.c_str());
+            fmt::print("map[{}] = {}\n", key, value);
     }
 
     return testEnd();
@@ -154,29 +155,29 @@ int appMain([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
     constexpr std::size_t cPageSize = 512;
     if (!memory::allocator::init(std::uintptr_t(&heapMin), std::uintptr_t(&heapMax), cPageSize)) {
-        std::printf("error: Failed to initialize liballocator.\n");
-        std::printf("FAILED\n");
+        fmt::print("error: Failed to initialize liballocator.\n");
+        fmt::print("FAILED\n");
         return EXIT_FAILURE;
     }
 
-    std::printf("Initialized liballocator v%s.\n\n", memory::allocator::version());
+    fmt::print("Initialized liballocator v{}.\n\n", memory::allocator::version());
     initialFreeMemory = freeMemory();
 
     if (!testSmartPointers()) {
-        std::printf("FAILED\n");
+        fmt::print("FAILED\n");
         return EXIT_FAILURE;
     }
 
     if (!testVector()) {
-        std::printf("FAILED\n");
+        fmt::print("FAILED\n");
         return EXIT_FAILURE;
     }
 
     if (!testMap()) {
-        std::printf("FAILED\n");
+        fmt::print("FAILED\n");
         return EXIT_FAILURE;
     }
 
-    std::printf("PASSED\n");
+    fmt::print("PASSED\n");
     return EXIT_SUCCESS;
 }
