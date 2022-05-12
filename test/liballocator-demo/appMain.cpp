@@ -43,6 +43,32 @@
 #include <string>
 #include <vector>
 
+// Defined in linker script.
+extern const char heapMin; // NOLINT
+extern const char heapMax; // NOLINT
+
+void* operator new(std::size_t size)
+{
+    return memory::allocator::allocate(size);
+}
+
+void operator delete(void* ptr) noexcept
+{
+    memory::allocator::release(ptr);
+}
+
+void operator delete(void* ptr, [[maybe_unused]] std::size_t sz) noexcept
+{
+    operator delete(ptr);
+}
+
+static std::size_t freeMemory()
+{
+    return memory::allocator::getStats().freeMemorySize;
+}
+
+static std::size_t initialFreeMemory;
+
 // NOLINTNEXTLINE
 int appMain(int argc, char* argv[])
 {
