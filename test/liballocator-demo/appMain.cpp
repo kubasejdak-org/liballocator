@@ -32,9 +32,16 @@
 
 #include "platformInit.hpp"
 
+#include <allocator/allocator.hpp>
+
 #include <fmt/printf.h>
 
+#include <cstdio>
 #include <cstdlib>
+#include <map>
+#include <memory>
+#include <string>
+#include <vector>
 
 // NOLINTNEXTLINE
 int appMain(int argc, char* argv[])
