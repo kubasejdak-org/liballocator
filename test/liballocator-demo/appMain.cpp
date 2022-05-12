@@ -110,24 +110,24 @@ static bool testSmartPointers()
     return testEnd();
 }
 
-//static bool testVector()
-//{
-//    testStart("Testing allocator with std::vector<int>");
-//
-//    {
-//        std::vector<int> vec;
-//        constexpr int cItemsCount = 16;
-//
-//        for (int i = 0; i < cItemsCount; ++i)
-//            vec.push_back(i);
-//
-//        for (std::size_t i = 0; i < vec.size(); ++i)
-//            std::printf("vec[%u] = %d\n", i, vec[i]);
-//    }
-//
-//    return testEnd();
-//}
-//
+static bool testVector()
+{
+    testStart("Testing allocator with std::vector<int>");
+
+    {
+        std::vector<int> vec;
+        constexpr int cItemsCount = 16;
+
+        for (int i = 0; i < cItemsCount; ++i)
+            vec.push_back(i);
+
+        for (std::size_t i = 0; i < vec.size(); ++i)
+            fmt::print("vec[{}] = {}\n", i, vec[i]);
+    }
+
+    return testEnd();
+}
+
 //static bool testMap()
 //{
 //    testStart("Testing allocator with std::map<int, std::string>");
@@ -168,16 +168,16 @@ int appMain([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
         return EXIT_FAILURE;
     }
 
-//    if (!testVector()) {
-//        std::printf("FAILED\n");
-//        return EXIT_FAILURE;
-//    }
+    if (!testVector()) {
+        fmt::print("FAILED\n");
+        return EXIT_FAILURE;
+    }
 
 //    if (!testMap()) {
 //        std::printf("FAILED\n");
 //        return EXIT_FAILURE;
 //    }
 
-    fmt::print("PASSED = {}\n", initialFreeMemory);
+    fmt::print("PASSED\n");
     return EXIT_SUCCESS;
 }
