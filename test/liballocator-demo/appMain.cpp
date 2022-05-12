@@ -68,48 +68,48 @@ static std::size_t freeMemory()
 
 static std::size_t initialFreeMemory;
 
-//static void showStats()
-//{
-//    auto stats = memory::allocator::getStats();
-//    std::printf("Total memory size     : %u B\n", stats.totalMemorySize);
-//    std::printf("Reserved memory size  : %u B\n", stats.reservedMemorySize);
-//    std::printf("User memory size      : %u B\n", stats.userMemorySize);
-//    std::printf("Allocated memory size : %u B\n", stats.allocatedMemorySize);
-//    std::printf("Free memory size      : %u B\n", stats.freeMemorySize);
-//    std::printf("\n");
-//}
-//
-//static void testStart(const char* description)
-//{
-//    std::printf("------------------------------------------------\n");
-//    std::printf("%s\n\n", description);
-//    showStats();
-//}
-//
-//static bool testEnd()
-//{
-//    showStats();
-//
-//    return (initialFreeMemory == freeMemory());
-//}
-//
-//static bool testSmartPointers()
-//{
-//    testStart("Testing allocator with smart pointers");
-//
-//    {
-//        std::printf("Allocate 113 B (std::make_unique<char[]>)...\n");
-//        constexpr int cAllocSize = 113;
-//        auto ptr = std::make_unique<char[]>(cAllocSize); // NOLINT
-//        std::printf("ptr = %p\n", static_cast<void*>(ptr.get()));
-//        showStats();
-//
-//        std::printf("Release memory (ptr.reset())...\n");
-//    }
-//
-//    return testEnd();
-//}
-//
+static void showStats()
+{
+    auto stats = memory::allocator::getStats();
+    fmt::print("Total memory size     : {} B\n", stats.totalMemorySize);
+    fmt::print("Reserved memory size  : {} B\n", stats.reservedMemorySize);
+    fmt::print("User memory size      : {} B\n", stats.userMemorySize);
+    fmt::print("Allocated memory size : {} B\n", stats.allocatedMemorySize);
+    fmt::print("Free memory size      : {} B\n", stats.freeMemorySize);
+    fmt::print("\n");
+}
+
+static void testStart(const char* description)
+{
+    fmt::print("------------------------------------------------\n");
+    fmt::print("{}\n\n", description);
+    showStats();
+}
+
+static bool testEnd()
+{
+    showStats();
+
+    return (initialFreeMemory == freeMemory());
+}
+
+static bool testSmartPointers()
+{
+    testStart("Testing allocator with smart pointers");
+
+    {
+        fmt::print("Allocate 113 B (std::make_unique<char[]>)...\n");
+        constexpr int cAllocSize = 113;
+        auto ptr = std::make_unique<char[]>(cAllocSize); // NOLINT
+        fmt::print("ptr = {}\n", static_cast<void*>(ptr.get()));
+        showStats();
+
+        fmt::print("Release memory (ptr.reset())...\n");
+    }
+
+    return testEnd();
+}
+
 //static bool testVector()
 //{
 //    testStart("Testing allocator with std::vector<int>");
@@ -163,10 +163,10 @@ int appMain([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     fmt::print("Initialized liballocator v{}.\n\n", memory::allocator::version());
     initialFreeMemory = freeMemory();
 
-//    if (!testSmartPointers()) {
-//        std::printf("FAILED\n");
-//        return EXIT_FAILURE;
-//    }
+    if (!testSmartPointers()) {
+        fmt::print("FAILED\n");
+        return EXIT_FAILURE;
+    }
 
 //    if (!testVector()) {
 //        std::printf("FAILED\n");
