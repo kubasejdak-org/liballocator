@@ -33,8 +33,8 @@
 #define CATCH_CONFIG_RUNNER
 #define CATCH_CONFIG_DEFAULT_REPORTER "verbose" // NOLINT
 
-#include "VerboseReporter.hpp"
-#include "platformInit.hpp"
+#include "platform/VerboseReporter.hpp"
+#include "platform/init.hpp"
 
 #include <catch2/catch.hpp>
 
@@ -43,7 +43,7 @@
 // NOLINTNEXTLINE
 int appMain(int argc, char* argv[])
 {
-    if (!platformInit())
+    if (!platform::init())
         return EXIT_FAILURE;
 
 #ifdef TEST_TAGS
