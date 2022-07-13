@@ -30,7 +30,7 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include "platformInit.hpp"
+#include "platform/init.hpp"
 
 #include <allocator/allocator.hpp>
 
@@ -150,7 +150,7 @@ static bool testMap()
 // NOLINTNEXTLINE
 int appMain([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 {
-    if (!platformInit())
+    if (!platform::init())
         return EXIT_FAILURE;
 
     constexpr std::size_t cPageSize = 512;
