@@ -41,8 +41,9 @@ namespace test {
 
 inline std::unique_ptr<std::byte, decltype(&std::free)> alignedAlloc(std::size_t alignment, std::size_t size)
 {
-    auto* ptr = aligned_alloc(alignment, size);
-    return std::unique_ptr<std::byte, decltype(&std::free)>(reinterpret_cast<std::byte*>(ptr), &std::free);
+    auto* bytes = aligned_alloc(alignment, size); // NOLINT(cppcoreguidelines-owning-memory)
+    auto ptr = std::unique_ptr<std::byte, decltype(&std::free)>(reinterpret_cast<std::byte*>(bytes), &std::free);
+    return ptr;
 }
 
 inline std::chrono::time_point<std::chrono::high_resolution_clock> currentTime()
@@ -59,7 +60,7 @@ inline bool timeElapsed(std::chrono::time_point<std::chrono::high_resolution_clo
 
 inline double toMicroseconds(const std::chrono::duration<double>& duration)
 {
-    return std::chrono::duration_cast<std::chrono::microseconds>(duration).count();
+    return static_cast<double>(std::chrono::duration_cast<std::chrono::microseconds>(duration).count());
 }
 
 } // namespace test

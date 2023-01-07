@@ -158,7 +158,11 @@ private:
         StreamingReporterBase::testRunEnded(testRunStats);
     }
 
-    [[nodiscard]] std::string indentation() const { return std::string(m_indentation, ' '); }
+    [[nodiscard]] std::string indentation() const
+    {
+        std::string indent(m_indentation, ' ');
+        return indent;
+    }
 
     void increaseIndentation() { m_indentation += cIndentationSize; }
 
