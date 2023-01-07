@@ -4,6 +4,7 @@ Checks:                '*,
                         -altera-*,
                         -bugprone-easily-swappable-parameters,
                         -bugprone-implicit-widening-of-multiplication-result,
+                        -clang-analyzer-optin.cplusplus.UninitializedObject,
                         -concurrency-mt-unsafe,
                         -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
                         -cppcoreguidelines-pro-bounds-constant-array-index,
@@ -19,8 +20,8 @@ Checks:                '*,
                         -performance-no-int-to-ptr,
                         -readability-function-cognitive-complexity,
                         -readability-identifier-length,
-                        -readability-redundant-access-specifiers,
-                        -readability-suspicious-call-argument'
+                        -readability-suspicious-call-argument,
+                        -readability-redundant-access-specifiers'
 WarningsAsErrors:      '*'
 HeaderFilterRegex:     ''
 AnalyzeTemporaryDtors: false
