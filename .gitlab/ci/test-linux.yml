@@ -4,7 +4,7 @@
     GIT_STRATEGY: none
   script:
     - cd ${AppArtifact}/bin
-    - ./liballocator-tests ${TestTags}
+    - ./liballocator-tests -r verbose ${TestTags}
 
 .Run_Test_Linux:
   extends: .Run_Test

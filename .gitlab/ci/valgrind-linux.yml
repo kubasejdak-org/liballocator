@@ -20,4 +20,4 @@ Linux_Valgrind:
       --trace-children=yes \
       --error-markers=errstart,errend \
       --error-exitcode=123 \
-      ./liballocator-tests "unit" || if [ $? -eq 123 ]; then exit 1; fi
+      ./liballocator-tests -r verbose [unit] || if [ $? -eq 123 ]; then exit 1; fi

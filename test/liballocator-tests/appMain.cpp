@@ -30,13 +30,10 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#define CATCH_CONFIG_RUNNER
-#define CATCH_CONFIG_DEFAULT_REPORTER "verbose" // NOLINT
-
 #include "platform/VerboseReporter.hpp"
 #include "platform/init.hpp"
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_session.hpp>
 
 #include <cstdlib>
 
