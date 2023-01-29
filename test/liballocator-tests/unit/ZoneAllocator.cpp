@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright BSD 2-Clause License
 ///
-/// Copyright (c) 2017-2022, Kuba Sejdak <kuba.sejdak@gmail.com>
+/// Copyright (c) 2017-2023, Kuba Sejdak <kuba.sejdak@gmail.com>
 /// All rights reserved.
 ///
 /// Redistribution and use in source and binary forms, with or without
@@ -40,8 +40,11 @@
 
 #include <array>
 #include <cmath>
+#include <cstddef>
+#include <cstdint>
 #include <cstring>
 #include <map>
+#include <utility>
 
 namespace memory {
 
@@ -160,7 +163,7 @@ TEST_CASE("Chunk size is properly calculated", "[unit][ZoneAllocator]")
 
 TEST_CASE("Zone index is properly calculated", "[unit][ZoneAllocator]")
 {
-    std::map<std::size_t, std::pair<std::size_t, size_t>> idxRange = {
+    std::map<std::size_t, std::pair<std::size_t, std::size_t>> idxRange = {
         {0, {16, 31}    }, // NOLINT
         {1, {32, 63}    }, // NOLINT
         {2, {64, 127}   }, // NOLINT

@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
 
-# Define application name and settings.
 if (NOT DEFINED APP)
     message(FATAL_ERROR "'APP' is not defined!")
 endif ()
@@ -14,10 +13,6 @@ include(cmake/platform.cmake)
 include(cmake/sanitizers.cmake)
 
 project(liballocator VERSION 1.0.5 LANGUAGES ASM C CXX)
-
-if (NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug)
-endif ()
 
 if (USE_CONAN)
     conan_init_wrapper()

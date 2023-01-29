@@ -37,7 +37,6 @@
 #include <allocator/Region.hpp>
 
 #include <cassert>
-#include <optional>
 
 namespace memory {
 
