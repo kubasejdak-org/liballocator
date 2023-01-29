@@ -32,25 +32,33 @@
 
 #pragma once
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_assertion_info.hpp>
+#include <catch2/catch_assertion_result.hpp>
+#include <catch2/catch_test_case_info.hpp>
+#include <catch2/catch_timer.hpp>
+#include <catch2/interfaces/catch_interfaces_reporter.hpp>
+#include <catch2/internal/catch_console_colour.hpp>
+#include <catch2/internal/catch_istream.hpp>
+#include <catch2/reporters/catch_reporter_registrars.hpp>
+#include <catch2/reporters/catch_reporter_streaming_base.hpp>
 
-#include <cstdint>
+#include <cstddef>
 #include <sstream>
 #include <string>
+#include <utility>
 
 constexpr std::size_t cIndentationSize = 4;
 constexpr std::size_t cStatusColumn = 100;
 constexpr const char* cErrorSeparator = "====================";
 
-// NOLINTNEXTLINE
 namespace Catch {
 
-class VerboseReporter : public StreamingReporterBase<VerboseReporter> {
+class VerboseReporter : public StreamingReporterBase {
 public:
-    explicit VerboseReporter(const ReporterConfig& config)
-        : StreamingReporterBase(config)
+    explicit VerboseReporter(ReporterConfig config)
+        : StreamingReporterBase(std::move(config))
     {
-        m_reporterPrefs.shouldRedirectStdOut = false;
+        m_preferences.shouldRedirectStdOut = false;
     }
 
     static std::string getDescription() { return "Reports test results in a similar way to Google Test"; }
@@ -61,8 +69,8 @@ private:
         StreamingReporterBase::testCaseStarting(testInfo);
         m_testTimer.start();
 
-        stream << "Start TEST CASE " << testInfo.name << "\n";
-        stream.flush();
+        m_stream << "Start TEST CASE " << testInfo.name << "\n";
+        m_stream.flush();
     }
 
     void sectionStarting(const SectionInfo& sectionInfo) override
@@ -72,58 +80,54 @@ private:
 
         increaseIndentation();
 
-        stream << indentation() << "Start SECTION: " << sectionInfo.name << "\n";
-        stream.flush();
+        m_stream << indentation() << "Start SECTION: " << sectionInfo.name << "\n";
+        m_stream.flush();
     }
 
-    void assertionStarting(const AssertionInfo& /*unused*/) override {}
-
-    bool assertionEnded(const AssertionStats& assertionStats) override
+    void assertionEnded(const AssertionStats& assertionStats) override
     {
         const AssertionResult& result = assertionStats.assertionResult;
         if (result.isOk())
-            return true;
+            return;
 
-        stream << indentation() << cErrorSeparator << "\n";
+        m_stream << indentation() << cErrorSeparator << "\n";
         increaseIndentation();
-        stream << indentation() << "Failed test    : " << m_sectionStack.back().name << "\n";
-        stream << indentation() << "Last section   : " << m_lastSection << "\n";
-        stream << indentation() << "Failed line    : " << result.getSourceInfo() << "\n";
-        stream << indentation() << "Type           : ";
+        m_stream << indentation() << "Failed test    : " << m_sectionStack.back().name << "\n";
+        m_stream << indentation() << "Last section   : " << m_lastSection << "\n";
+        m_stream << indentation() << "Failed line    : " << result.getSourceInfo() << "\n";
+        m_stream << indentation() << "Type           : ";
         switch (result.getResultType()) {
-            case ResultWas::ExpressionFailed: stream << "Expression failed"; break;
-            case ResultWas::ThrewException: stream << "Unexpected exception"; break;
-            case ResultWas::FatalErrorCondition: stream << "Fatal error condition"; break;
-            case ResultWas::DidntThrowException: stream << "No exception was thrown where one was expected"; break;
-            case ResultWas::ExplicitFailure: stream << "Explicit failure"; break;
-            default: return true;
+            case ResultWas::ExpressionFailed: m_stream << "Expression failed"; break;
+            case ResultWas::ThrewException: m_stream << "Unexpected exception"; break;
+            case ResultWas::FatalErrorCondition: m_stream << "Fatal error condition"; break;
+            case ResultWas::DidntThrowException: m_stream << "No exception was thrown where one was expected"; break;
+            case ResultWas::ExplicitFailure: m_stream << "Explicit failure"; break;
+            default: return;
         }
-        stream << "\n";
+        m_stream << "\n";
 
         if (!assertionStats.infoMessages.empty()) {
-            stream << indentation() << "Message(s)     : " << assertionStats.infoMessages[0].message << "\n";
+            m_stream << indentation() << "Message(s)     : " << assertionStats.infoMessages[0].message << "\n";
             for (std::size_t i = 1; i < assertionStats.infoMessages.size(); ++i)
-                stream << "                         " << assertionStats.infoMessages[i].message << "\n";
+                m_stream << "                         " << assertionStats.infoMessages[i].message << "\n";
         }
 
         if (result.hasExpression()) {
-            stream << indentation() << "Expression     : " << result.getExpressionInMacro() << "\n";
-            stream << indentation() << "With expansion : " << result.getExpandedExpression() << "\n";
+            m_stream << indentation() << "Expression     : " << result.getExpressionInMacro() << "\n";
+            m_stream << indentation() << "With expansion : " << result.getExpandedExpression() << "\n";
         }
 
         decreaseIndentation();
-        stream << indentation() << cErrorSeparator << "\n";
-        stream.flush();
-
-        return true;
+        m_stream << indentation() << cErrorSeparator << "\n";
+        m_stream.flush();
     }
 
     void sectionEnded(const SectionStats& sectionStats) override
     {
         std::stringstream ss;
         ss << indentation() << "End";
-        stream << ss.str();
-        stream.flush();
+        m_stream << ss.str();
+        m_stream.flush();
         printStatus(ss.str().size(), sectionStats.assertions.allOk());
 
         decreaseIndentation();
@@ -136,7 +140,7 @@ private:
         auto elapsedMs = m_testTimer.getElapsedMilliseconds();
         std::stringstream ss;
         ss << "End [" << elapsedMs << " ms]";
-        stream << ss.str();
+        m_stream << ss.str();
         printStatus(ss.str().size(), testCaseStats.totals.assertions.allOk());
 
         m_lastSection.clear();
@@ -145,15 +149,15 @@ private:
 
     void testRunEnded(const TestRunStats& testRunStats) override
     {
-        stream << "\n";
-        stream << std::string(cStatusColumn, '=') << "\n";
-        stream << "Finished TEST RUN : " << testRunStats.runInfo.name << "\n";
-        stream << "Status            :";
+        m_stream << "\n";
+        m_stream << std::string(cStatusColumn, '=') << "\n";
+        m_stream << "Finished TEST RUN : " << testRunStats.runInfo.name << "\n";
+        m_stream << "Status            :";
 
         const auto& assertions = testRunStats.totals.assertions;
         printStatus(cStatusColumn, assertions.allOk(), true);
-        stream << "Failed assertions : " << assertions.failed << " / " << assertions.total() << "\n";
-        stream.flush();
+        m_stream << "Failed assertions : " << assertions.failed << " / " << assertions.total() << "\n";
+        m_stream.flush();
 
         StreamingReporterBase::testRunEnded(testRunStats);
     }
@@ -171,19 +175,21 @@ private:
     void printStatus(std::size_t offset, bool success, bool finalStatus = false)
     {
         auto paddingSize = (cStatusColumn > offset) ? (cStatusColumn - offset) : 1;
-        stream << std::string(paddingSize, ' ');
+        m_stream << std::string(paddingSize, ' ');
 
         if (success) {
-            Colour color(Colour::Green);
-            stream << (finalStatus ? "[PASSED]" : "[OK]");
+            auto colorGuard = m_colour->guardColour(Colour::Green);
+            colorGuard.engage(m_stream);
+            m_stream << (finalStatus ? "[PASSED]" : "[OK]");
         }
         else {
-            Colour color(Colour::Red);
-            stream << "[FAILED]";
+            auto colorGuard = m_colour->guardColour(Colour::Red);
+            colorGuard.engage(m_stream);
+            m_stream << "[FAILED]";
         }
 
-        stream << "\n";
-        stream.flush();
+        m_stream << "\n";
+        m_stream.flush();
     }
 
 private:

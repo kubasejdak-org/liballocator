@@ -27,5 +27,5 @@ target_compile_definitions(liballocator-tests
 )
 
 target_link_libraries(liballocator-tests
-    PRIVATE liballocator platform::init platform::main
+    PRIVATE optimized Catch2 debug Catch2d liballocator platform::init platform::main
 )

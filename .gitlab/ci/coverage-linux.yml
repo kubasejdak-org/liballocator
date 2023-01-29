@@ -18,6 +18,6 @@ Coverage:
     # Build application.
     - cmake .. --preset tests-linux-gcc-debug -DCOVERAGE=ON
     - make
-    - bin/liballocator-tests [unit]
+    - bin/liballocator-tests -r verbose [unit]
     - make coverage
     - sed -i "s|SF:${CI_PROJECT_DIR}/|SF:|g" coverage/coverage.info
