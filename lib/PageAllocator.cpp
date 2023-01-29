@@ -33,12 +33,12 @@
 #include "PageAllocator.hpp"
 
 #include "Page.hpp"
+#include "allocator/Region.hpp"
 #include "group.hpp"
-
-#include <allocator/Region.hpp>
 
 #include <cassert>
 #include <numeric>
+#include <tuple>
 
 namespace memory {
 

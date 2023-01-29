@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright BSD 2-Clause License
 ///
-/// Copyright (c) 2017-2022, Kuba Sejdak <kuba.sejdak@gmail.com>
+/// Copyright (c) 2017-2023, Kuba Sejdak <kuba.sejdak@gmail.com>
 /// All rights reserved.
 ///
 /// Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,9 @@
 #include <catch2/catch.hpp>
 
 #include <array>
+#include <cstddef>
 #include <map>
+#include <tuple>
 #include <utility>
 
 namespace memory {

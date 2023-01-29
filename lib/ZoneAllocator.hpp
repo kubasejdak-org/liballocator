@@ -35,6 +35,7 @@
 #include "Zone.hpp"
 #include "utils.hpp"
 
+#include <algorithm>
 #include <array>
 #include <cmath>
 #include <cstddef>

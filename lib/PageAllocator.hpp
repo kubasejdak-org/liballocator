@@ -38,7 +38,6 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
-#include <tuple>
 
 namespace memory {
 

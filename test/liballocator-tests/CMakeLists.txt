@@ -23,7 +23,7 @@ target_include_directories(liballocator-tests
 
 target_compile_definitions(liballocator-tests
     # This is required to selectively run Catch2 tests using tags on platforms, where cmd line arguments are not available.
-    PRIVATE $<$<BOOL:${TEST_TAGS}>:TEST_TAGS="${TEST_TAGS}"> CATCH_CONFIG_DISABLE_EXCEPTIONS $<$<STREQUAL:${PLATFORM},freertos-arm>:CATCH_CONFIG_NO_POSIX_SIGNALS>
+    PRIVATE $<$<BOOL:${TEST_TAGS}>:TEST_TAGS="${TEST_TAGS}">
 )
 
 target_link_libraries(liballocator-tests
