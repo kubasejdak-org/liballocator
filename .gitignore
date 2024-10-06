@@ -1,12 +1,14 @@
-# Object and executable files.
-bin/
+# Object and executable files
 cmake-build-*/
+out/
+build/
 
-# Project files.
+# Build systems
 CMakeLists.txt.user
-.vscode/
-.idea/
-version.hpp
+CMakeUserPresets.json
 
-# macOS files.
-.DS_Store
+# IDE
+.idea/
+.vscode/
+
+version.hpp
