@@ -3,11 +3,11 @@
 ## Context
 
 `liballocator` is a C++ embedded memory allocator library located at `/home/kuba/projects/kubasejdak/libs/liballocator`.
-`osal` is the reference repository at `/home/kuba/projects/kubasejdak/libs/osal` — it represents the target structure and
-conventions that all libs in this workspace should follow.
+`osal` is the reference repository at `/home/kuba/projects/kubasejdak/libs/osal` — it represents the target structure
+and conventions that all libs in this workspace should follow.
 
-Every phase below is a **self-contained PR-sized unit of work**. Each can be executed independently by an AI agent
-that reads this document, without needing the broader conversation context.
+Every phase below is a **self-contained PR-sized unit of work**. Each can be executed independently by an AI agent that
+reads this document, without needing the broader conversation context.
 
 ---
 
@@ -15,42 +15,42 @@ that reads this document, without needing the broader conversation context.
 
 **Goal:** Migrate from Conan 1.x to Conan 2.x dependency management.
 
-**Context:**
-liballocator currently uses Conan 1.x via `cmake/conan.cmake` (fetches cmake-conan 0.18.1). osal uses Conan 2.x via
-`cmake/conan_provider.cmake` (the standard Conan 2.x CMake dependency provider). The provider file is large (~600 lines)
-and should be copied from osal.
+**Context:** liballocator currently uses Conan 1.x via `cmake/conan.cmake` (fetches cmake-conan 0.18.1). osal uses Conan
+2.x via `cmake/conan_provider.cmake` (the standard Conan 2.x CMake dependency provider). The provider file is large
+(~600 lines) and should be copied from osal.
 
 **Changes:**
 
 1. **Update `conanfile.txt`** — replace content entirely:
 
-   ```
-   [test_requires]
-   catch2/3.13.0
+    ```
+    [test_requires]
+    catch2/3.13.0
 
-   [generators]
-   CMakeDeps
+    [generators]
+    CMakeDeps
 
-   [options]
-   catch2/*:default_reporter=verbose
-   catch2/*:no_posix_signals=True
-   ```
+    [options]
+    catch2/*:default_reporter=verbose
+    catch2/*:no_posix_signals=True
+    ```
 
-   Explanation of changes:
-   - `[requires]` → `[test_requires]` (Conan 2.x: Catch2 is a test-only dependency)
-   - `catch2/3.3.0` → `catch2/3.13.0` (version bump)
-   - `fmt/9.1.0` removed (fmt is not a library dependency; evaluate test files to confirm it's not needed — if it IS used in test code, move it to `[test_requires]` as well)
-   - `[generators] cmake` → `[generators] CMakeDeps` (Conan 2.x generator)
-   - Added `catch2` options (verbose reporter, no posix signals)
+    Explanation of changes:
+    - `[requires]` → `[test_requires]` (Conan 2.x: Catch2 is a test-only dependency)
+    - `catch2/3.3.0` → `catch2/3.13.0` (version bump)
+    - `fmt/9.1.0` removed (fmt is not a library dependency; evaluate test files to confirm it's not needed — if it IS
+      used in test code, move it to `[test_requires]` as well)
+    - `[generators] cmake` → `[generators] CMakeDeps` (Conan 2.x generator)
+    - Added `catch2` options (verbose reporter, no posix signals)
 
-2. **Copy `cmake/conan_provider.cmake` from osal** (`/home/kuba/projects/kubasejdak/libs/osal/cmake/conan_provider.cmake`)
-   — copy the file verbatim.
+2. **Copy `cmake/conan_provider.cmake` from osal**
+   (`/home/kuba/projects/kubasejdak/libs/osal/cmake/conan_provider.cmake`) — copy the file verbatim.
 
 3. **Delete `cmake/conan.cmake`** — this file contains the old Conan 1.x cmake-conan wrapper fetching logic. It is no
    longer needed with the Conan 2.x provider approach.
 
-**Note:** `cmake/coverage.cmake`, `cmake/sanitizers.cmake`, `cmake/platform.cmake` will be deleted in Phase 7.
-The old Conan invocations in `CMakeLists.txt` will be cleaned up in Phase 7.
+**Note:** `cmake/coverage.cmake`, `cmake/sanitizers.cmake`, `cmake/platform.cmake` will be deleted in Phase 7. The old
+Conan invocations in `CMakeLists.txt` will be cleaned up in Phase 7.
 
 **Verification:** `conanfile.txt` matches the format above. `cmake/conan_provider.cmake` exists and is identical to
 osal's copy. `cmake/conan.cmake` is deleted.
@@ -61,9 +61,8 @@ osal's copy. `cmake/conan.cmake` is deleted.
 
 **Goal:** Modernize `CMakePresets.json` to match osal's modular preset structure.
 
-**Context:**
-osal uses CMake presets version 8 with modular JSON files included by the root `CMakePresets.json`. liballocator uses
-version 3 with a single monolithic file. The osal preset files live in `cmake/presets/`.
+**Context:** osal uses CMake presets version 8 with modular JSON files included by the root `CMakePresets.json`.
+liballocator uses version 3 with a single monolithic file. The osal preset files live in `cmake/presets/`.
 
 **Reference files** (read from osal at `/home/kuba/projects/kubasejdak/libs/osal/`):
 
@@ -77,10 +76,10 @@ version 3 with a single monolithic file. The osal preset files live in `cmake/pr
 **Changes:**
 
 1. **Create `cmake/presets/linux.json`** — copy from osal verbatim. This defines:
-   - `linux` (hidden, PLATFORM=linux)
-   - `linux-native-gcc`, `linux-native-clang` (hidden, toolchain)
-   - `linux-arm64`, `linux-arm64-gcc`, `linux-arm64-clang` (hidden, cross-compile)
-   - `yocto-sdk-gcc`, `yocto-sdk-clang` (hidden)
+    - `linux` (hidden, PLATFORM=linux)
+    - `linux-native-gcc`, `linux-native-clang` (hidden, toolchain)
+    - `linux-arm64`, `linux-arm64-gcc`, `linux-arm64-clang` (hidden, cross-compile)
+    - `yocto-sdk-gcc`, `yocto-sdk-clang` (hidden)
 
 2. **Create `cmake/presets/type.json`** — copy from osal verbatim. Defines `debug` and `release` presets.
 
@@ -92,131 +91,133 @@ version 3 with a single monolithic file. The osal preset files live in `cmake/pr
    `CMAKE_PROJECT_TOP_LEVEL_INCLUDES = ${sourceDir}/cmake/conan_provider.cmake`.
 
 6. **Replace `CMakePresets.json`** with a new file:
-   ```json
-   {
-     "version": 8,
-     "cmakeMinimumRequired": {
-       "major": 3,
-       "minor": 28,
-       "patch": 0
-     },
-     "include": [
-       "cmake/presets/app.json",
-       "cmake/presets/baremetal.json",
-       "cmake/presets/dependencies.json",
-       "cmake/presets/linux.json",
-       "cmake/presets/type.json"
-     ],
-     "configurePresets": [
-       {
-         "name": "linux-native-gcc-debug",
-         "inherits": ["linux-native-gcc", "debug"]
-       },
-       {
-         "name": "linux-native-gcc-release",
-         "inherits": ["linux-native-gcc", "release"]
-       },
-       {
-         "name": "linux-native-clang-debug",
-         "inherits": ["linux-native-clang", "debug"]
-       },
-       {
-         "name": "linux-native-clang-release",
-         "inherits": ["linux-native-clang", "release"]
-       },
-       {
-         "name": "linux-native-gcc-debug-asan",
-         "inherits": ["linux-native-gcc-debug", "asan"]
-       },
-       {
-         "name": "linux-native-gcc-debug-lsan",
-         "inherits": ["linux-native-gcc-debug", "lsan"]
-       },
-       {
-         "name": "linux-native-gcc-debug-tsan",
-         "inherits": ["linux-native-gcc-debug", "tsan"]
-       },
-       {
-         "name": "linux-native-gcc-debug-ubsan",
-         "inherits": ["linux-native-gcc-debug", "ubsan"]
-       },
-       {
-         "name": "linux-native-conan-gcc-debug",
-         "inherits": ["linux-native-gcc-debug", "conan"]
-       },
-       {
-         "name": "linux-native-conan-gcc-release",
-         "inherits": ["linux-native-gcc-release", "conan"]
-       },
-       {
-         "name": "linux-native-conan-clang-debug",
-         "inherits": ["linux-native-clang-debug", "conan"]
-       },
-       {
-         "name": "linux-native-conan-clang-release",
-         "inherits": ["linux-native-clang-release", "conan"]
-       },
-       {
-         "name": "linux-native-conan-gcc-debug-asan",
-         "inherits": ["linux-native-conan-gcc-debug", "asan"]
-       },
-       {
-         "name": "linux-native-conan-gcc-debug-lsan",
-         "inherits": ["linux-native-conan-gcc-debug", "lsan"]
-       },
-       {
-         "name": "linux-native-conan-gcc-debug-tsan",
-         "inherits": ["linux-native-conan-gcc-debug", "tsan"]
-       },
-       {
-         "name": "linux-native-conan-gcc-debug-ubsan",
-         "inherits": ["linux-native-conan-gcc-debug", "ubsan"]
-       },
-       {
-         "name": "linux-arm64-conan-gcc-debug",
-         "inherits": ["linux-arm64-gcc", "debug", "conan"]
-       },
-       {
-         "name": "linux-arm64-conan-gcc-release",
-         "inherits": ["linux-arm64-gcc", "release", "conan"]
-       },
-       {
-         "name": "linux-arm64-conan-clang-debug",
-         "inherits": ["linux-arm64-clang", "debug", "conan"]
-       },
-       {
-         "name": "linux-arm64-conan-clang-release",
-         "inherits": ["linux-arm64-clang", "release", "conan"]
-       },
-       {
-         "name": "yocto-sdk-gcc-debug",
-         "inherits": ["yocto-sdk-gcc", "debug"]
-       },
-       {
-         "name": "yocto-sdk-gcc-release",
-         "inherits": ["yocto-sdk-gcc", "release"]
-       },
-       {
-         "name": "yocto-sdk-clang-debug",
-         "inherits": ["yocto-sdk-clang", "debug"]
-       },
-       {
-         "name": "yocto-sdk-clang-release",
-         "inherits": ["yocto-sdk-clang", "release"]
-       },
-       {
-         "name": "freertos-armv7-m4-conan-gcc-debug",
-         "inherits": ["freertos-armv7-m4", "debug", "conan"]
-       },
-       {
-         "name": "freertos-armv7-m4-conan-gcc-release",
-         "inherits": ["freertos-armv7-m4", "release", "conan"]
-       }
-     ]
-   }
-   ```
+    ```json
+    {
+        "version": 8,
+        "cmakeMinimumRequired": {
+            "major": 3,
+            "minor": 28,
+            "patch": 0
+        },
+        "include": [
+            "cmake/presets/app.json",
+            "cmake/presets/baremetal.json",
+            "cmake/presets/dependencies.json",
+            "cmake/presets/linux.json",
+            "cmake/presets/type.json"
+        ],
+        "configurePresets": [
+            {
+                "name": "linux-native-gcc-debug",
+                "inherits": ["linux-native-gcc", "debug"]
+            },
+            {
+                "name": "linux-native-gcc-release",
+                "inherits": ["linux-native-gcc", "release"]
+            },
+            {
+                "name": "linux-native-clang-debug",
+                "inherits": ["linux-native-clang", "debug"]
+            },
+            {
+                "name": "linux-native-clang-release",
+                "inherits": ["linux-native-clang", "release"]
+            },
+            {
+                "name": "linux-native-gcc-debug-asan",
+                "inherits": ["linux-native-gcc-debug", "asan"]
+            },
+            {
+                "name": "linux-native-gcc-debug-lsan",
+                "inherits": ["linux-native-gcc-debug", "lsan"]
+            },
+            {
+                "name": "linux-native-gcc-debug-tsan",
+                "inherits": ["linux-native-gcc-debug", "tsan"]
+            },
+            {
+                "name": "linux-native-gcc-debug-ubsan",
+                "inherits": ["linux-native-gcc-debug", "ubsan"]
+            },
+            {
+                "name": "linux-native-conan-gcc-debug",
+                "inherits": ["linux-native-gcc-debug", "conan"]
+            },
+            {
+                "name": "linux-native-conan-gcc-release",
+                "inherits": ["linux-native-gcc-release", "conan"]
+            },
+            {
+                "name": "linux-native-conan-clang-debug",
+                "inherits": ["linux-native-clang-debug", "conan"]
+            },
+            {
+                "name": "linux-native-conan-clang-release",
+                "inherits": ["linux-native-clang-release", "conan"]
+            },
+            {
+                "name": "linux-native-conan-gcc-debug-asan",
+                "inherits": ["linux-native-conan-gcc-debug", "asan"]
+            },
+            {
+                "name": "linux-native-conan-gcc-debug-lsan",
+                "inherits": ["linux-native-conan-gcc-debug", "lsan"]
+            },
+            {
+                "name": "linux-native-conan-gcc-debug-tsan",
+                "inherits": ["linux-native-conan-gcc-debug", "tsan"]
+            },
+            {
+                "name": "linux-native-conan-gcc-debug-ubsan",
+                "inherits": ["linux-native-conan-gcc-debug", "ubsan"]
+            },
+            {
+                "name": "linux-arm64-conan-gcc-debug",
+                "inherits": ["linux-arm64-gcc", "debug", "conan"]
+            },
+            {
+                "name": "linux-arm64-conan-gcc-release",
+                "inherits": ["linux-arm64-gcc", "release", "conan"]
+            },
+            {
+                "name": "linux-arm64-conan-clang-debug",
+                "inherits": ["linux-arm64-clang", "debug", "conan"]
+            },
+            {
+                "name": "linux-arm64-conan-clang-release",
+                "inherits": ["linux-arm64-clang", "release", "conan"]
+            },
+            {
+                "name": "yocto-sdk-gcc-debug",
+                "inherits": ["yocto-sdk-gcc", "debug"]
+            },
+            {
+                "name": "yocto-sdk-gcc-release",
+                "inherits": ["yocto-sdk-gcc", "release"]
+            },
+            {
+                "name": "yocto-sdk-clang-debug",
+                "inherits": ["yocto-sdk-clang", "debug"]
+            },
+            {
+                "name": "yocto-sdk-clang-release",
+                "inherits": ["yocto-sdk-clang", "release"]
+            },
+            {
+                "name": "freertos-armv7-m4-conan-gcc-debug",
+                "inherits": ["freertos-armv7-m4", "debug", "conan"]
+            },
+            {
+                "name": "freertos-armv7-m4-conan-gcc-release",
+                "inherits": ["freertos-armv7-m4", "release", "conan"]
+            }
+        ]
+    }
+    ```
 
-**Verification:** `cmake preset list` should list all expected presets (linux-native-_, linux-arm64-_, yocto-sdk-_, freertos-_, sanitizer variants). The old presets (`tests-linux-gcc-debug`, `demo-baremetal-arm-debug`, etc.) should be gone.
+**Verification:** `cmake preset list` should list all expected presets (linux-native-_, linux-arm64-_, yocto-sdk-_,
+freertos-_, sanitizer variants). The old presets (`tests-linux-gcc-debug`, `demo-baremetal-arm-debug`, etc.) should be
+gone.
 
 ---
 
@@ -224,8 +225,7 @@ version 3 with a single monolithic file. The osal preset files live in `cmake/pr
 
 **Goal:** Clean up CMakeLists.txt files and replace the old cmake helper files with osal-style structure.
 
-**Context:**
-osal's root `CMakeLists.txt`:
+**Context:** osal's root `CMakeLists.txt`:
 
 ```cmake
 cmake_minimum_required(VERSION 3.28)
@@ -280,79 +280,83 @@ include(${CMAKE_CURRENT_LIST_DIR}/../components.cmake)
 
 1. **Replace root `CMakeLists.txt`**:
 
-   ```cmake
-   cmake_minimum_required(VERSION 3.28)
+    ```cmake
+    cmake_minimum_required(VERSION 3.28)
 
-   list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
 
-   find_package(platform COMPONENTS toolchain)
+    find_package(platform COMPONENTS toolchain)
 
-   project(liballocator ASM C CXX)
+    project(liballocator ASM C CXX)
 
-   include(cmake/compilation-flags.cmake)
+    include(cmake/compilation-flags.cmake)
 
-   set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-   add_subdirectory(lib)
-   add_subdirectory(tests)
-   ```
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+    add_subdirectory(lib)
+    add_subdirectory(tests)
+    ```
 
-   Note: `add_subdirectory(tests)` replaces old `add_subdirectory(test)` — the directory rename happens in Phase 10.
-   For now if the `tests/` dir doesn't exist yet, this is fine — the rename will be coordinated.
-   Actually: to avoid breakage, keep `add_subdirectory(test)` in this phase and change to `add_subdirectory(tests)`
-   as part of Phase 10 (tests rename).
+    Note: `add_subdirectory(tests)` replaces old `add_subdirectory(test)` — the directory rename happens in Phase 10.
+    For now if the `tests/` dir doesn't exist yet, this is fine — the rename will be coordinated. Actually: to avoid
+    breakage, keep `add_subdirectory(test)` in this phase and change to `add_subdirectory(tests)` as part of Phase 10
+    (tests rename).
 
 2. **Create `cmake/compilation-flags.cmake`**:
 
-   ```cmake
-   add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>)
-   set(CMAKE_C_STANDARD 17)
-   set(CMAKE_CXX_STANDARD 23)
-   ```
+    ```cmake
+    add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>)
+    set(CMAKE_C_STANDARD 17)
+    set(CMAKE_CXX_STANDARD 23)
+    ```
 
 3. **Create `cmake/components.cmake`** (same as osal but for liballocator):
 
-   ```cmake
-   if (NOT liballocator_FIND_COMPONENTS)
-       file(GLOB liballocator_FIND_COMPONENTS LIST_DIRECTORIES true RELATIVE ${liballocator_SOURCE_DIR}/lib ${liballocator_SOURCE_DIR}/lib/*)
-   endif ()
+    ```cmake
+    if (NOT liballocator_FIND_COMPONENTS)
+        file(GLOB liballocator_FIND_COMPONENTS LIST_DIRECTORIES true RELATIVE ${liballocator_SOURCE_DIR}/lib ${liballocator_SOURCE_DIR}/lib/*)
+    endif ()
 
-   include(FetchContent)
-   foreach (component IN LISTS liballocator_FIND_COMPONENTS)
-       FetchContent_Declare(liballocator-${component}
-           SOURCE_DIR      ${liballocator_SOURCE_DIR}
-           SOURCE_SUBDIR   lib/${component}
-           SYSTEM
-       )
+    include(FetchContent)
+    foreach (component IN LISTS liballocator_FIND_COMPONENTS)
+        FetchContent_Declare(liballocator-${component}
+            SOURCE_DIR      ${liballocator_SOURCE_DIR}
+            SOURCE_SUBDIR   lib/${component}
+            SYSTEM
+        )
 
-       FetchContent_MakeAvailable(liballocator-${component})
-   endforeach ()
-   ```
+        FetchContent_MakeAvailable(liballocator-${component})
+    endforeach ()
+    ```
 
 4. **Create `cmake/modules/Findliballocator.cmake`**:
 
-   ```cmake
-   set(liballocator_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/../..)
-   include(${CMAKE_CURRENT_LIST_DIR}/../components.cmake)
-   ```
+    ```cmake
+    set(liballocator_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/../..)
+    include(${CMAKE_CURRENT_LIST_DIR}/../components.cmake)
+    ```
 
 5. **Update `lib/CMakeLists.txt`**:
-   - Bump `cmake_minimum_required(VERSION 3.28)`
-   - Remove `configure_file(version.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/version.hpp)` line (and the `message(STATUS ...)` above it)
-   - Remove the duplicate `add_compile_options(...)` line (flags are now in `cmake/compilation-flags.cmake`)
-   - Add namespace alias after the `add_library(liballocator ...)` block:
-     ```cmake
-     add_library(liballocator::liballocator ALIAS liballocator)
-     ```
+    - Bump `cmake_minimum_required(VERSION 3.28)`
+    - Remove `configure_file(version.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/version.hpp)` line (and the
+      `message(STATUS ...)` above it)
+    - Remove the duplicate `add_compile_options(...)` line (flags are now in `cmake/compilation-flags.cmake`)
+    - Add namespace alias after the `add_library(liballocator ...)` block:
+        ```cmake
+        add_library(liballocator::liballocator ALIAS liballocator)
+        ```
 
 6. **Delete the following files**:
-   - `cmake/conan.cmake`
-   - `cmake/coverage.cmake`
-   - `cmake/platform.cmake`
-   - `cmake/sanitizers.cmake`
-   - `lib/version.hpp.in`
-   - `lib/version.hpp` (if it exists as a generated file)
+    - `cmake/conan.cmake`
+    - `cmake/coverage.cmake`
+    - `cmake/platform.cmake`
+    - `cmake/sanitizers.cmake`
+    - `lib/version.hpp.in`
+    - `lib/version.hpp` (if it exists as a generated file)
 
-**Verification:** The root `CMakeLists.txt` has no references to APP, conan 1.x, coverage, sanitizers, or platform.cmake. `lib/CMakeLists.txt` has the namespace alias. All deleted files are gone. The `cmake/` directory now contains: `conan_provider.cmake` (from Phase 4), `compilation-flags.cmake`, `components.cmake`, `modules/Findliballocator.cmake`.
+**Verification:** The root `CMakeLists.txt` has no references to APP, conan 1.x, coverage, sanitizers, or
+platform.cmake. `lib/CMakeLists.txt` has the namespace alias. All deleted files are gone. The `cmake/` directory now
+contains: `conan_provider.cmake` (from Phase 4), `compilation-flags.cmake`, `components.cmake`,
+`modules/Findliballocator.cmake`.
 
 ---
 
@@ -360,9 +364,8 @@ include(${CMAKE_CURRENT_LIST_DIR}/../components.cmake)
 
 **Goal:** Remove the vendored STM32F4 HAL from the repo and replace with a FetchContent-based Find module.
 
-**Context:**
-liballocator vendors the entire STM32F4 HAL in `external/stm32f4xx/`. osal does not vendor anything — it has
-`cmake/modules/Findstm32f4xx.cmake` which uses FetchContent to download the HAL on demand.
+**Context:** liballocator vendors the entire STM32F4 HAL in `external/stm32f4xx/`. osal does not vendor anything — it
+has `cmake/modules/Findstm32f4xx.cmake` which uses FetchContent to download the HAL on demand.
 
 osal's `cmake/modules/Findstm32f4xx.cmake`:
 
@@ -425,15 +428,19 @@ set(stm32f4xx_FOUND TRUE)
 
 **Changes:**
 
-1. **Delete `external/` directory** entirely (contains `external/stm32f4xx/` with vendored CMSIS, drivers, startup files, HAL config)
+1. **Delete `external/` directory** entirely (contains `external/stm32f4xx/` with vendored CMSIS, drivers, startup
+   files, HAL config)
 
 2. **Create `cmake/modules/Findstm32f4xx.cmake`** — copy verbatim from osal (content shown above)
 
-3. **Check `test/init/baremetal-arm/` CMakeLists.txt** — if it references `external/stm32f4xx` directly (e.g., `add_subdirectory(${CMAKE_SOURCE_DIR}/external/stm32f4xx ...)`), replace with `find_package(stm32f4xx)`.
+3. **Check `test/init/baremetal-arm/` CMakeLists.txt** — if it references `external/stm32f4xx` directly (e.g.,
+   `add_subdirectory(${CMAKE_SOURCE_DIR}/external/stm32f4xx ...)`), replace with `find_package(stm32f4xx)`.
 
-4. **Check `test/liballocator-demo/CMakeLists.txt`** — same as above: replace any direct `external/` reference with `find_package(stm32f4xx)`.
+4. **Check `test/liballocator-demo/CMakeLists.txt`** — same as above: replace any direct `external/` reference with
+   `find_package(stm32f4xx)`.
 
-**Verification:** `external/` directory is gone. `cmake/modules/Findstm32f4xx.cmake` exists and matches osal's version. Any CMakeLists.txt that referenced `external/stm32f4xx` now uses `find_package(stm32f4xx)`.
+**Verification:** `external/` directory is gone. `cmake/modules/Findstm32f4xx.cmake` exists and matches osal's version.
+Any CMakeLists.txt that referenced `external/stm32f4xx` now uses `find_package(stm32f4xx)`.
 
 ---
 
@@ -441,11 +448,11 @@ set(stm32f4xx_FOUND TRUE)
 
 **Goal:** Remove all GitLab CI config and replace with GitHub Actions workflows matching osal's pattern.
 
-**Context:**
-liballocator has:
+**Context:** liballocator has:
 
 - `.gitlab-ci.yml` (root)
-- `.gitlab/ci/*.yml` (8 files: build-baremetal, build-linux, coverage-linux, demo-baremetal, deploy, quality, test-linux, valgrind-linux)
+- `.gitlab/ci/*.yml` (8 files: build-baremetal, build-linux, coverage-linux, demo-baremetal, deploy, quality,
+  test-linux, valgrind-linux)
 - `.gitlab/issue_templates/*.md` (Bug.md, Feature.md, Generic.md)
 
 osal has 4 GitHub Actions workflows:
@@ -458,12 +465,12 @@ osal has 4 GitHub Actions workflows:
 **Changes:**
 
 1. **Delete all GitLab files:**
-   - `.gitlab-ci.yml`
-   - `.gitlab/` directory (entire tree)
+    - `.gitlab-ci.yml`
+    - `.gitlab/` directory (entire tree)
 
 2. **Create `.github/workflows/build-test-linux.yml`** — copy from osal, but replace:
-   - All occurrences of `osal-tests` → `liballocator-tests` (the test binary name)
-   - Keep all preset names as-is (they are now aligned from Phase 5)
+    - All occurrences of `osal-tests` → `liballocator-tests` (the test binary name)
+    - Keep all preset names as-is (they are now aligned from Phase 5)
 
 3. **Create `.github/workflows/build-test-baremetal.yml`** — copy from osal verbatim (preset names match from Phase 5)
 
@@ -473,7 +480,8 @@ osal has 4 GitHub Actions workflows:
 
 Reference osal workflow files at `/home/kuba/projects/kubasejdak/libs/osal/.github/workflows/`.
 
-**Verification:** `.gitlab*` files are gone. `.github/workflows/` contains exactly 4 files matching osal's structure with correct binary name substitution.
+**Verification:** `.gitlab*` files are gone. `.github/workflows/` contains exactly 4 files matching osal's structure
+with correct binary name substitution.
 
 ---
 
@@ -523,63 +531,64 @@ The osal file header format (MIT):
 
 1. **Replace `LICENSE`** with MIT License text, copyright `2017`:
 
-   ```
-   MIT License
+    ```
+    MIT License
 
-   Copyright (c) 2017 Kuba Sejdak (kuba.sejdak@gmail.com)
+    Copyright (c) 2017 Kuba Sejdak (kuba.sejdak@gmail.com)
 
-   Permission is hereby granted, free of charge, to any person obtaining a copy
-   of this software and associated documentation files (the "Software"), to deal
-   in the Software without restriction, including without limitation the rights
-   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-   copies of the Software, and to permit persons to whom the Software is
-   furnished to do so, subject to the following conditions:
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
 
-   The above copyright notice and this permission notice shall be included in all
-   copies or substantial portions of the Software.
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
 
-   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-   SOFTWARE.
-   ```
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+    ```
 
 2. **Update file headers in every `.cpp`, `.hpp`, `.h` file** under `lib/` and `test/`:
-   - Replace the BSD 2-Clause block (lines 1–31 of each file) with the MIT header shown above
-   - The `/// Copyright (c) 2017` line should use exactly `2017` (not a range)
-   - Note: the `@copyright` line should read `@copyright MIT License`
+    - Replace the BSD 2-Clause block (lines 1–31 of each file) with the MIT header shown above
+    - The `/// Copyright (c) 2017` line should use exactly `2017` (not a range)
+    - Note: the `@copyright` line should read `@copyright MIT License`
 
-   Files to update (all source files in lib/ and test/):
-   - `lib/allocator.cpp`
-   - `lib/group.cpp`
-   - `lib/group.hpp`
-   - `lib/include/allocator/allocator.hpp`
-   - `lib/include/allocator/Region.hpp`
-   - `lib/ListNode.hpp`
-   - `lib/PageAllocator.cpp`
-   - `lib/PageAllocator.hpp`
-   - `lib/Page.cpp`
-   - `lib/Page.hpp`
-   - `lib/RegionInfo.cpp`
-   - `lib/RegionInfo.hpp`
-   - `lib/utils.hpp`
-   - `lib/ZoneAllocator.cpp`
-   - `lib/ZoneAllocator.hpp`
-   - `lib/Zone.cpp`
-   - `lib/Zone.hpp`
-   - `test/liballocator-tests/unit/*.cpp` (all files)
-   - `test/liballocator-tests/integration/*.cpp` (all files)
-   - `test/liballocator-tests/perf/*.cpp` (all files)
-   - `test/liballocator-tests/appMain.cpp`
-   - `test/liballocator-demo/appMain.cpp`
-   - `test/init/baremetal-arm/init.cpp`
-   - `test/init/freertos-arm/init.cpp`
-   - `test/init/linux/init.cpp`
+    Files to update (all source files in lib/ and test/):
+    - `lib/allocator.cpp`
+    - `lib/group.cpp`
+    - `lib/group.hpp`
+    - `lib/include/allocator/allocator.hpp`
+    - `lib/include/allocator/Region.hpp`
+    - `lib/ListNode.hpp`
+    - `lib/PageAllocator.cpp`
+    - `lib/PageAllocator.hpp`
+    - `lib/Page.cpp`
+    - `lib/Page.hpp`
+    - `lib/RegionInfo.cpp`
+    - `lib/RegionInfo.hpp`
+    - `lib/utils.hpp`
+    - `lib/ZoneAllocator.cpp`
+    - `lib/ZoneAllocator.hpp`
+    - `lib/Zone.cpp`
+    - `lib/Zone.hpp`
+    - `test/liballocator-tests/unit/*.cpp` (all files)
+    - `test/liballocator-tests/integration/*.cpp` (all files)
+    - `test/liballocator-tests/perf/*.cpp` (all files)
+    - `test/liballocator-tests/appMain.cpp`
+    - `test/liballocator-demo/appMain.cpp`
+    - `test/init/baremetal-arm/init.cpp`
+    - `test/init/freertos-arm/init.cpp`
+    - `test/init/linux/init.cpp`
 
-**Verification:** `LICENSE` is MIT. All source files have the MIT header block with `2017`. No file has `BSD` or `2017-2023` in its header.
+**Verification:** `LICENSE` is MIT. All source files have the MIT header block with `2017`. No file has `BSD` or
+`2017-2023` in its header.
 
 ---
 
@@ -587,14 +596,14 @@ The osal file header format (MIT):
 
 **Goal:** Rename `test/` to `tests/` and fix Catch2 assertion style.
 
-**Context:**
-osal uses a `tests/` directory (plural). liballocator uses `test/` (singular).
+**Context:** osal uses a `tests/` directory (plural). liballocator uses `test/` (singular).
 
 Catch2 assertion conventions (both repos):
 
 - `REQUIRE` — use for guards: a failure would cause a crash or undefined behavior if execution continued
 - `CHECK` — use for verifiable assertions where continued execution is safe
-- Never use negation inside assertions. Use `REQUIRE_FALSE(...)` / `CHECK_FALSE(...)` instead of `REQUIRE(!...)` / `CHECK(!...)`
+- Never use negation inside assertions. Use `REQUIRE_FALSE(...)` / `CHECK_FALSE(...)` instead of `REQUIRE(!...)` /
+  `CHECK(!...)`
 
 Current negation violations in liballocator tests (all use `REQUIRE(!...)`):
 
@@ -603,45 +612,35 @@ Current negation violations in liballocator tests (all use `REQUIRE(!...)`):
 - `test/liballocator-tests/unit/RegionInfo.cpp:98,137,154,206,260,314,326`
 - `test/liballocator-tests/unit/PageAllocator.cpp:77,91,215,250`
 - `test/liballocator-tests/unit/Zone.cpp:196,202,208,214,219,224`
-- `test/liballocator-tests/unit/ZoneAllocator.cpp:98`
-  (Find all occurrences with: `grep -rn "REQUIRE(!" test/ && grep -rn "CHECK(!" test/`)
+- `test/liballocator-tests/unit/ZoneAllocator.cpp:98` (Find all occurrences with:
+  `grep -rn "REQUIRE(!" test/ && grep -rn "CHECK(!" test/`)
 
 **Changes:**
 
 1. **Rename directory `test/` → `tests/`** (git mv to preserve history):
 
-   ```bash
-   git mv test tests
-   ```
+    ```bash
+    git mv test tests
+    ```
 
 2. **Update `CMakeLists.txt` (root)**: change `add_subdirectory(test)` → `add_subdirectory(tests)`
 
-3. **Update `tests/CMakeLists.txt`**: any internal `add_subdirectory` paths that were relative to `test/` should still work since they're relative — verify they do.
+3. **Update `tests/CMakeLists.txt`**: any internal `add_subdirectory` paths that were relative to `test/` should still
+   work since they're relative — verify they do.
 
-4. **Fix all negation assertions**: replace every `REQUIRE(!expr)` with `REQUIRE_FALSE(expr)` and every `CHECK(!expr)` with `CHECK_FALSE(expr)`. Search with grep and fix systematically.
+4. **Fix all negation assertions**: replace every `REQUIRE(!expr)` with `REQUIRE_FALSE(expr)` and every `CHECK(!expr)`
+   with `CHECK_FALSE(expr)`. Search with grep and fix systematically.
 
 5. **Review REQUIRE vs CHECK semantics** across all test files:
-   - Assertions that initialize or set up state (e.g., `REQUIRE(allocator::init(...))`) should remain `REQUIRE` — if init fails, further assertions are meaningless or dangerous
-   - Assertions on observable values (e.g., checking stats after an operation) can often be `CHECK` to allow all failures to be reported in one run
-   - This is a judgment call — be conservative; only change `REQUIRE` → `CHECK` when you are confident continued execution cannot crash
+    - Assertions that initialize or set up state (e.g., `REQUIRE(allocator::init(...))`) should remain `REQUIRE` — if
+      init fails, further assertions are meaningless or dangerous
+    - Assertions on observable values (e.g., checking stats after an operation) can often be `CHECK` to allow all
+      failures to be reported in one run
+    - This is a judgment call — be conservative; only change `REQUIRE` → `CHECK` when you are confident continued
+      execution cannot crash
 
-**Verification:** `test/` directory is gone. `tests/` directory exists with same content. All `REQUIRE(!...)` and `CHECK(!...)` patterns are gone. Build system references are updated.
-
----
-
-## Phase 11 — CONTRIBUTING.md
-
-**Goal:** Replace the empty CONTRIBUTING.md with full content matching osal's conventions.
-
-**Context:**
-`CONTRIBUTING.md` in liballocator is currently empty (0 bytes). osal's CONTRIBUTING.md at
-`/home/kuba/projects/kubasejdak/libs/osal/CONTRIBUTING.md` is the reference.
-
-**Changes:**
-Copy osal's `CONTRIBUTING.md` to liballocator, replacing the empty file. No content changes needed — the document
-is written generically for any kubasejdak-org library.
-
-**Verification:** `CONTRIBUTING.md` is non-empty and matches osal's content.
+**Verification:** `test/` directory is gone. `tests/` directory exists with same content. All `REQUIRE(!...)` and
+`CHECK(!...)` patterns are gone. Build system references are updated.
 
 ---
 
@@ -649,9 +648,8 @@ is written generically for any kubasejdak-org library.
 
 **Goal:** Rewrite the README to match osal's modern format.
 
-**Context:**
-The current liballocator README is outdated — it references GitLab, uses `add_subdirectory` integration, has
-old performance tables, and lacks proper documentation structure. osal's README is the format reference.
+**Context:** The current liballocator README is outdated — it references GitLab, uses `add_subdirectory` integration,
+has old performance tables, and lacks proper documentation structure. osal's README is the format reference.
 
 **Target README structure:**
 
@@ -707,8 +705,7 @@ Main features:
 
 ## Development
 
-> [!NOTE]
-> This section is relevant when working on `liballocator` itself in standalone mode.
+> [!NOTE] This section is relevant when working on `liballocator` itself in standalone mode.
 
 ### Commands
 
@@ -749,50 +746,54 @@ Main features:
 **Changes:**
 
 1. **Update `.gitignore`**:
-   - Remove `.vscode/` entry (not in osal's gitignore; VS Code settings that should be committed should be, those that shouldn't are already in `.devcontainer/`)
-   - Remove `version.hpp` entry (the file is being removed in Phase 6, so this entry is now orphaned)
-   - Final `.gitignore` content should match osal's exactly:
+    - Remove `.vscode/` entry (not in osal's gitignore; VS Code settings that should be committed should be, those that
+      shouldn't are already in `.devcontainer/`)
+    - Remove `version.hpp` entry (the file is being removed in Phase 6, so this entry is now orphaned)
+    - Final `.gitignore` content should match osal's exactly:
 
-     ```
-     # Object and executable files
-     cmake-build-*/
-     out/
-     build/
+        ```
+        # Object and executable files
+        cmake-build-*/
+        out/
+        build/
 
-     # Build systems
-     CMakeLists.txt.user
-     CMakeUserPresets.json
+        # Build systems
+        CMakeLists.txt.user
+        CMakeUserPresets.json
 
-     # IDE
-     .idea/
-     ```
+        # IDE
+        .idea/
+        ```
 
 2. **Add `.prettierrc`** — copy from osal verbatim:
 
-   ```json
-   {
-     "printWidth": 120,
-     "proseWrap": "always",
-     "overrides": [
-       {
-         "files": "*.md",
-         "options": {
-           "tabWidth": 4
-         }
-       }
-     ]
-   }
-   ```
+    ```json
+    {
+        "printWidth": 120,
+        "proseWrap": "always",
+        "overrides": [
+            {
+                "files": "*.md",
+                "options": {
+                    "tabWidth": 4
+                }
+            }
+        ]
+    }
+    ```
 
-3. **Add `tools/adjust-compilation-db.py`** — copy from osal (`/home/kuba/projects/kubasejdak/libs/osal/tools/adjust-compilation-db.py`)
+3. **Add `tools/adjust-compilation-db.py`** — copy from osal
+   (`/home/kuba/projects/kubasejdak/libs/osal/tools/adjust-compilation-db.py`)
 
-4. **Add `tools/run-clang-format.py`** — copy from osal (`/home/kuba/projects/kubasejdak/libs/osal/tools/run-clang-format.py`)
+4. **Add `tools/run-clang-format.py`** — copy from osal
+   (`/home/kuba/projects/kubasejdak/libs/osal/tools/run-clang-format.py`)
 
 5. **Remove obsolete files**:
-   - `tools/ci/` directory (with `logs-reader.py`, `program-openocd.py`) — these were GitLab CI helpers
-   - `tools/profile.in` — Conan 1.x profile template, replaced by Conan 2.x in Phase 4
+    - `tools/ci/` directory (with `logs-reader.py`, `program-openocd.py`) — these were GitLab CI helpers
+    - `tools/profile.in` — Conan 1.x profile template, replaced by Conan 2.x in Phase 4
 
-**Verification:** `.gitignore` matches osal's. `.prettierrc` exists and matches osal's. `tools/adjust-compilation-db.py` and `tools/run-clang-format.py` exist. `tools/ci/` and `tools/profile.in` are gone.
+**Verification:** `.gitignore` matches osal's. `.prettierrc` exists and matches osal's. `tools/adjust-compilation-db.py`
+and `tools/run-clang-format.py` exist. `tools/ci/` and `tools/profile.in` are gone.
 
 ---
 
@@ -800,16 +801,12 @@ Main features:
 
 Phases can be executed in this order (each is independent but later phases build on earlier ones):
 
-1. Phase 1 — devcontainers
-2. Phase 2 — clang-format
-3. Phase 3 — clang-tidy
-4. Phase 4 — Conan migration
-5. Phase 5 — CMakePresets restructure
-6. Phase 6 — CMake structure cleanup _(depends on Phase 4 for conan_provider.cmake, Phase 5 for preset names)_
-7. Phase 7 — Remove external/
-8. Phase 8 — GitHub Actions _(depends on Phase 5 for preset names)_
-9. Phase 9 — License
-10. Phase 10 — Tests rename + assertions
-11. Phase 11 — CONTRIBUTING.md
-12. Phase 12 — README.md
-13. Phase 13 — Miscellaneous cleanup
+1. Phase 4 — Conan migration
+2. Phase 5 — CMakePresets restructure
+3. Phase 6 — CMake structure cleanup _(depends on Phase 4 for conan_provider.cmake, Phase 5 for preset names)_
+4. Phase 7 — Remove external/
+5. Phase 8 — GitHub Actions _(depends on Phase 5 for preset names)_
+6. Phase 9 — License
+7. Phase 10 — Tests rename + assertions
+8. Phase 12 — README.md
+9. Phase 13 — Miscellaneous cleanup
