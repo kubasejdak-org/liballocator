@@ -9,6 +9,3 @@ CMakeUserPresets.json
 
 # IDE
 .idea/
-.vscode/
-
-version.hpp
